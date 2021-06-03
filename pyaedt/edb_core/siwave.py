@@ -336,6 +336,9 @@ class EdBSiwave(object):
         pos_node_pins = self.parent.core_components.get_pin_from_component(positive_component_name, positive_net_name)
         neg_node_pins = self.parent.core_components.get_pin_from_component(negative_component_name, negative_net_name)
 
+        if not negative_component_name:
+            negative_component_name = positive_component_name
+
         if source_name == "":
             source_name = "Port_{}_{}_{}_{}".format(positive_component_name, positive_net_name, negative_component_name,
                                                   negative_net_name)
@@ -374,6 +377,9 @@ class EdBSiwave(object):
         neg_node_cmp = self.parent.core_components.get_component_by_name(negative_component_name)
         pos_node_pins = self.parent.core_components.get_pin_from_component(positive_component_name, positive_net_name)
         neg_node_pins = self.parent.core_components.get_pin_from_component(negative_component_name, negative_net_name)
+
+        if not negative_component_name:
+            negative_component_name = positive_component_name
 
         if source_name == "":
             source_name = "Port_{}_{}_{}_{}".format(positive_component_name, positive_net_name, negative_component_name,
