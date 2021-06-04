@@ -849,7 +849,7 @@ Assign Temperature and Deformation Objects for WorkBench Link. From 2020R2 Mater
 <li><p><strong>left_distance</strong> -- float left distance (Default value = 1)</p></li>
 <li><p><strong>right_distance</strong> -- float optional right distance (Default value = None)</p></li>
 <li><p><strong>angle</strong> -- float angle (for type 2 and 3) (Default value = 45)</p></li>
-<li><p><strong>chamfer_type</strong> -- 0 - Simmetric , 1 - Left Distance-Right Distance, 2 - Left Distance-Angle, 3 - Right Distance-Angle (Default value = 0)</p></li>
+<li><p><strong>chamfer_type</strong> -- 0 - Symmetric , 1 - Left Distance-Right Distance, 2 - Left Distance-Angle, 3 - Right Distance-Angle (Default value = 0)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -1104,7 +1104,7 @@ name: name of entity list</p>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>True if succeded</p>
+<dd class="field-even"><p>True if succeeded</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>type</p>
@@ -1245,9 +1245,9 @@ WG14, WG15, WR102, WG16, WG17, WG18, WG19, WG20, WG21, WG22, WG24, WG25, WG26, W
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyaedt.modeler.Modeler.GeometryModeler.explicitiyly_subract">
-<span class="sig-name descname"><span class="pre">explicitiyly_subract</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">diellist</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metallist</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/modeler/Modeler.html#GeometryModeler.explicitiyly_subract"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.modeler.Modeler.GeometryModeler.explicitiyly_subract" title="Permalink to this definition">¶</a></dt>
-<dd><p>expliticiltySubract all the elements in aSolveInside and aSolveSurface lists</p>
+<dt class="sig sig-object py" id="pyaedt.modeler.Modeler.GeometryModeler.explicitiyly_subtract">
+<span class="sig-name descname"><span class="pre">explicitiyly_subtract</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">diellist</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metallist</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/modeler/Modeler.html#GeometryModeler.explicitiyly_subtract"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.modeler.Modeler.GeometryModeler.explicitiyly_subtract" title="Permalink to this definition">¶</a></dt>
+<dd><p>expliticiltySubtract all the elements in aSolveInside and aSolveSurface lists</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1332,7 +1332,7 @@ l part of all the solids intersections on the sheets. this function can be used 
 TODO: unit test</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>True if succeded, False otherwise</p>
+<dd class="field-odd"><p>True if succeeded, False otherwise</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1355,7 +1355,7 @@ TODO: unit test</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaedt.modeler.Modeler.GeometryModeler.get_boundaries_name">
 <span class="sig-name descname"><span class="pre">get_boundaries_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/modeler/Modeler.html#GeometryModeler.get_boundaries_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.modeler.Modeler.GeometryModeler.get_boundaries_name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get all the avaialble Boundaries names</p>
+<dd><p>Get all the available Boundaries names</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>list of names. Excitations with multiple modes will produce one excitation for each mode</p>
@@ -1386,7 +1386,7 @@ TODO: unit test</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaedt.modeler.Modeler.GeometryModeler.get_excitations_name">
 <span class="sig-name descname"><span class="pre">get_excitations_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/modeler/Modeler.html#GeometryModeler.get_excitations_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.modeler.Modeler.GeometryModeler.get_excitations_name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get all the avaialble excitation names</p>
+<dd><p>Get all the available excitation names</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>list of names. Excitations with multiple modes will produce one excitation for each mode</p>
@@ -1864,7 +1864,7 @@ Material assigned to the objects needs to have Thermal Modifier.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaedt.modeler.Modeler.GeometryModeler.subtract">
 <span class="sig-name descname"><span class="pre">subtract</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theList</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theList1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keepOriginals</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/modeler/Modeler.html#GeometryModeler.subtract"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.modeler.Modeler.GeometryModeler.subtract" title="Permalink to this definition">¶</a></dt>
-<dd><p>Subract objects from IDs</p>
+<dd><p>Subtract objects from IDs</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1976,7 +1976,7 @@ TODO: unit test</p>
 <dd class="field-odd"><p><strong>groups</strong> -- list of group names</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>True if succeded, False otherwise</p>
+<dd class="field-even"><p>True if succeeded, False otherwise</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>type</p>
@@ -2057,8 +2057,8 @@ txtfilter -- an optional filter: only generate the line data if txtfilter is con
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>origin</strong> -- origin of the CS (Default value = [0)</p></li>
 <li><p><strong>view</strong> -- View. Default &quot;iso&quot;. possible &quot;XY&quot;, &quot;XZ&quot;, &quot;XY&quot;, &quot;rotate&quot;</p></li>
-<li><p><strong>x_pointing</strong> -- if view=&quot;rotate&quot;, this is a 3 elements list specifing the X axis pointing in the global CS (Default value = [1)</p></li>
-<li><p><strong>y_pointing</strong> -- if view=&quot;rotate&quot;, this is a 3 elements list specifing the Y axis pointing in the global CS (Default value = [0)</p></li>
+<li><p><strong>x_pointing</strong> -- if view=&quot;rotate&quot;, this is a 3 elements list specifying the X axis pointing in the global CS (Default value = [1)</p></li>
+<li><p><strong>y_pointing</strong> -- if view=&quot;rotate&quot;, this is a 3 elements list specifying the Y axis pointing in the global CS (Default value = [0)</p></li>
 <li><p><strong>name</strong> -- name of the CS (Default value = None)</p></li>
 <li><p><strong>0</strong> -- </p></li>
 <li><p><strong>0</strong><strong>]</strong> -- </p></li>
