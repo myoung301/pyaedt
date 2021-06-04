@@ -35,7 +35,6 @@
     <script src="../_static/doctools.js"></script>
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
-    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="EDB Nets" href="EDBNets.html" />
@@ -59,7 +58,7 @@
 
     <a class="navbar-brand" href="../index.html">
     
-      <img src="../_static/logo-ansys.png" class="logo" alt="logo" />
+      <img src="../_static/pyansys-logo-black-cropped.png" class="logo" alt="logo" />
     
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
@@ -71,6 +70,10 @@
     <div id="navbar-menu" class="col-lg-9 collapse navbar-collapse">
       <ul id="navbar-main-elements" class="navbar-nav mr-auto">
         
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../LICENSE.html">LICENSE</a>
+        </li>
         
         <li class="nav-item ">
             <a class="nav-link" href="../Resources/Installation.html">Installation</a>
@@ -742,9 +745,19 @@
               
               <div class="toc-item">
                 
+<div class="tocsection onthispage pt-5 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
 
 <nav id="bd-toc-nav">
-    
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#edbsiwave-class">
+   EdbSiwave Class
+  </a>
+ </li>
+</ul>
+
 </nav>
               </div>
               
@@ -764,8 +777,213 @@
               
               <div>
                 
-  <div class="section" id="edb-siwave">
-<h1>EDB Siwave<a class="headerlink" href="#edb-siwave" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-pyaedt.edb_core.siwave">
+<span id="edb-siwave"></span><h1>EDB Siwave<a class="headerlink" href="#module-pyaedt.edb_core.siwave" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="edbsiwave-class">
+<h2>EdbSiwave Class<a class="headerlink" href="#edbsiwave-class" title="Permalink to this headline">¶</a></h2>
+<p>This class manages Edb Siwave and related methods</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyaedt.edb_core.siwave.EdBSiwave">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pyaedt.edb_core.siwave.</span></span><span class="sig-name descname"><span class="pre">EdBSiwave</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/edb_core/siwave.html#EdBSiwave"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.edb_core.siwave.EdBSiwave" title="Permalink to this definition">¶</a></dt>
+<dd><p>EdbSiwave Object</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="pyaedt.edb_core.siwave.EdBSiwave.active_layout">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">active_layout</span></span><a class="headerlink" href="#pyaedt.edb_core.siwave.EdBSiwave.active_layout" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.edb_core.siwave.EdBSiwave.add_siwave_ac_analysis">
+<span class="sig-name descname"><span class="pre">add_siwave_ac_analysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">accuracy_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decade_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sweeptype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_freq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop_freq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000000000.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step_freq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000000.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discre_sweep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/edb_core/siwave.html#EdBSiwave.add_siwave_ac_analysis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.edb_core.siwave.EdBSiwave.add_siwave_ac_analysis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add Siwave AC Analysis</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>accuracy_level</strong> -- </p></li>
+<li><p><strong>decade_count</strong> -- </p></li>
+<li><p><strong>sweeptype</strong> -- </p></li>
+<li><p><strong>start_freq</strong> -- </p></li>
+<li><p><strong>stop_freq</strong> -- </p></li>
+<li><p><strong>step_freq</strong> -- </p></li>
+<li><p><strong>discre_sweep</strong> -- </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.edb_core.siwave.EdBSiwave.add_siwave_dc_analysis">
+<span class="sig-name descname"><span class="pre">add_siwave_dc_analysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">accuracy_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/edb_core/siwave.html#EdBSiwave.add_siwave_dc_analysis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.edb_core.siwave.EdBSiwave.add_siwave_dc_analysis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add Siwave DC Analysis</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>accuracy_level</strong> -- Accuracy Level (Default value = 1)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Bool</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>type</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyaedt.edb_core.siwave.EdBSiwave.builder">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">builder</span></span><a class="headerlink" href="#pyaedt.edb_core.siwave.EdBSiwave.builder" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyaedt.edb_core.siwave.EdBSiwave.cell">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">cell</span></span><a class="headerlink" href="#pyaedt.edb_core.siwave.EdBSiwave.cell" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.edb_core.siwave.EdBSiwave.create_circuit_port">
+<span class="sig-name descname"><span class="pre">create_circuit_port</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">positive_component_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">positive_net_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">negative_component_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">negative_net_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'GND'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">impedance_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/edb_core/siwave.html#EdBSiwave.create_circuit_port"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.edb_core.siwave.EdBSiwave.create_circuit_port" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a  Circuit Port</p>
+<dl class="field-list simple">
+<dt class="field-odd">Example</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">AEDTLib.EDB</span> <span class="kn">import</span> <span class="n">EDB</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">edbapp</span> <span class="o">=</span> <span class="n">EDB</span><span class="p">(</span><span class="s2">&quot;myaedbfolder&quot;</span><span class="p">,</span> <span class="s2">&quot;project name&quot;</span><span class="p">,</span> <span class="s2">&quot;release version&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">edbapp</span><span class="o">.</span><span class="n">core_siwave</span><span class="o">.</span><span class="n">create_circuit_port</span><span class="p">(</span><span class="s2">&quot;U2A5&quot;</span><span class="p">,</span><span class="s2">&quot;V1P5_S3&quot;</span><span class="p">,</span><span class="s2">&quot;U2A5&quot;</span><span class="p">,</span><span class="s2">&quot;GND&quot;</span><span class="p">,</span><span class="mi">50</span><span class="p">,</span><span class="s2">&quot;port_name&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>positive_component_name</strong> -- Name of the positive component</p></li>
+<li><p><strong>positive_net_name</strong> -- Name of positive net name</p></li>
+<li><p><strong>negative_component_name</strong> -- Name of the negative component. if None, it will be the positive name</p></li>
+<li><p><strong>negative_net_name</strong> -- Name of negative net name</p></li>
+<li><p><strong>impedance_value</strong> -- port impedance value</p></li>
+<li><p><strong>port_name</strong> -- optional port name</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.edb_core.siwave.EdBSiwave.create_current_source">
+<span class="sig-name descname"><span class="pre">create_current_source</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">positive_component_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">positive_net_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">negative_component_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">negative_net_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'GND'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">current_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phase_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/edb_core/siwave.html#EdBSiwave.create_current_source"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.edb_core.siwave.EdBSiwave.create_current_source" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a Current Source</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">AEDTLib.EDB</span> <span class="kn">import</span> <span class="n">EDB</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">edbapp</span> <span class="o">=</span> <span class="n">EDB</span><span class="p">(</span><span class="s2">&quot;myaedbfolder&quot;</span><span class="p">,</span> <span class="s2">&quot;project name&quot;</span><span class="p">,</span> <span class="s2">&quot;release version&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">edb</span><span class="o">.</span><span class="n">core_siwave</span><span class="o">.</span><span class="n">create_current_source</span><span class="p">(</span><span class="s2">&quot;U2A5&quot;</span><span class="p">,</span><span class="s2">&quot;V1P5_S3&quot;</span><span class="p">,</span><span class="s2">&quot;U2A5&quot;</span><span class="p">,</span><span class="s2">&quot;GND&quot;</span><span class="p">,</span><span class="mf">0.1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="s2">&quot;source_name&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>positive_component_name</strong> -- Name of the positive component</p></li>
+<li><p><strong>positive_net_name</strong> -- Name of positive net name</p></li>
+<li><p><strong>negative_component_name</strong> -- Name of the negative component. if None, it will be the positive name</p></li>
+<li><p><strong>negative_net_name</strong> -- Name of negative net name</p></li>
+<li><p><strong>current_value</strong> -- Current Value</p></li>
+<li><p><strong>phase_value</strong> -- Optional Phase Value</p></li>
+<li><p><strong>source_name</strong> -- optional source name</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.edb_core.siwave.EdBSiwave.create_resistor">
+<span class="sig-name descname"><span class="pre">create_resistor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">positive_component_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">positive_net_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">negative_component_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">negative_net_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'GND'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rvalue</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resistor_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/edb_core/siwave.html#EdBSiwave.create_resistor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.edb_core.siwave.EdBSiwave.create_resistor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a Voltage Source</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">AEDTLib.EDB</span> <span class="kn">import</span> <span class="n">EDB</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">edbapp</span> <span class="o">=</span> <span class="n">EDB</span><span class="p">(</span><span class="s2">&quot;myaedbfolder&quot;</span><span class="p">,</span> <span class="s2">&quot;project name&quot;</span><span class="p">,</span> <span class="s2">&quot;release version&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">edb</span><span class="o">.</span><span class="n">core_siwave</span><span class="o">.</span><span class="n">create_resistor</span><span class="p">(</span><span class="s2">&quot;U2A5&quot;</span><span class="p">,</span><span class="s2">&quot;V1P5_S3&quot;</span><span class="p">,</span><span class="s2">&quot;U2A5&quot;</span><span class="p">,</span><span class="s2">&quot;GND&quot;</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="s2">&quot;resistor_name&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>positive_component_name</strong> -- Name of the positive component</p></li>
+<li><p><strong>positive_net_name</strong> -- Name of positive net name</p></li>
+<li><p><strong>negative_component_name</strong> -- Name of the negative component. if None, it will be the positive name</p></li>
+<li><p><strong>negative_net_name</strong> -- Name of negative net name</p></li>
+<li><p><strong>current_value</strong> -- Current Value</p></li>
+<li><p><strong>phase_value</strong> -- Optional Phase Value</p></li>
+<li><p><strong>source_name</strong> -- optional source name</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.edb_core.siwave.EdBSiwave.create_voltage_source">
+<span class="sig-name descname"><span class="pre">create_voltage_source</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">positive_component_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">positive_net_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">negative_component_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">negative_net_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'GND'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">voltage_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3.3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phase_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/edb_core/siwave.html#EdBSiwave.create_voltage_source"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.edb_core.siwave.EdBSiwave.create_voltage_source" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a Voltage Source</p>
+<dl class="field-list simple">
+<dt class="field-odd">Example</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">AEDTLib.EDB</span> <span class="kn">import</span> <span class="n">EDB</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">edbapp</span> <span class="o">=</span> <span class="n">EDB</span><span class="p">(</span><span class="s2">&quot;myaedbfolder&quot;</span><span class="p">,</span> <span class="s2">&quot;project name&quot;</span><span class="p">,</span> <span class="s2">&quot;release version&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">edb</span><span class="o">.</span><span class="n">core_siwave</span><span class="o">.</span><span class="n">create_voltage_source</span><span class="p">(</span><span class="s2">&quot;U2A5&quot;</span><span class="p">,</span><span class="s2">&quot;V1P5_S3&quot;</span><span class="p">,</span><span class="s2">&quot;U2A5&quot;</span><span class="p">,</span><span class="s2">&quot;GND&quot;</span><span class="p">,</span><span class="mf">3.3</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="s2">&quot;source_name&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>positive_component_name</strong> -- Name of the positive component</p></li>
+<li><p><strong>positive_net_name</strong> -- Name of positive net name</p></li>
+<li><p><strong>negative_component_name</strong> -- Name of the negative component. if None, it will be the positive name</p></li>
+<li><p><strong>negative_net_name</strong> -- Name of negative net name</p></li>
+<li><p><strong>current_value</strong> -- Voltage Value</p></li>
+<li><p><strong>phase_value</strong> -- Optional Phase Value</p></li>
+<li><p><strong>source_name</strong> -- optional port name</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyaedt.edb_core.siwave.EdBSiwave.db">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">db</span></span><a class="headerlink" href="#pyaedt.edb_core.siwave.EdBSiwave.db" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyaedt.edb_core.siwave.EdBSiwave.edb">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">edb</span></span><a class="headerlink" href="#pyaedt.edb_core.siwave.EdBSiwave.edb" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyaedt.edb_core.siwave.EdBSiwave.siwave_setup">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">siwave_setup</span></span><a class="headerlink" href="#pyaedt.edb_core.siwave.EdBSiwave.siwave_setup" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyaedt.edb_core.siwave.EdBSiwave.siwave_source">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">siwave_source</span></span><a class="headerlink" href="#pyaedt.edb_core.siwave.EdBSiwave.siwave_source" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyaedt.edb_core.siwave.SourceType">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pyaedt.edb_core.siwave.</span></span><span class="sig-name descname"><span class="pre">SourceType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/edb_core/siwave.html#SourceType"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.edb_core.siwave.SourceType" title="Permalink to this definition">¶</a></dt>
+<dd><p>An enumeration.</p>
+</dd></dl>
+
+</div>
 <div class="toctree-wrapper compound">
 </div>
 </div>

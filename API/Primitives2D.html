@@ -35,7 +35,6 @@
     <script src="../_static/doctools.js"></script>
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
-    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Primitives Layout" href="Primitives3DLayout.html" />
@@ -59,7 +58,7 @@
 
     <a class="navbar-brand" href="../index.html">
     
-      <img src="../_static/logo-ansys.png" class="logo" alt="logo" />
+      <img src="../_static/pyansys-logo-black-cropped.png" class="logo" alt="logo" />
     
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
@@ -71,6 +70,10 @@
     <div id="navbar-menu" class="col-lg-9 collapse navbar-collapse">
       <ul id="navbar-main-elements" class="navbar-nav mr-auto">
         
+        
+        <li class="nav-item ">
+            <a class="nav-link" href="../LICENSE.html">LICENSE</a>
+        </li>
         
         <li class="nav-item ">
             <a class="nav-link" href="../Resources/Installation.html">Installation</a>
@@ -766,6 +769,80 @@
                 
   <div class="section" id="primitives-2d">
 <h1>Primitives 2D<a class="headerlink" href="#primitives-2d" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyaedt.modeler.Primitives2D.Primitives2D">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pyaedt.modeler.Primitives2D.</span></span><span class="sig-name descname"><span class="pre">Primitives2D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">modeler</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/modeler/Primitives2D.html#Primitives2D"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.modeler.Primitives2D.Primitives2D" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class for management of all Primitives of 2D Tools</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.modeler.Primitives2D.Primitives2D.create_circle">
+<span class="sig-name descname"><span class="pre">create_circle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">position</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numSides</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">matname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/modeler/Primitives2D.html#Primitives2D.create_circle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.modeler.Primitives2D.Primitives2D.create_circle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a circle</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>position</strong> -- ApplicationName.modeler.Position(x,y,z) object</p></li>
+<li><p><strong>radius</strong> -- radius float</p></li>
+<li><p><strong>numSides</strong> -- Number of sides. 0 for circle (Default value = 0)</p></li>
+<li><p><strong>name</strong> -- Object Name (Default value = None)</p></li>
+<li><p><strong>matname</strong> -- material name. Optional, if nothing default material will be assigned</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>id</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>type</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.modeler.Primitives2D.Primitives2D.create_ellipse">
+<span class="sig-name descname"><span class="pre">create_ellipse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">position</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">major_raidus</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ratio</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bIsCovered</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">matname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/modeler/Primitives2D.html#Primitives2D.create_ellipse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.modeler.Primitives2D.Primitives2D.create_ellipse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a ellipse</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>position</strong> -- ApplicationName.modeler.Position(x,y,z) object</p></li>
+<li><p><strong>major_raidus</strong> -- radius float</p></li>
+<li><p><strong>ratio</strong> -- Ratio float</p></li>
+<li><p><strong>bIsCovered</strong> -- Boolean (Default value = True)</p></li>
+<li><p><strong>name</strong> -- Object Name (Default value = None)</p></li>
+<li><p><strong>matname</strong> -- material name. Optional, if nothing default material will be assigned</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.modeler.Primitives2D.Primitives2D.create_rectangle">
+<span class="sig-name descname"><span class="pre">create_rectangle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">position</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dimension_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">matname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/modeler/Primitives2D.html#Primitives2D.create_rectangle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.modeler.Primitives2D.Primitives2D.create_rectangle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a rectangle</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>position</strong> -- ApplicationName.modeler.Position(x,y,z) object</p></li>
+<li><p><strong>dimension_list</strong> -- dimension list</p></li>
+<li><p><strong>name</strong> -- Object Name (Default value = None)</p></li>
+<li><p><strong>matname</strong> -- material name. Optional, if nothing default material will be assigned</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>id</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>type</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyaedt.modeler.Primitives2D.Primitives2D.plane2d">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">plane2d</span></span><a class="headerlink" href="#pyaedt.modeler.Primitives2D.Primitives2D.plane2d" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </div>
 
 
