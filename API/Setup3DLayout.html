@@ -769,6 +769,137 @@
                 
   <div class="section" id="d-layout-setup">
 <h1>3D Layout Setup<a class="headerlink" href="#d-layout-setup" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyaedt.modules.SolveSetup.Setup3DLayout">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pyaedt.modules.SolveSetup.</span></span><span class="sig-name descname"><span class="pre">Setup3DLayout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">solutiontype</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">setupname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'MySetupAuto'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">isnewsetup</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/modules/SolveSetup.html#Setup3DLayout"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.modules.SolveSetup.Setup3DLayout" title="Permalink to this definition">¶</a></dt>
+<dd><p>This Class defines the functions to initialize, create and update a Setup in Electronic Desktop</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>setupmodule</strong> -- AEDT Module for Analysis Setup</p></li>
+<li><p><strong>setupname</strong> -- Setup Name</p></li>
+<li><p><strong>solutiontype</strong> -- Setup Type of Application.SolutionType</p></li>
+<li><p><strong>isnewsetup</strong> -- Boolean. True if is a new setup to be created from template. False to access existing Setup</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.modules.SolveSetup.Setup3DLayout.add_sweep">
+<span class="sig-name descname"><span class="pre">add_sweep</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sweepname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sweeptype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Interpolating'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/modules/SolveSetup.html#Setup3DLayout.add_sweep"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.modules.SolveSetup.Setup3DLayout.add_sweep" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add Frequency Sweep</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sweepname</strong> -- str sweep name (Default value = None)</p></li>
+<li><p><strong>sweeptype</strong> -- str sweep type (Default value = &quot;Interpolating&quot;)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>sweep object</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>type</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.modules.SolveSetup.Setup3DLayout.create">
+<span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/modules/SolveSetup.html#Setup3DLayout.create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.modules.SolveSetup.Setup3DLayout.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Insert a new Setup based on Class settings into the AEDT Application</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the argument list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.modules.SolveSetup.Setup3DLayout.disable">
+<span class="sig-name descname"><span class="pre">disable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/modules/SolveSetup.html#Setup3DLayout.disable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.modules.SolveSetup.Setup3DLayout.disable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Disable specific Setup</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>setup_name</strong> -- optional setup name</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Bool</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>type</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.modules.SolveSetup.Setup3DLayout.enable">
+<span class="sig-name descname"><span class="pre">enable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/modules/SolveSetup.html#Setup3DLayout.enable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.modules.SolveSetup.Setup3DLayout.enable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enable specific Setup</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>setup_name</strong> -- optional setup name</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Bool</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>type</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.modules.SolveSetup.Setup3DLayout.export_to_hfss">
+<span class="sig-name descname"><span class="pre">export_to_hfss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_fullname</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/modules/SolveSetup.html#Setup3DLayout.export_to_hfss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.modules.SolveSetup.Setup3DLayout.export_to_hfss" title="Permalink to this definition">¶</a></dt>
+<dd><p>Export Project to</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>file_fullname</strong> -- fullname of desgintation</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Bool</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>type</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyaedt.modules.SolveSetup.Setup3DLayout.omodule">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">omodule</span></span><a class="headerlink" href="#pyaedt.modules.SolveSetup.Setup3DLayout.omodule" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyaedt.modules.SolveSetup.Setup3DLayout.setup_type">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">setup_type</span></span><a class="headerlink" href="#pyaedt.modules.SolveSetup.Setup3DLayout.setup_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>setup type</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>return</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.modules.SolveSetup.Setup3DLayout.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/modules/SolveSetup.html#Setup3DLayout.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.modules.SolveSetup.Setup3DLayout.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>update the setup based on the class argument or to the updated dictionary passed as arcument</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>update_dictionary</strong> -- optional dictionary of settings to apply</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Bool</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>type</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 <div class="toctree-wrapper compound">
 </div>
 </div>
