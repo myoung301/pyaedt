@@ -72,10 +72,6 @@
         
         
         <li class="nav-item ">
-            <a class="nav-link" href="../LICENSE.html">LICENSE</a>
-        </li>
-        
-        <li class="nav-item ">
             <a class="nav-link" href="../Resources/Installation.html">Installation</a>
         </li>
         
@@ -769,6 +765,25 @@
                 
   <div class="section" id="modeler">
 <h1>modeler<a class="headerlink" href="#modeler" title="Permalink to this headline">¶</a></h1>
+digraph inheritancea20c4e5346 {
+bgcolor=transparent;
+fontsize=14;
+rankdir=RL;
+ratio=compress;
+size=&quot;8.0, 10.0&quot;;
+  &quot;CoordinateSystem&quot; [URL=&quot;Modeler.html#pyaedt.modeler.Modeler.CoordinateSystem&quot;,color=dodgerblue1,fillcolor=white,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=14,height=0.75,shape=ellipse,style=filled,target=&quot;_top&quot;,tooltip=&quot;CS Data and execution class&quot;];
+  &quot;GeometryModeler&quot; [URL=&quot;Modeler.html#pyaedt.modeler.Modeler.GeometryModeler&quot;,color=dodgerblue1,fillcolor=white,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=14,height=0.75,shape=ellipse,style=filled,target=&quot;_top&quot;,tooltip=&quot;Manage Main AEDT Modeler Functions for geometry-based designs&quot;];
+  &quot;Modeler&quot; -&gt; &quot;GeometryModeler&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+  &quot;Modeler&quot; [URL=&quot;Modeler.html#pyaedt.modeler.Modeler.Modeler&quot;,color=dodgerblue1,fillcolor=white,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=14,height=0.75,shape=ellipse,style=filled,target=&quot;_top&quot;,tooltip=&quot;Modeler application Class Inerithed by other modeler classes&quot;];
+  &quot;Modeler2D&quot; [URL=&quot;Modeler2D.html#pyaedt.modeler.Model2D.Modeler2D&quot;,color=dodgerblue1,fillcolor=white,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=14,height=0.75,shape=ellipse,style=filled,target=&quot;_top&quot;];
+  &quot;GeometryModeler&quot; -&gt; &quot;Modeler2D&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+  &quot;Modeler3D&quot; [URL=&quot;Modeler3D.html#pyaedt.modeler.Model3D.Modeler3D&quot;,color=dodgerblue1,fillcolor=white,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=14,height=0.75,shape=ellipse,style=filled,target=&quot;_top&quot;,tooltip=&quot;AEDT 3D Modeler&quot;];
+  &quot;GeometryModeler&quot; -&gt; &quot;Modeler3D&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+  &quot;Modeler3DLayout&quot; [URL=&quot;Modeler3DLayout.html#pyaedt.modeler.Model3DLayout.Modeler3DLayout&quot;,color=dodgerblue1,fillcolor=white,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=14,height=0.75,shape=ellipse,style=filled,target=&quot;_top&quot;];
+  &quot;Modeler&quot; -&gt; &quot;Modeler3DLayout&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+  &quot;ModelerRMxprt&quot; [color=dodgerblue1,fillcolor=white,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=14,height=0.75,shape=ellipse,style=filled];
+  &quot;Modeler&quot; -&gt; &quot;ModelerRMxprt&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+}
 <div class="toctree-wrapper compound">
 <p class="caption"><span class="caption-text">Classes:</span></p>
 <ul>

@@ -72,10 +72,6 @@
         
         
         <li class="nav-item ">
-            <a class="nav-link" href="../LICENSE.html">LICENSE</a>
-        </li>
-        
-        <li class="nav-item ">
             <a class="nav-link" href="../Resources/Installation.html">Installation</a>
         </li>
         
@@ -745,9 +741,19 @@
               
               <div class="toc-item">
                 
+<div class="tocsection onthispage pt-5 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
 
 <nav id="bd-toc-nav">
-    
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#edb-class">
+   Edb Class
+  </a>
+ </li>
+</ul>
+
 </nav>
               </div>
               
@@ -767,8 +773,357 @@
               
               <div>
                 
-  <div class="section" id="edb-main-class">
-<h1>EDB Main Class<a class="headerlink" href="#edb-main-class" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-pyaedt.edb">
+<span id="edb-main-class"></span><h1>EDB Main Class<a class="headerlink" href="#module-pyaedt.edb" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="edb-class">
+<h2>Edb Class<a class="headerlink" href="#edb-class" title="Permalink to this headline">¶</a></h2>
+<p>This class contains all the EDB Functionalities. It inherites all the objects that belongs to EDB.</p>
+<p>It is implicitily loaeded in HFSS3DLayout when launched</p>
+<p class="rubric">Example</p>
+<p>app = Edb()     creates and EDB object create a new EDB cell</p>
+<p>app = Edb(&quot;myfile.aedb&quot;)     creates and EDB object and open specified project</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyaedt.edb.Edb">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pyaedt.edb.</span></span><span class="sig-name descname"><span class="pre">Edb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edbpath</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cellname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">isreadonly</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edbversion</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'2021.1'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">isaedtowned</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">oproject</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/edb.html#Edb"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.edb.Edb" title="Permalink to this definition">¶</a></dt>
+<dd><p>EDB Object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>edbpath</strong> -- full path to aedb folder</p></li>
+<li><p><strong>cellname</strong> -- name of the cell to be selected.</p></li>
+<li><p><strong>isreadonly</strong> -- True in case edb_core is opened in read-only mode (when owned by 3DLayout)</p></li>
+<li><p><strong>edbversion</strong> -- version of edb_core to use. Default &quot;2020.1&quot;</p></li>
+<li><p><strong>isaedtowned</strong> -- True if edb_core is launched from 3dLayout</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyaedt.edb.Edb.Boundaries">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Boundaries</span></span><a class="reference internal" href="../_modules/pyaedt/edb.html#Edb.Boundaries"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.edb.Edb.Boundaries" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyaedt.edb.Edb.active_cell">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">active_cell</span></span><a class="headerlink" href="#pyaedt.edb.Edb.active_cell" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyaedt.edb.Edb.active_layout">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">active_layout</span></span><a class="headerlink" href="#pyaedt.edb.Edb.active_layout" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.edb.Edb.close_edb">
+<span class="sig-name descname"><span class="pre">close_edb</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/edb.html#Edb.close_edb"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.edb.Edb.close_edb" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyaedt.edb.Edb.core_components">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">core_components</span></span><a class="headerlink" href="#pyaedt.edb.Edb.core_components" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyaedt.edb.Edb.core_hfss">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">core_hfss</span></span><a class="headerlink" href="#pyaedt.edb.Edb.core_hfss" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyaedt.edb.Edb.core_nets">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">core_nets</span></span><a class="headerlink" href="#pyaedt.edb.Edb.core_nets" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyaedt.edb.Edb.core_padstack">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">core_padstack</span></span><a class="headerlink" href="#pyaedt.edb.Edb.core_padstack" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyaedt.edb.Edb.core_primitives">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">core_primitives</span></span><a class="headerlink" href="#pyaedt.edb.Edb.core_primitives" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyaedt.edb.Edb.core_siwave">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">core_siwave</span></span><a class="headerlink" href="#pyaedt.edb.Edb.core_siwave" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyaedt.edb.Edb.core_stackup">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">core_stackup</span></span><a class="headerlink" href="#pyaedt.edb.Edb.core_stackup" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.edb.Edb.create_divided_componenets">
+<span class="sig-name descname"><span class="pre">create_divided_componenets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">positivePins</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">negativePins</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">componentTransform</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">baseComponentName</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layout</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/edb.html#Edb.create_divided_componenets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.edb.Edb.create_divided_componenets" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>positivePins</strong> -- </p></li>
+<li><p><strong>negativePins</strong> -- </p></li>
+<li><p><strong>componentTransform</strong> -- </p></li>
+<li><p><strong>baseComponentName</strong> -- </p></li>
+<li><p><strong>layout</strong> -- </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.edb.Edb.create_multipin_rlc">
+<span class="sig-name descname"><span class="pre">create_multipin_rlc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">componentType</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">baseComponent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">positiveNetName</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">negativeNetName</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s2pPath</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/edb.html#Edb.create_multipin_rlc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.edb.Edb.create_multipin_rlc" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>componentType</strong> -- </p></li>
+<li><p><strong>baseComponent</strong> -- </p></li>
+<li><p><strong>positiveNetName</strong> -- </p></li>
+<li><p><strong>negativeNetName</strong> -- </p></li>
+<li><p><strong>value</strong> -- (Default value = None)</p></li>
+<li><p><strong>s2pPath</strong> -- (Default value = None)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyaedt.edb.Edb.db">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">db</span></span><a class="headerlink" href="#pyaedt.edb.Edb.db" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.edb.Edb.dissolve_component">
+<span class="sig-name descname"><span class="pre">dissolve_component</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">positiveNetName</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">negativeNetName</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/edb.html#Edb.dissolve_component"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.edb.Edb.dissolve_component" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>component</strong> -- </p></li>
+<li><p><strong>positiveNetName</strong> -- </p></li>
+<li><p><strong>negativeNetName</strong> -- </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.edb.Edb.edb_exception">
+<span class="sig-name descname"><span class="pre">edb_exception</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ex_value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tb_data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/edb.html#Edb.edb_exception"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.edb.Edb.edb_exception" title="Permalink to this definition">¶</a></dt>
+<dd><p>writes the trace stack to the desktop when a python error occurs</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ex_value</strong> -- </p></li>
+<li><p><strong>tb_data</strong> -- </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.edb.Edb.edb_value">
+<span class="sig-name descname"><span class="pre">edb_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">val</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/edb.html#Edb.edb_value"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.edb.Edb.edb_value" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>val</strong> -- </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.edb.Edb.execute">
+<span class="sig-name descname"><span class="pre">execute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/edb.html#Edb.execute"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.edb.Edb.execute" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>func</strong> -- </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.edb.Edb.get_rl_for_DC_path">
+<span class="sig-name descname"><span class="pre">get_rl_for_DC_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">CmpDict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ResMaxValue</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/edb.html#Edb.get_rl_for_DC_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.edb.Edb.get_rl_for_DC_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the Rl DC Path of a specific dictionary list</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>CmpDict</strong> -- dictionary of components</p></li>
+<li><p><strong>ResMaxValue</strong> -- max value of Resistance to be considered in DC Path (Default value = 10)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Dictionary of components with nets</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>type</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.edb.Edb.get_rl_from_nets">
+<span class="sig-name descname"><span class="pre">get_rl_from_nets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">CmpDict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/edb.html#Edb.get_rl_from_nets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.edb.Edb.get_rl_from_nets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an array of components with RL based on a Component Dictionary</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>CmpDict</strong> -- Input Component Dictionary</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Componenet nets for component dictionary</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>type</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.edb.Edb.get_rlc_from_signal_nets">
+<span class="sig-name descname"><span class="pre">get_rlc_from_signal_nets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">CmpDict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/edb.html#Edb.get_rlc_from_signal_nets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.edb.Edb.get_rlc_from_signal_nets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get RLC from signal Nets</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>CmpDict</strong> -- dictionary of components (Default value = None)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of components that belongs to signal nets</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>type</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.edb.Edb.import_cadence_file">
+<span class="sig-name descname"><span class="pre">import_cadence_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputBrd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">WorkDir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/edb.html#Edb.import_cadence_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.edb.Edb.import_cadence_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>this function import a brd file and generate a edb.def file in working dir</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>inputBrd</strong> -- full path to brd file</p></li>
+<li><p><strong>WorkDir</strong> -- working dir where the aedb folder will be created. aedb name will be the same as brd name (Default value = None)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Bool</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>type</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.edb.Edb.import_gds_file">
+<span class="sig-name descname"><span class="pre">import_gds_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputGDS</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">WorkDir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/edb.html#Edb.import_gds_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.edb.Edb.import_gds_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>this function import a brd file and generate a edb.def file in working dir</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>inputGDS</strong> -- full path to brd file</p></li>
+<li><p><strong>WorkDir</strong> -- working dir where the aedb folder will be created. aedb name will be the same as brd name (Default value = None)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>aedbfile full path</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>type</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.edb.Edb.import_layout_pcb">
+<span class="sig-name descname"><span class="pre">import_layout_pcb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">working_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_dlls</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/edb.html#Edb.import_layout_pcb"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.edb.Edb.import_layout_pcb" title="Permalink to this definition">¶</a></dt>
+<dd><p>this function import a brd file and generate a edb.def file in working dir</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_file</strong> -- full path to brd file</p></li>
+<li><p><strong>working_dir</strong> -- working dir where the aedb folder will be created. aedb name will be the same as brd name</p></li>
+<li><p><strong>init_dlls</strong> -- (Default value = False)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>aedbfile full path</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>type</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.edb.Edb.is_power_gound_net">
+<span class="sig-name descname"><span class="pre">is_power_gound_net</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">NetNameList</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/edb.html#Edb.is_power_gound_net"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.edb.Edb.is_power_gound_net" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a True if one of the net in the list is power or ground</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>NetNameList</strong> -- list of net names</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if one of net name is power or ground</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>type</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyaedt.edb.Edb.messenger">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">messenger</span></span><a class="headerlink" href="#pyaedt.edb.Edb.messenger" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.edb.Edb.open_edb">
+<span class="sig-name descname"><span class="pre">open_edb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">init_dlls</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/edb.html#Edb.open_edb"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.edb.Edb.open_edb" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>init_dlls</strong> -- (Default value = False)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.edb.Edb.open_edb_inside_aedt">
+<span class="sig-name descname"><span class="pre">open_edb_inside_aedt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">init_dlls</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/edb.html#Edb.open_edb_inside_aedt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.edb.Edb.open_edb_inside_aedt" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>init_dlls</strong> -- (Default value = False)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyaedt.edb.Edb.pins">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">pins</span></span><a class="headerlink" href="#pyaedt.edb.Edb.pins" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of All Pins</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>return</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.edb.Edb.save_edb">
+<span class="sig-name descname"><span class="pre">save_edb</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/edb.html#Edb.save_edb"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.edb.Edb.save_edb" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.edb.Edb.save_edb_as">
+<span class="sig-name descname"><span class="pre">save_edb_as</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/edb.html#Edb.save_edb_as"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.edb.Edb.save_edb_as" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>fname</strong> -- </p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
 <div class="toctree-wrapper compound">
 </div>
 </div>

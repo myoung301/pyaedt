@@ -70,10 +70,6 @@
         
         
         <li class="nav-item ">
-            <a class="nav-link" href="../../../LICENSE.html">LICENSE</a>
-        </li>
-        
-        <li class="nav-item ">
             <a class="nav-link" href="../../../Resources/Installation.html">Installation</a>
         </li>
         
@@ -140,15 +136,17 @@
                 
   <h1>Source code for pyaedt.edb_core.nets</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">from</span> <span class="nn">.general</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">..generic.general_methods</span> <span class="kn">import</span> <span class="n">get_filename_without_extension</span><span class="p">,</span> <span class="n">generate_unique_name</span>
-<span class="kn">import</span> <span class="nn">pkgutil</span>
-<span class="n">modules</span> <span class="o">=</span> <span class="p">[</span><span class="n">tup</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">tup</span> <span class="ow">in</span> <span class="n">pkgutil</span><span class="o">.</span><span class="n">iter_modules</span><span class="p">()]</span>
-<span class="k">if</span> <span class="s1">&#39;clr&#39;</span> <span class="ow">in</span> <span class="n">modules</span><span class="p">:</span>
+
+<span class="k">try</span><span class="p">:</span>
     <span class="kn">import</span> <span class="nn">clr</span>
     <span class="kn">from</span> <span class="nn">System</span> <span class="kn">import</span> <span class="n">Convert</span><span class="p">,</span> <span class="n">String</span>
     <span class="kn">from</span> <span class="nn">System</span> <span class="kn">import</span> <span class="n">Double</span><span class="p">,</span> <span class="n">Array</span>
     <span class="kn">from</span> <span class="nn">System.Collections.Generic</span> <span class="kn">import</span> <span class="n">List</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;This module requires pythonnet.&#39;</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="EdbNets"><a class="viewcode-back" href="../../../API/EDBNets.html#pyaedt.edb_core.nets.EdbNets">[docs]</a><span class="k">class</span> <span class="nc">EdbNets</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>

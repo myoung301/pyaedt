@@ -70,10 +70,6 @@
         
         
         <li class="nav-item ">
-            <a class="nav-link" href="../../../LICENSE.html">LICENSE</a>
-        </li>
-        
-        <li class="nav-item ">
             <a class="nav-link" href="../../../Resources/Installation.html">Installation</a>
         </li>
         
@@ -159,22 +155,26 @@
 <span class="kn">from</span> <span class="nn">..generic.general_methods</span> <span class="kn">import</span> <span class="n">aedt_exception_handler</span>
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
 
 <span class="k">try</span><span class="p">:</span>
     <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The numpy module from python.org is required to run some functionalities of PostProcess&quot;</span><span class="p">)</span>
+    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;The numpy module required to run some functionalities of PostProcess.</span><span class="se">\n</span><span class="s2">&quot;</span>
+                  <span class="s2">&quot;Install with </span><span class="se">\n\n</span><span class="s2">pip install numpy</span><span class="se">\n\n</span><span class="s2">Requires CPython&quot;</span><span class="p">)</span>
 
 <span class="k">try</span><span class="p">:</span>
     <span class="kn">import</span> <span class="nn">pyvista</span> <span class="k">as</span> <span class="nn">pv</span>
     <span class="n">pyvista_available</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The pyvista module from python.org is required to run some functionalities of PostProcess&quot;</span><span class="p">)</span>
-    <span class="n">pyvista_available</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;The pyvista module required to run some functionalities of PostProcess.</span><span class="se">\n</span><span class="s2">&quot;</span>
+                  <span class="s2">&quot;Install with </span><span class="se">\n\n</span><span class="s2">pip install pyvista</span><span class="se">\n\n</span><span class="s2">Requires CPython&quot;</span><span class="p">)</span>
+
 <span class="k">try</span><span class="p">:</span>
     <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The numpy module from python.org is required to run some functionalities of PostProcess&quot;</span><span class="p">)</span>
+    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;The matplotlib module required to run some functionalities of PostProcess.</span><span class="se">\n</span><span class="s2">&quot;</span>
+                  <span class="s2">&quot;Install with </span><span class="se">\n\n</span><span class="s2">pip install matplotlib</span><span class="se">\n\n</span><span class="s2">Requires CPython&quot;</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="PostProcessor"><a class="viewcode-back" href="../../../API/AdvancedPostProcessing.html#pyaedt.modules.AdvancedPostProcessing.PostProcessor">[docs]</a><span class="k">class</span> <span class="nc">PostProcessor</span><span class="p">(</span><span class="n">Post</span><span class="p">):</span>

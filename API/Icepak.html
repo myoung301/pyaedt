@@ -72,10 +72,6 @@
         
         
         <li class="nav-item ">
-            <a class="nav-link" href="../LICENSE.html">LICENSE</a>
-        </li>
-        
-        <li class="nav-item ">
             <a class="nav-link" href="../Resources/Installation.html">Installation</a>
         </li>
         
@@ -745,9 +741,26 @@
               
               <div class="toc-item">
                 
+<div class="tocsection onthispage pt-5 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
 
 <nav id="bd-toc-nav">
-    
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#icepak-3d-layout-class">
+   Icepak 3d Layout Class
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#description">
+     Description
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
 </nav>
               </div>
               
@@ -767,8 +780,590 @@
               
               <div>
                 
-  <div class="section" id="icepak">
-<h1>Icepak<a class="headerlink" href="#icepak" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-pyaedt.icepak">
+<span id="icepak"></span><h1>Icepak<a class="headerlink" href="#module-pyaedt.icepak" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="icepak-3d-layout-class">
+<h2>Icepak 3d Layout Class<a class="headerlink" href="#icepak-3d-layout-class" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="description">
+<h3>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h3>
+<p>This class contains all the Icepak AEDT Functionalities. It inherites all the objects that belongs to Icepak</p>
+<dl class="field-list simple">
+<dt class="field-odd">Example</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<p>app = Icepak()     creates and Icepak object and connect to existing hfss design (create a new hfss design if not present)</p>
+<p>app = Icepak(projectname)     creates and Icepak object and link to projectname project. If project doesn't exists, it creates a new one and rename it</p>
+<p>app = Icepak(projectname,designame)     creates and Icepak object and link to designname design in projectname project</p>
+<p>app = Icepak(&quot;myfile.aedt&quot;)     creates and Icepak object and open specified project</p>
+<hr class="docutils" />
+<dl class="py class">
+<dt class="sig sig-object py" id="pyaedt.icepak.Icepak">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pyaedt.icepak.</span></span><span class="sig-name descname"><span class="pre">Icepak</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">projectname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">designname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">solution_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">setup_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/icepak.html#Icepak"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.icepak.Icepak" title="Permalink to this definition">¶</a></dt>
+<dd><p>Icepak Object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>projectname</strong> -- name of the project to be selected or full path to the project to be opened  or to the AEDTZ
+archive. if None try to get active project and, if nothing present to create an empty one</p></li>
+<li><p><strong>designname</strong> -- name of the design to be selected. if None, try to get active design and, if nothing present to create an empty one</p></li>
+<li><p><strong>solution_type</strong> -- solution type to be applied to design. if None default is taken</p></li>
+<li><p><strong>setup_name</strong> -- setup_name to be used as nominal. if none active setup is taken or nothing</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.icepak.Icepak.UniteFieldsSummaryReports">
+<span class="sig-name descname"><span class="pre">UniteFieldsSummaryReports</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">savedir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">proj_icepak</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/icepak.html#Icepak.UniteFieldsSummaryReports"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.icepak.Icepak.UniteFieldsSummaryReports" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unite the files created by Fields Summary for the various variations</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>savedir</strong> -- </p></li>
+<li><p><strong>proj_icepak</strong> -- </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.icepak.Icepak.assign_2way_coupling">
+<span class="sig-name descname"><span class="pre">assign_2way_coupling</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">setup_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number_of_iterations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">continue_ipk_iterations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ipk_iterations_per_coupling</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/icepak.html#Icepak.assign_2way_coupling"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.icepak.Icepak.assign_2way_coupling" title="Permalink to this definition">¶</a></dt>
+<dd><p>Assign 2Way Coupling to a specific setup</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>setup_name</strong> -- str optional setup name (Default value = None)</p></li>
+<li><p><strong>number_of_iterations</strong> -- int optional number of iterations (Default value = 2)</p></li>
+<li><p><strong>continue_ipk_iterations</strong> -- bool, optional continue Icepak Iteration (Default value = True)</p></li>
+<li><p><strong>ipk_iterations_per_coupling</strong> -- int, optional additional iterations per coupling (Default value = 20)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Bool</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>type</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.icepak.Icepak.assign_block_from_sherlock_file">
+<span class="sig-name descname"><span class="pre">assign_block_from_sherlock_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">csv_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/icepak.html#Icepak.assign_block_from_sherlock_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.icepak.Icepak.assign_block_from_sherlock_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Assign block power to components based on sherlock file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>csv_name</strong> -- csf file from sherlock</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>total power applied</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>type</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.icepak.Icepak.assign_em_losses">
+<span class="sig-name descname"><span class="pre">assign_em_losses</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">designname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'HFSSDesign1'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">setupname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Setup1'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sweepname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'LastAdaptive'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">map_frequency</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">surface_objects</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_project_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">paramlist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">object_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/icepak.html#Icepak.assign_em_losses"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.icepak.Icepak.assign_em_losses" title="Permalink to this definition">¶</a></dt>
+<dd><p>Map EM losses to Icepak Design</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>designname</strong> -- name of design of the source mapping (Default value = &quot;HFSSDesign1&quot;)</p></li>
+<li><p><strong>map_frequency</strong> -- string containing Frequency to be mapped. It must be None for eigen mode analysis (Default value = None)</p></li>
+<li><p><strong>setupname</strong> -- Name of EM Setup (Default value = &quot;Setup1&quot;)</p></li>
+<li><p><strong>sweepname</strong> -- Name of EM Sweep to be used for mapping. Default no sweep and LastAdaptive to be used</p></li>
+<li><p><strong>surface_objects</strong> -- list of objects in the source that are metals (Default value = [])</p></li>
+<li><p><strong>source_project_name</strong> -- Name of the source project: None to use source from the same project (Default value = None)</p></li>
+<li><p><strong>paramlist</strong> -- list of all params in EM to be mapped (Default value = [])</p></li>
+<li><p><strong>object_list</strong> -- (Default value = [])</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.icepak.Icepak.assign_openings">
+<span class="sig-name descname"><span class="pre">assign_openings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">air_faces</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/icepak.html#Icepak.assign_openings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.icepak.Icepak.assign_openings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Assign Opening to a list of faces</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>air_faces</strong> -- list of face name</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>bound object or None</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>type</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.icepak.Icepak.assign_priority_on_intersections">
+<span class="sig-name descname"><span class="pre">assign_priority_on_intersections</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component_prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'COMP_'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/icepak.html#Icepak.assign_priority_on_intersections"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.icepak.Icepak.assign_priority_on_intersections" title="Permalink to this definition">¶</a></dt>
+<dd><p>This methods validate an icepak design and, in case of intersections automatically apply priorities to overcome simulation issue</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>component_prefix</strong> -- components prefix on which to search (Default value = &quot;<a href="#id1"><span class="problematic" id="id2">COMP_</span></a>&quot;)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Bool</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>type</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.icepak.Icepak.copyGroupFrom">
+<span class="sig-name descname"><span class="pre">copyGroupFrom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">groupName</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourceDesign</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourceProject</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourceProjectPath</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/icepak.html#Icepak.copyGroupFrom"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.icepak.Icepak.copyGroupFrom" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>groupName</strong> -- </p></li>
+<li><p><strong>sourceDesign</strong> -- </p></li>
+<li><p><strong>sourceProject</strong> -- (Default value = None)</p></li>
+<li><p><strong>sourceProjectPath</strong> -- (Default value = None)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.icepak.Icepak.create_assign_region2PCBComponent">
+<span class="sig-name descname"><span class="pre">create_assign_region2PCBComponent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scale_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">restore_padding_values</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[50,</span> <span class="pre">50,</span> <span class="pre">50,</span> <span class="pre">50,</span> <span class="pre">50,</span> <span class="pre">50]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/icepak.html#Icepak.create_assign_region2PCBComponent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.icepak.Icepak.create_assign_region2PCBComponent" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>scale_factor</strong> -- (Default value = 1.0)</p></li>
+<li><p><strong>restore_padding_values</strong> -- (Default value = [50)</p></li>
+<li><p><strong>50</strong> -- </p></li>
+<li><p><strong>50</strong><strong>]</strong> -- </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.icepak.Icepak.create_ipk_3dcomponent_pcb">
+<span class="sig-name descname"><span class="pre">create_ipk_3dcomponent_pcb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">compName</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">setupLinkInfo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">solutionFreq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolution</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">PCB_CS</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Global'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rad</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Nothing'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extenttype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Bounding</span> <span class="pre">Box'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outlinepolygon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">powerin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0W'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/icepak.html#Icepak.create_ipk_3dcomponent_pcb"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.icepak.Icepak.create_ipk_3dcomponent_pcb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a PCB Component in Icepak linked to HFSS3DLayout object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>compName</strong> -- name of the new component</p></li>
+<li><p><strong>setupLinkInfo</strong> -- array of 5 elements [projectname, designname, solution name, forcesimulation (bool), preserve results (bool)</p></li>
+<li><p><strong>solutionFreq</strong> -- Freq of solution if cosimulation is requested</p></li>
+<li><p><strong>resolution</strong> -- resolution of the mapping (int)</p></li>
+<li><p><strong>PCB_CS</strong> -- coordinate System (Default value = &quot;Global&quot;)</p></li>
+<li><p><strong>rad</strong> -- radiating faces (Default value = &quot;Nothing&quot;)</p></li>
+<li><p><strong>extenttype</strong> -- extend type. Bounding Box or Polygon (Default value = &quot;Bounding Box&quot;)</p></li>
+<li><p><strong>outlinepolygon</strong> -- in case of extentype is Polygon the name of the polygon (Default value = &quot;&quot;)</p></li>
+<li><p><strong>powerin</strong> -- in case cosim is disabled, the power to dissipate (default 0W)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Bool</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>type</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.icepak.Icepak.create_network_block">
+<span class="sig-name descname"><span class="pre">create_network_block</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">power</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rjc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rjb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gravity_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">assign_material</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_material</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Ceramic_material'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_object_for_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/icepak.html#Icepak.create_network_block"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.icepak.Icepak.create_network_block" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create Network Block</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>object_name</strong> -- name of the object for which block has to be created</p></li>
+<li><p><strong>power</strong> -- input power, can be a value or variable</p></li>
+<li><p><strong>rjc</strong> -- rjc value</p></li>
+<li><p><strong>rjb</strong> -- rjb value</p></li>
+<li><p><strong>gravity_dir</strong> -- 0...5 gravity direction from -X to +Z</p></li>
+<li><p><strong>top</strong> -- is the board bounding value in mm of the top face</p></li>
+<li><p><strong>assign_material</strong> -- bool (Default value = True)</p></li>
+<li><p><strong>default_material</strong> -- default material</p></li>
+<li><p><strong>use_object_for_name</strong> -- (Default value = True)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>bounding object if created</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>type</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.icepak.Icepak.create_network_blocks">
+<span class="sig-name descname"><span class="pre">create_network_blocks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gravity_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">assign_material</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_material</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Ceramic_material'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/icepak.html#Icepak.create_network_blocks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.icepak.Icepak.create_network_blocks" title="Permalink to this definition">¶</a></dt>
+<dd><p>createNetworkBlocs(listfromCsv,gravityDir,top) create network objects form csv files</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>assign_material</strong> -- param default_material:</p></li>
+<li><p><strong>input_list</strong> -- list of sources with input  rjc,  rjb, power. [[Objname1, rjc, rjb, power1,power2....],[Objname2, rjc2, rbj2, power1, power2...]]</p></li>
+<li><p><strong>gravity_dir</strong> -- 0...5 gravity direction from -X to +Z</p></li>
+<li><p><strong>top</strong> -- is the board bounding value in mm of the top face</p></li>
+<li><p><strong>default_material</strong> -- (Default value = &quot;Ceramic_material&quot;)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>networks boundary objects</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>type</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.icepak.Icepak.create_parametric_fin_heat_sink">
+<span class="sig-name descname"><span class="pre">create_parametric_fin_heat_sink</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hs_height</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hs_width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hs_basethick</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pitch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thick</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">40</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">40</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">draftangle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patternangle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">separation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symmetric</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symmetric_separation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numcolumn_perside</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vertical_separation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">matname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Al-Extruded'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">center</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[0,</span> <span class="pre">0,</span> <span class="pre">0]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plane_enum</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rotation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tolerance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/icepak.html#Icepak.create_parametric_fin_heat_sink"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.icepak.Icepak.create_parametric_fin_heat_sink" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a Heat Sink fully parametric.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>hs_height</strong> -- param hs_width: (Default value = 100)</p></li>
+<li><p><strong>hs_basethick</strong> -- param pitch: (Default value = 10)</p></li>
+<li><p><strong>thick</strong> -- param length: (Default value = 10)</p></li>
+<li><p><strong>height</strong> -- param draftangle: (Default value = 40)</p></li>
+<li><p><strong>patternangle</strong> -- param separation: (Default value = 10)</p></li>
+<li><p><strong>symmetric</strong> -- param symmetric_separation: (Default value = True)</p></li>
+<li><p><strong>numcolumn_perside</strong> -- param vertical_separation: (Default value = 2)</p></li>
+<li><p><strong>matname</strong> -- param center: (Default value = &quot;Al-Extruded&quot;)</p></li>
+<li><p><strong>plane_enum</strong> -- param rotation: (Default value = 0)</p></li>
+<li><p><strong>tolerance</strong> -- return: (Default value = 1e-3)</p></li>
+<li><p><strong>hs_width</strong> -- (Default value = 100)</p></li>
+<li><p><strong>pitch</strong> -- (Default value = 20)</p></li>
+<li><p><strong>length</strong> -- (Default value = 40)</p></li>
+<li><p><strong>draftangle</strong> -- (Default value = 0)</p></li>
+<li><p><strong>separation</strong> -- (Default value = 5)</p></li>
+<li><p><strong>symmetric_separation</strong> -- (Default value = 20)</p></li>
+<li><p><strong>vertical_separation</strong> -- (Default value = 10)</p></li>
+<li><p><strong>center</strong> -- (Default value = [0)</p></li>
+<li><p><strong>0</strong> -- </p></li>
+<li><p><strong>0</strong><strong>]</strong> -- </p></li>
+<li><p><strong>rotation</strong> -- (Default value = 0)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.icepak.Icepak.create_pcb_from_3dlayout">
+<span class="sig-name descname"><span class="pre">create_pcb_from_3dlayout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">component_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">project_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">design_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolution</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extenttype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Bounding</span> <span class="pre">Box'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outlinepolygon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">close_linked_project_after_import</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/icepak.html#Icepak.create_pcb_from_3dlayout"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.icepak.Icepak.create_pcb_from_3dlayout" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a PCB Component in Icepak linked to HFSS3DLayout object linking only the geometry file (no solution linked)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>component_name</strong> -- Name of the new component created in Icepak</p></li>
+<li><p><strong>project_name</strong> -- Project name or project full path</p></li>
+<li><p><strong>design_name</strong> -- design name</p></li>
+<li><p><strong>resolution</strong> -- resolution of the mapping. Default2</p></li>
+<li><p><strong>extenttype</strong> -- extent type. Polygon or Bounding Box (Default value = &quot;Bounding Box&quot;)</p></li>
+<li><p><strong>outlinepolygon</strong> -- outline polygon in case Polygon extentyype is chosen (Default value = &quot;&quot;)</p></li>
+<li><p><strong>close_linked_project_after_import</strong> -- close the aedb project after the import (Default value = True)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Bool</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>type</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.icepak.Icepak.create_source_block">
+<span class="sig-name descname"><span class="pre">create_source_block</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_power</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">assign_material</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">material_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Ceramic_material'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_object_for_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/icepak.html#Icepak.create_source_block"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.icepak.Icepak.create_source_block" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create Source Block for an object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>object_name</strong> -- name of the object</p></li>
+<li><p><strong>input_power</strong> -- input power. can be a string or a variable</p></li>
+<li><p><strong>assign_material</strong> -- bool (Default value = True)</p></li>
+<li><p><strong>material_name</strong> -- material name to assign in case assign_material is True (Default value = &quot;Ceramic_material&quot;)</p></li>
+<li><p><strong>use_object_for_name</strong> -- (Default value = True)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>bound object or None</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>type</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.icepak.Icepak.create_source_blocks_from_list">
+<span class="sig-name descname"><span class="pre">create_source_blocks_from_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">list_powers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">assign_material</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_material</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Ceramic_material'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/icepak.html#Icepak.create_source_blocks_from_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.icepak.Icepak.create_source_blocks_from_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Assign to Box in Icepak Sources coming from CSV file. assignment is made by name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>list_powers</strong> -- list of input powers. its a list of list like in the examples [[&quot;Obj1&quot;, 1], [&quot;Obj2&quot;, 3]]. it can contain multiple column for power inputs</p></li>
+<li><p><strong>assign_material</strong> -- bool (Default value = True)</p></li>
+<li><p><strong>default_material</strong> -- default material</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of boundaries inserted</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>type</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.icepak.Icepak.create_temp_point_monitor">
+<span class="sig-name descname"><span class="pre">create_temp_point_monitor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point_coord</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[0,</span> <span class="pre">0,</span> <span class="pre">0]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/icepak.html#Icepak.create_temp_point_monitor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.icepak.Icepak.create_temp_point_monitor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a Temperature Monitor for simulation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>point_name</strong> -- Name of the temperature monitor</p></li>
+<li><p><strong>point_coord</strong> -- Coordinate of the point monitor (Default value = [0)</p></li>
+<li><p><strong>0</strong> -- </p></li>
+<li><p><strong>0</strong><strong>]</strong> -- </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Boolean</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>type</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.icepak.Icepak.delete_em_losses">
+<span class="sig-name descname"><span class="pre">delete_em_losses</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bound_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/icepak.html#Icepak.delete_em_losses"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.icepak.Icepak.delete_em_losses" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete EM Losses Boundaries</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>bound_name</strong> -- Name of boundary to delete</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Boolean</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>type</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.icepak.Icepak.delete_pcb_component">
+<span class="sig-name descname"><span class="pre">delete_pcb_component</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">comp_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/icepak.html#Icepak.delete_pcb_component"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.icepak.Icepak.delete_pcb_component" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete PCB Component</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>comp_name</strong> -- PCB Name</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Boolean</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>type</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.icepak.Icepak.edit_design_settings">
+<span class="sig-name descname"><span class="pre">edit_design_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gravityDir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ambtemp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">22</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">performvalidation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">CheckLevel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'None'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">defaultfluid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'air'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">defaultsolid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Al-Extruded'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/icepak.html#Icepak.edit_design_settings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.icepak.Icepak.edit_design_settings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Edit Design Main settings</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gravityDir</strong> -- 0...5 gravity direction from -X to +Z (Default value = 0)</p></li>
+<li><p><strong>ambtemp</strong> -- Ambient Temperature (Default value = 22)</p></li>
+<li><p><strong>performvalidation</strong> (<em>bool</em>) -- Enable validation (Default value = False)</p></li>
+<li><p><strong>CheckLevel</strong> -- Level of check in validation. Default &quot;None&quot;</p></li>
+<li><p><strong>defaultfluid</strong> -- default fluid material. &quot;air&quot;</p></li>
+<li><p><strong>defaultsolid</strong> -- default soldi material. &quot;Al-Extruded&quot;</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.icepak.Icepak.eval_surface_quantity_from_field_summary">
+<span class="sig-name descname"><span class="pre">eval_surface_quantity_from_field_summary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">faces_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quantity_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'HeatTransCoeff'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">savedir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sweep_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameter_dict_with_values</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/icepak.html#Icepak.eval_surface_quantity_from_field_summary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.icepak.Icepak.eval_surface_quantity_from_field_summary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates the export of the Field Surface output. It will export 1 csv file for the specified variation variation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>faces_list</strong> -- list of faces to apply</p></li>
+<li><p><strong>quantity_name</strong> -- quantity to export (Default value = &quot;HeatTransCoeff&quot;)</p></li>
+<li><p><strong>savedir</strong> -- directory where to save htc file (Default value = None)</p></li>
+<li><p><strong>filename</strong> -- name of htc file (Default value = None)</p></li>
+<li><p><strong>sweep_name</strong> -- name of the setup + sweep &quot;IcepakSetup1 : SteatyState&quot; (Default value = None)</p></li>
+<li><p><strong>parameter_dict_with_values</strong> -- dictionary of parameters defined for the specific setup with value (Default value = {})</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>str filename</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>type</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.icepak.Icepak.eval_volume_quantity_from_field_summary">
+<span class="sig-name descname"><span class="pre">eval_volume_quantity_from_field_summary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quantity_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'HeatTransCoeff'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">savedir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sweep_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameter_dict_with_values</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/icepak.html#Icepak.eval_volume_quantity_from_field_summary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.icepak.Icepak.eval_volume_quantity_from_field_summary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates the export of the Field Volume output. It will export 1 csv file for the specified variation variation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>object_list</strong> -- list of faces to apply</p></li>
+<li><p><strong>quantity_name</strong> -- quantity to export (Default value = &quot;HeatTransCoeff&quot;)</p></li>
+<li><p><strong>savedir</strong> -- directory where to save htc file (Default value = None)</p></li>
+<li><p><strong>filename</strong> -- name of htc file (Default value = None)</p></li>
+<li><p><strong>sweep_name</strong> -- name of the setup + sweep &quot;IcepakSetup1 : SteatyState&quot; (Default value = None)</p></li>
+<li><p><strong>parameter_dict_with_values</strong> -- dictionary of parameters defined for the specific setup with value (Default value = {})</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>str filename</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>type</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyaedt.icepak.Icepak.existing_analysis_sweeps">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">existing_analysis_sweeps</span></span><a class="headerlink" href="#pyaedt.icepak.Icepak.existing_analysis_sweeps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Existing Analysis Setup List</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Return a list of all defined analysis setup names in the maxwell design.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.icepak.Icepak.export3DModel">
+<span class="sig-name descname"><span class="pre">export3DModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fileName</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filePath</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fileFormat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.step'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">object_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">removed_objects</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/icepak.html#Icepak.export3DModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.icepak.Icepak.export3DModel" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fileName</strong> -- </p></li>
+<li><p><strong>filePath</strong> -- </p></li>
+<li><p><strong>fileFormat</strong> -- (Default value = &quot;.step&quot;)</p></li>
+<li><p><strong>object_list</strong> -- (Default value = [])</p></li>
+<li><p><strong>removed_objects</strong> -- (Default value = [])</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.icepak.Icepak.export_summary">
+<span class="sig-name descname"><span class="pre">export_summary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">solution_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Object'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geometryType</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Volume'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quantity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Temperature'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variationlist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/icepak.html#Icepak.export_summary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.icepak.Icepak.export_summary" title="Permalink to this definition">¶</a></dt>
+<dd><p>New method for exporting field summary of all the objercts</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>output_dir</strong> -- (Default value = None)</p></li>
+<li><p><strong>solution_name</strong> -- (Default value = None)</p></li>
+<li><p><strong>type</strong> -- (Default value = &quot;Object&quot;)</p></li>
+<li><p><strong>geometryType</strong> -- (Default value = &quot;Volume&quot;)</p></li>
+<li><p><strong>quantity</strong> -- (Default value = &quot;Temperature&quot;)</p></li>
+<li><p><strong>variation</strong> -- (Default value = &quot;&quot;)</p></li>
+<li><p><strong>variationlist</strong> -- (Default value = [])</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.icepak.Icepak.find_top">
+<span class="sig-name descname"><span class="pre">find_top</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gravityDir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/icepak.html#Icepak.find_top"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.icepak.Icepak.find_top" title="Permalink to this definition">¶</a></dt>
+<dd><p>TO BE CHECKED. Find the top location of the layout given the gravity</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>gravityDir</strong> -- 0...5 gravity direction from -X to +Z</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>top position  (float)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>type</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.icepak.Icepak.get_link_data">
+<span class="sig-name descname"><span class="pre">get_link_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">linkData</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/icepak.html#Icepak.get_link_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.icepak.Icepak.get_link_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>linkData list format</p>
+<ul class="simple">
+<li><p>Project Name, if None =&gt; Use Active Project</p></li>
+<li><p>Design Name</p></li>
+<li><p>HFSS Solution Name, e.g. &quot;HFSS Setup 1 : Last Adaptive&quot;</p></li>
+<li><p>Force Source Design Simulation, True or False</p></li>
+<li><p>Preserve Source Design Solution, True or False</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>linkData</strong> -- list containing data in the link description</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.icepak.Icepak.get_radiation_settings">
+<span class="sig-name descname"><span class="pre">get_radiation_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">radiation</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/icepak.html#Icepak.get_radiation_settings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.icepak.Icepak.get_radiation_settings" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>radiation</strong> -- </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.icepak.Icepak.globalMeshSettings">
+<span class="sig-name descname"><span class="pre">globalMeshSettings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">meshtype</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gap_min_elements</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'1'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noOgrids</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">MLM_en</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">MLM_Type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'3D'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stairStep_en</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_min_elements</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'1'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">object</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Region'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/icepak.html#Icepak.globalMeshSettings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.icepak.Icepak.globalMeshSettings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create custom Mesh tailored on PCB Design</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>meshtype</strong> -- 1 coarse, 2 standard, 3 very accurate</p></li>
+<li><p><strong>gap_min_elements</strong> -- param noOgrids: (Default value = &quot;1&quot;)</p></li>
+<li><p><strong>MLM_en</strong> -- param MLM_Type: (Default value = True)</p></li>
+<li><p><strong>stairStep_en</strong> -- param edge_min_elements: (Default value = False)</p></li>
+<li><p><strong>object</strong> -- return: (Default value = &quot;Region&quot;)</p></li>
+<li><p><strong>noOgrids</strong> -- (Default value = False)</p></li>
+<li><p><strong>MLM_Type</strong> -- (Default value = &quot;3D&quot;)</p></li>
+<li><p><strong>edge_min_elements</strong> -- (Default value = &quot;1&quot;)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
 <div class="toctree-wrapper compound">
 </div>
 </div>
