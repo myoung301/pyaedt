@@ -456,7 +456,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_index</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">return</span> <span class="bp">self</span>
 
-    <span class="c1"># Create an iterator to yield the row data as a string as we loop thorugh the object</span>
+    <span class="c1"># Create an iterator to yield the row data as a string as we loop through the object</span>
     <span class="k">def</span> <span class="fm">__next__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_index</span> <span class="o">&lt;</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">number_of_rows</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
             <span class="n">output</span> <span class="o">=</span> <span class="p">[]</span>

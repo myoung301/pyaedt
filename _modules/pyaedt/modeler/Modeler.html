@@ -390,9 +390,9 @@
 <span class="sd">        view :</span>
 <span class="sd">            View. Default &quot;iso&quot;. possible &quot;XY&quot;, &quot;XZ&quot;, &quot;XY&quot;, &quot;rotate&quot;</span>
 <span class="sd">        x_pointing :</span>
-<span class="sd">            if view=&quot;rotate&quot;, this is a 3 elements list specifing the X axis pointing in the global CS (Default value = [1)</span>
+<span class="sd">            if view=&quot;rotate&quot;, this is a 3 elements list specifying the X axis pointing in the global CS (Default value = [1)</span>
 <span class="sd">        y_pointing :</span>
-<span class="sd">            if view=&quot;rotate&quot;, this is a 3 elements list specifing the Y axis pointing in the global CS (Default value = [0)</span>
+<span class="sd">            if view=&quot;rotate&quot;, this is a 3 elements list specifying the Y axis pointing in the global CS (Default value = [0)</span>
 <span class="sd">        name :</span>
 <span class="sd">            name of the CS (Default value = None)</span>
 <span class="sd">        0 :</span>
@@ -760,7 +760,7 @@
             <span class="k">if</span> <span class="n">enable_deformation</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">odesign</span><span class="o">.</span><span class="n">SetObjectDeformation</span><span class="p">([</span><span class="s2">&quot;EnabledObjects:=&quot;</span><span class="p">,</span> <span class="n">vdef</span><span class="p">])</span>
         <span class="k">except</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">messenger</span><span class="o">.</span><span class="n">add_error_message</span><span class="p">(</span><span class="s2">&quot;Failed to enable the temperature and deformation dependance&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">messenger</span><span class="o">.</span><span class="n">add_error_message</span><span class="p">(</span><span class="s2">&quot;Failed to enable the temperature and deformation dependence&quot;</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">False</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">messenger</span><span class="o">.</span><span class="n">add_debug_message</span><span class="p">(</span>
@@ -785,7 +785,7 @@
 <span class="sd">        -------</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">messenger</span><span class="o">.</span><span class="n">add_debug_message</span><span class="p">(</span><span class="s2">&quot;Set model temperature and enabeling Thermal Feedback&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">messenger</span><span class="o">.</span><span class="n">add_debug_message</span><span class="p">(</span><span class="s2">&quot;Set model temperature and enabling Thermal Feedback&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">create_project_var</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">variable_manager</span><span class="p">[</span><span class="s2">&quot;$AmbientTemp&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">ambient_temp</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;cel&quot;</span>
             <span class="n">var</span> <span class="o">=</span> <span class="s2">&quot;$AmbientTemp&quot;</span>
@@ -807,7 +807,7 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">odesign</span><span class="o">.</span><span class="n">SetObjectTemperature</span><span class="p">(</span><span class="n">vargs1</span><span class="p">)</span>
         <span class="k">except</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">messenger</span><span class="o">.</span><span class="n">add_error_message</span><span class="p">(</span><span class="s2">&quot;Failed to enable the temperature dependance&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">messenger</span><span class="o">.</span><span class="n">add_error_message</span><span class="p">(</span><span class="s2">&quot;Failed to enable the temperature dependence&quot;</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">False</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">messenger</span><span class="o">.</span><span class="n">add_debug_message</span><span class="p">(</span><span class="s2">&quot;Assigned Objects Temperature&quot;</span><span class="p">)</span>
@@ -1113,7 +1113,7 @@
 
 <div class="viewcode-block" id="GeometryModeler.get_excitations_name"><a class="viewcode-back" href="../../../API/Modeler.html#pyaedt.modeler.Modeler.GeometryModeler.get_excitations_name">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="nf">get_excitations_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get all the avaialble excitation names</span>
+        <span class="sd">&quot;&quot;&quot;Get all the available excitation names</span>
 <span class="sd">        </span>
 <span class="sd">        :return: list of names. Excitations with multiple modes will produce one excitation for each mode</span>
 
@@ -1131,7 +1131,7 @@
 <div class="viewcode-block" id="GeometryModeler.get_boundaries_name"><a class="viewcode-back" href="../../../API/Modeler.html#pyaedt.modeler.Modeler.GeometryModeler.get_boundaries_name">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="nf">get_boundaries_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-        <span class="sd">&quot;&quot;&quot;Get all the avaialble Boundaries names</span>
+        <span class="sd">&quot;&quot;&quot;Get all the available Boundaries names</span>
 <span class="sd">        </span>
 <span class="sd">        :return: list of names. Excitations with multiple modes will produce one excitation for each mode</span>
 
@@ -1668,7 +1668,7 @@
 
 <div class="viewcode-block" id="GeometryModeler.subtract"><a class="viewcode-back" href="../../../API/Modeler.html#pyaedt.modeler.Modeler.GeometryModeler.subtract">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="nf">subtract</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">theList</span><span class="p">,</span> <span class="n">theList1</span><span class="p">,</span> <span class="n">keepOriginals</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Subract objects from IDs</span>
+        <span class="sd">&quot;&quot;&quot;Subtract objects from IDs</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1787,7 +1787,7 @@
 <span class="sd">        angle :</span>
 <span class="sd">            float angle (for type 2 and 3) (Default value = 45)</span>
 <span class="sd">        chamfer_type :</span>
-<span class="sd">            0 - Simmetric , 1 - Left Distance-Right Distance, 2 - Left Distance-Angle, 3 - Right Distance-Angle (Default value = 0)</span>
+<span class="sd">            0 - Symmetric , 1 - Left Distance-Right Distance, 2 - Left Distance-Angle, 3 - Right Distance-Angle (Default value = 0)</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -2766,7 +2766,7 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        type</span>
-<span class="sd">            True if succeded</span>
+<span class="sd">            True if succeeded</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">list2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">select_allfaces_fromobjects</span><span class="p">(</span><span class="n">externalobjects</span><span class="p">)</span>  <span class="c1"># find ALL faces of outer objects</span>
@@ -2774,9 +2774,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">messenger</span><span class="o">.</span><span class="n">add_info_message</span><span class="p">(</span><span class="s1">&#39;Extfaces of thermal model = &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">list2</span><span class="p">)))</span>
         <span class="k">return</span> <span class="kc">True</span></div>
 
-<div class="viewcode-block" id="GeometryModeler.explicitiyly_subract"><a class="viewcode-back" href="../../../API/Modeler.html#pyaedt.modeler.Modeler.GeometryModeler.explicitiyly_subract">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
-    <span class="k">def</span> <span class="nf">explicitiyly_subract</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">diellist</span><span class="p">,</span> <span class="n">metallist</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;expliticiltySubract all the elements in aSolveInside and aSolveSurface lists</span>
+<div class="viewcode-block" id="GeometryModeler.explicitiyly_subtract"><a class="viewcode-back" href="../../../API/Modeler.html#pyaedt.modeler.Modeler.GeometryModeler.explicitiyly_subtract">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
+    <span class="k">def</span> <span class="nf">explicitiyly_subtract</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">diellist</span><span class="p">,</span> <span class="n">metallist</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;expliticiltySubtract all the elements in aSolveInside and aSolveSurface lists</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -2791,7 +2791,7 @@
 <span class="sd">            True if operation succeeded</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">messenger</span><span class="o">.</span><span class="n">add_info_message</span><span class="p">(</span><span class="s2">&quot;Creating Explicit Subraction between Objects&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">messenger</span><span class="o">.</span><span class="n">add_info_message</span><span class="p">(</span><span class="s2">&quot;Creating Explicit Subtraction between Objects&quot;</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">diellist</span><span class="p">:</span>
             <span class="n">list1</span> <span class="o">=</span> <span class="n">el</span>
             <span class="n">list2</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
@@ -2816,7 +2816,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">subtract</span><span class="p">(</span><span class="n">list1</span><span class="p">,</span> <span class="n">list2</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">purge_history</span><span class="p">(</span><span class="n">list1</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">purge_history</span><span class="p">(</span><span class="n">list2</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">messenger</span><span class="o">.</span><span class="n">add_info_message</span><span class="p">(</span><span class="s2">&quot;Explicit Subraction Completed&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">messenger</span><span class="o">.</span><span class="n">add_info_message</span><span class="p">(</span><span class="s2">&quot;Explicit Subtraction Completed&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">True</span></div>
 
 <div class="viewcode-block" id="GeometryModeler.find_port_faces"><a class="viewcode-back" href="../../../API/Modeler.html#pyaedt.modeler.Modeler.GeometryModeler.find_port_faces">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
@@ -3676,7 +3676,7 @@
         <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
             <span class="sd">&quot;&quot;&quot;class Position</span>
 
-<span class="sd">            :param args: it can be a list of orgs (x, y, z coordinates) or 3 separate values. if no or insufficient arguements, 0 is applied</span>
+<span class="sd">            :param args: it can be a list of orgs (x, y, z coordinates) or 3 separate values. if no or insufficient arguments, 0 is applied</span>
 
 <span class="sd">            &quot;&quot;&quot;</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="nb">type</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="ow">is</span> <span class="nb">list</span><span class="p">:</span>
@@ -3787,7 +3787,7 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        type</span>
-<span class="sd">            True if succeded, False otherwise</span>
+<span class="sd">            True if succeeded, False otherwise</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">group_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">convert_to_selections</span><span class="p">(</span><span class="n">groups</span><span class="p">,</span> <span class="n">return_list</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -3804,7 +3804,7 @@
         <span class="sd">&quot;&quot;&quot;flatten the entire assembly removing all group trees</span>
 <span class="sd">        TODO: unit test</span>
 <span class="sd">        </span>
-<span class="sd">        :return: True if succeded, False otherwise</span>
+<span class="sd">        :return: True if succeeded, False otherwise</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
