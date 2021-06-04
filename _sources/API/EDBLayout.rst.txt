@@ -6,7 +6,7 @@
 EDB Layout
 ===================================
 
-.. automodule:: pyaedt.edb_core.layout
+.. automodule:: pyaedt.edb.layout
     :members:
 
 .. toctree::

@@ -7,7 +7,7 @@ EDB Nets
 ===================================
 **Diagram**
 
-.. automodule:: pyaedt.edb_core.nets
+.. automodule:: pyaedt.edb.nets
     :members:
 
 .. toctree::

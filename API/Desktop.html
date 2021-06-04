@@ -35,6 +35,7 @@
     <script src="../_static/doctools.js"></script>
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Messenger" href="Messenger.html" />
@@ -58,7 +59,7 @@
 
     <a class="navbar-brand" href="../index.html">
     
-      <img src="../_static/pyansys-logo-black-cropped.png" class="logo" alt="logo" />
+      <img src="../_static/logo-ansys.png" class="logo" alt="logo" />
     
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
@@ -70,10 +71,6 @@
     <div id="navbar-menu" class="col-lg-9 collapse navbar-collapse">
       <ul id="navbar-main-elements" class="navbar-nav mr-auto">
         
-        
-        <li class="nav-item ">
-            <a class="nav-link" href="../LICENSE.html">LICENSE</a>
-        </li>
         
         <li class="nav-item ">
             <a class="nav-link" href="../Resources/Installation.html">Installation</a>
@@ -767,168 +764,8 @@
               
               <div>
                 
-  <div class="section" id="module-pyaedt.desktop">
-<span id="desktop"></span><h1>Desktop<a class="headerlink" href="#module-pyaedt.desktop" title="Permalink to this headline">¶</a></h1>
-<p>This is the desktop module used to initialize AEDT.</p>
-<p>This module initializes AEDT and MessageManager to manage the AEDT
-desktop.  It can be initialized in standalone way before launching an
-app or it is automatically initialized to latest installed AEDT
-version.</p>
-<p class="rubric">Examples</p>
-<p>Launch Desktop 2020R1 in Non-Graphical Mode and initialize HFSS</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pyaedt</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">desktop</span> <span class="o">=</span> <span class="n">pyaedt</span><span class="o">.</span><span class="n">Desktop</span><span class="p">(</span><span class="s2">&quot;2020.1&quot;</span><span class="p">,</span> <span class="n">NG</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">hfss</span> <span class="o">=</span> <span class="n">pyaedt</span><span class="o">.</span><span class="n">Hfss</span><span class="p">()</span>
-</pre></div>
-</div>
-<p>Launch Desktop 2019R3 in Graphical Mode</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">desktop</span> <span class="o">=</span> <span class="n">Desktop</span><span class="p">(</span><span class="s2">&quot;2019.3&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">hfss</span> <span class="o">=</span> <span class="n">pyaedt</span><span class="o">.</span><span class="n">Hfss</span><span class="p">()</span>
-</pre></div>
-</div>
-<p>The initialize Desktop to latest version installed on your machine in
-Graphical Mode and initialize HFSS.</p>
-<dl class="py class">
-<dt class="sig sig-object py" id="pyaedt.desktop.Desktop">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pyaedt.desktop.</span></span><span class="sig-name descname"><span class="pre">Desktop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">specified_version</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">NG</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">AlwaysNew</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">release_on_exit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/desktop.html#Desktop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.desktop.Desktop" title="Permalink to this definition">¶</a></dt>
-<dd><p>The core module that initialize Ansys Electronics Desktop tool based on inputs provided:</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="pyaedt.desktop.Desktop.close_desktop">
-<span class="sig-name descname"><span class="pre">close_desktop</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/desktop.html#Desktop.close_desktop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.desktop.Desktop.close_desktop" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="pyaedt.desktop.Desktop.current_version">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">current_version</span></span><a class="headerlink" href="#pyaedt.desktop.Desktop.current_version" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyaedt.desktop.Desktop.disable_autosave">
-<span class="sig-name descname"><span class="pre">disable_autosave</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/desktop.html#Desktop.disable_autosave"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.desktop.Desktop.disable_autosave" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyaedt.desktop.Desktop.enable_autosave">
-<span class="sig-name descname"><span class="pre">enable_autosave</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/desktop.html#Desktop.enable_autosave"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.desktop.Desktop.enable_autosave" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyaedt.desktop.Desktop.force_close_desktop">
-<span class="sig-name descname"><span class="pre">force_close_desktop</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/desktop.html#Desktop.force_close_desktop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.desktop.Desktop.force_close_desktop" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="pyaedt.desktop.Desktop.install_path">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">install_path</span></span><a class="headerlink" href="#pyaedt.desktop.Desktop.install_path" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyaedt.desktop.Desktop.release_desktop">
-<span class="sig-name descname"><span class="pre">release_desktop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">close_projects</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">close_on_exit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/desktop.html#Desktop.release_desktop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.desktop.Desktop.release_desktop" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>close_projects</strong> -- (Default value = True)</p></li>
-<li><p><strong>close_on_exit</strong> -- (Default value = True)</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="pyaedt.desktop.Desktop.version_keys">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">version_keys</span></span><a class="headerlink" href="#pyaedt.desktop.Desktop.version_keys" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pyaedt.desktop.exception_to_desktop">
-<span class="sig-prename descclassname"><span class="pre">pyaedt.desktop.</span></span><span class="sig-name descname"><span class="pre">exception_to_desktop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ex_value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tb_data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/desktop.html#exception_to_desktop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.desktop.exception_to_desktop" title="Permalink to this definition">¶</a></dt>
-<dd><p>Writes the trace stack to the desktop when a python error occurs</p>
-<p>It adds the message to AEDT Global message manager and to the log file (if present)</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>ex_value</strong> -- </p></li>
-<li><p><strong>tb_data</strong> -- </p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pyaedt.desktop.force_close_desktop">
-<span class="sig-prename descclassname"><span class="pre">pyaedt.desktop.</span></span><span class="sig-name descname"><span class="pre">force_close_desktop</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/desktop.html#force_close_desktop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.desktop.force_close_desktop" title="Permalink to this definition">¶</a></dt>
-<dd><p>Close all the projects and kill oDesktop</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>True (Closed) | False (Failed to Close)</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pyaedt.desktop.get_version_env_variable">
-<span class="sig-prename descclassname"><span class="pre">pyaedt.desktop.</span></span><span class="sig-name descname"><span class="pre">get_version_env_variable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">version_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/desktop.html#get_version_env_variable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.desktop.get_version_env_variable" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>version_id</strong> -- </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pyaedt.desktop.get_version_key">
-<span class="sig-prename descclassname"><span class="pre">pyaedt.desktop.</span></span><span class="sig-name descname"><span class="pre">get_version_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">version_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/desktop.html#get_version_key"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.desktop.get_version_key" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>version_id</strong> -- </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pyaedt.desktop.release_desktop">
-<span class="sig-prename descclassname"><span class="pre">pyaedt.desktop.</span></span><span class="sig-name descname"><span class="pre">release_desktop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">close_projects</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">close_desktop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/desktop.html#release_desktop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.desktop.release_desktop" title="Permalink to this definition">¶</a></dt>
-<dd><p>Release the Desktop API</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>close_projects</strong> -- Boolean, Close the projects opened in the session (Default value = True)</p></li>
-<li><p><strong>close_desktop</strong> -- Boolean, Close the active Desktop Session (Default value = True)</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>None</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>type</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pyaedt.desktop.update_aedt_registry">
-<span class="sig-prename descclassname"><span class="pre">pyaedt.desktop.</span></span><span class="sig-name descname"><span class="pre">update_aedt_registry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">desktop_version</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'193'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/desktop.html#update_aedt_registry"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.desktop.update_aedt_registry" title="Permalink to this definition">¶</a></dt>
-<dd><p>Windows Only</p>
-<p>Update aedt options registry keys. value includes &quot;&quot; if needed</p>
-<p class="rubric">Examples</p>
-<p>updateAEDTRegistry(&quot;HFSS/HPCLicenseType&quot;,'&quot;'12'&quot;')</p>
-<p>updateAEDTRegistry(&quot;Icepak/HPCLicenseType&quot;,'&quot;'8'&quot;')</p>
-<p>updateAEDTRegistry(&quot;HFSS/UseLegacyElectronicsHPC&quot;,&quot;0&quot;)</p>
-<p>updateAEDTRegistry(&quot;HFSS/MPIVendor&quot;,'&quot;'+&quot;Intel&quot;+'&quot;')</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>key</strong> -- </p></li>
-<li><p><strong>value</strong> -- </p></li>
-<li><p><strong>desktop_version</strong> -- (Default value = &quot;193&quot;)</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
+  <div class="section" id="desktop">
+<h1>Desktop<a class="headerlink" href="#desktop" title="Permalink to this headline">¶</a></h1>
 </div>
 
 
