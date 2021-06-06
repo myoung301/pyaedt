@@ -745,9 +745,26 @@
               
               <div class="toc-item">
                 
+<div class="tocsection onthispage pt-5 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
 
 <nav id="bd-toc-nav">
-    
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#hfss-class">
+   Hfss Class
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#description">
+     Description
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
 </nav>
               </div>
               
@@ -767,8 +784,887 @@
               
               <div>
                 
-  <div class="section" id="hfss">
-<h1>HFSS<a class="headerlink" href="#hfss" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-pyaedt.hfss">
+<span id="hfss"></span><h1>HFSS<a class="headerlink" href="#module-pyaedt.hfss" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="hfss-class">
+<h2>Hfss Class<a class="headerlink" href="#hfss-class" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="description">
+<h3>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h3>
+<p>This class contains all the HFSS Functionalities. It inherites all the objects that belongs to HFSS</p>
+<dl class="field-list simple">
+<dt class="field-odd">Example</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<p>hfss = Hfss()     creates and hfss object and connect to existing hfss design (create a new hfss design if not present)</p>
+<p>hfss = Hfss(projectname)     creates and hfss object and link to projectname project. If project doesn't exists, it creates a new one and rename it</p>
+<p>hfss = Hfss(projectname,designame)     creates and hfss object and link to designname design in projectname project</p>
+<p>hfss = Hfss(&quot;myfile.aedt&quot;)     creates and hfss object and open specified project</p>
+<hr class="docutils" />
+<dl class="py class">
+<dt class="sig sig-object py" id="pyaedt.hfss.Hfss">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pyaedt.hfss.</span></span><span class="sig-name descname"><span class="pre">Hfss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">projectname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">designname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">solution_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">setup_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/hfss.html#Hfss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.hfss.Hfss" title="Permalink to this definition">¶</a></dt>
+<dd><p>HFSS object</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyaedt.hfss.Hfss.BoundaryType">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">BoundaryType</span></span><a class="reference internal" href="../_modules/pyaedt/hfss.html#Hfss.BoundaryType"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.hfss.Hfss.BoundaryType" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.hfss.Hfss.SARSetup">
+<span class="sig-name descname"><span class="pre">SARSetup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Tissue_object_List_ID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TissueMass</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">MaterialDensity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">voxel_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Average_SAR_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/hfss.html#Hfss.SARSetup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.hfss.Hfss.SARSetup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set SAR Settings</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Tissue_object_List_ID</strong> -- 33</p></li>
+<li><p><strong>TissueMass</strong> -- param MaterialDensity: (Default value = 1)</p></li>
+<li><p><strong>voxel_size</strong> -- param Average_SAR_method: (Default value = 1)</p></li>
+<li><p><strong>MaterialDensity</strong> -- (Default value = 1)</p></li>
+<li><p><strong>Average_SAR_method</strong> -- (Default value = 0)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.hfss.Hfss.assig_voltage_source_to_sheet">
+<span class="sig-name descname"><span class="pre">assig_voltage_source_to_sheet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sheet_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axisdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourcename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/hfss.html#Hfss.assig_voltage_source_to_sheet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.hfss.Hfss.assig_voltage_source_to_sheet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function that Creates a Voltage Source taking one sheet.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sheet_name</strong> -- Sheet name on which apply the boundary</p></li>
+<li><p><strong>axisdir</strong> -- Position of VS. it should be one of Application.AxisDir [XNeg, YNeg, ZNeg, XPos,YPos,ZPos] (Default value = 0)</p></li>
+<li><p><strong>sourcename</strong> -- Optional Source Name (Default value = None)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Object Name</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>type</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.hfss.Hfss.assign_current_source_to_sheet">
+<span class="sig-name descname"><span class="pre">assign_current_source_to_sheet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sheet_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axisdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourcename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/hfss.html#Hfss.assign_current_source_to_sheet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.hfss.Hfss.assign_current_source_to_sheet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function that Creates a Voltage Source taking one sheet.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sheet_name</strong> -- Sheet name on which apply the boundary</p></li>
+<li><p><strong>axisdir</strong> -- Position of VS. it should be one of Application.AxisDir [XNeg, YNeg, ZNeg, XPos,YPos,ZPos] (Default value = 0)</p></li>
+<li><p><strong>sourcename</strong> -- Optional Source Name (Default value = None)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Object Name</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>type</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.hfss.Hfss.assign_impedance_to_sheet">
+<span class="sig-name descname"><span class="pre">assign_impedance_to_sheet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sheet_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourcename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resistance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reactance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_infground</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/hfss.html#Hfss.assign_impedance_to_sheet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.hfss.Hfss.assign_impedance_to_sheet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function that Creates an impedance taking one sheet.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sheet_name</strong> -- Name of the sheet on which apply the boundary</p></li>
+<li><p><strong>sourcename</strong> -- impedance Name. (Default value = None)</p></li>
+<li><p><strong>resistance</strong> -- Resistance Value in Ohm. None to disable (Default value = 50)</p></li>
+<li><p><strong>reactance</strong> -- Reactance Value in Ohm. None to disable (Default value = 0)</p></li>
+<li><p><strong>is_infground</strong> -- (Default value = False)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Object Name</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>type</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.hfss.Hfss.assign_lumped_port_to_sheet">
+<span class="sig-name descname"><span class="pre">assign_lumped_port_to_sheet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sheet_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axisdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">impedance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">portname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">renorm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deemb</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_object_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/hfss.html#Hfss.assign_lumped_port_to_sheet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.hfss.Hfss.assign_lumped_port_to_sheet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function that Creates a Lumped taking one sheet</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sheet_name</strong> -- Sheet Name object</p></li>
+<li><p><strong>axisdir</strong> -- Integration Line direction of port. it should be one of Application.AxisDir [XNeg, YNeg, ZNeg, XPos,YPos,ZPos] (Default value = 0)</p></li>
+<li><p><strong>impedance</strong> -- Port Impedance (Default value = 50)</p></li>
+<li><p><strong>portname</strong> -- Port Name. (Default value = None)</p></li>
+<li><p><strong>renorm</strong> -- bool) Renormalize Mode (Default value = True)</p></li>
+<li><p><strong>deemb</strong> -- bool) Deembed Port (Default value = False)</p></li>
+<li><p><strong>reference_object_list</strong> -- for Driven Terminal Solutions only. list of reference conductors (Default value = [])</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Object Name</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>type</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.hfss.Hfss.assign_lumped_rlc_to_sheet">
+<span class="sig-name descname"><span class="pre">assign_lumped_rlc_to_sheet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sheet_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axisdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourcename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rlctype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Parallel'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Rvalue</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Lvalue</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Cvalue</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/hfss.html#Hfss.assign_lumped_rlc_to_sheet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.hfss.Hfss.assign_lumped_rlc_to_sheet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function that Creates a Perfect H  taking one sheet.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sheet_name</strong> -- Name of the sheet on which apply the boundary</p></li>
+<li><p><strong>axisdir</strong> -- Position of port. it should be one of Application.AxisDir [XNeg, YNeg, ZNeg, XPos,YPos,ZPos] (Default value = 0)</p></li>
+<li><p><strong>sourcename</strong> -- Perfect H Name. (Default value = None)</p></li>
+<li><p><strong>Cvalue</strong> -- Capacitance Value in F. None to disable (Default value = None)</p></li>
+<li><p><strong>Lvalue</strong> -- Inductacnce Value in H. None to disable (Default value = None)</p></li>
+<li><p><strong>rlctype</strong> -- Parallel&quot; or &quot;Series&quot; (Default value = &quot;Parallel&quot;)</p></li>
+<li><p><strong>Rvalue</strong> -- Resistance Value in Ohm. None to disable (Default value = None)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Object Name</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>type</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.hfss.Hfss.assign_perfecte_to_sheets">
+<span class="sig-name descname"><span class="pre">assign_perfecte_to_sheets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sheet_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourcename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_infinite_gnd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/hfss.html#Hfss.assign_perfecte_to_sheets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.hfss.Hfss.assign_perfecte_to_sheets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function that Creates a Perfect E  taking one sheet.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sheet_list</strong> -- Sheet name or list on which apply the boundary</p></li>
+<li><p><strong>sourcename</strong> -- Perfect E Name. (Default value = None)</p></li>
+<li><p><strong>is_infinite_gnd</strong> -- Boolean to determine if Perfect E is an Infinite Ground (Default value = False)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Boundary Object</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>type</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.hfss.Hfss.assign_perfecth_to_sheets">
+<span class="sig-name descname"><span class="pre">assign_perfecth_to_sheets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sheet_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourcename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/hfss.html#Hfss.assign_perfecth_to_sheets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.hfss.Hfss.assign_perfecth_to_sheets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function that Creates a Perfect H  taking one sheet.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sheet_list</strong> -- list of sheets on which apply the boundary</p></li>
+<li><p><strong>sourcename</strong> -- Perfect H Name. (Default value = None)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Boundary Object</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>type</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.hfss.Hfss.assign_radiation_boundary_to_faces">
+<span class="sig-name descname"><span class="pre">assign_radiation_boundary_to_faces</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">faces_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/hfss.html#Hfss.assign_radiation_boundary_to_faces"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.hfss.Hfss.assign_radiation_boundary_to_faces" title="Permalink to this definition">¶</a></dt>
+<dd><p>Assign radiation boundary to one or more objects (usually airbox object)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>faces_id</strong> -- face id to which the boundary condition is assigned</p></li>
+<li><p><strong>boundary_name</strong> -- optional, name of the boundary (Default value = &quot;&quot;)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if correctly assigned</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>type</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.hfss.Hfss.assign_radiation_boundary_to_objects">
+<span class="sig-name descname"><span class="pre">assign_radiation_boundary_to_objects</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj_names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/hfss.html#Hfss.assign_radiation_boundary_to_objects"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.hfss.Hfss.assign_radiation_boundary_to_objects" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>obj_names</strong> -- </p></li>
+<li><p><strong>boundary_name</strong> -- (Default value = &quot;&quot;)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.hfss.Hfss.assigncoating">
+<span class="sig-name descname"><span class="pre">assigncoating</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cond</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">58000000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">perm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">usethickness</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thickness</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0.1mm'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">roughness</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0um'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">isinfgnd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">istwoside</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">isInternal</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">issheelElement</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">usehuray</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0.5um'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ratio</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'2.9'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/hfss.html#Hfss.assigncoating"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.hfss.Hfss.assigncoating" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function assigns Finite Conductivity to object obj with material mat</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>obj</strong> (<em>list</em><em> or </em><em>str</em>) -- object list</p></li>
+<li><p><strong>mat</strong> (<em>str</em>) -- material name to use, optional (Default value = None)</p></li>
+<li><p><strong>cond</strong> (<em>float</em>) -- if not material is provided user has to provide conductivity (Default value = 58000000)</p></li>
+<li><p><strong>perm</strong> (<em>float</em>) -- if not material is provided user has to provide permittivity (Default value = 1)</p></li>
+<li><p><strong>usethickness</strong> (<em>bool</em>) -- boolean (Default value = False)</p></li>
+<li><p><strong>thickness</strong> (<em>str</em>) -- thickness value in case usethickness=True (Default value = &quot;0.1mm&quot;)</p></li>
+<li><p><strong>roughness</strong> (<em>str</em>) -- optional roughness value (Default value = &quot;0um&quot;)</p></li>
+<li><p><strong>isinfgnd</strong> (<em>bool</em>) -- Boolean (Default value = False)</p></li>
+<li><p><strong>istwoside</strong> (<em>bool</em>) -- Boolean (Default value = False)</p></li>
+<li><p><strong>isInternal</strong> (<em>bool</em>) -- Boolean (Default value = True)</p></li>
+<li><p><strong>issheelElement</strong> (<em>bool</em>) -- Boolena (Default value = False)</p></li>
+<li><p><strong>usehuray</strong> (<em>bool</em>) -- Boolean (Default value = False)</p></li>
+<li><p><strong>radius</strong> (<em>str</em>) -- Huray Coefficient (Default value = &quot;0.5um&quot;)</p></li>
+<li><p><strong>ratio</strong> (<em>str</em>) -- Huray Coefficient (Default value = &quot;2.9&quot;)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Boundary Object</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>class: BoundaryObject</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">id1</span> <span class="o">=</span> <span class="n">aedtapp</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">primitives</span><span class="o">.</span><span class="n">get_obj_id</span><span class="p">(</span><span class="s2">&quot;inner&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">coat</span> <span class="o">=</span> <span class="n">aedtapp</span><span class="o">.</span><span class="n">assigncoating</span><span class="p">([</span><span class="n">id1</span><span class="p">],</span> <span class="s2">&quot;copper&quot;</span><span class="p">,</span><span class="n">usethickness</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">thickness</span><span class="o">=</span><span class="s2">&quot;0.2mm&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.hfss.Hfss.create_boundary">
+<span class="sig-name descname"><span class="pre">create_boundary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">boundary_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sheet_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_infinite_gnd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/hfss.html#Hfss.create_boundary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.hfss.Hfss.create_boundary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a Boundary given specific inputs</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>boundary_type</strong> -- BoundaryType object (PerfectE, PerfectH, Aperture, Radiation) (Default value = BoundaryType.PerfectE)</p></li>
+<li><p><strong>sheet_name</strong> -- Sheet Name. It can be an integer (facesID), a string (sheet) or a list of previous (Default value = None)</p></li>
+<li><p><strong>boundary_name</strong> -- Boundary Name (Default value = &quot;&quot;)</p></li>
+<li><p><strong>is_infinite_gnd</strong> -- Boolean (Default value = False)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Boundary Object if successful</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>class: BoundaryObject</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.hfss.Hfss.create_circuit_port_between_objects">
+<span class="sig-name descname"><span class="pre">create_circuit_port_between_objects</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">startobj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endobject</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axisdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'XYNeg'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">impedance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">portname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">renorm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">renorm_impedance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deemb</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/hfss.html#Hfss.create_circuit_port_between_objects"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.hfss.Hfss.create_circuit_port_between_objects" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function that Creates a Circuit port taking the closest edges of two objects.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>startobj</strong> -- First object (starting object for integration line)</p></li>
+<li><p><strong>endobject</strong> -- Second object (ending object for integration line)</p></li>
+<li><p><strong>axisdir</strong> -- Position of port. it should be one of Application.AxisDir [XNeg, YNeg, ZNeg, XPos,YPos,ZPos] (Default value = &quot;XYNeg&quot;)</p></li>
+<li><p><strong>impedance</strong> -- Port Impedance (Default value = 50)</p></li>
+<li><p><strong>portname</strong> -- Port Name. (Default value = None)</p></li>
+<li><p><strong>renorm</strong> -- Boolean, Renormalize Mode (Default value = True)</p></li>
+<li><p><strong>renorm_impedance</strong> -- Float or str, Renormalize Impedance (Default value = 50)</p></li>
+<li><p><strong>deemb</strong> -- Boolean DEembed Port (Default value = False)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>portname</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>type</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.hfss.Hfss.create_circuit_port_from_edges">
+<span class="sig-name descname"><span class="pre">create_circuit_port_from_edges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edge_signal</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_gnd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port_impedance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'50'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">renormalize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">renorm_impedance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'50'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deembed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/hfss.html#Hfss.create_circuit_port_from_edges"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.hfss.Hfss.create_circuit_port_from_edges" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create circuit port. Integration line from edge2 to edge1</p>
+<p>renormalize impedance is ignored in driven terminal
+impedance format: - int, float, str:&quot;50&quot;, str: &quot;50+1i*55&quot;</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>edge_signal</strong> -- edge id</p></li>
+<li><p><strong>edge_gnd</strong> -- edge id</p></li>
+<li><p><strong>port_name</strong> -- name of the port (Default value = &quot;&quot;)</p></li>
+<li><p><strong>port_impedance</strong> -- str impedance (Default value = &quot;50&quot;)</p></li>
+<li><p><strong>renormalize</strong> -- bool (Default value = False)</p></li>
+<li><p><strong>renorm_impedance</strong> -- str impedance (Default value = &quot;50&quot;)</p></li>
+<li><p><strong>deembed</strong> -- bool (Default value = False)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>type</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.hfss.Hfss.create_current_source_from_objects">
+<span class="sig-name descname"><span class="pre">create_current_source_from_objects</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">startobj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endobject</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axisdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourcename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_on_plane</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/hfss.html#Hfss.create_current_source_from_objects"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.hfss.Hfss.create_current_source_from_objects" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function that Creates a Voltage Source taking the closest edges of two objects.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>startobj</strong> -- First object (starting object for integration line)</p></li>
+<li><p><strong>endobject</strong> -- Second object (ending object for integration line)</p></li>
+<li><p><strong>axisdir</strong> -- Position of VS. it should be one of Application.AxisDir [XNeg, YNeg, ZNeg, XPos,YPos,ZPos] (Default value = 0)</p></li>
+<li><p><strong>sourcename</strong> -- Optional Source Name (Default value = None)</p></li>
+<li><p><strong>source_on_plane</strong> -- Boolean. If True Source will be created on the Plane ortogonal to AxisDir (Default value = True)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>sourcename</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>type</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.hfss.Hfss.create_discrete_sweep">
+<span class="sig-name descname"><span class="pre">create_discrete_sweep</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">setupname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sweepname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'SinglePoint'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'1GHz'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_field</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_radiating_field</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/hfss.html#Hfss.create_discrete_sweep"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.hfss.Hfss.create_discrete_sweep" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a Discrete Sweep with a single frequency value</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>setupname</strong> (<em>str</em>) -- Setup name</p></li>
+<li><p><strong>freq</strong> (<em>str</em>) -- sweep freq (including Units) as string (Default value = &quot;1GHz&quot;)</p></li>
+<li><p><strong>sweepname</strong> (<em>str</em>) -- name of the sweep (Default value = &quot;SinglePoint&quot;)</p></li>
+<li><p><strong>save_field</strong> (<em>bool</em>) -- bool (Default value = True)</p></li>
+<li><p><strong>save_radiating_field</strong> (<em>bool</em>) -- bool (Default value = False)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>sweepname</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>class: SweepHFSS</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.hfss.Hfss.create_frequency_sweep">
+<span class="sig-name descname"><span class="pre">create_frequency_sweep</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">setupname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'GHz'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freqstart</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freqstop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sweepname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_of_freq_points</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">451</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sweeptype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Interpolating'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interpolation_tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interpolation_max_solutions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">250</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/hfss.html#Hfss.create_frequency_sweep"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.hfss.Hfss.create_frequency_sweep" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a Frequency Sweep</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>setupname</strong> (<em>str</em>) -- name of the setup to which is attached the sweep</p></li>
+<li><p><strong>unit</strong> -- Units (&quot;MHz&quot;, &quot;GHz&quot;....) (Default value = &quot;GHz&quot;)</p></li>
+<li><p><strong>freqstart</strong> -- Starting Frequency of sweep (Default value = 1e-3)</p></li>
+<li><p><strong>freqstop</strong> -- Stop Frequency of Sweep (Default value = 10)</p></li>
+<li><p><strong>sweepname</strong> -- name of the Sweep (Default value = None)</p></li>
+<li><p><strong>num_of_freq_points</strong> -- Number of frequency point in the range (Default value = 451)</p></li>
+<li><p><strong>sweeptype</strong> -- Fast&quot;|&quot;Interpolating&quot;|&quot;Discrete&quot; (default)</p></li>
+<li><p><strong>interpolation_max_solutions</strong> -- max number of solutions evaluated for the interpolation process (Default value = 250)</p></li>
+<li><p><strong>interpolation_tol</strong> -- error tolerance threshold for the interpolation process (Default value = 0.5)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if operation succeeded</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>type</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.hfss.Hfss.create_impedance_between_objects">
+<span class="sig-name descname"><span class="pre">create_impedance_between_objects</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">startobj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endobject</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axisdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourcename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resistance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reactance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_infground</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bound_on_plane</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/hfss.html#Hfss.create_impedance_between_objects"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.hfss.Hfss.create_impedance_between_objects" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function that Creates an impedance taking the closest edges of two objects.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>startobj</strong> -- First object (starting object for integration line)</p></li>
+<li><p><strong>endobject</strong> -- Second object (ending object for integration line)</p></li>
+<li><p><strong>axisdir</strong> -- Position of impedance. it should be one of Application.AxisDir [XNeg, YNeg, ZNeg, XPos,YPos,ZPos] (Default value = 0)</p></li>
+<li><p><strong>sourcename</strong> -- impedance Name. (Default value = None)</p></li>
+<li><p><strong>resistance</strong> -- Resistance Value in Ohm. None to disable (Default value = 50)</p></li>
+<li><p><strong>reactance</strong> -- Reactance Value in Ohm. None to disable (Default value = 0)</p></li>
+<li><p><strong>bound_on_plane</strong> -- Boolean. If True Impdedance will be created on the Plane ortogonal to AxisDir (Default value = True)</p></li>
+<li><p><strong>is_infground</strong> -- (Default value = False)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Boundary Name</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>class: BoundaryObject</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.hfss.Hfss.create_linear_count_sweep">
+<span class="sig-name descname"><span class="pre">create_linear_count_sweep</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">setupname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freqstart</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freqstop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_of_freq_points</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sweepname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_fields</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_rad_fields</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/hfss.html#Hfss.create_linear_count_sweep"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.hfss.Hfss.create_linear_count_sweep" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a Discrete Sweep with specified the number of points</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>setupname</strong> (<em>str</em>) -- Setup name</p></li>
+<li><p><strong>freqstart</strong> (<em>float</em>) -- Starting Frequency of sweep (eg. 1)</p></li>
+<li><p><strong>freqstop</strong> (<em>float</em>) -- Stop Frequency of Sweep</p></li>
+<li><p><strong>sweepname</strong> (<em>str</em>) -- name of the Sweep (Default value = None)</p></li>
+<li><p><strong>unit</strong> (<em>str</em>) -- Units (&quot;MHz&quot;, &quot;GHz&quot;....)</p></li>
+<li><p><strong>num_of_freq_points</strong> (<em>int</em>) -- Number of frequency point in the range</p></li>
+<li><p><strong>save_fields</strong> (<em>bool</em>) -- bool (Default value = True)</p></li>
+<li><p><strong>save_rad_fields</strong> -- bool (Default value = False)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>sweepname</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>class: SweepHFSS</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.hfss.Hfss.create_linear_step_sweep">
+<span class="sig-name descname"><span class="pre">create_linear_step_sweep</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">setupname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freqstart</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freqstop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sweepname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_fields</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_rad_fields</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/hfss.html#Hfss.create_linear_step_sweep"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.hfss.Hfss.create_linear_step_sweep" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a Discrete Sweep with specified the number of points</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>freqstart</strong> (<em>float</em>) -- Starting Frequency of sweep</p></li>
+<li><p><strong>freqstop</strong> (<em>float</em>) -- Stop Frequency of Sweep</p></li>
+<li><p><strong>sweepname</strong> (<em>str</em>) -- name of the Sweep (Default value = None)</p></li>
+<li><p><strong>unit</strong> (<em>str</em>) -- Units (&quot;MHz&quot;, &quot;GHz&quot;....)</p></li>
+<li><p><strong>step_size</strong> (<em>float</em>) -- Frequency size of the step</p></li>
+<li><p><strong>setupname</strong> (<em>str</em>) -- Setup name</p></li>
+<li><p><strong>save_fields</strong> (<em>bool</em>) -- bool (Default value = True)</p></li>
+<li><p><strong>save_rad_fields</strong> (<em>bool</em>) -- bool (Default value = False)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>sweepname</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>class: SweepHFSS</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.hfss.Hfss.create_lumped_port_between_objects">
+<span class="sig-name descname"><span class="pre">create_lumped_port_between_objects</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">startobj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endobject</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axisdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">impedance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">portname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">renorm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deemb</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port_on_plane</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/hfss.html#Hfss.create_lumped_port_between_objects"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.hfss.Hfss.create_lumped_port_between_objects" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function that Creates a Lumped taking the closest edges of two objects.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>startobj</strong> -- First object (starting object for integration line)</p></li>
+<li><p><strong>endobject</strong> -- Second object (ending object for integration line)</p></li>
+<li><p><strong>axisdir</strong> -- Position of port. it should be one of Application.AxisDir [XNeg, YNeg, ZNeg, XPos,YPos,ZPos] (Default value = 0)</p></li>
+<li><p><strong>impedance</strong> -- Port Impedance (Default value = 50)</p></li>
+<li><p><strong>portname</strong> -- Port Name. (Default value = None)</p></li>
+<li><p><strong>renorm</strong> -- Boolean, Renormalize Mode (Default value = True)</p></li>
+<li><p><strong>deemb</strong> -- Boolean DEembed Port (Default value = False)</p></li>
+<li><p><strong>port_on_plane</strong> -- Boolean. If True Source will be created on the Plane ortogonal to AxisDir (Default value = True)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>portname</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>type</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.hfss.Hfss.create_lumped_rlc_between_objects">
+<span class="sig-name descname"><span class="pre">create_lumped_rlc_between_objects</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">startobj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endobject</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axisdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourcename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rlctype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Parallel'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Rvalue</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Lvalue</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Cvalue</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bound_on_plane</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/hfss.html#Hfss.create_lumped_rlc_between_objects"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.hfss.Hfss.create_lumped_rlc_between_objects" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function that Creates a Perfect H  taking the closest edges of two objects.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>startobj</strong> -- First object (starting object for integration line)</p></li>
+<li><p><strong>endobject</strong> -- Second object (ending object for integration line)</p></li>
+<li><p><strong>axisdir</strong> -- Position of port. it should be one of Application.AxisDir [XNeg, YNeg, ZNeg, XPos,YPos,ZPos] (Default value = 0)</p></li>
+<li><p><strong>sourcename</strong> -- Perfect H Name. (Default value = None)</p></li>
+<li><p><strong>Cvalue</strong> -- Capacitance Value in F. None to disable (Default value = None)</p></li>
+<li><p><strong>Lvalue</strong> -- Inductacnce Value in H. None to disable (Default value = None)</p></li>
+<li><p><strong>rlctype</strong> -- Parallel&quot; or &quot;Series&quot; (Default value = &quot;Parallel&quot;)</p></li>
+<li><p><strong>Rvalue</strong> -- Resistance Value in Ohm. None to disable (Default value = None)</p></li>
+<li><p><strong>bound_on_plane</strong> -- Boolean. If True Boundary will be created on the Plane ortogonal to AxisDir (Default value = True)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Boundary Name</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>class: BoundaryObject</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.hfss.Hfss.create_open_region">
+<span class="sig-name descname"><span class="pre">create_open_region</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Frequency</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'1GHz'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Boundary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Radiation'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ApplyInfiniteGP</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">GPAXis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'-z'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/hfss.html#Hfss.create_open_region"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.hfss.Hfss.create_open_region" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create an open region on the active Editor</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Frequency</strong> -- Frequency with Units (Default value = &quot;1GHz&quot;)</p></li>
+<li><p><strong>Boundary</strong> -- Boundary Type. Default &quot;Radition&quot;</p></li>
+<li><p><strong>ApplyInfiniteGP</strong> -- Bool to apply infinite Ground Plane (Default value = False)</p></li>
+<li><p><strong>GPAXis</strong> -- (Default value = &quot;-z&quot;)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.hfss.Hfss.create_perfecte_from_objects">
+<span class="sig-name descname"><span class="pre">create_perfecte_from_objects</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">startobj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endobject</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axisdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourcename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_infinite_gnd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bound_on_plane</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/hfss.html#Hfss.create_perfecte_from_objects"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.hfss.Hfss.create_perfecte_from_objects" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function that Creates a Perfect E  taking the closest edges of two objects.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>startobj</strong> -- First object (starting object for integration line)</p></li>
+<li><p><strong>endobject</strong> -- Second object (ending object for integration line)</p></li>
+<li><p><strong>axisdir</strong> -- Position of port. it should be one of Application.AxisDir [XNeg, YNeg, ZNeg, XPos,YPos,ZPos] (Default value = 0)</p></li>
+<li><p><strong>sourcename</strong> -- Perfect E Name. (Default value = None)</p></li>
+<li><p><strong>bound_on_plane</strong> -- Boolean. If True PerfectE will be created on the Plane ortogonal to AxisDir (Default value = True)</p></li>
+<li><p><strong>is_infinite_gnd</strong> -- (Default value = False)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>boundary object</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>class: BoundaryObject</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.hfss.Hfss.create_perfecth_from_objects">
+<span class="sig-name descname"><span class="pre">create_perfecth_from_objects</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">startobj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endobject</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axisdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourcename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bound_on_plane</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/hfss.html#Hfss.create_perfecth_from_objects"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.hfss.Hfss.create_perfecth_from_objects" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function that Creates a Perfect H  taking the closest edges of two objects.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>startobj</strong> -- First object (starting object for integration line)</p></li>
+<li><p><strong>endobject</strong> -- Second object (ending object for integration line)</p></li>
+<li><p><strong>axisdir</strong> -- Position of port. it should be one of Application.AxisDir [XNeg, YNeg, ZNeg, XPos,YPos,ZPos] (Default value = 0)</p></li>
+<li><p><strong>sourcename</strong> -- Perfect H Name. (Default value = None)</p></li>
+<li><p><strong>bound_on_plane</strong> -- Boolean. If True PerfectH will be created on the Plane ortogonal to AxisDir (Default value = True)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Boundary Object</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>class: BoundaryObject</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.hfss.Hfss.create_qfactor_report">
+<span class="sig-name descname"><span class="pre">create_qfactor_report</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outputlist</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">setupname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plotname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Xaxis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'X'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/hfss.html#Hfss.create_qfactor_report"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.hfss.Hfss.create_qfactor_report" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function that export CSV of eigenQ Plot</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>project_dir</strong> -- Output dir</p></li>
+<li><p><strong>outputlist</strong> -- output quantity, in this case, Q-factor</p></li>
+<li><p><strong>setupname</strong> -- Name of the setup from which generate the report</p></li>
+<li><p><strong>plotname</strong> -- name of the plot</p></li>
+<li><p><strong>Xaxis</strong> -- Xasis value (default &quot;X&quot;)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.hfss.Hfss.create_scattering">
+<span class="sig-name descname"><span class="pre">create_scattering</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">PlotName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'S</span> <span class="pre">Parameter</span> <span class="pre">Plot</span> <span class="pre">Nominal'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sweep_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">PortNames</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">PortExcited</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/hfss.html#Hfss.create_scattering"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.hfss.Hfss.create_scattering" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create Scattering Report</p>
+<p>sweeps = design eXploration variations (list of str)
+PortNames = (list of str)
+PortExcited = (str)
+:return:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>PlotName</strong> -- (Default value = &quot;S Parameter Plot Nominal&quot;)</p></li>
+<li><p><strong>sweep_name</strong> -- (Default value = None)</p></li>
+<li><p><strong>PortNames</strong> -- (Default value = None)</p></li>
+<li><p><strong>PortExcited</strong> -- (Default value = None)</p></li>
+<li><p><strong>variations</strong> -- (Default value = None)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.hfss.Hfss.create_source_excitation">
+<span class="sig-name descname"><span class="pre">create_source_excitation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sheet_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourcename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourcetype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Voltage'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/hfss.html#Hfss.create_source_excitation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.hfss.Hfss.create_source_excitation" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sheet_name</strong> -- </p></li>
+<li><p><strong>point1</strong> -- </p></li>
+<li><p><strong>point2</strong> -- </p></li>
+<li><p><strong>sourcename</strong> -- </p></li>
+<li><p><strong>sourcetype</strong> -- (Default value = &quot;Voltage&quot;)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.hfss.Hfss.create_voltage_source_from_objects">
+<span class="sig-name descname"><span class="pre">create_voltage_source_from_objects</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">startobj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endobject</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axisdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sourcename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_on_plane</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/hfss.html#Hfss.create_voltage_source_from_objects"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.hfss.Hfss.create_voltage_source_from_objects" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function that Creates a Voltage Source taking the closest edges of two objects.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>startobj</strong> -- First object (starting object for integration line)</p></li>
+<li><p><strong>endobject</strong> -- Second object (ending object for integration line)</p></li>
+<li><p><strong>axisdir</strong> -- Position of VS. it should be one of Application.AxisDir [XNeg, YNeg, ZNeg, XPos,YPos,ZPos] (Default value = 0)</p></li>
+<li><p><strong>sourcename</strong> -- Optional Source Name (Default value = None)</p></li>
+<li><p><strong>source_on_plane</strong> -- Boolean. If True Source will be created on the Plane ortogonal to AxisDir (Default value = True)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>sourcename</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>type</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.hfss.Hfss.create_wave_port_between_objects">
+<span class="sig-name descname"><span class="pre">create_wave_port_between_objects</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">startobj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endobject</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axisdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">impedance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nummodes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">portname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">renorm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deembed_dist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port_on_plane</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_pec_cap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/hfss.html#Hfss.create_wave_port_between_objects"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.hfss.Hfss.create_wave_port_between_objects" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function that Creates a Waveport taking the closest edges of two objects.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>startobj</strong> -- First object (starting object for integration line)</p></li>
+<li><p><strong>endobject</strong> -- Second object (ending object for integration line)</p></li>
+<li><p><strong>axisdir</strong> -- Position of port. it should be one of Application.AxisDir [XNeg, YNeg, ZNeg, XPos,YPos,ZPos] (Default value = 0)</p></li>
+<li><p><strong>impedance</strong> -- Port Impedance (Default value = 50)</p></li>
+<li><p><strong>nummodes</strong> -- Number of Modes (Default value = 1)</p></li>
+<li><p><strong>portname</strong> -- Port Name. (Default value = None)</p></li>
+<li><p><strong>renorm</strong> -- Boolean, Renormalize Mode (Default value = True)</p></li>
+<li><p><strong>deembed_dist</strong> -- Deembed Distance. Float in model units (default mm). if 0 Deembed is disabled</p></li>
+<li><p><strong>port_on_plane</strong> -- Boolean. If True Port will be created on the Plane ortogonal to AxisDir (Default value = True)</p></li>
+<li><p><strong>add_pec_cap</strong> -- (Default value = False)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Port Name</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>class: BoundaryObject</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.hfss.Hfss.create_wave_port_from_sheets">
+<span class="sig-name descname"><span class="pre">create_wave_port_from_sheets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sheet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deemb</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axisdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">impedance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nummodes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">portname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">renorm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/hfss.html#Hfss.create_wave_port_from_sheets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.hfss.Hfss.create_wave_port_from_sheets" title="Permalink to this definition">¶</a></dt>
+<dd><p>create WavePort on sheet objects created starting from sheets</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sheet</strong> -- list of input sheets from where ports will be created</p></li>
+<li><p><strong>deemb</strong> -- deembedding value distance. Float in model_units (Default value = 0)</p></li>
+<li><p><strong>axisdir</strong> -- Position of reference object. it should be one of Application.AxisDir [XNeg, YNeg, ZNeg, XPos,YPos,ZPos] (Default value = 0)</p></li>
+<li><p><strong>impedance</strong> -- Port Impedance (Default value = 50)</p></li>
+<li><p><strong>nummodes</strong> -- Number of Modes (Default value = 1)</p></li>
+<li><p><strong>portname</strong> -- Port Name. (Default value = None)</p></li>
+<li><p><strong>renorm</strong> -- Boolean, Renormalize Mode (Default value = True)</p></li>
+<li><p><strong>deembed_dist</strong> -- Deembed Distance. Float in model units (default mm). if 0 Deembed is disabled</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of objects created</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.hfss.Hfss.create_wave_port_microstrip_between_objects">
+<span class="sig-name descname"><span class="pre">create_wave_port_microstrip_between_objects</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">startobj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endobject</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axisdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">impedance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nummodes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">portname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">renorm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deembed_dist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vfactor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hfactor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/hfss.html#Hfss.create_wave_port_microstrip_between_objects"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.hfss.Hfss.create_wave_port_microstrip_between_objects" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function that Creates a Waveport taking the closest edges of two objects.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>startobj</strong> -- First object (starting object for integration line)</p></li>
+<li><p><strong>endobject</strong> -- Second object (ending object for integration line)</p></li>
+<li><p><strong>axisdir</strong> -- Position of port. it should be one of Application.AxisDir [XNeg, YNeg, ZNeg, XPos,YPos,ZPos] (Default value = 0)</p></li>
+<li><p><strong>impedance</strong> -- Port Impedance (Default value = 50)</p></li>
+<li><p><strong>nummodes</strong> -- Number of Modes (Default value = 1)</p></li>
+<li><p><strong>portname</strong> -- Port Name. (Default value = None)</p></li>
+<li><p><strong>renorm</strong> -- Boolean, Renormalize Mode (Default value = True)</p></li>
+<li><p><strong>deembed_dist</strong> -- Deembed Distance. Float in model units (default mm). if 0 Deembed is disabled</p></li>
+<li><p><strong>vfactor</strong> -- Port Vertical Factor (Default value = 3)</p></li>
+<li><p><strong>hfactor</strong> -- Port HorizontalFactor (Default value = 5)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Port Name</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>class: BoundaryObject</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.hfss.Hfss.edit_source">
+<span class="sig-name descname"><span class="pre">edit_source</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">portandmode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">powerin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phase</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0deg'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/hfss.html#Hfss.edit_source"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.hfss.Hfss.edit_source" title="Permalink to this definition">¶</a></dt>
+<dd><p>Setup the Power Loaded to the Filter. this is needed for thermal Analysis</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>powerin</strong> -- Power (in Watt) or project variable to be put as stored energy into the the project</p></li>
+<li><p><strong>portandmode</strong> -- Portname and mode. Example Port1:1</p></li>
+<li><p><strong>phase</strong> -- (Default value = &quot;0deg&quot;)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.hfss.Hfss.export_touchstone">
+<span class="sig-name descname"><span class="pre">export_touchstone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solutionname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sweepname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variations_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/hfss.html#Hfss.export_touchstone"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.hfss.Hfss.export_touchstone" title="Permalink to this definition">¶</a></dt>
+<dd><p>Synopsis: Export Touchston file to local folder</p>
+<p>solutionname = name of the solution solved
+sweepname = name of the sweep solved
+FileName = full path of output file
+Variations = list (list of all parameters variations e.g. [&quot;$AmbientTemp&quot;, &quot;$PowerIn&quot;] )
+VariationsValue = list (list of all parameters variations value) e.g. [&quot;22cel&quot;, &quot;100&quot;] )</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>solutionname</strong> -- </p></li>
+<li><p><strong>sweepname</strong> -- </p></li>
+<li><p><strong>filename</strong> -- (Default value = None)</p></li>
+<li><p><strong>variation</strong> -- (Default value = [])</p></li>
+<li><p><strong>variations_value</strong> -- (Default value = [])</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.hfss.Hfss.set_export_touchstone">
+<span class="sig-name descname"><span class="pre">set_export_touchstone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">activate</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/hfss.html#Hfss.set_export_touchstone"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.hfss.Hfss.set_export_touchstone" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set Automatic export of touchstone after simulation to True</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>activate</strong> (<em>bool</em>) -- Export after simulation</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if operation succeeded</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>type</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.hfss.Hfss.thicken_port_sheets">
+<span class="sig-name descname"><span class="pre">thicken_port_sheets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputlist</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">internalExtr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">internalvalue</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/hfss.html#Hfss.thicken_port_sheets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.hfss.Hfss.thicken_port_sheets" title="Permalink to this definition">¶</a></dt>
+<dd><p>thicken_port_sheets: create thicken sheets of value &quot;mm&quot; over the full list of input port faces inputlist
+inputlist: list of faces to thicken
+value: value in mm to thicken
+internalExtr: define if the sheet must also be extruded internally
+internalvalue: define the value in mm to thicken internally the sheet (vgoing into the model)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>inputlist</strong> -- </p></li>
+<li><p><strong>value</strong> -- </p></li>
+<li><p><strong>internalExtr</strong> -- (Default value = True)</p></li>
+<li><p><strong>internalvalue</strong> -- (Default value = 1)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.hfss.Hfss.validate_full_design">
+<span class="sig-name descname"><span class="pre">validate_full_design</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outputdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ports</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/hfss.html#Hfss.validate_full_design"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.hfss.Hfss.validate_full_design" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validate the design based on expected value and save infos on log file
+and also returns the validation info in a list</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dname</strong> -- optional, name of design to validate (Default value = None)</p></li>
+<li><p><strong>outputdir</strong> -- optional, output dir where to save the log file (Default value = None)</p></li>
+<li><p><strong>ports</strong> -- number of excitations (sum of modes) expected (Default value = None)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>all the info in a list for use later</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>type</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
 <div class="toctree-wrapper compound">
 </div>
 </div>
