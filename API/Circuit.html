@@ -770,13 +770,33 @@
   <div class="section" id="circuit-tools">
 <h1>Circuit Tools<a class="headerlink" href="#circuit-tools" title="Permalink to this headline">¶</a></h1>
 <p><strong>Diagram</strong></p>
+digraph inheritancec5677059e5 {
+bgcolor=transparent;
+fontsize=14;
+rankdir=RL;
+ratio=compress;
+size=&quot;8.0, 10.0&quot;;
+  &quot;Analysis&quot; [URL=&quot;Analysis.html#pyaedt.application.Analysis.Analysis&quot;,color=dodgerblue1,fillcolor=white,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=14,height=0.75,shape=ellipse,style=filled,target=&quot;_top&quot;,tooltip=&quot;**Class Analysis**&quot;];
+  &quot;Design&quot; -&gt; &quot;Analysis&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+  &quot;Circuit&quot; [URL=&quot;Nexxim.html#pyaedt.circuit.Circuit&quot;,color=dodgerblue1,fillcolor=white,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=14,height=0.75,shape=ellipse,style=filled,target=&quot;_top&quot;,tooltip=&quot;Circuit Object&quot;];
+  &quot;FieldAnalysisCircuit&quot; -&gt; &quot;Circuit&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+  &quot;Design&quot; [URL=&quot;Design.html#pyaedt.application.Design.Design&quot;,color=dodgerblue1,fillcolor=white,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=14,height=0.75,shape=ellipse,style=filled,target=&quot;_top&quot;,tooltip=&quot;Class Design. Contains all functions and objects connected to the active Project and Design&quot;];
+  &quot;FieldAnalysisCircuit&quot; [URL=&quot;AnalysisNexxim.html#pyaedt.application.AnalysisNexxim.FieldAnalysisCircuit&quot;,color=dodgerblue1,fillcolor=white,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=14,height=0.75,shape=ellipse,style=filled,target=&quot;_top&quot;,tooltip=&quot;**AEDT_CircuitAnalysis**&quot;];
+  &quot;Analysis&quot; -&gt; &quot;FieldAnalysisCircuit&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+  &quot;FieldAnalysisSimplorer&quot; [URL=&quot;AnalysisSimplorer.html#pyaedt.application.AnalysisSimplorer.FieldAnalysisSimplorer&quot;,color=dodgerblue1,fillcolor=white,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=14,height=0.75,shape=ellipse,style=filled,target=&quot;_top&quot;,tooltip=&quot;**AEDT_CircuitAnalysis**&quot;];
+  &quot;Analysis&quot; -&gt; &quot;FieldAnalysisSimplorer&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+  &quot;Simplorer&quot; [URL=&quot;Simplorer.html#pyaedt.simplorer.Simplorer&quot;,color=dodgerblue1,fillcolor=white,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=14,height=0.75,shape=ellipse,style=filled,target=&quot;_top&quot;,tooltip=&quot;Simplorer Object&quot;];
+  &quot;FieldAnalysisSimplorer&quot; -&gt; &quot;Simplorer&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+}
 <div class="toctree-wrapper compound">
 <p class="caption"><span class="caption-text">Classes:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="Nexxim.html">Nexxim</a><ul class="simple">
+<li class="toctree-l1"><a class="reference internal" href="Nexxim.html">Nexxim</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Nexxim.html#circuit-class">Circuit Class</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="Simplorer.html">Simplorer</a><ul class="simple">
+<li class="toctree-l1"><a class="reference internal" href="Simplorer.html">Simplorer</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Simplorer.html#simplorer-class">Simplorer Class</a></li>
 </ul>
 </li>
 </ul>
