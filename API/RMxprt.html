@@ -72,6 +72,10 @@
         
         
         <li class="nav-item ">
+            <a class="nav-link" href="../LICENSE.html">LICENSE</a>
+        </li>
+        
+        <li class="nav-item ">
             <a class="nav-link" href="../Resources/Installation.html">Installation</a>
         </li>
         
@@ -741,26 +745,9 @@
               
               <div class="toc-item">
                 
-<div class="tocsection onthispage pt-5 pb-3">
-    <i class="fas fa-list"></i> On this page
-</div>
 
 <nav id="bd-toc-nav">
-    <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#rmxprt-class">
-   RMxprt Class
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#description">
-     Description
-    </a>
-   </li>
-  </ul>
- </li>
-</ul>
-
+    
 </nav>
               </div>
               
@@ -780,78 +767,8 @@
               
               <div>
                 
-  <div class="section" id="module-pyaedt.rmxprt">
-<span id="rmxprt"></span><h1>RMxprt<a class="headerlink" href="#module-pyaedt.rmxprt" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="rmxprt-class">
-<h2>RMxprt Class<a class="headerlink" href="#rmxprt-class" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="description">
-<h3>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h3>
-<p>This class contains all the RMxprt Functionalities. It inherites all the objects that belongs to RMxprt</p>
-<dl class="field-list simple">
-<dt class="field-odd">Example</dt>
-<dd class="field-odd"><p></p></dd>
-</dl>
-<p>app = Rmxprt()     creates  Rmxprt object and connect to existing RMxprt design (create a new RMxprt design if not present)</p>
-<p>app = Rmxprt(projectname)     creates and  Rmxprt and link to projectname project</p>
-<p>app = Rmxprt(projectname,designame)     creates and RMxprt object and link to designname design in projectname project</p>
-<p>app = Rmxprt(&quot;myfile.aedt&quot;)     creates and RMxprt object and open specified project</p>
-<hr class="docutils" />
-<dl class="py class">
-<dt class="sig sig-object py" id="pyaedt.rmxprt.RMXprtModule">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pyaedt.rmxprt.</span></span><span class="sig-name descname"><span class="pre">RMXprtModule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">oeditor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/rmxprt.html#RMXprtModule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.rmxprt.RMXprtModule" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="py method">
-<dt class="sig sig-object py" id="pyaedt.rmxprt.RMXprtModule.get_prop_server">
-<span class="sig-name descname"><span class="pre">get_prop_server</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameter_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/rmxprt.html#RMXprtModule.get_prop_server"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.rmxprt.RMXprtModule.get_prop_server" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>parameter_name</strong> -- </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyaedt.rmxprt.RMXprtModule.set_rmxprt_parameter">
-<span class="sig-name descname"><span class="pre">set_rmxprt_parameter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameter_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/rmxprt.html#RMXprtModule.set_rmxprt_parameter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.rmxprt.RMXprtModule.set_rmxprt_parameter" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>parameter_name</strong> -- </p></li>
-<li><p><strong>value</strong> -- </p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="pyaedt.rmxprt.Rmxprt">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pyaedt.rmxprt.</span></span><span class="sig-name descname"><span class="pre">Rmxprt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">projectname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">designname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">solution_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_units</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">setup_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/rmxprt.html#Rmxprt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.rmxprt.Rmxprt" title="Permalink to this definition">¶</a></dt>
-<dd><p>RMxprt Object</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>projectname</strong> -- name of the project to be selected or full path to the project to be opened  or to the AEDTZ  archive. if None try to get active project and, if nothing present to create an empty one</p></li>
-<li><p><strong>designname</strong> -- name of the design to be selected. if None, try to get active design and, if nothing present to create an empty one</p></li>
-<li><p><strong>solution_type</strong> -- solution type to be applied to design. if None default is taken</p></li>
-<li><p><strong>setup_name</strong> -- setup_name to be used as nominal. if none active setup is taken or nothing</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="pyaedt.rmxprt.Rotor">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pyaedt.rmxprt.</span></span><span class="sig-name descname"><span class="pre">Rotor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">oeditor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/rmxprt.html#Rotor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.rmxprt.Rotor" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="pyaedt.rmxprt.Stator">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pyaedt.rmxprt.</span></span><span class="sig-name descname"><span class="pre">Stator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">oeditor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/rmxprt.html#Stator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.rmxprt.Stator" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</div>
-</div>
+  <div class="section" id="rmxprt">
+<h1>RMxprt<a class="headerlink" href="#rmxprt" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
 </div>
 </div>

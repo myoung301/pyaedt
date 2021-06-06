@@ -72,6 +72,10 @@
         
         
         <li class="nav-item ">
+            <a class="nav-link" href="../LICENSE.html">LICENSE</a>
+        </li>
+        
+        <li class="nav-item ">
             <a class="nav-link" href="../Resources/Installation.html">Installation</a>
         </li>
         
@@ -741,19 +745,9 @@
               
               <div class="toc-item">
                 
-<div class="tocsection onthispage pt-5 pb-3">
-    <i class="fas fa-list"></i> On this page
-</div>
 
 <nav id="bd-toc-nav">
-    <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#components-class">
-   Components Class
-  </a>
- </li>
-</ul>
-
+    
 </nav>
               </div>
               
@@ -773,133 +767,8 @@
               
               <div>
                 
-  <div class="section" id="module-pyaedt.edb_core.layout">
-<span id="edb-layout"></span><h1>EDB Layout<a class="headerlink" href="#module-pyaedt.edb_core.layout" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="components-class">
-<h2>Components Class<a class="headerlink" href="#components-class" title="Permalink to this headline">¶</a></h2>
-<p>This class manages Edb Components and related methods</p>
-<dl class="py class">
-<dt class="sig sig-object py" id="pyaedt.edb_core.layout.EdbLayout">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pyaedt.edb_core.layout.</span></span><span class="sig-name descname"><span class="pre">EdbLayout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/edb_core/layout.html#EdbLayout"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.edb_core.layout.EdbLayout" title="Permalink to this definition">¶</a></dt>
-<dd><p>HFSS 3DLayout object</p>
-<dl class="py property">
-<dt class="sig sig-object py" id="pyaedt.edb_core.layout.EdbLayout.active_layout">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">active_layout</span></span><a class="headerlink" href="#pyaedt.edb_core.layout.EdbLayout.active_layout" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="pyaedt.edb_core.layout.EdbLayout.builder">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">builder</span></span><a class="headerlink" href="#pyaedt.edb_core.layout.EdbLayout.builder" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="pyaedt.edb_core.layout.EdbLayout.cell">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">cell</span></span><a class="headerlink" href="#pyaedt.edb_core.layout.EdbLayout.cell" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="pyaedt.edb_core.layout.EdbLayout.db">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">db</span></span><a class="headerlink" href="#pyaedt.edb_core.layout.EdbLayout.db" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="pyaedt.edb_core.layout.EdbLayout.edb">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">edb</span></span><a class="headerlink" href="#pyaedt.edb_core.layout.EdbLayout.edb" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="pyaedt.edb_core.layout.EdbLayout.edb_value">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">edb_value</span></span><a class="headerlink" href="#pyaedt.edb_core.layout.EdbLayout.edb_value" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="pyaedt.edb_core.layout.EdbLayout.edbutils">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">edbutils</span></span><a class="headerlink" href="#pyaedt.edb_core.layout.EdbLayout.edbutils" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyaedt.edb_core.layout.EdbLayout.get_polygon_bounding_box">
-<span class="sig-name descname"><span class="pre">get_polygon_bounding_box</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">polygon</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/edb_core/layout.html#EdbLayout.get_polygon_bounding_box"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.edb_core.layout.EdbLayout.get_polygon_bounding_box" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the polygon bounding box</p>
-<dl class="field-list simple">
-<dt class="field-odd">Examples</dt>
-<dd class="field-odd"><p></p></dd>
-<dt class="field-even">Parameters</dt>
-<dd class="field-even"><p><strong>polygon</strong> -- edb_core polygon</p>
-</dd>
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><ul class="simple">
-<li><p><em>type</em> -- bounding box [-x,-y,+x,+y]</p></li>
-<li><p><em>&gt;&gt;&gt; poly = edb_core.core_primitives.get_polygons_by_layer(&quot;GND&quot;)</em></p></li>
-<li><p><em>&gt;&gt;&gt; bounding = edb_core.core_primitives.get_polygon_bounding_box(poly[0])</em></p></li>
-</ul>
-</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyaedt.edb_core.layout.EdbLayout.get_polygon_points">
-<span class="sig-name descname"><span class="pre">get_polygon_points</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">polygon</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/edb_core/layout.html#EdbLayout.get_polygon_points"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.edb_core.layout.EdbLayout.get_polygon_points" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return Polygon Points list. for Arcs, 1 point will be returned</p>
-<dl class="field-list simple">
-<dt class="field-odd">Examples</dt>
-<dd class="field-odd"><p></p></dd>
-<dt class="field-even">Parameters</dt>
-<dd class="field-even"><p><strong>polygon</strong> -- edb_core polygon</p>
-</dd>
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><ul class="simple">
-<li><p><em>type</em> -- list of list of double</p></li>
-<li><p><em>&gt;&gt;&gt; poly = edb_core.core_primitives.get_polygons_by_layer(&quot;GND&quot;)</em></p></li>
-<li><p><em>&gt;&gt;&gt; points  = edb_core.core_primitives.get_polygon_points(poly[0])</em></p></li>
-</ul>
-</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyaedt.edb_core.layout.EdbLayout.get_polygons_by_layer">
-<span class="sig-name descname"><span class="pre">get_polygons_by_layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layer_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">net_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/edb_core/layout.html#EdbLayout.get_polygons_by_layer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.edb_core.layout.EdbLayout.get_polygons_by_layer" title="Permalink to this definition">¶</a></dt>
-<dd><p>return</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>layer_name</strong> -- str layer name</p></li>
-<li><p><strong>net_list</strong> -- list of net name</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>list of Primitive object</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="pyaedt.edb_core.layout.EdbLayout.layers">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">layers</span></span><a class="headerlink" href="#pyaedt.edb_core.layout.EdbLayout.layers" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="pyaedt.edb_core.layout.EdbLayout.messenger">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">messenger</span></span><a class="headerlink" href="#pyaedt.edb_core.layout.EdbLayout.messenger" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="pyaedt.edb_core.layout.EdbLayout.polygons">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">polygons</span></span><a class="headerlink" href="#pyaedt.edb_core.layout.EdbLayout.polygons" title="Permalink to this definition">¶</a></dt>
-<dd><p>list of polygons</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>return</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-</div>
+  <div class="section" id="edb-layout">
+<h1>EDB Layout<a class="headerlink" href="#edb-layout" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
 </div>
 </div>
