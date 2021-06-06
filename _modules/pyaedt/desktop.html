@@ -518,8 +518,8 @@
                         <span class="k">if</span> <span class="n">m</span><span class="p">:</span>
                             <span class="n">processID</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
 
-                <span class="k">if</span> <span class="n">NG</span> <span class="ow">or</span> <span class="n">AlwaysNew</span><span class="p">:</span>
-                    <span class="c1">#forcing new object in case of non-graphical run</span>
+                <span class="k">if</span> <span class="n">NG</span> <span class="ow">or</span> <span class="n">AlwaysNew</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">processID</span><span class="p">:</span>
+                    <span class="c1"># forcing new object in case of non-graphical run or if no process already exists</span>
                     <span class="n">App</span> <span class="o">=</span> <span class="n">StandalonePyScriptWrapper</span><span class="o">.</span><span class="n">CreateObjectNew</span><span class="p">(</span><span class="n">NG</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">App</span> <span class="o">=</span> <span class="n">StandalonePyScriptWrapper</span><span class="o">.</span><span class="n">CreateObject</span><span class="p">(</span><span class="n">version</span><span class="p">)</span>
