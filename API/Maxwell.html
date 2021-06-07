@@ -751,6 +751,13 @@
   <a class="reference internal nav-link" href="#maxwell-class">
    Maxwell Class
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#description">
+     Description
+    </a>
+   </li>
+  </ul>
  </li>
 </ul>
 
@@ -777,12 +784,17 @@
 <span id="maxwell3d-2d"></span><h1>Maxwell3D/2D<a class="headerlink" href="#module-pyaedt.maxwell" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="maxwell-class">
 <h2>Maxwell Class<a class="headerlink" href="#maxwell-class" title="Permalink to this headline">¶</a></h2>
-<p>This class contains all Maxwell functionalities. It inherits all objects that belong to Maxwell.</p>
-<p>Examples:</p>
-<p>app = Maxwell3d()     Creates a <code class="docutils literal notranslate"><span class="pre">Maxwell3d</span></code> object and connects to an existing Maxwell design or creates a new one if no design is present.</p>
-<p>app = Maxwell3d(projectname)     Creates a <code class="docutils literal notranslate"><span class="pre">Maxwell3d</span></code> object and links to a project named projectname.</p>
-<p>app = Maxwell3d(projectname,designame)     Creates a <code class="docutils literal notranslate"><span class="pre">Maxwell3d</span></code> object and links to design named designname in a project named projectname.</p>
-<p>app = Maxwell2d(&quot;myfile.aedt&quot;)     Creates a <code class="docutils literal notranslate"><span class="pre">Maxwell2d</span></code> object and opens the specified project.</p>
+<div class="section" id="description">
+<h3>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h3>
+<p>This class contains all the Maxwell Functionalities. It inherites all the objects that belongs to Maxwell</p>
+<dl class="field-list simple">
+<dt class="field-odd">Example</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<p>app = Maxwell3d()     creates  Maxwell 3D object and connect to existing Maxwell design (create a new Maxwell design if not present)</p>
+<p>app = Maxwell3d(projectname)     creates and  Maxwell 3D and link to projectname project</p>
+<p>app = Maxwell3d(projectname,designame)     creates and Maxwell 3D object and link to designname design in projectname project</p>
+<p>app = Maxwell2d(&quot;myfile.aedt&quot;)     creates and Maxwell 2D object and open specified project</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyaedt.maxwell.Maxwell">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pyaedt.maxwell.</span></span><span class="sig-name descname"><span class="pre">Maxwell</span></span><a class="reference internal" href="../_modules/pyaedt/maxwell.html#Maxwell"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.maxwell.Maxwell" title="Permalink to this definition">¶</a></dt>
@@ -1173,6 +1185,7 @@ it is important to instruct the operating system to use a python interpreter to 
 </dl>
 </dd></dl>
 
+</div>
 </div>
 <div class="toctree-wrapper compound">
 </div>

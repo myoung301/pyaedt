@@ -1097,8 +1097,8 @@ Note: to obtain the edb_core pin name simply use pin.GetName()</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">AEDTLib.EDB</span> <span class="kn">import</span> <span class="n">EDB</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">edbapp</span> <span class="o">=</span> <span class="n">EDB</span><span class="p">(</span><span class="s2">&quot;myaedbfolder&quot;</span><span class="p">,</span> <span class="s2">&quot;project name&quot;</span><span class="p">,</span> <span class="s2">&quot;release version&quot;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyaedt.edb</span> <span class="kn">import</span> <span class="n">Edb</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">edbapp</span> <span class="o">=</span> <span class="n">Edb</span><span class="p">(</span><span class="s2">&quot;myaedbfolder&quot;</span><span class="p">,</span> <span class="s2">&quot;project name&quot;</span><span class="p">,</span> <span class="s2">&quot;release version&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">edbapp</span><span class="o">.</span><span class="n">core_components</span><span class="o">.</span><span class="n">get_aedt_pin_name</span><span class="p">(</span><span class="n">pin</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1155,7 +1155,7 @@ Note: to obtain the edb_core pin name simply use pin.GetName()</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">AEDTLib.EDB</span> <span class="kn">import</span> <span class="n">EDB</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyaedt.edb</span> <span class="kn">import</span> <span class="n">Edb</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">edbapp</span> <span class="o">=</span> <span class="n">EDB</span><span class="p">(</span><span class="s2">&quot;myaedbfolder&quot;</span><span class="p">,</span> <span class="s2">&quot;project name&quot;</span><span class="p">,</span> <span class="s2">&quot;release version&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">edbapp</span><span class="o">.</span><span class="n">core_components</span><span class="o">.</span><span class="n">get_component_net_connection_info</span><span class="p">(</span><span class="n">refdes</span><span class="p">)</span>
 </pre></div>
@@ -1195,8 +1195,8 @@ Note: to obtain the edb_core pin name simply use pin.GetName()</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">AEDTLib.EDB</span> <span class="kn">import</span> <span class="n">EDB</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">edbapp</span> <span class="o">=</span> <span class="n">EDB</span><span class="p">(</span><span class="s2">&quot;myaedbfolder&quot;</span><span class="p">,</span> <span class="s2">&quot;project name&quot;</span><span class="p">,</span> <span class="s2">&quot;release version&quot;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyaedt.edb</span> <span class="kn">import</span> <span class="n">Edb</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">edbapp</span> <span class="o">=</span> <span class="n">Edb</span><span class="p">(</span><span class="s2">&quot;myaedbfolder&quot;</span><span class="p">,</span> <span class="s2">&quot;project name&quot;</span><span class="p">,</span> <span class="s2">&quot;release version&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">edbapp</span><span class="o">.</span><span class="n">core_components</span><span class="o">.</span><span class="n">get_nets_from_pin_list</span><span class="p">(</span><span class="n">pinlist</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1221,8 +1221,8 @@ Note: to obtain the edb_core pin name simply use pin.GetName()</p>
 </dl>
 </div></blockquote>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">AEDTLib.EDB</span> <span class="kn">import</span> <span class="n">EDB</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">edbapp</span> <span class="o">=</span> <span class="n">EDB</span><span class="p">(</span><span class="s2">&quot;myaedbfolder&quot;</span><span class="p">,</span> <span class="s2">&quot;project name&quot;</span><span class="p">,</span> <span class="s2">&quot;release version&quot;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyaedt.edb</span> <span class="kn">import</span> <span class="n">Edb</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">edbapp</span> <span class="o">=</span> <span class="n">Edb</span><span class="p">(</span><span class="s2">&quot;myaedbfolder&quot;</span><span class="p">,</span> <span class="s2">&quot;project name&quot;</span><span class="p">,</span> <span class="s2">&quot;release version&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">edbapp</span><span class="o">.</span><span class="n">core_components</span><span class="o">.</span><span class="n">get_pin_from_component</span><span class="p">(</span><span class="s2">&quot;R1&quot;</span><span class="p">,</span> <span class="n">refdes</span><span class="p">,</span> <span class="n">optional</span><span class="p">:</span><span class="nb">str</span> <span class="n">nets</span><span class="p">,</span> <span class="n">optional</span><span class="p">:</span> <span class="nb">str</span> <span class="n">pins</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1244,8 +1244,8 @@ Note: to obtain the edb_core pin name simply use pin.GetName()</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">AEDTLib.EDB</span> <span class="kn">import</span> <span class="n">EDB</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">edbapp</span> <span class="o">=</span> <span class="n">EDB</span><span class="p">(</span><span class="s2">&quot;myaedbfolder&quot;</span><span class="p">,</span> <span class="s2">&quot;project name&quot;</span><span class="p">,</span> <span class="s2">&quot;release version&quot;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyaedt.edb</span> <span class="kn">import</span> <span class="n">Edb</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">edbapp</span> <span class="o">=</span> <span class="n">Edb</span><span class="p">(</span><span class="s2">&quot;myaedbfolder&quot;</span><span class="p">,</span> <span class="s2">&quot;project name&quot;</span><span class="p">,</span> <span class="s2">&quot;release version&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">edbapp</span><span class="o">.</span><span class="n">core_components</span><span class="o">.</span><span class="n">get_pin_position</span><span class="p">(</span><span class="n">pin</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1270,8 +1270,8 @@ Note: to obtain the edb_core pin name simply use pin.GetName()</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">AEDTLib.EDB</span> <span class="kn">import</span> <span class="n">EDB</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">edbapp</span> <span class="o">=</span> <span class="n">EDB</span><span class="p">(</span><span class="s2">&quot;myaedbfolder&quot;</span><span class="p">,</span> <span class="s2">&quot;project name&quot;</span><span class="p">,</span> <span class="s2">&quot;release version&quot;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyaedt.edb</span> <span class="kn">import</span> <span class="n">Edb</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">edbapp</span> <span class="o">=</span> <span class="n">Edb</span><span class="p">(</span><span class="s2">&quot;myaedbfolder&quot;</span><span class="p">,</span> <span class="s2">&quot;project name&quot;</span><span class="p">,</span> <span class="s2">&quot;release version&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">edbapp</span><span class="o">.</span><span class="n">core_components</span><span class="o">.</span><span class="n">get_pins_name_from_net</span><span class="p">(</span><span class="n">pin_list</span><span class="p">,</span> <span class="n">net_name</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1282,8 +1282,8 @@ Note: to obtain the edb_core pin name simply use pin.GetName()</p>
 <span class="sig-name descname"><span class="pre">get_rats</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/edb_core/components.html#Components.get_rats"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.edb_core.components.Components.get_rats" title="Permalink to this definition">¶</a></dt>
 <dd><p>return the list of dictionaries of dictionary of RefDes, PinNames and NetNames
 :example:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">AEDTLib.EDB</span> <span class="kn">import</span> <span class="n">EDB</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">edbapp</span> <span class="o">=</span> <span class="n">EDB</span><span class="p">(</span><span class="s2">&quot;myaedbfolder&quot;</span><span class="p">,</span> <span class="s2">&quot;project name&quot;</span><span class="p">,</span> <span class="s2">&quot;release version&quot;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyaedt.edb</span> <span class="kn">import</span> <span class="n">Edb</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">edbapp</span> <span class="o">=</span> <span class="n">Edb</span><span class="p">(</span><span class="s2">&quot;myaedbfolder&quot;</span><span class="p">,</span> <span class="s2">&quot;project name&quot;</span><span class="p">,</span> <span class="s2">&quot;release version&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">edbapp</span><span class="o">.</span><span class="n">core_components</span><span class="o">.</span><span class="n">get_rats</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -1309,7 +1309,7 @@ Note: to obtain the edb_core pin name simply use pin.GetName()</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">AEDTLib.EDB</span> <span class="kn">import</span> <span class="n">EDB</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyaedt.edb</span> <span class="kn">import</span> <span class="n">Edb</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">edbapp</span> <span class="o">=</span> <span class="n">EDB</span><span class="p">(</span><span class="s2">&quot;myaedbfolder&quot;</span><span class="p">,</span> <span class="s2">&quot;project name&quot;</span><span class="p">,</span> <span class="s2">&quot;release version&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">edbapp</span><span class="o">.</span><span class="n">core_components</span><span class="o">.</span><span class="n">get_through_resistor_list</span><span class="p">()</span>
 </pre></div>
