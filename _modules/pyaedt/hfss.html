@@ -81,10 +81,6 @@
             <a class="nav-link" href="../../Resources/Code_Guidelines.html">Code Guidelines</a>
         </li>
         
-        <li class="nav-item ">
-            <a class="nav-link" href="../../Resources/Contributing.html">Contributing</a>
-        </li>
-        
         
       </ul>
 
@@ -147,18 +143,18 @@
 <span class="sd">Description</span>
 <span class="sd">==================================================</span>
 
-<span class="sd">This class contains all the HFSS Functionalities. It inherites all the objects that belongs to HFSS</span>
+<span class="sd">This class contains all HFSS functionalities. It inherits all objects that belong to HFSS.</span>
 
 
-<span class="sd">:Example:</span>
+<span class="sd">Examples:</span>
 
-<span class="sd">hfss = Hfss()     creates and hfss object and connect to existing hfss design (create a new hfss design if not present)</span>
-
-
-<span class="sd">hfss = Hfss(projectname)     creates and hfss object and link to projectname project. If project doesn&#39;t exists, it creates a new one and rename it</span>
+<span class="sd">hfss = Hfss()     Creates an HFSS object and connects to an existing HFSS design or creates a new HFSS design if one is not present.</span>
 
 
-<span class="sd">hfss = Hfss(projectname,designame)     creates and hfss object and link to designname design in projectname project</span>
+<span class="sd">hfss = Hfss(projectname)     Creates an HFSS object and links to a project named projectname. If this project doesn&#39;t exist, it creates a new project named projectname.</span>
+
+
+<span class="sd">hfss = Hfss(projectname,designame)     Creates an HFSS object and links to design named designname in a project named projectname.</span>
 
 
 <span class="sd">hfss = Hfss(&quot;myfile.aedt&quot;)     creates and hfss object and open specified project</span>
