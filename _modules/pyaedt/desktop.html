@@ -135,29 +135,27 @@
               <div>
                 
   <h1>Source code for pyaedt.desktop</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;This is the desktop module used to initialize AEDT.</span>
+<span></span><span class="sd">&quot;&quot;&quot;The ``Desktop`` module is used to initialize AEDT.</span>
 
-<span class="sd">This module initializes AEDT and MessageManager to manage the AEDT</span>
-<span class="sd">desktop.  It can be initialized in standalone way before launching an</span>
-<span class="sd">app or it is automatically initialized to latest installed AEDT</span>
-<span class="sd">version.</span>
+<span class="sd">This module initializes AEDT and MessageManager to manage AEDT.</span>
+<span class="sd">You can initialize the ``Desktop`` module before launching an app or have the app automatically initialize it to the latest installed AEDT version.</span>
 
 
 <span class="sd">Examples</span>
 <span class="sd">--------</span>
-<span class="sd">Launch Desktop 2020R1 in Non-Graphical Mode and initialize HFSS</span>
+<span class="sd">Launch AEDT 2020 R1 in non-graphical mode and initialize HFSS</span>
 
 <span class="sd">&gt;&gt;&gt; import pyaedt</span>
 <span class="sd">&gt;&gt;&gt; desktop = pyaedt.Desktop(&quot;2020.1&quot;, NG=True)</span>
 <span class="sd">&gt;&gt;&gt; hfss = pyaedt.Hfss()</span>
 
-<span class="sd">Launch Desktop 2019R3 in Graphical Mode</span>
+<span class="sd">Launch AEDT 2019 R3 in graphical mode and initialize HFSS</span>
 
 <span class="sd">&gt;&gt;&gt; desktop = Desktop(&quot;2019.3&quot;)</span>
 <span class="sd">&gt;&gt;&gt; hfss = pyaedt.Hfss()</span>
 
-<span class="sd">The initialize Desktop to latest version installed on your machine in</span>
-<span class="sd">Graphical Mode and initialize HFSS.</span>
+<span class="sd">The previous example initializes the ``Desktop`` module to the latest AEDT version installed on your machine in</span>
+<span class="sd">graphical mode and initializes HFSS.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>

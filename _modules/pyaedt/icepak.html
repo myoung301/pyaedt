@@ -139,25 +139,21 @@
 <span class="sd">Icepak 3d Layout Class</span>
 <span class="sd">----------------------------------------------------------------</span>
 
-
-<span class="sd">Description</span>
-<span class="sd">==================================================</span>
-
-<span class="sd">This class contains all the Icepak AEDT Functionalities. It inherites all the objects that belongs to Icepak</span>
+<span class="sd">This class contains all Icepak functionalities. It inherits all objects that belong to Icepak.</span>
 
 
-<span class="sd">:Example:</span>
+<span class="sd">Examples:</span>
 
-<span class="sd">app = Icepak()     creates and Icepak object and connect to existing hfss design (create a new hfss design if not present)</span>
-
-
-<span class="sd">app = Icepak(projectname)     creates and Icepak object and link to projectname project. If project doesn&#39;t exists, it creates a new one and rename it</span>
+<span class="sd">app = Icepak()     Creates an ``Icepak`` object and connects to an existing HFSS design or creates a new HFSS design if one is not present.</span>
 
 
-<span class="sd">app = Icepak(projectname,designame)     creates and Icepak object and link to designname design in projectname project</span>
+<span class="sd">app = Icepak(projectname)     Creates an ``Icepak`` object and links to project named projectname. If this project doesn&#39;t exists, it creates a new one with this name.</span>
 
 
-<span class="sd">app = Icepak(&quot;myfile.aedt&quot;)     creates and Icepak object and open specified project</span>
+<span class="sd">app = Icepak(projectname,designame)     Creates an ``Icepak`` object and links to a design named designname in a project named projectname.</span>
+
+
+<span class="sd">app = Icepak(&quot;myfile.aedt&quot;)     Creates an ``Icepak`` object and opens the specified project.</span>
 
 
 <span class="sd">========================================================</span>
@@ -908,8 +904,8 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        str</span>
-<span class="sd">            filename</span>
+<span class="sd">        type</span>
+<span class="sd">            str filename</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">name</span><span class="o">=</span><span class="n">generate_unique_name</span><span class="p">(</span><span class="n">quantity_name</span><span class="p">)</span>
@@ -958,8 +954,8 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        str</span>
-<span class="sd">            filename</span>
+<span class="sd">        type</span>
+<span class="sd">            str filename</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
