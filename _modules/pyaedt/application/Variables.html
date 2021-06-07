@@ -1010,13 +1010,13 @@
 <span class="sd">    --------</span>
 <span class="sd">    &gt;&gt;&gt; from pyaedt.application.Variables import Variable</span>
 
-<span class="sd">    Define a varable using a string-value consistent with the AEDT properties</span>
+<span class="sd">    Define a variable using a string-value consistent with the AEDT properties</span>
 <span class="sd">    &gt;&gt;&gt; v = Variable(&quot;45mm&quot;)</span>
 
 <span class="sd">    A unitless variable with value 3.0</span>
 <span class="sd">    &gt;&gt;&gt; v = Variable(3.0)</span>
 
-<span class="sd">    A variable defined ba a numeric result and a unit string</span>
+<span class="sd">    A variable defined by a numeric result and a unit string</span>
 <span class="sd">    &gt;&gt;&gt; v = Variable(3.0 * 4.5, units=&quot;mm&quot;)</span>
 <span class="sd">    &gt;&gt;&gt; assert v.numeric_value = 13.5</span>
 <span class="sd">    &gt;&gt;&gt; assert v.units = &quot;mm&quot;</span>
