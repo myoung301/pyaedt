@@ -766,15 +766,25 @@
   <div class="section" id="circuit-tools">
 <h1>Circuit Tools<a class="headerlink" href="#circuit-tools" title="Permalink to this headline">¶</a></h1>
 <p><strong>Diagram</strong></p>
-<div class="graphviz"><img src="../_images/inheritance-4de2434e73b5672143dd7ecd3eb7fec87c82d2e7.png" alt="Inheritance diagram of pyaedt.Circuit, pyaedt.Simplorer" usemap="#inheritancec5677059e5" class="inheritance graphviz" /></div>
-<map id="inheritancec5677059e5" name="inheritancec5677059e5">
-<area shape="poly" id="node1" href="Analysis.html#pyaedt.application.Analysis.Analysis" target="_top" title="**Class Analysis**" alt="" coords="588,89,585,78,577,68,565,60,550,55,533,53,516,55,501,60,489,68,481,78,479,89,481,100,489,110,501,118,516,124,533,125,550,124,565,118,577,110,585,100"/>
-<area shape="poly" id="node4" href="AnalysisNexxim.html#pyaedt.application.AnalysisNexxim.FieldAnalysisCircuit" target="_top" title="**AEDT_CircuitAnalysis**" alt="" coords="414,41,408,30,393,20,368,12,337,7,303,5,269,7,238,12,214,20,198,30,193,41,198,52,214,62,238,70,269,76,303,77,337,76,368,70,393,62,408,52"/>
-<area shape="poly" id="node5" href="AnalysisSimplorer.html#pyaedt.application.AnalysisSimplorer.FieldAnalysisSimplorer" target="_top" title="**AEDT_CircuitAnalysis**" alt="" coords="431,137,424,126,406,116,378,108,343,103,303,101,264,103,228,108,200,116,182,126,176,137,182,148,200,158,228,166,264,172,303,173,343,172,378,166,406,158,424,148"/>
-<area shape="poly" id="node2" href="Design.html#pyaedt.application.Design.Design" target="_top" title="Class Design. Contains all functions and objects connected to the active Project and Design" alt="" coords="731,89,729,78,722,68,712,60,698,55,684,53,669,55,655,60,645,68,638,78,636,89,638,100,645,110,655,118,669,124,684,125,698,124,712,118,722,110,729,100"/>
-<area shape="poly" id="node3" href="Nexxim.html#pyaedt.circuit.Circuit" target="_top" title="Circuit Object" alt="" coords="111,41,109,30,103,20,93,12,80,7,66,5,53,7,40,12,30,20,24,30,22,41,24,52,30,62,40,70,53,76,66,77,80,76,93,70,103,62,109,52"/>
-<area shape="poly" id="node6" href="Simplorer.html#pyaedt.simplorer.Simplorer" target="_top" title="Simplorer Object" alt="" coords="128,137,125,126,116,116,102,108,85,103,66,101,48,103,31,108,17,116,8,126,5,137,8,148,17,158,31,166,48,172,66,173,85,172,102,166,116,158,125,148"/>
-</map><div class="toctree-wrapper compound">
+digraph inheritancec5677059e5 {
+bgcolor=transparent;
+fontsize=14;
+rankdir=RL;
+ratio=compress;
+size=&quot;8.0, 10.0&quot;;
+  &quot;Analysis&quot; [URL=&quot;Analysis.html#pyaedt.application.Analysis.Analysis&quot;,color=dodgerblue1,fillcolor=white,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=14,height=0.75,shape=ellipse,style=filled,target=&quot;_top&quot;,tooltip=&quot;**Class Analysis**&quot;];
+  &quot;Design&quot; -&gt; &quot;Analysis&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+  &quot;Circuit&quot; [URL=&quot;Nexxim.html#pyaedt.circuit.Circuit&quot;,color=dodgerblue1,fillcolor=white,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=14,height=0.75,shape=ellipse,style=filled,target=&quot;_top&quot;,tooltip=&quot;Circuit Object&quot;];
+  &quot;FieldAnalysisCircuit&quot; -&gt; &quot;Circuit&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+  &quot;Design&quot; [URL=&quot;Design.html#pyaedt.application.Design.Design&quot;,color=dodgerblue1,fillcolor=white,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=14,height=0.75,shape=ellipse,style=filled,target=&quot;_top&quot;,tooltip=&quot;Class Design. Contains all functions and objects connected to the active Project and Design&quot;];
+  &quot;FieldAnalysisCircuit&quot; [URL=&quot;AnalysisNexxim.html#pyaedt.application.AnalysisNexxim.FieldAnalysisCircuit&quot;,color=dodgerblue1,fillcolor=white,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=14,height=0.75,shape=ellipse,style=filled,target=&quot;_top&quot;,tooltip=&quot;**AEDT_CircuitAnalysis**&quot;];
+  &quot;Analysis&quot; -&gt; &quot;FieldAnalysisCircuit&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+  &quot;FieldAnalysisSimplorer&quot; [URL=&quot;AnalysisSimplorer.html#pyaedt.application.AnalysisSimplorer.FieldAnalysisSimplorer&quot;,color=dodgerblue1,fillcolor=white,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=14,height=0.75,shape=ellipse,style=filled,target=&quot;_top&quot;,tooltip=&quot;**AEDT_CircuitAnalysis**&quot;];
+  &quot;Analysis&quot; -&gt; &quot;FieldAnalysisSimplorer&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+  &quot;Simplorer&quot; [URL=&quot;Simplorer.html#pyaedt.simplorer.Simplorer&quot;,color=dodgerblue1,fillcolor=white,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=14,height=0.75,shape=ellipse,style=filled,target=&quot;_top&quot;,tooltip=&quot;Simplorer Object&quot;];
+  &quot;FieldAnalysisSimplorer&quot; -&gt; &quot;Simplorer&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+}
+<div class="toctree-wrapper compound">
 <p class="caption"><span class="caption-text">Classes:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="Nexxim.html">Nexxim</a><ul>

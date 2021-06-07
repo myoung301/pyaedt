@@ -355,6 +355,23 @@
     <span class="s2">&quot;EMIT Design&quot;</span><span class="p">:</span> <span class="s2">&quot;EMIT Design&quot;</span><span class="p">,</span>
 <span class="p">}</span>
 
+<span class="c1">#TODO: refactor this to Generic ?</span>
+<span class="k">def</span> <span class="nf">_variation_string_to_dict</span><span class="p">(</span><span class="n">variation_string</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Helper function to convert a list of &quot;=&quot;-separated strings into a dictionary</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dict</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">var_data</span> <span class="o">=</span> <span class="n">variation_string</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+    <span class="n">variation_dict</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">var_data</span><span class="p">:</span>
+        <span class="n">pos_eq</span> <span class="o">=</span> <span class="n">var</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">)</span>
+        <span class="n">var_name</span> <span class="o">=</span> <span class="n">var</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">pos_eq</span><span class="p">]</span>
+        <span class="n">var_value</span> <span class="o">=</span> <span class="n">var</span><span class="p">[</span><span class="n">pos_eq</span><span class="o">+</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\&#39;</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">variation_dict</span><span class="p">[</span><span class="n">var_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">var_value</span>
+    <span class="k">return</span> <span class="n">variation_dict</span>
+
 <div class="viewcode-block" id="Design"><a class="viewcode-back" href="../../../API/Design.html#pyaedt.application.Design.Design">[docs]</a><span class="k">class</span> <span class="nc">Design</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Class Design. Contains all functions and objects connected to the active Project and Design&quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -2222,6 +2239,114 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_odesign</span><span class="o">.</span><span class="n">ValidateDesign</span><span class="p">()</span></div>
 
+
+<div class="viewcode-block" id="Design.get_evaluated_value"><a class="viewcode-back" href="../../../API/Design.html#pyaedt.application.Design.Design.get_evaluated_value">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
+    <span class="k">def</span> <span class="nf">get_evaluated_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variable_name</span><span class="p">,</span> <span class="n">variation</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the floating-point evaluated value of a given variable</span>
+<span class="sd">        (design property or project variable) in SI-units</span>
+
+<span class="sd">        Optionally a variation string of the form</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        variable_name : str, default=None</span>
+<span class="sd">        Name of the project- or design variable to be evaluated</span>
+<span class="sd">        variation : str, default=None</span>
+<span class="sd">        Variation string for the evaluation. If not specified then use the nominal variation</span>
+
+<span class="sd">        &gt;&gt;&gt; M3D = Maxwell3D()</span>
+<span class="sd">        &gt;&gt;&gt; M3D[&quot;p1&quot;] = &quot;10mm&quot;</span>
+<span class="sd">        &gt;&gt;&gt; M3D[&quot;p2&quot;] = &quot;20mm&quot;</span>
+<span class="sd">        &gt;&gt;&gt; M3D[&quot;p3&quot;] = &quot;P1 * p2&quot;</span>
+<span class="sd">        &gt;&gt;&gt; eval_p3 = M3D.get_evaluated_value(&quot;p3&quot;)</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        float</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">variation</span><span class="p">:</span>
+            <span class="n">variation_string</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_odesign</span><span class="o">.</span><span class="n">GetNominalVariation</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">variation_string</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design_variation</span><span class="p">(</span><span class="n">variation_string</span><span class="o">=</span><span class="n">variation</span><span class="p">)</span>
+
+        <span class="n">si_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_odesign</span><span class="o">.</span><span class="n">GetVariationVariableValue</span><span class="p">(</span><span class="n">variation_string</span><span class="p">,</span> <span class="n">variable_name</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">si_value</span></div>
+
+<div class="viewcode-block" id="Design.evaluate_expression"><a class="viewcode-back" href="../../../API/Design.html#pyaedt.application.Design.Design.evaluate_expression">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
+    <span class="k">def</span> <span class="nf">evaluate_expression</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expression_string</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Evaluate an arbitrary valid string expression and return the numerical value in SI units</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        expression_string : str</span>
+<span class="sd">        A valid design property/project variable string, i.e &quot;34mm*sqrt(2)&quot;, &quot;$G1*p2/34&quot;</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        float</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Set the value of an internal reserved design variable to the specified string</span>
+        <span class="k">if</span> <span class="n">expression_string</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_variable_manager</span><span class="o">.</span><span class="n">variables</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_variable_manager</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">expression_string</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_variable_manager</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="s2">&quot;pyaedt_evaluator&quot;</span><span class="p">,</span> <span class="n">expression</span><span class="o">=</span><span class="n">expression_string</span><span class="p">,</span> <span class="n">prop_type</span><span class="o">=</span><span class="s2">&quot;VariableProp&quot;</span><span class="p">,</span>
+                                                    <span class="n">readonly</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">hidden</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Internal_Evaluator&quot;</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">raise</span><span class="p">(</span><span class="s2">&quot;Invalid string expression </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">expression_string</span><span class="p">)</span>
+
+            <span class="c1"># Extract the numeric value of the expression (in SI units!)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_variable_manager</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s2">&quot;pyaedt_evaluator&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span></div>
+
+<div class="viewcode-block" id="Design.design_variation"><a class="viewcode-back" href="../../../API/Design.html#pyaedt.application.Design.Design.design_variation">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
+    <span class="k">def</span> <span class="nf">design_variation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variation_string</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Generate a string to specify a desired variation</span>
+
+<span class="sd">        Converts a user input string defining a desired solution variation, e.g. &quot;p1=1mm p2=3mm&quot; into a valid</span>
+<span class="sd">        string taking into account all existing design properties and project variables including non-sweep</span>
+<span class="sd">        dependent properties.</span>
+
+<span class="sd">        This is actually needed because the standard GetVariationVariableValue does not work for obtaining</span>
+<span class="sd">        values of dependent (non-sweep variables). Presumably using the new beta feature object-oriented</span>
+<span class="sd">        scripting model this could be made redundant in future releases.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        variation_string : str</span>
+<span class="sd">        Variation string of the form &quot;p1=1mm p2=3mm&quot;</span>
+
+<span class="sd">            Parameters</span>
+<span class="sd">            ----------</span>
+<span class="sd">            variation_string</span>
+
+<span class="sd">            Returns</span>
+<span class="sd">            -------</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">nominal</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_odesign</span><span class="o">.</span><span class="n">GetNominalVariation</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">variation_string</span><span class="p">:</span>
+            <span class="c1"># decompose the nominal variation into a dictionary of name[value]</span>
+            <span class="n">nominal_dict</span> <span class="o">=</span> <span class="n">_variation_string_to_dict</span><span class="p">(</span><span class="n">nominal</span><span class="p">)</span>
+
+            <span class="c1"># decompose the desired variation into a dictionary of name[value]</span>
+            <span class="n">var_dict</span> <span class="o">=</span> <span class="n">_variation_string_to_dict</span><span class="p">(</span><span class="n">variation_string</span><span class="p">)</span>
+
+            <span class="c1"># set the values of the desired variation in the active design</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">var_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="bp">self</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+            <span class="c1"># get the desired variation values</span>
+            <span class="n">nominal</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_odesign</span><span class="o">.</span><span class="n">GetNominalVariation</span><span class="p">()</span>
+
+            <span class="c1"># Reset the nominal values in the active design</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">var_dict</span><span class="p">:</span>
+                <span class="bp">self</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">nominal_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">nominal</span></div>
 
     <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="nf">_assert_consistent_design_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">des_name</span><span class="p">):</span>

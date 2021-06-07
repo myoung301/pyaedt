@@ -1348,6 +1348,30 @@ Save the project before copying it</p>
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.application.Design.Design.design_variation">
+<span class="sig-name descname"><span class="pre">design_variation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">variation_string</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/application/Design.html#Design.design_variation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.application.Design.Design.design_variation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a string to specify a desired variation</p>
+<p>Converts a user input string defining a desired solution variation, e.g. &quot;p1=1mm p2=3mm&quot; into a valid
+string taking into account all existing design properties and project variables including non-sweep
+dependent properties.</p>
+<p>This is actually needed because the standard GetVariationVariableValue does not work for obtaining
+values of dependent (non-sweep variables). Presumably using the new beta feature object-oriented
+scripting model this could be made redundant in future releases.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>variation_string</strong> (<em>str</em>) -- </p></li>
+<li><p><strong>string of the form &quot;p1=1mm p2=3mm&quot;</strong> (<em>Variation</em>) -- <dl class="field-list simple">
+<dt class="field-odd">param variation_string</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="pyaedt.application.Design.Design.desktop_install_dir">
 <em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">desktop_install_dir</span></span><a class="headerlink" href="#pyaedt.application.Design.Design.desktop_install_dir" title="Permalink to this definition">¶</a></dt>
@@ -1374,6 +1398,28 @@ Save the project before copying it</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.application.Design.Design.evaluate_expression">
+<span class="sig-name descname"><span class="pre">evaluate_expression</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expression_string</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/application/Design.html#Design.evaluate_expression"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.application.Design.Design.evaluate_expression" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate an arbitrary valid string expression and return the numerical value in SI units</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>expression_string</strong> (<em>str</em>) -- </p></li>
+<li><p><strong>valid design property/project variable string</strong> (<em>A</em>) -- </p></li>
+<li><p><strong>&quot;34mm*sqrt</strong><strong>(</strong><strong>2</strong><strong>)</strong><strong>&quot;</strong> (<em>i.e</em>) -- </p></li>
+<li><p><strong>&quot;$G1*p2/34&quot;</strong> -- </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pyaedt.application.Design.Design.export_variables_to_csv">
 <span class="sig-name descname"><span class="pre">export_variables_to_csv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">export_project</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">export_design</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/application/Design.html#Design.export_variables_to_csv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.application.Design.Design.export_variables_to_csv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Export Project and design variables variables to filename</p>
@@ -1390,6 +1436,35 @@ Save the project before copying it</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>type</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.application.Design.Design.get_evaluated_value">
+<span class="sig-name descname"><span class="pre">get_evaluated_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">variable_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/application/Design.html#Design.get_evaluated_value"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.application.Design.Design.get_evaluated_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the floating-point evaluated value of a given variable
+(design property or project variable) in SI-units</p>
+<p>Optionally a variation string of the form</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>variable_name</strong> (<em>str</em><em>, </em><em>default=None</em>) -- </p></li>
+<li><p><strong>of the project-</strong><strong> or </strong><strong>design variable to be evaluated</strong> (<em>Name</em>) -- </p></li>
+<li><p><strong>variation</strong> (<em>str</em><em>, </em><em>default=None</em>) -- </p></li>
+<li><p><strong>string for the evaluation. If not specified then use the nominal variation</strong> (<em>Variation</em>) -- </p></li>
+<li><p><strong>M3D = Maxwell3D</strong><strong>(</strong><strong>)</strong> (<em>&gt;&gt;&gt;</em>) -- </p></li>
+<li><p><strong>M3D</strong><strong>[</strong><strong>&quot;p1&quot;</strong><strong>] </strong><strong>= &quot;10mm&quot;</strong> (<em>&gt;&gt;&gt;</em>) -- </p></li>
+<li><p><strong>M3D</strong><strong>[</strong><strong>&quot;p2&quot;</strong><strong>] </strong><strong>= &quot;20mm&quot;</strong> (<em>&gt;&gt;&gt;</em>) -- </p></li>
+<li><p><strong>M3D</strong><strong>[</strong><strong>&quot;p3&quot;</strong><strong>] </strong><strong>= &quot;P1 * p2&quot;</strong> (<em>&gt;&gt;&gt;</em>) -- </p></li>
+<li><p><strong>eval_p3 = M3D.get_evaluated_value</strong><strong>(</strong><strong>&quot;p3&quot;</strong><strong>)</strong> (<em>&gt;&gt;&gt;</em>) -- </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
 </dd>
 </dl>
 </dd></dl>
