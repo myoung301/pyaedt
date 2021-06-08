@@ -5,8 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>HFSS &#8212; PyAEDT 0.3.dev0
- documentation</title>
+    <title>HFSS &#8212; PyAEDT 0.2.0 documentation</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet" />
   <link href="../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -752,13 +751,6 @@
   <a class="reference internal nav-link" href="#hfss-class">
    Hfss Class
   </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#description">
-     Description
-    </a>
-   </li>
-  </ul>
  </li>
 </ul>
 
@@ -785,17 +777,12 @@
 <span id="hfss"></span><h1>HFSS<a class="headerlink" href="#module-pyaedt.hfss" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="hfss-class">
 <h2>Hfss Class<a class="headerlink" href="#hfss-class" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="description">
-<h3>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h3>
-<p>This class contains all the HFSS Functionalities. It inherites all the objects that belongs to HFSS</p>
-<dl class="field-list simple">
-<dt class="field-odd">Example</dt>
-<dd class="field-odd"><p></p></dd>
-</dl>
-<p>hfss = Hfss()     creates and hfss object and connect to existing hfss design (create a new hfss design if not present)</p>
-<p>hfss = Hfss(projectname)     creates and hfss object and link to projectname project. If project doesn't exists, it creates a new one and rename it</p>
-<p>hfss = Hfss(projectname,designame)     creates and hfss object and link to designname design in projectname project</p>
-<p>hfss = Hfss(&quot;myfile.aedt&quot;)     creates and hfss object and open specified project</p>
+<p>This class contains all HFSS functionalities. It inherits all objects that belong to HFSS.</p>
+<p>Examples:</p>
+<p>hfss = Hfss()     Creates an <code class="docutils literal notranslate"><span class="pre">Hfss</span></code> object and connects to an existing HFSS design or creates a new HFSS design if one is not present.</p>
+<p>hfss = Hfss(projectname)     Creates an <code class="docutils literal notranslate"><span class="pre">Hfss</span></code> object and links to a project named projectname. If this project doesn't exist, it creates one with this name.</p>
+<p>hfss = Hfss(projectname,designame)     Creates an <code class="docutils literal notranslate"><span class="pre">Hfss</span></code> object and links to a design named designname in a project named projectname.</p>
+<p>hfss = Hfss(&quot;myfile.aedt&quot;)     Creates an <code class="docutils literal notranslate"><span class="pre">Hfss</span></code> object and opens the specified project.</p>
 <hr class="docutils" />
 <dl class="py class">
 <dt class="sig sig-object py" id="pyaedt.hfss.Hfss">
@@ -1660,7 +1647,6 @@ and also returns the validation info in a list</p>
 
 </dd></dl>
 
-</div>
 </div>
 <div class="toctree-wrapper compound">
 </div>
