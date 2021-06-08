@@ -176,13 +176,22 @@ class EdbNets(object):
                             df_list.append(df)
                         i += 1
 
-        component_type = []
         for el in df_list:
             refdes = el[0]
-            comp_type = self.parent.core_components.components[refdes].type
-            component_type.append(comp_type)
+
+            comp = self.parent.core_components._cmp[refdes]
+
+            comp_type = comp.type
             el.append(comp_type)
-        return df_list, net_group
+
+            comp_partname = comp.partname
+            el.append(comp_partname)
+
+            pins = self.parent.core_components.get_pin_from_component(cmpName=refdes, netName=el[2])
+            el.append("-".join([i.GetName() for i in pins]))
+
+        columns = ["refdes", "pin_name", "net_name", "component_type", "component_partname", "pin_list"]
+        return df_list, columns, net_group
 
     @aedt_exception_handler
     def get_net_by_name(self, net_name):
