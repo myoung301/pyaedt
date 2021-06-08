@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Variables &#8212; PyAEDT 0.2.0 documentation</title>
+    <title>Variables &#8212; PyAEDT 0.2.1 documentation</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet" />
   <link href="../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -928,45 +928,12 @@ exported to project_path (Default value = None)</p>
 </dd>
 </dl>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="pyaedt.application.Variables.Variable.string_value">
-<span class="sig-name descname"><span class="pre">string_value</span></span><a class="headerlink" href="#pyaedt.application.Variables.Variable.string_value" title="Permalink to this definition">¶</a></dt>
-<dd><p>Value string as stored in the AEDT properties window, e.g. &quot;5mm&quot;</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyaedt.application.Variables.Variable.unit_system">
-<span class="sig-name descname"><span class="pre">unit_system</span></span><a class="headerlink" href="#pyaedt.application.Variables.Variable.unit_system" title="Permalink to this definition">¶</a></dt>
-<dd><p>String descriptor of the unit system, e.g. 'Length'</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>str</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="pyaedt.application.Variables.Variable.units">
 <span class="sig-name descname"><span class="pre">units</span></span><a class="headerlink" href="#pyaedt.application.Variables.Variable.units" title="Permalink to this definition">¶</a></dt>
 <dd><p>The defined variable units</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>str</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyaedt.application.Variables.Variable.numerical_value">
-<span class="sig-name descname"><span class="pre">numerical_value</span></span><a class="headerlink" href="#pyaedt.application.Variables.Variable.numerical_value" title="Permalink to this definition">¶</a></dt>
-<dd><p>numerical value of the variable in the defined variable units</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>float</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1046,27 +1013,27 @@ exported to project_path (Default value = None)</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="id0">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">string_value</span></span><a class="headerlink" href="#id0" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pyaedt.application.Variables.Variable.string_value">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">string_value</span></span><a class="headerlink" href="#pyaedt.application.Variables.Variable.string_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Concatenate the numeric value with the unit and return as string. There can be differences in the
 numeric display, e.g. 10mm in the modeler could be 10.0mm returned from string_value</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="id1">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">unit_system</span></span><a class="headerlink" href="#id1" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pyaedt.application.Variables.Variable.unit_system">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">unit_system</span></span><a class="headerlink" href="#pyaedt.application.Variables.Variable.unit_system" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the unit system of the expression as a string</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="id2">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">units</span></span><a class="headerlink" href="#id2" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="id0">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">units</span></span><a class="headerlink" href="#id0" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the units of the expression as a string</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="id3">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">value</span></span><a class="headerlink" href="#id3" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="id1">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">value</span></span><a class="headerlink" href="#id1" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the value of the expression as a float value in SI units</p>
 </dd></dl>
 
@@ -1291,23 +1258,23 @@ of the numerical or string definition of the variable values is provided in the 
 </dd></dl>
 
 <dl class="py property">
+<dt class="sig sig-object py" id="id2">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">dependent_variable_names</span></span><a class="headerlink" href="#id2" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="id3">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">dependent_variables</span></span><a class="headerlink" href="#id3" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
 <dt class="sig sig-object py" id="id4">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">dependent_variable_names</span></span><a class="headerlink" href="#id4" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">design_variable_names</span></span><a class="headerlink" href="#id4" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="id5">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">dependent_variables</span></span><a class="headerlink" href="#id5" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="id6">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">design_variable_names</span></span><a class="headerlink" href="#id6" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="id7">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">design_variables</span></span><a class="headerlink" href="#id7" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">design_variables</span></span><a class="headerlink" href="#id5" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -1317,23 +1284,23 @@ of the numerical or string definition of the variable values is provided in the 
 </dd></dl>
 
 <dl class="py property">
+<dt class="sig sig-object py" id="id6">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">independent_design_variable_names</span></span><a class="headerlink" href="#id6" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="id7">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">independent_design_variables</span></span><a class="headerlink" href="#id7" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
 <dt class="sig sig-object py" id="id8">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">independent_design_variable_names</span></span><a class="headerlink" href="#id8" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">independent_project_variable_names</span></span><a class="headerlink" href="#id8" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="id9">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">independent_design_variables</span></span><a class="headerlink" href="#id9" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="id10">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">independent_project_variable_names</span></span><a class="headerlink" href="#id10" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="id11">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">independent_project_variables</span></span><a class="headerlink" href="#id11" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">independent_project_variables</span></span><a class="headerlink" href="#id9" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
@@ -1342,8 +1309,8 @@ of the numerical or string definition of the variable values is provided in the 
 <dd></dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="id12">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">independent_variables</span></span><a class="headerlink" href="#id12" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="id10">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">independent_variables</span></span><a class="headerlink" href="#id10" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
@@ -1362,13 +1329,13 @@ of the numerical or string definition of the variable values is provided in the 
 <dd></dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="id13">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">project_variable_names</span></span><a class="headerlink" href="#id13" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="id11">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">project_variable_names</span></span><a class="headerlink" href="#id11" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="id14">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">project_variables</span></span><a class="headerlink" href="#id14" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="id12">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">project_variables</span></span><a class="headerlink" href="#id12" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -1416,13 +1383,13 @@ add additional flags &quot;read-only&quot; and &quot;hidden&quot; plus a descrip
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="id15">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">variable_names</span></span><a class="headerlink" href="#id15" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="id13">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">variable_names</span></span><a class="headerlink" href="#id13" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="id16">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">variables</span></span><a class="headerlink" href="#id16" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="id14">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">variables</span></span><a class="headerlink" href="#id14" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a dictionary of Variable objects for each project variable and each
 design property in the active design</p>
 <dl class="field-list simple">
