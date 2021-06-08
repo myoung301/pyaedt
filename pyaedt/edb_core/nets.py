@@ -176,10 +176,15 @@ class EdbNets(object):
                             df_list.append(df)
                         i += 1
 
+        if not self.parent.core_components._cmp:
+            components = self.parent.core_components.Components
+        else:
+            components = self.parent.core_components._cmp
+
         for el in df_list:
             refdes = el[0]
 
-            comp = self.parent.core_components._cmp[refdes]
+            comp = components[refdes]
 
             comp_type = comp.type
             el.append(comp_type)

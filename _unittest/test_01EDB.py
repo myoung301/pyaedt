@@ -140,9 +140,14 @@ class Test3DLayout:
     def test_get_power_tree(self):
         OUTPUT_NET = "BST_V1P0_S0"
         GROUND_NETS = ["GND", "PGND"]
-        powertree_df, power_nets = self.edbapp.core_nets.get_powertree(OUTPUT_NET, GROUND_NETS)
+        powertree_df, columns ,power_nets = self.edbapp.core_nets.get_powertree(OUTPUT_NET, GROUND_NETS)
         assert len(powertree_df) > 0
+        assert len(columns) > 0
         assert len (power_nets) > 0
+
+    def test_get_components_from_net(self):
+        NET_NAME = "V1P0_S0"
+        assert len(self.edbapp.core_components.get_components_from_nets(NET_NAME)) > 0
 
     def test_aedt_pinname_pin_position(self):
         cmp_pinlist = self.edbapp.core_padstack.get_pinlist_from_component_and_net("U2A5", "GND")
