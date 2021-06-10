@@ -153,6 +153,11 @@ class EdbNets(object):
         -------
 
         """
+        if not self.parent.core_components._cmp:
+            components = self.parent.core_components.Components
+        else:
+            components = self.parent.core_components._cmp
+
         flag_in_ng = False
         net_group = []
         for ng in self.get_dcconnected_net_list(ground_nets):
@@ -175,11 +180,6 @@ class EdbNets(object):
                             df = [el['refdes'][i], el['pin_name'][i],net ]
                             df_list.append(df)
                         i += 1
-
-        if not self.parent.core_components._cmp:
-            components = self.parent.core_components.Components
-        else:
-            components = self.parent.core_components._cmp
 
         for el in df_list:
             refdes = el[0]

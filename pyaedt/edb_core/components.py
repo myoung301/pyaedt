@@ -1040,7 +1040,7 @@ class Components(object):
                 data["net_name"].append(net_name)
         return data
 
-    def get_rats(self):
+    def get_rats(self, _cmp=None):
         """
         return the list of dictionaries of dictionary of RefDes, PinNames and NetNames
         :example:
@@ -1051,8 +1051,13 @@ class Components(object):
 
         :return: list of dictionaries of dictionary of RefDes, PinNames and NetNames
         """
+        if not _cmp:
+            cmp = self.components
+        else:
+            cmp = _cmp
+
         df_list = []
-        for refdes in self.components.keys():
+        for refdes in cmp.keys():
             df = self.get_component_net_connection_info(refdes)
             df_list.append(df)
         return df_list
