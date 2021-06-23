@@ -763,9 +763,19 @@
               
               <div class="toc-item">
                 
+<div class="tocsection onthispage pt-5 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
 
 <nav id="bd-toc-nav">
-    
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#components-class">
+   Components Class
+  </a>
+ </li>
+</ul>
+
 </nav>
               </div>
               
@@ -787,31 +797,13 @@
                 
   <div class="section" id="module-pyaedt.edb_core.layout">
 <span id="edb-layout"></span><h1>EDB Layout<a class="headerlink" href="#module-pyaedt.edb_core.layout" title="Permalink to this headline">¶</a></h1>
-<p>This module contains all EDB functionalities in the <code class="docutils literal notranslate"><span class="pre">EDB</span> <span class="pre">Layout</span></code> class.</p>
+<div class="section" id="components-class">
+<h2>Components Class<a class="headerlink" href="#components-class" title="Permalink to this headline">¶</a></h2>
+<p>This class manages Edb Components and related methods</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyaedt.edb_core.layout.EdbLayout">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pyaedt.edb_core.layout.</span></span><span class="sig-name descname"><span class="pre">EdbLayout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'unknown'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pointA</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pointB</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">centerPoint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">points</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">properties</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/edb_core/layout.html#EdbLayout"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.edb_core.layout.EdbLayout" title="Permalink to this definition">¶</a></dt>
-<dd><p>EDB Layout class.</p>
-<dl class="py class">
-<dt class="sig sig-object py" id="pyaedt.edb_core.layout.EdbLayout.Shape">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Shape</span></span><a class="reference internal" href="../_modules/pyaedt/edb_core/layout.html#EdbLayout.Shape"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.edb_core.layout.EdbLayout.Shape" title="Permalink to this definition">¶</a></dt>
-<dd><p>Shape class.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>type</strong> (<em>str</em><em>, </em><em>optional</em>) -- Type of the shape. Choices are <code class="docutils literal notranslate"><span class="pre">&quot;circle&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;rectangle&quot;</span></code>, and <code class="docutils literal notranslate"><span class="pre">&quot;polygon&quot;</span></code>.
-The default is <code class="docutils literal notranslate"><span class="pre">&quot;unknown</span></code>.</p></li>
-<li><p><strong>pointA</strong> (<em>optional</em>) -- Lower-left corner when <code class="docutils literal notranslate"><span class="pre">type=&quot;rectangle&quot;</span></code>. The default is <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
-<li><p><strong>pointB</strong> (<em>optional</em>) -- Upper-right corner when <code class="docutils literal notranslate"><span class="pre">type=&quot;rectangle&quot;</span></code>. The default is <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
-<li><p><strong>centerPoint</strong> (<em>optional</em>) -- Center point when <code class="docutils literal notranslate"><span class="pre">type=&quot;circle&quot;</span></code>. The default is <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
-<li><p><strong>radius</strong> (<em>optional</em>) -- Radius when <code class="docutils literal notranslate"><span class="pre">type=&quot;circle&quot;</span></code>. The default is <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
-<li><p><strong>points</strong> (<em>list</em><em>, </em><em>optional</em>) -- List of points when <code class="docutils literal notranslate"><span class="pre">type=&quot;polygon&quot;</span></code>. The default is <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
-<li><p><strong>properties</strong> (<em>dict</em><em>, </em><em>optional</em>) -- Dictionary of properties associated with the shape. The default is <code class="docutils literal notranslate"><span class="pre">{}</span></code>.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pyaedt.edb_core.layout.</span></span><span class="sig-name descname"><span class="pre">EdbLayout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/edb_core/layout.html#EdbLayout"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.edb_core.layout.EdbLayout" title="Permalink to this definition">¶</a></dt>
+<dd><p>HFSS 3DLayout object</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="pyaedt.edb_core.layout.EdbLayout.active_layout">
 <em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">active_layout</span></span><a class="headerlink" href="#pyaedt.edb_core.layout.EdbLayout.active_layout" title="Permalink to this definition">¶</a></dt>
@@ -830,26 +822,21 @@ The default is <code class="docutils literal notranslate"><span class="pre">&quo
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaedt.edb_core.layout.EdbLayout.create_path">
 <span class="sig-name descname"><span class="pre">create_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">net_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_cap_style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Round'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_cap_style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Round'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">corner_style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Round'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/edb_core/layout.html#EdbLayout.create_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.edb_core.layout.EdbLayout.create_path" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a path based on a list of points.</p>
+<dd><p>Create a path based on a list of points</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>path_list</strong> (<em>list</em>) -- List of points.</p></li>
-<li><p><strong>layer_name</strong> (<em>str</em>) -- Name of the layer on which to create the path.</p></li>
-<li><p><strong>width</strong> (<em>float</em><em>, </em><em>optional</em>) -- Width of the path. The default is <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p></li>
-<li><p><strong>net_name</strong> (<em>str</em><em>, </em><em>optional</em>) -- Name of the net. The default is <code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code>.</p></li>
-<li><p><strong>start_cap_style</strong> (<em>str</em><em>, </em><em>optional</em>) -- Style of the cap at its start. Choices are <code class="docutils literal notranslate"><span class="pre">&quot;Round&quot;</span></code>,
-<code class="docutils literal notranslate"><span class="pre">&quot;Extended&quot;,</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;Flat&quot;</span></code>. The default is
-<code class="docutils literal notranslate"><span class="pre">&quot;Round&quot;</span></code>.</p></li>
-<li><p><strong>end_cap_style</strong> (<em>str</em><em>, </em><em>optional</em>) -- Style of the cap at its end. Choices are <code class="docutils literal notranslate"><span class="pre">&quot;Round&quot;</span></code>,
-<code class="docutils literal notranslate"><span class="pre">&quot;Extended&quot;,</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;Flat&quot;</span></code>. The default is
-<code class="docutils literal notranslate"><span class="pre">&quot;Round&quot;</span></code>.</p></li>
-<li><p><strong>corner_style</strong> (<em>str</em><em>, </em><em>optional</em>) -- Style of the corner. Choices are <code class="docutils literal notranslate"><span class="pre">&quot;Round&quot;</span></code> and
-<code class="docutils literal notranslate"><span class="pre">&quot;Flat&quot;</span></code>. The default is <code class="docutils literal notranslate"><span class="pre">&quot;Round&quot;</span></code>.</p></li>
+<li><p><strong>path_list</strong> (<em>Shape</em>) -- list of points</p></li>
+<li><p><strong>layer_name</strong> (<em>str</em>) -- name of the layer on which path will be created</p></li>
+<li><p><strong>width</strong> (<em>float</em>) -- path width</p></li>
+<li><p><strong>net_name</strong> (<em>str</em>) -- net name</p></li>
+<li><p><strong>start_cap_style</strong> (<em>str</em>) -- Start Cap file. &quot;Round&quot;, &quot;Extended&quot;, &quot;Flat&quot;</p></li>
+<li><p><strong>end_cap_style</strong> (<em>str</em>) -- End Cap file. &quot;Round&quot;, &quot;Extended&quot;, &quot;Flat&quot;</p></li>
+<li><p><strong>corner_style</strong> (<em>str</em>) -- Corner Style: &quot;Round&quot; or &quot;Flat&quot;</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">True</span></code> when successful, <code class="docutils literal notranslate"><span class="pre">False</span></code> when failed.</p>
+<dd class="field-even"><p></p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>bool</p>
@@ -860,18 +847,18 @@ The default is <code class="docutils literal notranslate"><span class="pre">&quo
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaedt.edb_core.layout.EdbLayout.create_polygon">
 <span class="sig-name descname"><span class="pre">create_polygon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">main_shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">voids</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">net_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/edb_core/layout.html#EdbLayout.create_polygon"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.edb_core.layout.EdbLayout.create_polygon" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a new polygon based on list of points and voids.</p>
+<dd><p>Create a new polygon based on list of points and voids</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>main_shape</strong> -- Shape of the main object.</p></li>
-<li><p><strong>layer_name</strong> (<em>str</em>) -- Name of the layer on which to create the polygon.</p></li>
-<li><p><strong>voids</strong> (<em>list</em><em>, </em><em>optional</em>) -- List of shape objects for voids. The default is``[]``.</p></li>
-<li><p><strong>net_name</strong> (<em>str</em><em>, </em><em>optional</em>) -- Name of the net. The default is <code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code>.</p></li>
+<li><p><strong>main_shape</strong> (<em>Shape</em>) -- shape main object</p></li>
+<li><p><strong>layer_name</strong> (<em>str</em>) -- layer on which polygon will be created</p></li>
+<li><p><strong>voids</strong> (<em>list</em>) -- list of Shape object for voids</p></li>
+<li><p><strong>net_name</strong> (<em>str</em>) -- name of the net</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">True</span></code> when successful, <code class="docutils literal notranslate"><span class="pre">False</span></code> when failed.</p>
+<dd class="field-even"><p></p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>bool</p>
@@ -902,67 +889,58 @@ The default is <code class="docutils literal notranslate"><span class="pre">&quo
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaedt.edb_core.layout.EdbLayout.get_polygon_bounding_box">
 <span class="sig-name descname"><span class="pre">get_polygon_bounding_box</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">polygon</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/edb_core/layout.html#EdbLayout.get_polygon_bounding_box"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.edb_core.layout.EdbLayout.get_polygon_bounding_box" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retrieve a polygon bounding box.</p>
+<dd><p>Return the polygon bounding box</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>polygon</strong> -- edb_core polygon</p>
+<dt class="field-odd">Examples</dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><p><strong>polygon</strong> -- edb_core polygon</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Bounding box [-x,-y,+x,+y].</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>list</p>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><em>list</em> -- bounding box [-x,-y,+x,+y]</p></li>
+<li><p><em>&gt;&gt;&gt; poly = edb_core.core_primitives.get_polygons_by_layer(&quot;GND&quot;)</em></p></li>
+<li><p><em>&gt;&gt;&gt; bounding = edb_core.core_primitives.get_polygon_bounding_box(poly[0])</em></p></li>
+</ul>
+</p>
 </dd>
 </dl>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">poly</span> <span class="o">=</span> <span class="n">edb_core</span><span class="o">.</span><span class="n">core_primitives</span><span class="o">.</span><span class="n">get_polygons_by_layer</span><span class="p">(</span><span class="s2">&quot;GND&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">bounding</span> <span class="o">=</span> <span class="n">edb_core</span><span class="o">.</span><span class="n">core_primitives</span><span class="o">.</span><span class="n">get_polygon_bounding_box</span><span class="p">(</span><span class="n">poly</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-</pre></div>
-</div>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaedt.edb_core.layout.EdbLayout.get_polygon_points">
 <span class="sig-name descname"><span class="pre">get_polygon_points</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">polygon</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/edb_core/layout.html#EdbLayout.get_polygon_points"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.edb_core.layout.EdbLayout.get_polygon_points" title="Permalink to this definition">¶</a></dt>
-<dd><p>List polygon points.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>For arcs, one point is returned.</p>
-</div>
+<dd><p>Return Polygon Points list. for Arcs, 1 point will be returned</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>polygon</strong> -- edb_core polygon</p>
+<dt class="field-odd">Examples</dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><p><strong>polygon</strong> -- edb_core polygon</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>List of doubles.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>list</p>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><em>type</em> -- list of list of double</p></li>
+<li><p><em>&gt;&gt;&gt; poly = edb_core.core_primitives.get_polygons_by_layer(&quot;GND&quot;)</em></p></li>
+<li><p><em>&gt;&gt;&gt; points  = edb_core.core_primitives.get_polygon_points(poly[0])</em></p></li>
+</ul>
+</p>
 </dd>
 </dl>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">poly</span> <span class="o">=</span> <span class="n">edb_core</span><span class="o">.</span><span class="n">core_primitives</span><span class="o">.</span><span class="n">get_polygons_by_layer</span><span class="p">(</span><span class="s2">&quot;GND&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">points</span>  <span class="o">=</span> <span class="n">edb_core</span><span class="o">.</span><span class="n">core_primitives</span><span class="o">.</span><span class="n">get_polygon_points</span><span class="p">(</span><span class="n">poly</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-</pre></div>
-</div>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaedt.edb_core.layout.EdbLayout.get_polygons_by_layer">
 <span class="sig-name descname"><span class="pre">get_polygons_by_layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layer_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">net_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/edb_core/layout.html#EdbLayout.get_polygons_by_layer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.edb_core.layout.EdbLayout.get_polygons_by_layer" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retrieve polygons by a layer.</p>
+<dd><p>return</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>layer_name</strong> (<em>str</em>) -- Name of the layer.</p></li>
-<li><p><strong>net_list</strong> (<em>list</em><em>, </em><em>optional</em>) -- List of net names.</p></li>
+<li><p><strong>layer_name</strong> -- str layer name</p></li>
+<li><p><strong>net_list</strong> -- list of net name</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>List of primitive objects.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>list</p>
+<dd class="field-even"><p>list of Primitive object</p>
 </dd>
 </dl>
 </dd></dl>
@@ -980,21 +958,20 @@ The default is <code class="docutils literal notranslate"><span class="pre">&quo
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaedt.edb_core.layout.EdbLayout.parametrize_polygon">
 <span class="sig-name descname"><span class="pre">parametrize_polygon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">polygon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selection_polygon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'offsetx'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">origin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/edb_core/layout.html#EdbLayout.parametrize_polygon"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.edb_core.layout.EdbLayout.parametrize_polygon" title="Permalink to this definition">¶</a></dt>
-<dd><p>Parametrize pieces of a polygon based on another polygon.</p>
+<dd><p>Parametrize pieces of polygon based on another polygon.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>polygon</strong> -- Polygon to parametrize.</p></li>
-<li><p><strong>selection_polygon</strong> -- Polygon to use as a filter.</p></li>
-<li><p><strong>offset_name</strong> (<em>str</em><em>, </em><em>optional</em>) -- Name of the variable to create.  The default is <code class="docutils literal notranslate"><span class="pre">&quot;offsetx&quot;</span></code>.</p></li>
-<li><p><strong>origin</strong> (<em>list</em><em>, </em><em>optional</em>) -- List of the X and Y origins, which impacts the vector
-computation and is needed to determine expansion direction.
-The default is <code class="docutils literal notranslate"><span class="pre">None</span></code>. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, the vector is
-computed from the polygon's center.</p></li>
+<li><p><strong>polygon</strong> (<em>Polygon</em>) -- Polygon to parametrize.</p></li>
+<li><p><strong>selection_polygon</strong> (<em>Polygon</em>) -- Polygon to use as filter.</p></li>
+<li><p><strong>offset_name</strong> (<em>str</em><em>, </em><em>optional</em>) -- Name of the variable to create.  Defaults to <code class="docutils literal notranslate"><span class="pre">&quot;offsetx&quot;</span></code>.</p></li>
+<li><p><strong>origin</strong> (<em>list</em><em>, </em><em>optional</em>) -- List of x and y origin. Default is <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">0]</span></code>. It impacts the vector
+computation and is needed to determine expansion direction. If
+<code class="docutils literal notranslate"><span class="pre">None</span></code>, it will be computed from the polygon's center.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">True</span></code> when successful, <code class="docutils literal notranslate"><span class="pre">False</span></code> when failed.</p>
+<dd class="field-even"><p>Returns <code class="docutils literal notranslate"><span class="pre">True</span></code> when successful.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>bool</p>
@@ -1016,16 +993,14 @@ computed from the polygon's center.</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaedt.edb_core.layout.EdbLayout.shape_to_polygon_data">
 <span class="sig-name descname"><span class="pre">shape_to_polygon_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shape</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/edb_core/layout.html#EdbLayout.shape_to_polygon_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.edb_core.layout.EdbLayout.shape_to_polygon_data" title="Permalink to this definition">¶</a></dt>
-<dd><p>Converts a shape to polygon data.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>shape</strong> (<em>str</em>) -- Type of the shape to convert. Choices are <code class="docutils literal notranslate"><span class="pre">&quot;rectangle&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;polygon&quot;</span></code>.</p>
-</dd>
-</dl>
+<dd><p>Converts an edb_utilities.data.Shape to an self.edb.Geometry.PolygonData.</p>
+<p>Keyword Arguments:
+shape -- Shape to convert</p>
 </dd></dl>
 
 </dd></dl>
 
+</div>
 <div class="toctree-wrapper compound">
 </div>
 </div>

@@ -869,8 +869,8 @@ InvalidTopBottomAssociation -1 Undefined.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>layer</strong> -- Layer object.</p></li>
-<li><p><strong>elev</strong> -- Float elevation.</p></li>
+<li><p><strong>layer</strong> -- layer object</p></li>
+<li><p><strong>elev</strong> -- float Elevation</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -918,13 +918,10 @@ InvalidTopBottomAssociation -1 Undefined.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaedt.edb_core.EDB_Data.EDBLayer.update_layers">
 <span class="sig-name descname"><span class="pre">update_layers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/edb_core/EDB_Data.html#EDBLayer.update_layers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.edb_core.EDB_Data.EDBLayer.update_layers" title="Permalink to this definition">¶</a></dt>
-<dd><p>Update all layers.</p>
+<dd><p>update all layers</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">True</span></code> when successful, <code class="docutils literal notranslate"><span class="pre">False</span></code> when failed.</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>bool</p>
+<dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -939,7 +936,7 @@ InvalidTopBottomAssociation -1 Undefined.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyaedt.edb_core.EDB_Data.EDBLayers">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pyaedt.edb_core.EDB_Data.</span></span><span class="sig-name descname"><span class="pre">EDBLayers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/edb_core/EDB_Data.html#EDBLayers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.edb_core.EDB_Data.EDBLayers" title="Permalink to this definition">¶</a></dt>
-<dd><p>Manage all primitives.</p>
+<dd><p>Class for management of all Primitives.</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="pyaedt.edb_core.EDB_Data.EDBLayers.active_layout">
 <em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">active_layout</span></span><a class="headerlink" href="#pyaedt.edb_core.EDB_Data.EDBLayers.active_layout" title="Permalink to this definition">¶</a></dt>
@@ -948,24 +945,24 @@ InvalidTopBottomAssociation -1 Undefined.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaedt.edb_core.EDB_Data.EDBLayers.add_layer">
 <span class="sig-name descname"><span class="pre">add_layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layerName</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_layer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">material</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'copper'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fillMaterial</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thickness</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'35um'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layerType</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">etchMap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/edb_core/EDB_Data.html#EDBLayers.add_layer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.edb_core.EDB_Data.EDBLayers.add_layer" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add an additional layer after a specific layer.</p>
+<dd><p>Add an additional layer after a specific layer</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>layerName</strong> (<em>str</em>) -- Name of the new layer.</p></li>
-<li><p><strong>start_layer</strong> (<em>str</em>) -- Name of the layer after which to place the new layer.</p></li>
-<li><p><strong>material</strong> (<em>str</em><em>, </em><em>optional</em>) -- Name of the material. The default is <code class="docutils literal notranslate"><span class="pre">&quot;copper&quot;</span></code>.</p></li>
-<li><p><strong>fillMaterial</strong> (<em>str</em><em>, </em><em>optional</em>) -- Name of the fill material. The default is <code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code>.)</p></li>
-<li><p><strong>thickness</strong> (<em>str</em><em>, </em><em>optional</em>) -- Thickness value, including units. The default is <code class="docutils literal notranslate"><span class="pre">&quot;35um&quot;</span></code>.</p></li>
-<li><p><strong>layerType</strong> -- Type of the layer. The default is <code class="docutils literal notranslate"><span class="pre">0</span></code>, which is a signal layer.</p></li>
-<li><p><strong>etchMap</strong> (<em>optional</em>) -- Etch value if any. The default is <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>layerName</strong> -- name of new layer</p></li>
+<li><p><strong>start_layer</strong> -- name of layer after which the new layer will be placed</p></li>
+<li><p><strong>material</strong> -- name of material (Default value = &quot;copper&quot;)</p></li>
+<li><p><strong>fillMaterial</strong> -- name of fillmaterial (Default value = &quot;&quot;)</p></li>
+<li><p><strong>thickness</strong> -- thickness value (Default value = &quot;35um&quot;)</p></li>
+<li><p><strong>layerType</strong> -- layer type default signal layer</p></li>
+<li><p><strong>etchMap</strong> -- etch value if any (Default value = None)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">True</span></code> when successful, <code class="docutils literal notranslate"><span class="pre">False</span></code> when failed.</p>
+<dd class="field-even"><p>True if successful</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>type</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1013,16 +1010,16 @@ InvalidTopBottomAssociation -1 Undefined.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyaedt.edb_core.EDB_Data.EDBLayers.remove_layer">
 <span class="sig-name descname"><span class="pre">remove_layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layername</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/edb_core/EDB_Data.html#EDBLayers.remove_layer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.edb_core.EDB_Data.EDBLayers.remove_layer" title="Permalink to this definition">¶</a></dt>
-<dd><p>Remove a specific layer.</p>
+<dd><p>Remove a specific layer &quot;layername&quot;</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>layername</strong> (<em>str</em>) -- Name of the layer to remove.</p>
+<dd class="field-odd"><p><strong>layername</strong> -- name of the layer to remove</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">True</span></code> when successful, <code class="docutils literal notranslate"><span class="pre">False</span></code> when failed.</p>
+<dd class="field-even"><p>True if operation successfully complete</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>type</p>
 </dd>
 </dl>
 </dd></dl>
