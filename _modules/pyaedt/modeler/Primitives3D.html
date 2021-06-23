@@ -141,9 +141,9 @@
                 
   <h1>Source code for pyaedt.modeler.Primitives3D</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">..generic.general_methods</span> <span class="kn">import</span> <span class="n">aedt_exception_handler</span>
-<span class="kn">from</span> <span class="nn">.Object3d</span> <span class="kn">import</span> <span class="n">Object3d</span>
 <span class="kn">from</span> <span class="nn">.Primitives</span> <span class="kn">import</span> <span class="n">Primitives</span><span class="p">,</span> <span class="n">Polyline</span>
 <span class="kn">from</span> <span class="nn">.GeometryOperators</span> <span class="kn">import</span> <span class="n">GeometryOperators</span>
+<span class="kn">from</span> <span class="nn">.Object3d</span> <span class="kn">import</span> <span class="n">Object3d</span>
 <span class="kn">import</span> <span class="nn">os</span>
 
 <div class="viewcode-block" id="Primitives3D"><a class="viewcode-back" href="../../../API/Primitives3D.html#pyaedt.modeler.Primitives3D.Primitives3D">[docs]</a><span class="k">class</span> <span class="nc">Primitives3D</span><span class="p">(</span><span class="n">Primitives</span><span class="p">,</span> <span class="nb">object</span><span class="p">):</span>
@@ -151,6 +151,11 @@
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">modeler</span><span class="p">):</span>
         <span class="n">Primitives</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">modeler</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Primitives3D.is3d"><a class="viewcode-back" href="../../../API/Primitives3D.html#pyaedt.modeler.Primitives3D.Primitives3D.is3d">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
+    <span class="k">def</span> <span class="nf">is3d</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns True always to indicate a 3D analysis type&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
 
 <div class="viewcode-block" id="Primitives3D.create_box"><a class="viewcode-back" href="../../../API/Primitives3D.html#pyaedt.modeler.Primitives3D.Primitives3D.create_box">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="nf">create_box</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">position</span><span class="p">,</span> <span class="n">dimensions_list</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">matname</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -182,15 +187,14 @@
 <span class="sd">        &gt;&gt;&gt; #Material and name are not mandatory fields</span>
 <span class="sd">        &gt;&gt;&gt; object_id = hfss.modeler.primivites.create_box(origin, dimensions, name=&quot;mybox&quot;, matname=&quot;copper&quot;)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_new_id</span><span class="p">()</span>
-        <span class="n">o</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="p">[</span><span class="nb">id</span><span class="p">]</span>
+        <span class="n">o</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_new_object</span><span class="p">(</span><span class="n">matname</span><span class="o">=</span><span class="n">matname</span><span class="p">)</span>
+
         <span class="n">XPosition</span><span class="p">,</span> <span class="n">YPosition</span><span class="p">,</span> <span class="n">ZPosition</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pos_with_arg</span><span class="p">(</span><span class="n">position</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">XPosition</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">YPosition</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">ZPosition</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;Position Argument must be a valid 3 Element List&quot;</span><span class="p">)</span>
         <span class="n">XSize</span><span class="p">,</span> <span class="n">YSize</span><span class="p">,</span> <span class="n">ZSize</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pos_with_arg</span><span class="p">(</span><span class="n">dimensions_list</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">XSize</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">YSize</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">YSize</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;Dimension Argument must be a valid 3 Element List&quot;</span><span class="p">)</span>
-        <span class="n">o</span><span class="o">.</span><span class="n">material_name</span><span class="p">,</span> <span class="n">o</span><span class="o">.</span><span class="n">solve_inside</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_material</span><span class="p">(</span><span class="n">matname</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">defaultmaterial</span><span class="p">)</span>
         <span class="n">vArg1</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;NAME:BoxParameters&quot;</span><span class="p">]</span>
         <span class="n">vArg1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;XPosition:=&quot;</span><span class="p">),</span> <span class="n">vArg1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">XPosition</span><span class="p">)</span>
         <span class="n">vArg1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;YPosition:=&quot;</span><span class="p">),</span> <span class="n">vArg1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">YPosition</span><span class="p">)</span>
@@ -204,6 +208,8 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">vArg2</span> <span class="o">=</span> <span class="n">o</span><span class="o">.</span><span class="n">export_attributes_legacy</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
         <span class="n">o</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">oeditor</span><span class="o">.</span><span class="n">CreateBox</span><span class="p">(</span><span class="n">vArg1</span><span class="p">,</span> <span class="n">vArg2</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_refresh_object_types</span><span class="p">()</span>
         <span class="nb">id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update_object</span><span class="p">(</span><span class="n">o</span><span class="p">)</span>
         <span class="k">return</span> <span class="nb">id</span></div>
 
@@ -251,15 +257,14 @@
 <span class="sd">        &gt;&gt;&gt; #Material and name are not mandatory fields</span>
 <span class="sd">        &gt;&gt;&gt; object_id = hfss.modeler.primivites.create_bondwire(origin, endpos,h1=0.5, h2=0.1, alpha=75, beta=4,bond_type=0, name=&quot;mybox&quot;, matname=&quot;copper&quot;)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_new_id</span><span class="p">()</span>
-        <span class="n">o</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="p">[</span><span class="nb">id</span><span class="p">]</span>
+        <span class="n">o</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_new_object</span><span class="p">(</span><span class="n">matname</span><span class="o">=</span><span class="n">matname</span><span class="p">)</span>
+
         <span class="n">XPosition</span><span class="p">,</span> <span class="n">YPosition</span><span class="p">,</span> <span class="n">ZPosition</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pos_with_arg</span><span class="p">(</span><span class="n">start_position</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">XPosition</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">YPosition</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">ZPosition</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;Position Argument must be a valid 3 Element List&quot;</span><span class="p">)</span>
         <span class="n">XSize</span><span class="p">,</span> <span class="n">YSize</span><span class="p">,</span> <span class="n">ZSize</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pos_with_arg</span><span class="p">(</span><span class="n">end_position</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">XSize</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">YSize</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">YSize</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;Dimension Argument must be a valid 3 Element List&quot;</span><span class="p">)</span>
-        <span class="n">o</span><span class="o">.</span><span class="n">material_name</span><span class="p">,</span> <span class="n">o</span><span class="o">.</span><span class="n">solve_inside</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_material</span><span class="p">(</span><span class="n">matname</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">defaultmaterial</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">bond_type</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
             <span class="n">bondwire</span> <span class="o">=</span> <span class="s2">&quot;JEDEC_5Points&quot;</span>
         <span class="k">elif</span> <span class="n">bond_type</span><span class="o">==</span><span class="mi">1</span><span class="p">:</span>
@@ -290,6 +295,8 @@
         <span class="n">vArg1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;ReverseDirection:=&quot;</span><span class="p">),</span> <span class="n">vArg1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
         <span class="n">vArg2</span> <span class="o">=</span> <span class="n">o</span><span class="o">.</span><span class="n">export_attributes</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
         <span class="n">o</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">oeditor</span><span class="o">.</span><span class="n">CreateBondwire</span><span class="p">(</span><span class="n">vArg1</span><span class="p">,</span> <span class="n">vArg2</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_refresh_object_types</span><span class="p">()</span>
         <span class="nb">id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update_object</span><span class="p">(</span><span class="n">o</span><span class="p">)</span>
         <span class="k">return</span> <span class="nb">id</span></div>
 
@@ -299,8 +306,8 @@
     <span class="k">def</span> <span class="nf">create_region</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pad_percent</span><span class="p">):</span>
         <span class="k">if</span> <span class="s2">&quot;Region&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_all_objects_names</span><span class="p">():</span>
             <span class="k">return</span> <span class="kc">None</span>
-        <span class="nb">id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_new_id</span><span class="p">()</span>
-        <span class="n">obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="p">[</span><span class="nb">id</span><span class="p">]</span>
+        <span class="n">o</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_new_object</span><span class="p">()</span>
+
         <span class="n">arg</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;NAME:RegionParameters&quot;</span><span class="p">]</span>
         <span class="n">p</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;+X&quot;</span><span class="p">,</span> <span class="s2">&quot;+Y&quot;</span><span class="p">,</span> <span class="s2">&quot;+Z&quot;</span><span class="p">,</span> <span class="s2">&quot;-X&quot;</span><span class="p">,</span> <span class="s2">&quot;-Y&quot;</span><span class="p">,</span> <span class="s2">&quot;-Z&quot;</span><span class="p">]</span>
         <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
@@ -313,16 +320,19 @@
             <span class="n">arg</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">pad_percent</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
             <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="n">arg2</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;NAME:Attributes&quot;</span><span class="p">,</span> <span class="s2">&quot;Name:=&quot;</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">,</span> <span class="s2">&quot;Flags:=&quot;</span><span class="p">,</span> <span class="s2">&quot;Wireframe#&quot;</span><span class="p">,</span> <span class="s2">&quot;Color:=&quot;</span><span class="p">,</span> <span class="s2">&quot;(143 175 143)&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;Transparency:=&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;PartCoordinateSystem:=&quot;</span><span class="p">,</span> <span class="s2">&quot;Global&quot;</span><span class="p">,</span> <span class="s2">&quot;UDMId:=&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;Materiaobjidue:=&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2">air</span><span class="se">\&quot;</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;SurfaceMateriaobjidue:=&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\&quot;\&quot;</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;SolveInside:=&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;IsMaterialEditable:=&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span>
+                <span class="s2">&quot;Transparency:=&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;PartCoordinateSystem:=&quot;</span><span class="p">,</span> <span class="s2">&quot;Global&quot;</span><span class="p">,</span> <span class="s2">&quot;UDMId:=&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;MaterialValue:=&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2">air</span><span class="se">\&quot;</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;SurfaceMaterialValue:=&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\&quot;\&quot;</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;SolveInside:=&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;IsMaterialEditable:=&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span>
                 <span class="s2">&quot;UseMaterialAppearance:=&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;IsLightweight:=&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">]</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">oeditor</span><span class="o">.</span><span class="n">CreateRegion</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">arg2</span><span class="p">)</span>
-        <span class="n">obj</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Region&quot;</span>
-        <span class="n">obj</span><span class="o">.</span><span class="n">solve_inside</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="n">obj</span><span class="o">.</span><span class="n">transparency</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">obj</span><span class="o">.</span><span class="n">wireframe</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="nb">id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update_object</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="p">[</span><span class="nb">id</span><span class="p">]</span> <span class="o">=</span> <span class="n">obj</span>
+        <span class="c1">#TODO put this into Object3d Constructor?</span>
+        <span class="n">o</span><span class="o">.</span><span class="n">_m_name</span> <span class="o">=</span> <span class="s2">&quot;Region&quot;</span>
+        <span class="n">o</span><span class="o">.</span><span class="n">solve_inside</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">o</span><span class="o">.</span><span class="n">transparency</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">o</span><span class="o">.</span><span class="n">wireframe</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_refresh_object_types</span><span class="p">()</span>
+        <span class="nb">id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update_object</span><span class="p">(</span><span class="n">o</span><span class="p">)</span>
         <span class="k">return</span> <span class="nb">id</span></div>
 
 <div class="viewcode-block" id="Primitives3D.create_circle"><a class="viewcode-back" href="../../../API/Primitives3D.html#pyaedt.modeler.Primitives3D.Primitives3D.create_circle">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
@@ -350,14 +360,12 @@
 <span class="sd">            id</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_new_id</span><span class="p">()</span>
-
-        <span class="n">o</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="p">[</span><span class="nb">id</span><span class="p">]</span>
+        <span class="n">o</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_new_object</span><span class="p">(</span><span class="n">matname</span><span class="o">=</span><span class="n">matname</span><span class="p">)</span>
 
         <span class="n">szAxis</span> <span class="o">=</span> <span class="n">GeometryOperators</span><span class="o">.</span><span class="n">cs_plane_str</span><span class="p">(</span><span class="n">cs_plane</span><span class="p">)</span>
         <span class="n">XCenter</span><span class="p">,</span> <span class="n">YCenter</span><span class="p">,</span> <span class="n">ZCenter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pos_with_arg</span><span class="p">(</span><span class="n">position</span><span class="p">)</span>
         <span class="n">Radius</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">arg_with_dim</span><span class="p">(</span><span class="n">radius</span><span class="p">)</span>
-        <span class="n">o</span><span class="o">.</span><span class="n">material_name</span><span class="p">,</span> <span class="n">o</span><span class="o">.</span><span class="n">solve_inside</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_material</span><span class="p">(</span><span class="n">matname</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">defaultmaterial</span><span class="p">)</span>
+
 
         <span class="n">vArg1</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;NAME:CircleParameters&quot;</span><span class="p">]</span>
         <span class="n">vArg1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;XCenter:=&quot;</span><span class="p">),</span> <span class="n">vArg1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">XCenter</span><span class="p">)</span>
@@ -370,7 +378,9 @@
         <span class="n">vArg2</span> <span class="o">=</span> <span class="n">o</span><span class="o">.</span><span class="n">export_attributes</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 
         <span class="n">o</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">oeditor</span><span class="o">.</span><span class="n">CreateCircle</span><span class="p">(</span><span class="n">vArg1</span><span class="p">,</span> <span class="n">vArg2</span><span class="p">)</span>
-        <span class="nb">id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update_object</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="s2">&quot;Sheet&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_refresh_object_types</span><span class="p">()</span>
+        <span class="nb">id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update_object</span><span class="p">(</span><span class="n">o</span><span class="p">)</span>
         <span class="k">return</span> <span class="nb">id</span></div>
 
 <div class="viewcode-block" id="Primitives3D.create_sphere"><a class="viewcode-back" href="../../../API/Primitives3D.html#pyaedt.modeler.Primitives3D.Primitives3D.create_sphere">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
@@ -392,11 +402,9 @@
 <span class="sd">        -------</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_new_id</span><span class="p">()</span>
+        <span class="n">o</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_new_object</span><span class="p">(</span><span class="n">matname</span><span class="o">=</span><span class="n">matname</span><span class="p">)</span>
 
-        <span class="n">o</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="p">[</span><span class="nb">id</span><span class="p">]</span>
         <span class="n">XCenter</span><span class="p">,</span> <span class="n">YCenter</span><span class="p">,</span> <span class="n">ZCenter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pos_with_arg</span><span class="p">(</span><span class="n">position</span><span class="p">)</span>
-        <span class="n">o</span><span class="o">.</span><span class="n">material_name</span><span class="p">,</span> <span class="n">o</span><span class="o">.</span><span class="n">solve_inside</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_material</span><span class="p">(</span><span class="n">matname</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">defaultmaterial</span><span class="p">)</span>
 
         <span class="n">Radius</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">arg_with_dim</span><span class="p">(</span><span class="n">radius</span><span class="p">)</span>
 
@@ -409,6 +417,8 @@
         <span class="n">vArg2</span> <span class="o">=</span> <span class="n">o</span><span class="o">.</span><span class="n">export_attributes</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 
         <span class="n">o</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">oeditor</span><span class="o">.</span><span class="n">CreateSphere</span><span class="p">(</span><span class="n">vArg1</span><span class="p">,</span> <span class="n">vArg2</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_refresh_object_types</span><span class="p">()</span>
         <span class="nb">id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update_object</span><span class="p">(</span><span class="n">o</span><span class="p">)</span>
         <span class="k">return</span> <span class="nb">id</span></div>
 
@@ -437,11 +447,7 @@
 <span class="sd">        -------</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_new_id</span><span class="p">()</span>
-
-        <span class="n">o</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="p">[</span><span class="nb">id</span><span class="p">]</span>
-        <span class="n">o</span> <span class="o">=</span> <span class="n">Object3d</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="n">o</span><span class="o">.</span><span class="n">material_name</span><span class="p">,</span> <span class="n">o</span><span class="o">.</span><span class="n">solve_inside</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_material</span><span class="p">(</span><span class="n">matname</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">defaultmaterial</span><span class="p">)</span>
+        <span class="n">o</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_new_object</span><span class="p">(</span><span class="n">matname</span><span class="o">=</span><span class="n">matname</span><span class="p">)</span>
 
         <span class="n">szAxis</span> <span class="o">=</span> <span class="n">GeometryOperators</span><span class="o">.</span><span class="n">cs_axis_str</span><span class="p">(</span><span class="n">cs_axis</span><span class="p">)</span>
         <span class="n">XCenter</span><span class="p">,</span> <span class="n">YCenter</span><span class="p">,</span> <span class="n">ZCenter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pos_with_arg</span><span class="p">(</span><span class="n">position</span><span class="p">)</span>
@@ -461,6 +467,8 @@
         <span class="n">vArg2</span> <span class="o">=</span> <span class="n">o</span><span class="o">.</span><span class="n">export_attributes</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 
         <span class="n">o</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">oeditor</span><span class="o">.</span><span class="n">CreateCylinder</span><span class="p">(</span><span class="n">vArg1</span><span class="p">,</span> <span class="n">vArg2</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_refresh_object_types</span><span class="p">()</span>
         <span class="nb">id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update_object</span><span class="p">(</span><span class="n">o</span><span class="p">)</span>
         <span class="k">return</span> <span class="nb">id</span></div>
 
@@ -489,9 +497,7 @@
 <span class="sd">        -------</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_new_id</span><span class="p">()</span>
-
-        <span class="n">o</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="p">[</span><span class="nb">id</span><span class="p">]</span>
+        <span class="n">o</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_new_object</span><span class="p">(</span><span class="n">matname</span><span class="o">=</span><span class="n">matname</span><span class="p">)</span>
 
         <span class="n">szAxis</span> <span class="o">=</span> <span class="n">GeometryOperators</span><span class="o">.</span><span class="n">cs_plane_str</span><span class="p">(</span><span class="n">cs_plane</span><span class="p">)</span>
         <span class="n">XStart</span><span class="p">,</span> <span class="n">YStart</span><span class="p">,</span> <span class="n">ZStart</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pos_with_arg</span><span class="p">(</span><span class="n">position</span><span class="p">)</span>
@@ -499,7 +505,6 @@
         <span class="n">MajorRadius</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">arg_with_dim</span><span class="p">(</span><span class="n">major_raidus</span><span class="p">)</span>
         <span class="c1"># Ratio = self.arg_with_dim(ratio)</span>
         <span class="n">Ratio</span> <span class="o">=</span> <span class="n">ratio</span>
-        <span class="n">o</span><span class="o">.</span><span class="n">material_name</span><span class="p">,</span> <span class="n">o</span><span class="o">.</span><span class="n">solve_inside</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_material</span><span class="p">(</span><span class="n">matname</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">defaultmaterial</span><span class="p">)</span>
 
         <span class="n">vArg1</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;NAME:EllipseParameters&quot;</span><span class="p">]</span>
         <span class="n">vArg1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;IsCovered:=&quot;</span><span class="p">),</span> <span class="n">vArg1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bIsCovered</span><span class="p">)</span>
@@ -511,12 +516,11 @@
         <span class="n">vArg1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;WhichAxis:=&quot;</span><span class="p">),</span> <span class="n">vArg1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">szAxis</span><span class="p">)</span>
 
         <span class="n">vArg2</span> <span class="o">=</span> <span class="n">o</span><span class="o">.</span><span class="n">export_attributes</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">vArg2</span>
         <span class="n">o</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">oeditor</span><span class="o">.</span><span class="n">CreateEllipse</span><span class="p">(</span><span class="n">vArg1</span><span class="p">,</span> <span class="n">vArg2</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">bIsCovered</span><span class="p">:</span>
-            <span class="nb">id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update_object</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="s2">&quot;Sheet&quot;</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="nb">id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update_object</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="s2">&quot;Line&quot;</span><span class="p">)</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">_refresh_object_types</span><span class="p">()</span>
+        <span class="nb">id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update_object</span><span class="p">(</span><span class="n">o</span><span class="p">)</span>
         <span class="k">return</span> <span class="nb">id</span></div>
 
 <div class="viewcode-block" id="Primitives3D.create_equationbased_curve"><a class="viewcode-back" href="../../../API/Primitives3D.html#pyaedt.modeler.Primitives3D.Primitives3D.create_equationbased_curve">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
@@ -536,17 +540,15 @@
 <span class="sd">        -------</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># TODO Test</span>
-        <span class="nb">id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_new_id</span><span class="p">()</span>
-
-        <span class="n">o</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="p">[</span><span class="nb">id</span><span class="p">]</span>
-        <span class="n">o</span><span class="o">.</span><span class="n">material_name</span><span class="p">,</span> <span class="n">o</span><span class="o">.</span><span class="n">solve_inside</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_material</span><span class="p">(</span><span class="n">matname</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">defaultmaterial</span><span class="p">)</span>
+        <span class="n">o</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_new_object</span><span class="p">(</span><span class="n">matname</span><span class="o">=</span><span class="n">matname</span><span class="p">)</span>
 
         <span class="n">vArg1</span> <span class="o">=</span> <span class="n">udpequationbasedcurveddefinition</span><span class="o">.</span><span class="n">toScript</span><span class="p">()</span>
         <span class="n">vArg2</span> <span class="o">=</span> <span class="n">o</span><span class="o">.</span><span class="n">export_attributes</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 
         <span class="n">o</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">oeditor</span><span class="o">.</span><span class="n">CreateEquationCurve</span><span class="p">(</span><span class="n">vArg1</span><span class="p">,</span> <span class="n">vArg2</span><span class="p">)</span>
-        <span class="nb">id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update_object</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="s2">&quot;Line&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_refresh_object_types</span><span class="p">()</span>
+        <span class="nb">id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update_object</span><span class="p">(</span><span class="n">o</span><span class="p">)</span>
         <span class="k">return</span> <span class="nb">id</span></div>
 
 <div class="viewcode-block" id="Primitives3D.create_helix"><a class="viewcode-back" href="../../../API/Primitives3D.html#pyaedt.modeler.Primitives3D.Primitives3D.create_helix">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
@@ -574,6 +576,7 @@
         <span class="n">vArg2</span> <span class="o">=</span> <span class="n">udphelixdefinition</span><span class="o">.</span><span class="n">toScript</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model_units</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">oeditor</span><span class="o">.</span><span class="n">CreateHelix</span><span class="p">(</span><span class="n">vArg1</span><span class="p">,</span> <span class="n">vArg2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_refresh_object_types</span><span class="p">()</span>
         <span class="nb">id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update_object</span><span class="p">(</span><span class="n">o</span><span class="p">)</span>
         <span class="k">return</span> <span class="nb">id</span></div>
 
@@ -657,7 +660,8 @@
 
         <span class="n">vArg2</span> <span class="o">=</span> <span class="n">o</span><span class="o">.</span><span class="n">export_attributes</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
         <span class="n">o</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">oeditor</span><span class="o">.</span><span class="n">CreateRectangle</span><span class="p">(</span><span class="n">vArg1</span><span class="p">,</span> <span class="n">vArg2</span><span class="p">)</span>
-        <span class="nb">id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update_object</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="s2">&quot;Sheet&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_refresh_object_types</span><span class="p">()</span>
+        <span class="nb">id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update_object</span><span class="p">(</span><span class="n">o</span><span class="p">)</span>
         <span class="k">return</span> <span class="nb">id</span></div>
 
 <div class="viewcode-block" id="Primitives3D.create_udm"><a class="viewcode-back" href="../../../API/Primitives3D.html#pyaedt.modeler.Primitives3D.Primitives3D.create_udm">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
@@ -679,7 +683,7 @@
 <span class="sd">            object ID</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1">#id = self._new_id()</span>
+
 
         <span class="n">vArg1</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;NAME:UserDefinedModelParameters&quot;</span><span class="p">,[</span><span class="s2">&quot;NAME:Definition&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;NAME:Options&quot;</span><span class="p">]]</span>
         <span class="n">vArgParamVector</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;NAME:GeometryParams&quot;</span><span class="p">]</span>
@@ -715,16 +719,14 @@
         <span class="k">if</span> <span class="n">oname</span><span class="p">:</span>
             <span class="n">object_lists</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">oeditor</span><span class="o">.</span><span class="n">GetPartsForUserDefinedModel</span><span class="p">(</span><span class="n">oname</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">object_lists</span><span class="p">:</span>
-                <span class="nb">id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_new_id</span><span class="p">()</span>
-                <span class="n">o</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="p">[</span><span class="nb">id</span><span class="p">]</span>
+                <span class="n">o</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_new_object</span><span class="p">()</span>
                 <span class="n">o</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">el</span>
-                <span class="n">obj</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">oeditor</span><span class="o">.</span><span class="n">GetObjectsInGroup</span><span class="p">(</span><span class="s2">&quot;Solids&quot;</span><span class="p">))</span>
                 <span class="k">if</span> <span class="n">el</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">oeditor</span><span class="o">.</span><span class="n">GetObjectsInGroup</span><span class="p">(</span><span class="s2">&quot;Solids&quot;</span><span class="p">)):</span>
                     <span class="nb">id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update_object</span><span class="p">(</span><span class="n">o</span><span class="p">)</span>
                 <span class="k">elif</span> <span class="n">el</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">oeditor</span><span class="o">.</span><span class="n">GetObjectsInGroup</span><span class="p">(</span><span class="s2">&quot;Sheets&quot;</span><span class="p">)):</span>
-                    <span class="nb">id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update_object</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="s2">&quot;Sheet&quot;</span><span class="p">)</span>
+                    <span class="nb">id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update_object</span><span class="p">(</span><span class="n">o</span><span class="p">)</span>
                 <span class="k">elif</span> <span class="n">el</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">oeditor</span><span class="o">.</span><span class="n">GetObjectsInGroup</span><span class="p">(</span><span class="s2">&quot;Lines&quot;</span><span class="p">)):</span>
-                    <span class="nb">id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update_object</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="s2">&quot;Line&quot;</span><span class="p">)</span>
+                    <span class="nb">id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update_object</span><span class="p">(</span><span class="n">o</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="nb">id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update_object</span><span class="p">(</span><span class="n">o</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">update_object_properties</span><span class="p">(</span><span class="n">o</span><span class="p">)</span>
@@ -759,10 +761,7 @@
 <span class="sd">            id</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_new_id</span><span class="p">()</span>
-
-        <span class="n">o</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="p">[</span><span class="nb">id</span><span class="p">]</span>
-        <span class="n">o</span><span class="o">.</span><span class="n">material_name</span><span class="p">,</span> <span class="n">o</span><span class="o">.</span><span class="n">solve_inside</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_material</span><span class="p">(</span><span class="n">matname</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">defaultmaterial</span><span class="p">)</span>
+        <span class="n">o</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_new_object</span><span class="p">(</span><span class="n">matname</span><span class="o">=</span><span class="n">matname</span><span class="p">)</span>
 
         <span class="n">XCenter</span><span class="p">,</span> <span class="n">YCenter</span><span class="p">,</span> <span class="n">ZCenter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pos_with_arg</span><span class="p">(</span><span class="n">position</span><span class="p">)</span>
         <span class="n">szAxis</span> <span class="o">=</span> <span class="n">GeometryOperators</span><span class="o">.</span><span class="n">cs_axis_str</span><span class="p">(</span><span class="n">cs_axis</span><span class="p">)</span>
@@ -782,6 +781,11 @@
         <span class="n">vArg2</span> <span class="o">=</span> <span class="n">o</span><span class="o">.</span><span class="n">export_attributes</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 
         <span class="n">o</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">oeditor</span><span class="o">.</span><span class="n">CreateCone</span><span class="p">(</span><span class="n">vArg1</span><span class="p">,</span> <span class="n">vArg2</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">o</span><span class="o">.</span><span class="n">analysis_type</span><span class="p">:</span>
+            <span class="n">o</span><span class="o">.</span><span class="n">material_name</span><span class="p">,</span> <span class="n">o</span><span class="o">.</span><span class="n">solve_inside</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_material</span><span class="p">(</span><span class="n">matname</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">defaultmaterial</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_refresh_object_types</span><span class="p">()</span>
         <span class="nb">id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update_object</span><span class="p">(</span><span class="n">o</span><span class="p">)</span>
         <span class="k">return</span> <span class="nb">id</span></div>
 
@@ -806,9 +810,7 @@
 <span class="sd">        -------</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_new_id</span><span class="p">()</span>
-
-        <span class="n">o</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="p">[</span><span class="nb">id</span><span class="p">]</span>
+        <span class="n">o</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_new_object</span><span class="p">()</span>
 
         <span class="n">vArg1</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;NAME:InsertComponentData&quot;</span><span class="p">]</span>
 
@@ -836,7 +838,6 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">oeditor</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">o</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">oeditor</span><span class="o">.</span><span class="n">Insert3DComponent</span><span class="p">(</span><span class="n">vArg1</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">refresh_all_ids</span><span class="p">()</span>
-            <span class="c1"># id = self._update_object(o)</span>
         <span class="k">return</span> <span class="nb">id</span></div>
 
 <div class="viewcode-block" id="Primitives3D.get_3d_component_object_list"><a class="viewcode-back" href="../../../API/Primitives3D.html#pyaedt.modeler.Primitives3D.Primitives3D.get_3d_component_object_list">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
