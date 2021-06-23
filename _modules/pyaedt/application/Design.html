@@ -645,9 +645,8 @@
 
         <span class="k">if</span> <span class="s2">&quot;;&quot;</span> <span class="ow">in</span> <span class="n">new_name</span><span class="p">:</span>
             <span class="n">new_name</span> <span class="o">=</span> <span class="n">new_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
-        <span class="c1"># src_dir = self.working_directory</span>
-        <span class="n">old_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design_name</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">odesign</span><span class="o">.</span><span class="n">RenameDesignInstance</span><span class="p">(</span><span class="n">old_name</span><span class="p">,</span> <span class="n">new_name</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">odesign</span><span class="o">.</span><span class="n">RenameDesignInstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">design_name</span><span class="p">,</span> <span class="n">new_name</span><span class="p">)</span>
         <span class="n">timeout</span> <span class="o">=</span> <span class="mf">5.0</span>
         <span class="n">timestep</span> <span class="o">=</span> <span class="mf">0.1</span>
         <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">design_name</span> <span class="o">!=</span> <span class="n">new_name</span><span class="p">:</span>
