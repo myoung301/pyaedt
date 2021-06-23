@@ -4,8 +4,7 @@
    contain the root `toctree` directive.
 
 EDB Nets
-========
-
+===================================
 **Diagram**
 
 .. automodule:: pyaedt.edb_core.nets

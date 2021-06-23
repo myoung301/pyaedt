@@ -4,12 +4,12 @@
    contain the root `toctree` directive.
 
 Setup
-=====
+===================================
 
 
 .. toctree::
    :maxdepth: 2
-   :caption: The ``Setup`` module includes these classes::
+   :caption: Classes:
 
    Setup3D
    Setup3DLayout

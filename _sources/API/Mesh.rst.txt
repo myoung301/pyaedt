@@ -4,13 +4,13 @@
    contain the root `toctree` directive.
 
 Mesh
-====
+===================================
 
 **Diagram**
 
 .. toctree::
    :maxdepth: 2
-   :caption: The ``Mesh`` module includes these classes:
+   :caption: Classes:
 
    Mesh3D
    MeshIcepak
