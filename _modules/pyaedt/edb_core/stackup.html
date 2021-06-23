@@ -141,13 +141,7 @@
                 
   <h1>Source code for pyaedt.edb_core.stackup</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">EdbStackup Class</span>
-<span class="sd">-------------------</span>
-
-<span class="sd">This class manages Edb Stackup and related methods</span>
-
-
-
+<span class="sd">This module contains the ``EdbStackup`` class.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
@@ -164,9 +158,8 @@
 <span class="kn">from</span> <span class="nn">.EDB_Data</span> <span class="kn">import</span> <span class="n">EDBLayers</span><span class="p">,</span> <span class="n">EDBLayer</span>
 
 
-
 <div class="viewcode-block" id="EdbStackup"><a class="viewcode-back" href="../../../API/EDBStackup.html#pyaedt.edb_core.stackup.EdbStackup">[docs]</a><span class="k">class</span> <span class="nc">EdbStackup</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Stackup object&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;EdbStackup class.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">parent</span>
@@ -209,13 +202,15 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">stackup_layers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get all stackup layers</span>
+        <span class="sd">&quot;&quot;&quot;List all stackup layers.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
+<span class="sd">        dict</span>
+<span class="sd">            Dictionary of stackup layers.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_layer_dict</span><span class="p">:</span>
@@ -232,8 +227,8 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        type</span>
-<span class="sd">            :return:list of signal layers</span>
+<span class="sd">        list</span>
+<span class="sd">            List of signal layers.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stackup_layers</span><span class="o">.</span><span class="n">signal_layers</span>
@@ -250,20 +245,22 @@
 
 <div class="viewcode-block" id="EdbStackup.create_dielectric"><a class="viewcode-back" href="../../../API/EDBStackup.html#pyaedt.edb_core.stackup.EdbStackup.create_dielectric">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="nf">create_dielectric</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">permittivity</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">loss_tangent</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create a new dielectric with simple properties</span>
+        <span class="sd">&quot;&quot;&quot;Create a new dielectric with simple properties.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        name: str</span>
-<span class="sd">            name of dielectic</span>
-<span class="sd">        permittivity: float</span>
-<span class="sd">            dielectric permittivity</span>
-<span class="sd">        loss_tangent: float</span>
-<span class="sd">            dielectric loss tangent</span>
+<span class="sd">        name : str</span>
+<span class="sd">            Name of the dielectic.</span>
+<span class="sd">        permittivity : float, optional</span>
+<span class="sd">            Permittivity of the dielectric.</span>
+<span class="sd">        loss_tangent : float</span>
+<span class="sd">            Loss tangent for the material. </span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        Material Definition</span>
+<span class="sd">        type</span>
+<span class="sd">        Material definition.</span>
+<span class="sd">        </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">edb</span><span class="o">.</span><span class="n">Definition</span><span class="o">.</span><span class="n">MaterialDef</span><span class="o">.</span><span class="n">FindByName</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">IsNull</span><span class="p">():</span>
             <span class="n">material_def</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edb</span><span class="o">.</span><span class="n">Definition</span><span class="o">.</span><span class="n">MaterialDef</span><span class="o">.</span><span class="n">Create</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="p">,</span><span class="n">name</span><span class="p">)</span>
@@ -275,18 +272,20 @@
 
 <div class="viewcode-block" id="EdbStackup.create_conductor"><a class="viewcode-back" href="../../../API/EDBStackup.html#pyaedt.edb_core.stackup.EdbStackup.create_conductor">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="nf">create_conductor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">conductivity</span><span class="o">=</span><span class="mf">1e6</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create a new conductor with simple properties</span>
+        <span class="sd">&quot;&quot;&quot;Create a new conductor with simple properties.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        name: str</span>
-<span class="sd">            name of conductor</span>
-<span class="sd">        conductivity: float</span>
-<span class="sd">            conductor conductivity</span>
+<span class="sd">            Name of the conductor.</span>
+<span class="sd">        conductivity : float, optional</span>
+<span class="sd">            Conductivity of the conductor. The default is ``1e6``.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        Material Definition</span>
+<span class="sd">        type</span>
+<span class="sd">        Material definition.</span>
+<span class="sd">        </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">edb</span><span class="o">.</span><span class="n">Definition</span><span class="o">.</span><span class="n">MaterialDef</span><span class="o">.</span><span class="n">FindByName</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">IsNull</span><span class="p">():</span>
             <span class="n">material_def</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edb</span><span class="o">.</span><span class="n">Definition</span><span class="o">.</span><span class="n">MaterialDef</span><span class="o">.</span><span class="n">Create</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
@@ -297,28 +296,33 @@
 
 <div class="viewcode-block" id="EdbStackup.create_debye_material"><a class="viewcode-back" href="../../../API/EDBStackup.html#pyaedt.edb_core.stackup.EdbStackup.create_debye_material">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="nf">create_debye_material</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">relative_permittivity_low</span><span class="p">,</span> <span class="n">relative_permittivity_high</span><span class="p">,</span> <span class="n">loss_tangent_low</span><span class="p">,</span> <span class="n">loss_tangent_high</span><span class="p">,</span> <span class="n">lower_freqency</span><span class="p">,</span> <span class="n">higher_frequency</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create a new dielectric with Debye Model</span>
+        <span class="sd">&quot;&quot;&quot;Create a new dielectric with the Debye model.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        name: str</span>
-<span class="sd">            name of dielectic</span>
-<span class="sd">        relative_permittivity_low: float</span>
-<span class="sd">            dielectric permittivity at lower frequency</span>
-<span class="sd">        relative_permittivity_high: float</span>
-<span class="sd">            dielectric permittivity at higher frequency</span>
-<span class="sd">        loss_tangent_low: float</span>
-<span class="sd">            dielectric loss tangent at lower frequency</span>
-<span class="sd">        loss_tangent_high: float</span>
-<span class="sd">            dielectric loss tangent  at higher frequency</span>
-<span class="sd">        lower_freqency: float</span>
-<span class="sd">            dielectric lower frequency</span>
+<span class="sd">        name : str</span>
+<span class="sd">            Name of the dielectic.</span>
+<span class="sd">        relative_permittivity_low : float</span>
+<span class="sd">            Relative permittivity of the dielectric at the frequency specified</span>
+<span class="sd">            for ``lower_frequency``.</span>
+<span class="sd">        relative_permittivity_high : float</span>
+<span class="sd">            Relative ermittivity of the dielectric at the frequency specified</span>
+<span class="sd">            for ``higher_frequency``.</span>
+<span class="sd">        loss_tangent_low : float</span>
+<span class="sd">            Loss tangent for the material at the frequency specified</span>
+<span class="sd">            for ``lower_frequency``.</span>
+<span class="sd">        loss_tangent_high : float</span>
+<span class="sd">            Loss tangent for the material at the frequncy specified</span>
+<span class="sd">            for ``higher_frequency``.</span>
+<span class="sd">        lower_freqency : float</span>
+<span class="sd">            Value to use for lower frequency.</span>
 <span class="sd">        higher_frequency: float</span>
-<span class="sd">            dielectric higher frequency</span>
+<span class="sd">            Value to use for higher frequency.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        Material Definition</span>
+<span class="sd">        type</span>
+<span class="sd">        Material definition.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">material_def</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edb</span><span class="o">.</span><span class="n">Definition</span><span class="o">.</span><span class="n">DebyeModel</span><span class="p">()</span>
         <span class="n">material_def</span><span class="o">.</span><span class="n">SetFrequencyRange</span><span class="p">(</span><span class="n">lower_freqency</span><span class="p">,</span> <span class="n">higher_frequency</span><span class="p">)</span>
@@ -331,24 +335,24 @@
 
 <div class="viewcode-block" id="EdbStackup.create_djordjevicsarkar_material"><a class="viewcode-back" href="../../../API/EDBStackup.html#pyaedt.edb_core.stackup.EdbStackup.create_djordjevicsarkar_material">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="nf">create_djordjevicsarkar_material</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">relative_permittivity</span><span class="p">,</span> <span class="n">loss_tangent</span><span class="p">,</span> <span class="n">test_frequency</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create a new Djordjevic_Sarkar Dielectric</span>
+        <span class="sd">&quot;&quot;&quot;Create a new Djordjevic_Sarkar dielectric.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        name: str</span>
-<span class="sd">            name of dielectic</span>
-<span class="sd">        relative_permittivity: float</span>
-<span class="sd">            dielectric permittivity</span>
-
-<span class="sd">        loss_tangent: float</span>
-<span class="sd">            dielectric loss tangent</span>
-<span class="sd">        test_frequency: float</span>
-<span class="sd">            dielectric test frequency in GHz</span>
-
+<span class="sd">        name : str</span>
+<span class="sd">            Name of the dielectic.</span>
+<span class="sd">        relative_permittivity : float</span>
+<span class="sd">            Relative permittivity of the dielectric.</span>
+<span class="sd">        loss_tangent : float</span>
+<span class="sd">            Loss tangent for the material.</span>
+<span class="sd">        test_frequency : float</span>
+<span class="sd">            Test frequency for the dielectric in GHz.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        Material Definition</span>
+<span class="sd">        type</span>
+<span class="sd">        Material definition.</span>
+<span class="sd">        </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">material_def</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edb</span><span class="o">.</span><span class="n">Definition</span><span class="o">.</span><span class="n">DjordjecvicSarkarModel</span><span class="p">()</span>
         <span class="n">material_def</span><span class="o">.</span><span class="n">SetFrequency</span><span class="p">(</span><span class="n">test_frequency</span><span class="p">)</span>
@@ -372,8 +376,8 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        only_metals :</span>
-<span class="sd">             (Default value = False)</span>
+<span class="sd">        only_metals : bool, optional</span>
+<span class="sd">            The default is ``False``.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
