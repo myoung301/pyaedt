@@ -249,9 +249,23 @@
 
 
 <div class="viewcode-block" id="update_aedt_registry"><a class="viewcode-back" href="../../API/Desktop.html#pyaedt.desktop.update_aedt_registry">[docs]</a><span class="k">def</span> <span class="nf">update_aedt_registry</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">desktop_version</span><span class="o">=</span><span class="s2">&quot;193&quot;</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Windows Only</span>
+    <span class="sd">&quot;&quot;&quot;Update AEDT registry key.</span>
 <span class="sd">    </span>
-<span class="sd">    Update AEDT options registry keys. Value includes &quot;&quot; if needed.</span>
+<span class="sd">    .. note::</span>
+<span class="sd">       This method is only supported in Windows.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    key : str</span>
+<span class="sd">        Registry key.</span>
+<span class="sd">    value : str</span>
+<span class="sd">        Value to which to set the registry key. Value includes &quot;&quot; if needed.</span>
+<span class="sd">    desktop_version : str, optional</span>
+<span class="sd">        Version of AEDT to use. The default is ``&quot;193&quot;``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    </span>
 <span class="sd">    </span>
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -271,17 +285,7 @@
 <span class="sd">    </span>
 <span class="sd">    &gt;&gt;&gt; updateAEDTRegistry(&quot;HFSS/MPIVendor&quot;, &quot;Intel&quot;)</span>
 
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    key : str</span>
-<span class="sd">        Registry key.</span>
-<span class="sd">    value : str</span>
-<span class="sd">        Value to set the registry key to.</span>
-<span class="sd">    desktop_version : str, optional</span>
-<span class="sd">         The version of Electronics Desktop. The default is ``&quot;193&quot;``.</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
+<span class="sd">   </span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">import</span> <span class="nn">subprocess</span>
@@ -373,13 +377,14 @@
 <div class="viewcode-block" id="force_close_desktop"><a class="viewcode-back" href="../../API/Desktop.html#pyaedt.desktop.force_close_desktop">[docs]</a><span class="k">def</span> <span class="nf">force_close_desktop</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;Close all AEDT projects and shut down AEDT.</span>
 <span class="sd">    </span>
-<span class="sd">    :return: True (Closed) | False (Failed to Close)</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
+<span class="sd">    bool</span>
+<span class="sd">        ``True`` when successful, ``False`` when failed.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">Module</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="s1">&#39;__main__&#39;</span><span class="p">]</span>
@@ -422,10 +427,11 @@
 
 
 <div class="viewcode-block" id="Desktop"><a class="viewcode-back" href="../../API/Desktop.html#pyaedt.desktop.Desktop">[docs]</a><span class="k">class</span> <span class="nc">Desktop</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Core class used to initialize AEDT based on the inputs provided.</span>
+    <span class="sd">&quot;&quot;&quot;Initialize AEDT based on the inputs provided.</span>
 <span class="sd">    </span>
-<span class="sd">    On Windows, it works without limitations in IronPython and CPython.</span>
-<span class="sd">    On Linux, it works only in embedded Ironpython in AEDT.</span>
+<span class="sd">    .. note::</span>
+<span class="sd">       On Windows, it works without limitations in IronPython and CPython.</span>
+<span class="sd">       On Linux, it works only in embedded IronPython in AEDT.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -548,8 +554,8 @@
                 <span class="k">if</span> <span class="n">IsWindows</span><span class="p">:</span>
                     <span class="n">username</span> <span class="o">=</span> <span class="n">getpass</span><span class="o">.</span><span class="n">getuser</span><span class="p">()</span>
                     <span class="n">process</span> <span class="o">=</span> <span class="s2">&quot;ansysedt.exe&quot;</span>
-                    <span class="n">output</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">popen</span><span class="p">(</span><span class="s1">&#39;tasklist /FI &quot;IMAGENAME eq </span><span class="si">{}</span><span class="s1">&quot; /v&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">process</span><span class="p">))</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
-                    <span class="n">pattern</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;(?i)^(?:</span><span class="si">{}</span><span class="s1">)\s+?(\d+)\s+.+[\s|</span><span class="se">\\</span><span class="s1">](?:</span><span class="si">{}</span><span class="s1">)\s+&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">process</span><span class="p">,</span> <span class="n">username</span><span class="p">)</span>
+                    <span class="n">output</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">popen</span><span class="p">(</span><span class="s1">&#39;tasklist /FI &quot;IMAGENAME eq ansysedt.exe&quot; /v&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+                    <span class="n">pattern</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;^(?i)(?:</span><span class="si">{}</span><span class="s1">)\s+?(\d+)\s+.+[\s|</span><span class="se">\\</span><span class="s1">](?:</span><span class="si">{}</span><span class="s1">)\s+&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">process</span><span class="p">,</span> <span class="n">username</span><span class="p">)</span>
                     <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">output</span><span class="p">:</span>
                         <span class="n">m</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">l</span><span class="p">)</span>
                         <span class="k">if</span> <span class="n">m</span><span class="p">:</span>
@@ -565,8 +571,8 @@
                     <span class="n">module_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Info: Using Windows TaskManager to Load processes&quot;</span><span class="p">)</span>
                     <span class="n">username</span> <span class="o">=</span> <span class="n">getpass</span><span class="o">.</span><span class="n">getuser</span><span class="p">()</span>
                     <span class="n">process</span> <span class="o">=</span> <span class="s2">&quot;ansysedt.exe&quot;</span>
-                    <span class="n">output</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">popen</span><span class="p">(</span><span class="s1">&#39;tasklist /FI &quot;IMAGENAME eq </span><span class="si">{}</span><span class="s1">&quot; /v&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">process</span><span class="p">))</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
-                    <span class="n">pattern</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;(?i)^(?:</span><span class="si">{}</span><span class="s1">)\s+?(\d+)\s+.+[\s|</span><span class="se">\\</span><span class="s1">](?:</span><span class="si">{}</span><span class="s1">)\s+&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">process</span><span class="p">,</span> <span class="n">username</span><span class="p">)</span>
+                    <span class="n">output</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">popen</span><span class="p">(</span><span class="s1">&#39;tasklist /FI &quot;IMAGENAME eq ansysedt.exe&quot; /v&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+                    <span class="n">pattern</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;^(?i)(?:</span><span class="si">{}</span><span class="s1">)\s+?(\d+)\s+.+[\s|</span><span class="se">\\</span><span class="s1">](?:</span><span class="si">{}</span><span class="s1">)\s+&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">process</span><span class="p">,</span> <span class="n">username</span><span class="p">)</span>
                     <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">output</span><span class="p">:</span>
                         <span class="n">m</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">l</span><span class="p">)</span>
                         <span class="k">if</span> <span class="n">m</span><span class="p">:</span>
@@ -663,7 +669,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">release_desktop</span><span class="p">(</span><span class="n">close_projects</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_main</span><span class="o">.</span><span class="n">close_on_exit</span><span class="p">,</span> <span class="n">close_on_exit</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_main</span><span class="o">.</span><span class="n">close_on_exit</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_exception</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ex_value</span><span class="p">,</span> <span class="n">tb_data</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Write the trace stack to the desktop when a python error occurs.</span>
+        <span class="sd">&quot;&quot;&quot;Write the trace stack to the desktop when a Python error occurs.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -704,9 +710,11 @@
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        close_projects : bool, optional</span>
-<span class="sd">            Whether to close the projects opened in the session. The default is ``True``.</span>
+<span class="sd">            Whether to close the projects opened in the session. </span>
+<span class="sd">            The default is ``True``.</span>
 <span class="sd">        close_on_exit : bool, optional</span>
-<span class="sd">            Whether to close the active AEDT session. The default is ``True``.</span>
+<span class="sd">            Whether to close the active AEDT session. </span>
+<span class="sd">            The default is ``True``.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
