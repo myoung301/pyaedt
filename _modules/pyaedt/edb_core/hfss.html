@@ -141,7 +141,10 @@
                 
   <h1>Source code for pyaedt.edb_core.hfss</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">This module contains all EDB functinalities for the ``EDB 3D Layout`` class.</span>
+<span class="sd">Edb3DLayout Class</span>
+<span class="sd">-------------------</span>
+
+<span class="sd">This class manages Edb HFSS3DLayout and related methods</span>
 
 
 <span class="sd">&quot;&quot;&quot;</span>
@@ -160,8 +163,7 @@
 
 
 <div class="viewcode-block" id="Edb3DLayout"><a class="viewcode-back" href="../../../API/EDBHfss.html#pyaedt.edb_core.hfss.Edb3DLayout">[docs]</a><span class="k">class</span> <span class="nc">Edb3DLayout</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;EDB 3D Layout class.&quot;&quot;&quot;</span>
-
+    <span class="sd">&quot;&quot;&quot;HFSS 3DLayout object&quot;&quot;&quot;</span>
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">hfss_terminals</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
@@ -207,6 +209,7 @@
         <span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">db</span>
 
+
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">builder</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
@@ -219,10 +222,13 @@
     <span class="k">def</span> <span class="nf">get_trace_width_for_traces_with_ports</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        dict</span>
-<span class="sd">            Dictionary of data.</span>
+<span class="sd">        type</span>
+<span class="sd">            :return: dictionary of data</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">mesh</span> <span class="o">=</span>  <span class="bp">self</span><span class="o">.</span><span class="n">hfss_mesh_setup</span><span class="o">.</span><span class="n">GetMeshOperation</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="p">)</span>
@@ -237,14 +243,18 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        pin_list : list</span>
-<span class="sd">            Pin object or a pin list object.          </span>
+<span class="sd">        pin_list :</span>
+<span class="sd">            </span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        list</span>
-<span class="sd">        List of names of created ports.</span>
-<span class="sd">        </span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">#TODO Return list of names of created Ports</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        :param pin_list: a pin object or a pin list object</span>
+<span class="sd">        :return:</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">pinList</span> <span class="o">=</span> <span class="n">convert_py_list_to_net_list</span><span class="p">(</span><span class="n">pin_list</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">hfss_terminals</span><span class="o">.</span><span class="n">CreateHfssPorts</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="p">,</span> <span class="n">pinList</span><span class="p">):</span>
@@ -252,25 +262,25 @@
 
 <div class="viewcode-block" id="Edb3DLayout.create_coax_port_on_component"><a class="viewcode-back" href="../../../API/EDBHfss.html#pyaedt.edb_core.hfss.Edb3DLayout.create_coax_port_on_component">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="nf">create_coax_port_on_component</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ref_des_list</span><span class="p">,</span> <span class="n">net_list</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create a coaxial port on a component or component list on a net or netlist.</span>
-<span class="sd">        </span>
-<span class="sd">        .. note::</span>
-<span class="sd">           The name of the new coaxial port is automatically assigned.</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        ref_des_list : list</span>
-<span class="sd">            List of reference designators. It can be a single reference designator</span>
-<span class="sd">            or a list of reference designators.</span>
+<span class="sd">        ref_des_list :</span>
 <span class="sd">            </span>
-<span class="sd">        net_list : list</span>
-<span class="sd">            List of nets. It can be a single net or a list of nets.    </span>
+<span class="sd">        net_list :</span>
+<span class="sd">            </span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        bool</span>
-<span class="sd">            ``True`` when successful, ``False`` when failed.</span>
-<span class="sd">        </span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">#TODO Return list of names of created Ports</span>
+        <span class="sd">&quot;&quot;&quot;Create Coaxial Port on a component or component list on specific net or netlist. Name is automatically created</span>
+
+<span class="sd">        :param ref_des_list: list of RefDef. it can be a single value or a list of RefDes</span>
+<span class="sd">        :param net_list: Net name(s). it can be a single value or a list of RefDes</span>
+<span class="sd">        :return: Bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">ref_desList</span> <span class="o">=</span> <span class="n">convert_py_list_to_net_list</span><span class="p">(</span><span class="n">ref_des_list</span><span class="p">)</span>
         <span class="n">netList</span> <span class="o">=</span> <span class="n">convert_py_list_to_net_list</span><span class="p">(</span><span class="n">net_list</span><span class="p">)</span>
@@ -285,8 +295,8 @@
 <span class="sd">        ----------</span>
 <span class="sd">        pinpos :</span>
 <span class="sd">            </span>
-<span class="sd">        portname : str, optional</span>
-<span class="sd">             Name of the port. The default is ``None``.</span>
+<span class="sd">        portname :</span>
+<span class="sd">             (Default value = None)</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -305,6 +315,7 @@
             <span class="k">return</span> <span class="kc">True</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span></div></div>
+
 </pre></div>
 
               </div>

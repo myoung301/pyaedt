@@ -159,11 +159,11 @@
 
 <span class="sd">&gt;&gt;&gt; aedtapp = Icepak(projectname,designame)</span>
 
-<span class="sd">Create an instance of ``Icepak`` and open the specified project, which is ``myfile.aedt``.</span>
+<span class="sd">Create an instance of ``Icepak`` and open the specified project.</span>
 
 <span class="sd">&gt;&gt;&gt; aedtapp = Icepak(&quot;myfile.aedt&quot;)</span>
 
-<span class="sd">Create an instance of ``Icepak`` using the 2021 R1 release and open the specified project, which is ``myfile.aedt``.</span>
+<span class="sd">Create an instance of ``Icepak``using the 2021 R1 release and open the specified project, which is ``myfile.aedt``.</span>
 
 <span class="sd">&gt;&gt;&gt; aedtapp = Icepak(specified_version=&quot;2021.1&quot;, projectname=&quot;myfile.aedt&quot;)</span>
 
@@ -198,21 +198,11 @@
 <span class="sd">    setup_name : str, optional</span>
 <span class="sd">        Name of the setup to use as the nominal. The default is ``None``. If ``None``, the active setup </span>
 <span class="sd">        is used or nothing is used.</span>
-<span class="sd">    specified_version : str, optional</span>
-<span class="sd">        Version of AEDT to use. The default is ``None``. If ``None``, the</span>
-<span class="sd">        active setup is used or the latest installed version is used.</span>
-<span class="sd">    NG: bool, optional</span>
-<span class="sd">        Whether to run AEDT in the non-graphical mode. The default </span>
-<span class="sd">        is``False``, which launches AEDT in the graphical mode.</span>
-<span class="sd">    AlwaysNew : bool, optional</span>
-<span class="sd">        Whether to launch an instance of AEDT in a new thread, even if </span>
-<span class="sd">        another instance of the ``specified_version`` is active on the machine.</span>
-<span class="sd">        The default is ``True``.</span>
-<span class="sd">    release_on_exit : bool, optional</span>
-<span class="sd">        Whether to release AEDT on exit. The default is ``True``.</span>
-<span class="sd">  </span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
-    
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projectname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">designname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">solution_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">setup_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">specified_version</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">NG</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">AlwaysNew</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">release_on_exit</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="n">FieldAnalysisIcepak</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;Icepak&quot;</span><span class="p">,</span> <span class="n">projectname</span><span class="p">,</span> <span class="n">designname</span><span class="p">,</span> <span class="n">solution_type</span><span class="p">,</span> <span class="n">setup_name</span><span class="p">,</span>
@@ -228,13 +218,17 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">existing_analysis_sweeps</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;List the existing analysis setups.       </span>
+        <span class="sd">&quot;&quot;&quot;List the existing analysis setups.</span>
+<span class="sd">        </span>
+<span class="sd">        </span>
+<span class="sd">        :return: Return a list of all defined analysis setup names in the maxwell design.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        list</span>
-<span class="sd">            List of all defined analysis setup names in the Maxwell design.</span>
-<span class="sd">            </span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">setup_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">existing_analysis_setups</span>
         <span class="n">sweep_list</span><span class="o">=</span><span class="p">[]</span>

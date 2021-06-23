@@ -3,9 +3,10 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Application Modules
-===================
-This section contains information about PyAEDT application modules:
+application modules
+===================================
+
+This Section contain info about all the application modules of pyaedt. In particular:
 
 
 #. Design
@@ -17,35 +18,34 @@ This section contains information about PyAEDT application modules:
 
 **Design**
 
-The ``Design`` module contains all properties and methods applicable to projects and designs.
+Design Class contains all the properties and methods applicable to Project and Design
 
 **Variable**
 
-The ``Variable`` module contains all methods for managing AEDT variables for both projects and designs.
+Variable Class contain all the methods for managing AEDT Variables (both Project and Design)
 
 
 **Analysis**
 
-The ``Analysis`` module contains all properties and methods needed to set up and run AEDT analyses.
+Analysis Classes contain all the properties and methods needed to setup and run AEDT Analysis
 
 
-**Modeler**
+**modeler**
 
-The ``Modeler`` module contains all properties and methods needed to edit a modeler, 
-including all primitives methods and properties.
+modeler Classeses contain all the properties and methods needed to edit a modeler, including all primitives methods and properties
 
 **DesignXploration**
 
-The ``DesignXploration`` module contain all properties and methods needed to create any optimetrics setup.
+Optimetrics Classeses contain all the properties and methods needed to create any optimetrics Setup
 
-**Alphabetical Modules Listing**
 
 .. toctree::
    :maxdepth: 2
-   :caption: The AEDT application modules, listed alphabetically, include the following classes:
+   :caption: Classes:
 
    AnalysisCore
    ModelerCore
    Design
    Variables
    DesignXPlorer
+

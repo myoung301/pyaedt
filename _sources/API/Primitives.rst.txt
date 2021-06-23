@@ -4,13 +4,13 @@
    contain the root `toctree` directive.
 
 Primitives
-==========
+===================================
 
 
 
 .. toctree::
    :maxdepth: 2
-   :caption: The ``Primitives`` module includes these classes:
+   :caption: Classes:
 
    CommonPrimitives
    Primitives3D

@@ -4,13 +4,13 @@
    contain the root `toctree` directive.
 
 EDB
-===
-This module contains all EDT functionalities for reading and writing information to AEDB files.
+===================================
+This Class contains the main methods to read and write information to aedb files.
 
 
 .. toctree::
    :maxdepth: 1
-   :caption: The PyAEDT API includes these classes for EDB:
+   :caption: Classes:
 
    EDBMain
    EDBComponents
@@ -21,7 +21,6 @@ This module contains all EDT functionalities for reading and writing information
    EDBLayout
    EDBStackup
    EDBNets
-   EDBData
 
 .. toctree::
    :maxdepth: 2
