@@ -201,7 +201,7 @@
 <span class="sd">        List of strings representing the message content for the specified design within the specified project</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg_list</span><span class="p">,</span> <span class="n">project_name</span><span class="p">,</span> <span class="n">design_name</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg_list</span><span class="p">,</span> <span class="n">project_name</span><span class="p">,</span> <span class="n">design_name</span><span class="p">,</span> <span class="n">solution_type</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">global_level</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">project_level</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">design_level</span> <span class="o">=</span> <span class="p">[]</span>
@@ -279,7 +279,12 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">global_message_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_desktop</span><span class="o">.</span><span class="n">GetMessages</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-        <span class="n">message_data</span> <span class="o">=</span> <span class="n">MessageList</span><span class="p">(</span><span class="n">global_message_data</span><span class="p">,</span> <span class="n">project_name</span><span class="p">,</span> <span class="n">design_name</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">sol_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_odesign</span><span class="o">.</span><span class="n">GetSolutionType</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="n">sol_type</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+        <span class="n">message_data</span> <span class="o">=</span> <span class="n">MessageList</span><span class="p">(</span><span class="n">global_message_data</span><span class="p">,</span> <span class="n">project_name</span><span class="p">,</span> <span class="n">design_name</span><span class="p">,</span> <span class="n">sol_type</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">message_data</span></div>
 
 <div class="viewcode-block" id="AEDTMessageManager.add_error_message"><a class="viewcode-back" href="../../../API/Messenger.html#pyaedt.application.MessageManager.AEDTMessageManager.add_error_message">[docs]</a>    <span class="nd">@aedt_exception_handler</span>

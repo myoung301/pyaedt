@@ -151,7 +151,7 @@
     <span class="kn">from</span> <span class="nn">System</span> <span class="kn">import</span> <span class="n">Double</span><span class="p">,</span> <span class="n">Array</span>
     <span class="kn">from</span> <span class="nn">System.Collections.Generic</span> <span class="kn">import</span> <span class="n">List</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;The clr is missing. Install Pythonnet or use an Ironpython version if you want to use the EDB module.&quot;</span><span class="p">)</span>
+    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;The clr is missing. Install Pythonnet or use Ironpython version if you want to use EDB Module&quot;</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="EDBLayer"><a class="viewcode-back" href="../../../API/EDBData.html#pyaedt.edb_core.EDB_Data.EDBLayer">[docs]</a><span class="k">class</span> <span class="nc">EDBLayer</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -448,9 +448,9 @@
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        layer :</span>
-<span class="sd">            Layer object.</span>
+<span class="sd">            layer object</span>
 <span class="sd">        elev :</span>
-<span class="sd">            Float elevation.</span>
+<span class="sd">            float Elevation</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -463,12 +463,15 @@
 
 <div class="viewcode-block" id="EDBLayer.update_layers"><a class="viewcode-back" href="../../../API/EDBData.html#pyaedt.edb_core.EDB_Data.EDBLayer.update_layers">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="nf">update_layers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Update all layers.</span>
-<span class="sd">      </span>
+        <span class="sd">&quot;&quot;&quot;update all layers</span>
+<span class="sd">        </span>
+<span class="sd">        :return: bool</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        bool</span>
-<span class="sd">            ``True`` when successful, ``False`` when failed.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">thisLC</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edb</span><span class="o">.</span><span class="n">Cell</span><span class="o">.</span><span class="n">LayerCollection</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">active_layout</span><span class="o">.</span><span class="n">GetLayerCollection</span><span class="p">())</span>
@@ -505,7 +508,7 @@
 
 
 <div class="viewcode-block" id="EDBLayers"><a class="viewcode-back" href="../../../API/EDBData.html#pyaedt.edb_core.EDB_Data.EDBLayers">[docs]</a><span class="k">class</span> <span class="nc">EDBLayers</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Manage all primitives.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Class for management of all Primitives.&quot;&quot;&quot;</span>
 
 
     <span class="nd">@property</span>
@@ -623,29 +626,29 @@
 <div class="viewcode-block" id="EDBLayers.add_layer"><a class="viewcode-back" href="../../../API/EDBData.html#pyaedt.edb_core.EDB_Data.EDBLayers.add_layer">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="nf">add_layer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layerName</span><span class="p">,</span> <span class="n">start_layer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">material</span><span class="o">=</span><span class="s2">&quot;copper&quot;</span><span class="p">,</span> <span class="n">fillMaterial</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">thickness</span><span class="o">=</span><span class="s2">&quot;35um&quot;</span><span class="p">,</span> <span class="n">layerType</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
                   <span class="n">etchMap</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Add an additional layer after a specific layer.</span>
+        <span class="sd">&quot;&quot;&quot;Add an additional layer after a specific layer</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        layerName : str</span>
-<span class="sd">            Name of the new layer.</span>
-<span class="sd">        start_layer : str</span>
-<span class="sd">            Name of the layer after which to place the new layer.</span>
-<span class="sd">        material : str, optional</span>
-<span class="sd">            Name of the material. The default is ``&quot;copper&quot;``.</span>
-<span class="sd">        fillMaterial : str, optional</span>
-<span class="sd">            Name of the fill material. The default is ``&quot;&quot;``.)</span>
-<span class="sd">        thickness : str, optional</span>
-<span class="sd">            Thickness value, including units. The default is ``&quot;35um&quot;``.</span>
+<span class="sd">        layerName :</span>
+<span class="sd">            name of new layer</span>
+<span class="sd">        start_layer :</span>
+<span class="sd">            name of layer after which the new layer will be placed</span>
+<span class="sd">        material :</span>
+<span class="sd">            name of material (Default value = &quot;copper&quot;)</span>
+<span class="sd">        fillMaterial :</span>
+<span class="sd">            name of fillmaterial (Default value = &quot;&quot;)</span>
+<span class="sd">        thickness :</span>
+<span class="sd">            thickness value (Default value = &quot;35um&quot;)</span>
 <span class="sd">        layerType :</span>
-<span class="sd">            Type of the layer. The default is ``0``, which is a signal layer.</span>
-<span class="sd">        etchMap : optional</span>
-<span class="sd">            Etch value if any. The default is ``None``.</span>
+<span class="sd">            layer type default signal layer</span>
+<span class="sd">        etchMap :</span>
+<span class="sd">            etch value if any (Default value = None)</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        bool</span>
-<span class="sd">            ``True`` when successful, ``False`` when failed.</span>
+<span class="sd">        type</span>
+<span class="sd">            True if successful</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">thisLC</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">edb</span><span class="o">.</span><span class="n">Cell</span><span class="o">.</span><span class="n">LayerCollection</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">active_layout</span><span class="o">.</span><span class="n">GetLayerCollection</span><span class="p">())</span>
@@ -695,17 +698,17 @@
 
 <div class="viewcode-block" id="EDBLayers.remove_layer"><a class="viewcode-back" href="../../../API/EDBData.html#pyaedt.edb_core.EDB_Data.EDBLayers.remove_layer">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="nf">remove_layer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layername</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Remove a specific layer.</span>
+        <span class="sd">&quot;&quot;&quot;Remove a specific layer &quot;layername&quot;</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        layername : str</span>
-<span class="sd">            Name of the layer to remove.</span>
+<span class="sd">        layername :</span>
+<span class="sd">            name of the layer to remove</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        bool</span>
-<span class="sd">            ``True`` when successful, ``False`` when failed.</span>
+<span class="sd">        type</span>
+<span class="sd">            True if operation successfully complete</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">thisLC</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">edb</span><span class="o">.</span><span class="n">Cell</span><span class="o">.</span><span class="n">LayerCollection</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">active_layout</span><span class="o">.</span><span class="n">GetLayerCollection</span><span class="p">())</span>
