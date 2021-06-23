@@ -1303,15 +1303,12 @@
 
 <div class="viewcode-block" id="GeometryModeler.get_excitations_name"><a class="viewcode-back" href="../../../API/Modeler.html#pyaedt.modeler.Modeler.GeometryModeler.get_excitations_name">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="nf">get_excitations_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get all the available excitation names</span>
-<span class="sd">        </span>
-<span class="sd">        :return: list of names. Excitations with multiple modes will produce one excitation for each mode</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
+        <span class="sd">&quot;&quot;&quot;Get all the available excitation names.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
+<span class="sd">        list</span>
+<span class="sd">            Excitation names. Excitations with multiple modes will produce one excitation for each mode.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">list_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">oboundary</span><span class="o">.</span><span class="n">GetExcitations</span><span class="p">())</span>
@@ -1320,16 +1317,12 @@
 
 <div class="viewcode-block" id="GeometryModeler.get_boundaries_name"><a class="viewcode-back" href="../../../API/Modeler.html#pyaedt.modeler.Modeler.GeometryModeler.get_boundaries_name">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="nf">get_boundaries_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-
-        <span class="sd">&quot;&quot;&quot;Get all the available Boundaries names</span>
-<span class="sd">        </span>
-<span class="sd">        :return: list of names. Excitations with multiple modes will produce one excitation for each mode</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
+        <span class="sd">&quot;&quot;&quot;Get all the available boundary names.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
+<span class="sd">        list</span>
+<span class="sd">            Boundary names. Boundaries with multiple modes will produce one boundary for each mode.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">list_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">oboundary</span><span class="o">.</span><span class="n">GetBoundaries</span><span class="p">())</span>
@@ -3704,7 +3697,6 @@
                 <span class="s2">&quot;Groups:=&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;Model&quot;</span><span class="p">]</span>
             <span class="p">])</span>
         <span class="k">return</span> <span class="kc">True</span></div></div>
-
 
 </pre></div>
 

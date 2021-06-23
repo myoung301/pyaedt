@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Desktop and Messenger &#8212; PyAEDT 0.3.dev0
+    <title>EDB Data Classes &#8212; PyAEDT 0.3.dev0
  documentation</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet" />
@@ -38,8 +38,8 @@
     <script src="../_static/copybutton.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Desktop" href="Desktop.html" />
-    <link rel="prev" title="RMxprt" href="RMxprt.html" />
+    <link rel="next" title="HFSS 3D Layout" href="HFSS3DLayout.html" />
+    <link rel="prev" title="EDB Stackup" href="EDBStackup.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
     
@@ -121,16 +121,16 @@
 </form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
- <li class="toctree-l1 has-children">
+ <li class="toctree-l1 current active has-children">
   <a class="reference internal" href="Application.html">
    Application Objects
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
   <label for="toctree-checkbox-1">
    <i class="fas fa-chevron-down">
    </i>
   </label>
-  <ul>
+  <ul class="current">
    <li class="toctree-l2 has-children">
     <a class="reference internal" href="HFSS.html">
      HFSS
@@ -215,16 +215,16 @@
      </li>
     </ul>
    </li>
-   <li class="toctree-l2 has-children">
+   <li class="toctree-l2 current active has-children">
     <a class="reference internal" href="EDB.html">
      EDB
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
+    <input checked="" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
     <label for="toctree-checkbox-9">
      <i class="fas fa-chevron-down">
      </i>
     </label>
-    <ul>
+    <ul class="current">
      <li class="toctree-l3 has-children">
       <a class="reference internal" href="EDBMain.html">
        EDB Main Class
@@ -333,11 +333,11 @@
       <ul class="simple">
       </ul>
      </li>
-     <li class="toctree-l3 has-children">
-      <a class="reference internal" href="EDBData.html">
+     <li class="toctree-l3 current active has-children">
+      <a class="current reference internal" href="#">
        EDB Data Classes
       </a>
-      <input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" type="checkbox"/>
+      <input checked="" class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" type="checkbox"/>
       <label for="toctree-checkbox-19">
        <i class="fas fa-chevron-down">
        </i>
@@ -385,11 +385,11 @@
    </li>
   </ul>
  </li>
- <li class="toctree-l1 current active has-children">
-  <a class="current reference internal" href="#">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="DesktopMessenger.html">
    Desktop and Messenger
   </a>
-  <input checked="" class="toctree-checkbox" id="toctree-checkbox-23" name="toctree-checkbox-23" type="checkbox"/>
+  <input class="toctree-checkbox" id="toctree-checkbox-23" name="toctree-checkbox-23" type="checkbox"/>
   <label for="toctree-checkbox-23">
    <i class="fas fa-chevron-down">
    </i>
@@ -785,17 +785,261 @@
               
               <div>
                 
-  <div class="section" id="desktop-and-messenger">
-<h1>Desktop and Messenger<a class="headerlink" href="#desktop-and-messenger" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-pyaedt.edb_core.EDB_Data">
+<span id="edb-data-classes"></span><h1>EDB Data Classes<a class="headerlink" href="#module-pyaedt.edb_core.EDB_Data" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyaedt.edb_core.EDB_Data.EDBComponent">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pyaedt.edb_core.EDB_Data.</span></span><span class="sig-name descname"><span class="pre">EDBComponent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/edb_core/EDB_Data.html#EDBComponent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.edb_core.EDB_Data.EDBComponent" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py property">
+<dt class="sig sig-object py" id="pyaedt.edb_core.EDB_Data.EDBComponent.top_bottom_association">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">top_bottom_association</span></span><a class="headerlink" href="#pyaedt.edb_core.EDB_Data.EDBComponent.top_bottom_association" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>returns: TopAssociated 0 Top associated.</dt><dd><p>NoTopBottomAssociated 1 No association.
+BottomAssociated 2 Bottom associated.
+TopBottomAssociationCount 4 Number of top/bottom association type.
+InvalidTopBottomAssociation -1 Undefined.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyaedt.edb_core.EDB_Data.EDBLayer">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pyaedt.edb_core.EDB_Data.</span></span><span class="sig-name descname"><span class="pre">EDBLayer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edblayer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/edb_core/EDB_Data.html#EDBLayer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.edb_core.EDB_Data.EDBLayer" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py property">
+<dt class="sig sig-object py" id="pyaedt.edb_core.EDB_Data.EDBLayer.builder">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">builder</span></span><a class="headerlink" href="#pyaedt.edb_core.EDB_Data.EDBLayer.builder" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyaedt.edb_core.EDB_Data.EDBLayer.etch_factor">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">etch_factor</span></span><a class="headerlink" href="#pyaedt.edb_core.EDB_Data.EDBLayer.etch_factor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyaedt.edb_core.EDB_Data.EDBLayer.filling_material_name">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">filling_material_name</span></span><a class="headerlink" href="#pyaedt.edb_core.EDB_Data.EDBLayer.filling_material_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyaedt.edb_core.EDB_Data.EDBLayer.id">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#pyaedt.edb_core.EDB_Data.EDBLayer.id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.edb_core.EDB_Data.EDBLayer.init_vals">
+<span class="sig-name descname"><span class="pre">init_vals</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/edb_core/EDB_Data.html#EDBLayer.init_vals"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.edb_core.EDB_Data.EDBLayer.init_vals" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyaedt.edb_core.EDB_Data.EDBLayer.layer_type">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">layer_type</span></span><a class="headerlink" href="#pyaedt.edb_core.EDB_Data.EDBLayer.layer_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyaedt.edb_core.EDB_Data.EDBLayer.lower_elevation">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">lower_elevation</span></span><a class="headerlink" href="#pyaedt.edb_core.EDB_Data.EDBLayer.lower_elevation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyaedt.edb_core.EDB_Data.EDBLayer.material_name">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">material_name</span></span><a class="headerlink" href="#pyaedt.edb_core.EDB_Data.EDBLayer.material_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyaedt.edb_core.EDB_Data.EDBLayer.messenger">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">messenger</span></span><a class="headerlink" href="#pyaedt.edb_core.EDB_Data.EDBLayer.messenger" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyaedt.edb_core.EDB_Data.EDBLayer.name">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#pyaedt.edb_core.EDB_Data.EDBLayer.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.edb_core.EDB_Data.EDBLayer.set_elevation">
+<span class="sig-name descname"><span class="pre">set_elevation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elev</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/edb_core/EDB_Data.html#EDBLayer.set_elevation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.edb_core.EDB_Data.EDBLayer.set_elevation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set layer Elevation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>layer</strong> -- Layer object.</p></li>
+<li><p><strong>elev</strong> -- Float elevation.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>layer</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>type</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyaedt.edb_core.EDB_Data.EDBLayer.stackup_methods">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">stackup_methods</span></span><a class="headerlink" href="#pyaedt.edb_core.EDB_Data.EDBLayer.stackup_methods" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyaedt.edb_core.EDB_Data.EDBLayer.thickness_value">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">thickness_value</span></span><a class="headerlink" href="#pyaedt.edb_core.EDB_Data.EDBLayer.thickness_value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyaedt.edb_core.EDB_Data.EDBLayer.top_bottom_association">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">top_bottom_association</span></span><a class="headerlink" href="#pyaedt.edb_core.EDB_Data.EDBLayer.top_bottom_association" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.edb_core.EDB_Data.EDBLayer.update_layer_vals">
+<span class="sig-name descname"><span class="pre">update_layer_vals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layerName</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">newLayer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">etchMap</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">materialMap</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fillMaterialMap</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thicknessMap</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layerTypeMap</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/edb_core/EDB_Data.html#EDBLayer.update_layer_vals"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.edb_core.EDB_Data.EDBLayer.update_layer_vals" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>layerName</strong> -- </p></li>
+<li><p><strong>newLayer</strong> -- </p></li>
+<li><p><strong>etchMap</strong> -- </p></li>
+<li><p><strong>materialMap</strong> -- </p></li>
+<li><p><strong>fillMaterialMap</strong> -- </p></li>
+<li><p><strong>thicknessMap</strong> -- </p></li>
+<li><p><strong>layerTypeMap</strong> -- </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.edb_core.EDB_Data.EDBLayer.update_layers">
+<span class="sig-name descname"><span class="pre">update_layers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/edb_core/EDB_Data.html#EDBLayer.update_layers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.edb_core.EDB_Data.EDBLayer.update_layers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update all layers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">True</span></code> when successful, <code class="docutils literal notranslate"><span class="pre">False</span></code> when failed.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyaedt.edb_core.EDB_Data.EDBLayer.upper_elevation">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">upper_elevation</span></span><a class="headerlink" href="#pyaedt.edb_core.EDB_Data.EDBLayer.upper_elevation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyaedt.edb_core.EDB_Data.EDBLayers">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pyaedt.edb_core.EDB_Data.</span></span><span class="sig-name descname"><span class="pre">EDBLayers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/edb_core/EDB_Data.html#EDBLayers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.edb_core.EDB_Data.EDBLayers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Manage all primitives.</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="pyaedt.edb_core.EDB_Data.EDBLayers.active_layout">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">active_layout</span></span><a class="headerlink" href="#pyaedt.edb_core.EDB_Data.EDBLayers.active_layout" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.edb_core.EDB_Data.EDBLayers.add_layer">
+<span class="sig-name descname"><span class="pre">add_layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layerName</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_layer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">material</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'copper'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fillMaterial</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thickness</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'35um'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layerType</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">etchMap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/edb_core/EDB_Data.html#EDBLayers.add_layer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.edb_core.EDB_Data.EDBLayers.add_layer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add an additional layer after a specific layer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>layerName</strong> (<em>str</em>) -- Name of the new layer.</p></li>
+<li><p><strong>start_layer</strong> (<em>str</em>) -- Name of the layer after which to place the new layer.</p></li>
+<li><p><strong>material</strong> (<em>str</em><em>, </em><em>optional</em>) -- Name of the material. The default is <code class="docutils literal notranslate"><span class="pre">&quot;copper&quot;</span></code>.</p></li>
+<li><p><strong>fillMaterial</strong> (<em>str</em><em>, </em><em>optional</em>) -- Name of the fill material. The default is <code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code>.)</p></li>
+<li><p><strong>thickness</strong> (<em>str</em><em>, </em><em>optional</em>) -- Thickness value, including units. The default is <code class="docutils literal notranslate"><span class="pre">&quot;35um&quot;</span></code>.</p></li>
+<li><p><strong>layerType</strong> -- Type of the layer. The default is <code class="docutils literal notranslate"><span class="pre">0</span></code>, which is a signal layer.</p></li>
+<li><p><strong>etchMap</strong> (<em>optional</em>) -- Etch value if any. The default is <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">True</span></code> when successful, <code class="docutils literal notranslate"><span class="pre">False</span></code> when failed.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyaedt.edb_core.EDB_Data.EDBLayers.builder">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">builder</span></span><a class="headerlink" href="#pyaedt.edb_core.EDB_Data.EDBLayers.builder" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyaedt.edb_core.EDB_Data.EDBLayers.edb">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">edb</span></span><a class="headerlink" href="#pyaedt.edb_core.EDB_Data.EDBLayers.edb" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyaedt.edb_core.EDB_Data.EDBLayers.edb_layers">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">edb_layers</span></span><a class="headerlink" href="#pyaedt.edb_core.EDB_Data.EDBLayers.edb_layers" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyaedt.edb_core.EDB_Data.EDBLayers.layer_collection">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">layer_collection</span></span><a class="headerlink" href="#pyaedt.edb_core.EDB_Data.EDBLayers.layer_collection" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyaedt.edb_core.EDB_Data.EDBLayers.layer_collection_mode">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">layer_collection_mode</span></span><a class="headerlink" href="#pyaedt.edb_core.EDB_Data.EDBLayers.layer_collection_mode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyaedt.edb_core.EDB_Data.EDBLayers.layer_types">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">layer_types</span></span><a class="headerlink" href="#pyaedt.edb_core.EDB_Data.EDBLayers.layer_types" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyaedt.edb_core.EDB_Data.EDBLayers.layers">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">layers</span></span><a class="headerlink" href="#pyaedt.edb_core.EDB_Data.EDBLayers.layers" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyaedt.edb_core.EDB_Data.EDBLayers.messenger">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">messenger</span></span><a class="headerlink" href="#pyaedt.edb_core.EDB_Data.EDBLayers.messenger" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyaedt.edb_core.EDB_Data.EDBLayers.remove_layer">
+<span class="sig-name descname"><span class="pre">remove_layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layername</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/edb_core/EDB_Data.html#EDBLayers.remove_layer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.edb_core.EDB_Data.EDBLayers.remove_layer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove a specific layer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>layername</strong> (<em>str</em>) -- Name of the layer to remove.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">True</span></code> when successful, <code class="docutils literal notranslate"><span class="pre">False</span></code> when failed.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyaedt.edb_core.EDB_Data.EDBLayers.stackup_mode">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">stackup_mode</span></span><a class="headerlink" href="#pyaedt.edb_core.EDB_Data.EDBLayers.stackup_mode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyaedt.edb_core.EDB_Data.EDBPadstack">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pyaedt.edb_core.EDB_Data.</span></span><span class="sig-name descname"><span class="pre">EDBPadstack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edb_padstack</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/edb_core/EDB_Data.html#EDBPadstack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.edb_core.EDB_Data.EDBPadstack" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <div class="toctree-wrapper compound">
-<p class="caption"><span class="caption-text">The PyAEDT API includes these classes for Desktop and Messenger:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="Desktop.html">Desktop</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Messenger.html">Messenger</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="Messenger.html#message-manager-library-module">Message Manager Library Module</a></li>
-</ul>
-</li>
-</ul>
 </div>
 </div>
 
@@ -805,8 +1049,8 @@
               
               <div class='prev-next-bottom'>
                 
-    <a class='left-prev' id="prev-link" href="RMxprt.html" title="previous page">RMxprt</a>
-    <a class='right-next' id="next-link" href="Desktop.html" title="next page">Desktop</a>
+    <a class='left-prev' id="prev-link" href="EDBStackup.html" title="previous page">EDB Stackup</a>
+    <a class='right-next' id="next-link" href="HFSS3DLayout.html" title="next page">HFSS 3D Layout</a>
 
               </div>
               
