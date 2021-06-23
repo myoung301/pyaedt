@@ -141,10 +141,7 @@
                 
   <h1>Source code for pyaedt.edb_core.siwave</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">EdbSiwave Class</span>
-<span class="sd">-------------------</span>
-
-<span class="sd">This class manages Edb Siwave and related methods</span>
+<span class="sd">This module contains the ``EdbSiwave`` class.</span>
 
 
 <span class="sd">&quot;&quot;&quot;</span>
@@ -362,7 +359,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_type</span>
 
 <div class="viewcode-block" id="EdBSiwave"><a class="viewcode-back" href="../../../API/EDBSiwave.html#pyaedt.edb_core.siwave.EdBSiwave">[docs]</a><span class="k">class</span> <span class="nc">EdBSiwave</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;EdbSiwave Object&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;EdbSiwave class.&quot;&quot;&quot;</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">siwave_source</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -407,21 +404,36 @@
     <span class="k">def</span> <span class="nf">create_circuit_port</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">positive_component_name</span><span class="p">,</span> <span class="n">positive_net_name</span><span class="p">,</span> <span class="n">negative_component_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                               <span class="n">negative_net_name</span><span class="o">=</span><span class="s2">&quot;GND&quot;</span><span class="p">,</span> <span class="n">impedance_value</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">port_name</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Create a  Circuit Port</span>
+<span class="sd">        Create a circuit port.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        positive_component_name : str</span>
+<span class="sd">            Name of the positive component.</span>
+<span class="sd">        positive_net_name : str</span>
+<span class="sd">            Name of the positive net.</span>
+<span class="sd">        negative_component_name : str, optional</span>
+<span class="sd">            Name of the negative component. The default is ``None``. If ``None``, the name of </span>
+<span class="sd">            the positive net is assigned.</span>
+<span class="sd">        negative_net_name : str, optional</span>
+<span class="sd">            Name of the negative net name. The default is ``&quot;GND&quot;``.</span>
+<span class="sd">        impedance_value : float, optional</span>
+<span class="sd">            Port impedance value. The default is ``50``.</span>
+<span class="sd">        port_name: str, optional</span>
+<span class="sd">            Name of the port.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            ``True`` when successful, ``False`` when failed.</span>
 
-<span class="sd">        :example:</span>
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
 
 <span class="sd">        &gt;&gt;&gt; from pyaedt import Edb</span>
 <span class="sd">        &gt;&gt;&gt; edbapp = Edb(&quot;myaedbfolder&quot;, &quot;project name&quot;, &quot;release version&quot;)</span>
 <span class="sd">        &gt;&gt;&gt; edbapp.core_siwave.create_circuit_port(&quot;U2A5&quot;,&quot;V1P5_S3&quot;,&quot;U2A5&quot;,&quot;GND&quot;,50,&quot;port_name&quot;)</span>
 
-<span class="sd">        :param positive_component_name: Name of the positive component</span>
-<span class="sd">        :param positive_net_name: Name of positive net name</span>
-<span class="sd">        :param negative_component_name:  Name of the negative component. if None, it will be the positive name</span>
-<span class="sd">        :param negative_net_name: Name of negative net name</span>
-<span class="sd">        :param impedance_value: port impedance value</span>
-<span class="sd">        :param port_name: optional port name</span>
-<span class="sd">        :return: Bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">circuit_port</span> <span class="o">=</span> <span class="n">CircuitPort</span><span class="p">()</span>
         <span class="n">circuit_port</span><span class="o">.</span><span class="n">positive_node</span><span class="o">.</span><span class="n">net</span> <span class="o">=</span> <span class="n">positive_net_name</span>
@@ -449,22 +461,38 @@
 <div class="viewcode-block" id="EdBSiwave.create_voltage_source"><a class="viewcode-back" href="../../../API/EDBSiwave.html#pyaedt.edb_core.siwave.EdBSiwave.create_voltage_source">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="nf">create_voltage_source</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">positive_component_name</span><span class="p">,</span> <span class="n">positive_net_name</span><span class="p">,</span> <span class="n">negative_component_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                               <span class="n">negative_net_name</span><span class="o">=</span><span class="s2">&quot;GND&quot;</span><span class="p">,</span> <span class="n">voltage_value</span><span class="o">=</span><span class="mf">3.3</span><span class="p">,</span> <span class="n">phase_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">source_name</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create a Voltage Source</span>
-
-<span class="sd">        :example:</span>
+        <span class="sd">&quot;&quot;&quot;Create a voltage source.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        positive_component_name : str</span>
+<span class="sd">            Name of the positive component.</span>
+<span class="sd">        positive_net_name : str</span>
+<span class="sd">            Name of the positive net.</span>
+<span class="sd">        negative_component_name : str, optional </span>
+<span class="sd">            Name of the negative component. The default is ``None``. If ``None``, the name of </span>
+<span class="sd">            the positive net is assigned.</span>
+<span class="sd">        negative_net_name : str, optional</span>
+<span class="sd">            Name of the negative net. The default is ``&quot;GND&quot;``.</span>
+<span class="sd">        voltage_value : float, optional</span>
+<span class="sd">            Value for the voltage. The default is ``3.3``.</span>
+<span class="sd">        phase_value: optional</span>
+<span class="sd">            Value for the phase. The default is ``0``.</span>
+<span class="sd">        source_name : str, optional</span>
+<span class="sd">            Name of the source. The default is ``&quot;&quot;``.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            ``True`` when successful, ``False`` when failed.</span>
+<span class="sd">            </span>
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
 
 <span class="sd">        &gt;&gt;&gt; from pyaedt import Edb</span>
 <span class="sd">        &gt;&gt;&gt; edbapp = Edb(&quot;myaedbfolder&quot;, &quot;project name&quot;, &quot;release version&quot;)</span>
 <span class="sd">        &gt;&gt;&gt; edb.core_siwave.create_voltage_source(&quot;U2A5&quot;,&quot;V1P5_S3&quot;,&quot;U2A5&quot;,&quot;GND&quot;,3.3,0,&quot;source_name&quot;)</span>
 
-<span class="sd">        :param positive_component_name: Name of the positive component</span>
-<span class="sd">        :param positive_net_name: Name of positive net name</span>
-<span class="sd">        :param negative_component_name:  Name of the negative component. if None, it will be the positive name</span>
-<span class="sd">        :param negative_net_name: Name of negative net name</span>
-<span class="sd">        :param current_value: Voltage Value</span>
-<span class="sd">        :param phase_value: Optional Phase Value</span>
-<span class="sd">        :param source_name: optional port name</span>
-<span class="sd">        :return: Bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">voltage_source</span> <span class="o">=</span> <span class="n">VoltageSource</span><span class="p">()</span>
         <span class="n">voltage_source</span><span class="o">.</span><span class="n">positive_node</span><span class="o">.</span><span class="n">net</span> <span class="o">=</span> <span class="n">positive_net_name</span>
@@ -490,20 +518,38 @@
 <div class="viewcode-block" id="EdBSiwave.create_current_source"><a class="viewcode-back" href="../../../API/EDBSiwave.html#pyaedt.edb_core.siwave.EdBSiwave.create_current_source">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="nf">create_current_source</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">positive_component_name</span><span class="p">,</span> <span class="n">positive_net_name</span><span class="p">,</span> <span class="n">negative_component_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                               <span class="n">negative_net_name</span><span class="o">=</span><span class="s2">&quot;GND&quot;</span><span class="p">,</span> <span class="n">current_value</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">phase_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">source_name</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create a Current Source</span>
+        <span class="sd">&quot;&quot;&quot;Create a current source.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        positive_component_name : str</span>
+<span class="sd">            Name of the positive component.</span>
+<span class="sd">        positive_net_name : str</span>
+<span class="sd">            Name of the positive net.</span>
+<span class="sd">        negative_component_name : str, optional </span>
+<span class="sd">            Name of the negative component. The default is ``None``. If ``None``, the name of </span>
+<span class="sd">            the positive net is assigned.</span>
+<span class="sd">        negative_net_name : str, optional</span>
+<span class="sd">            Name of the negative net. The default is ``&quot;GND&quot;``.</span>
+<span class="sd">        current_value : float, optional</span>
+<span class="sd">            Value for the current. The default is ``0.1``.</span>
+<span class="sd">        phase_value: optional</span>
+<span class="sd">            Value for the phase. The default is ``0``.</span>
+<span class="sd">        source_name : str, optional</span>
+<span class="sd">            Name of the source. The default is ``&quot;&quot;``.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            ``True`` when successful, ``False`` when failed.</span>
+<span class="sd">        </span>
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
 
 <span class="sd">        &gt;&gt;&gt; from pyaedt import Edb</span>
 <span class="sd">        &gt;&gt;&gt; edbapp = Edb(&quot;myaedbfolder&quot;, &quot;project name&quot;, &quot;release version&quot;)</span>
 <span class="sd">        &gt;&gt;&gt; edb.core_siwave.create_current_source(&quot;U2A5&quot;,&quot;V1P5_S3&quot;,&quot;U2A5&quot;,&quot;GND&quot;,0.1,0,&quot;source_name&quot;)</span>
-
-<span class="sd">        :param positive_component_name: Name of the positive component</span>
-<span class="sd">        :param positive_net_name: Name of positive net name</span>
-<span class="sd">        :param negative_component_name:  Name of the negative component. if None, it will be the positive name</span>
-<span class="sd">        :param negative_net_name: Name of negative net name</span>
-<span class="sd">        :param current_value: Current Value</span>
-<span class="sd">        :param phase_value: Optional Phase Value</span>
-<span class="sd">        :param source_name: optional source name</span>
-<span class="sd">        :return: Bool</span>
+<span class="sd">        </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">current_source</span> <span class="o">=</span> <span class="n">CurrentSource</span><span class="p">()</span>
         <span class="n">current_source</span><span class="o">.</span><span class="n">positive_node</span><span class="o">.</span><span class="n">net</span> <span class="o">=</span> <span class="n">positive_net_name</span>
@@ -529,20 +575,36 @@
 <div class="viewcode-block" id="EdBSiwave.create_resistor"><a class="viewcode-back" href="../../../API/EDBSiwave.html#pyaedt.edb_core.siwave.EdBSiwave.create_resistor">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="nf">create_resistor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">positive_component_name</span><span class="p">,</span> <span class="n">positive_net_name</span><span class="p">,</span> <span class="n">negative_component_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                               <span class="n">negative_net_name</span><span class="o">=</span><span class="s2">&quot;GND&quot;</span><span class="p">,</span> <span class="n">rvalue</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">resistor_name</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create a Voltage Source</span>
-
+        <span class="sd">&quot;&quot;&quot;Create a voltage source.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        positive_component_name : str</span>
+<span class="sd">            Name of the positive component.</span>
+<span class="sd">        positive_net_name : str</span>
+<span class="sd">            Name of the positive net.</span>
+<span class="sd">        negative_component_name : str, optional </span>
+<span class="sd">            Name of the negative component. The default is ``None``. If ``None``, the name of </span>
+<span class="sd">            the positive net is assigned.</span>
+<span class="sd">        negative_net_name : str, optional</span>
+<span class="sd">            Name of the negative net. The default is ``&quot;GND&quot;``.</span>
+<span class="sd">        rvalue : float, optional</span>
+<span class="sd">            Value for the resistance. The default is ``1``.</span>
+<span class="sd">        resistor_name : str, optional</span>
+<span class="sd">            Name of the resistor. The default is ``&quot;&quot;``.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            ``True`` when successful, ``False`` when failed.</span>
+<span class="sd">        </span>
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        </span>
 <span class="sd">        &gt;&gt;&gt; from pyaedt import Edb</span>
 <span class="sd">        &gt;&gt;&gt; edbapp = Edb(&quot;myaedbfolder&quot;, &quot;project name&quot;, &quot;release version&quot;)</span>
-<span class="sd">        &gt;&gt;&gt; edb.core_siwave.create_resistor(&quot;U2A5&quot;,&quot;V1P5_S3&quot;,&quot;U2A5&quot;,&quot;GND&quot;,1,&quot;resistor_name&quot;)</span>
-
-<span class="sd">        :param positive_component_name: Name of the positive component</span>
-<span class="sd">        :param positive_net_name: Name of positive net name</span>
-<span class="sd">        :param negative_component_name:  Name of the negative component. if None, it will be the positive name</span>
-<span class="sd">        :param negative_net_name: Name of negative net name</span>
-<span class="sd">        :param current_value: Current Value</span>
-<span class="sd">        :param phase_value: Optional Phase Value</span>
-<span class="sd">        :param source_name: optional source name</span>
-<span class="sd">        :return: Bool</span>
+<span class="sd">        &gt;&gt;&gt; edb.core_siwave.create_resistor(&quot;U2A5&quot;, &quot;V1P5_S3&quot;, &quot;U2A5&quot;, &quot;GND&quot;, 1, &quot;resistor_name&quot;)</span>
+<span class="sd">               </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">resistor</span> <span class="o">=</span> <span class="n">ResistorSource</span><span class="p">()</span>
         <span class="n">resistor</span><span class="o">.</span><span class="n">positive_node</span><span class="o">.</span><span class="n">net</span> <span class="o">=</span> <span class="n">positive_net_name</span>
@@ -575,24 +637,30 @@
 
 <div class="viewcode-block" id="EdBSiwave.add_siwave_ac_analysis"><a class="viewcode-back" href="../../../API/EDBSiwave.html#pyaedt.edb_core.siwave.EdBSiwave.add_siwave_ac_analysis">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="nf">add_siwave_ac_analysis</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">accuracy_level</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">decade_count</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">sweeptype</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">start_freq</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">stop_freq</span><span class="o">=</span><span class="mf">1e9</span><span class="p">,</span> <span class="n">step_freq</span><span class="o">=</span><span class="mf">1e6</span><span class="p">,</span> <span class="n">discrete_sweep</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Add SIWave AC Analysis to EDB</span>
+        <span class="sd">&quot;&quot;&quot;Add a SIwave AC analysis to EDB.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        accuracy_level : int</span>
-
+<span class="sd">        accuracy_level : int, optional</span>
+<span class="sd">           Level of accuracy. The default is ``1``.</span>
 <span class="sd">        decade_count : int</span>
-
-<span class="sd">        sweeptype : int</span>
-<span class="sd">        start_freq : float</span>
-<span class="sd">        stop_freq : float</span>
-<span class="sd">        step_freq : float</span>
-<span class="sd">        discrete_sweep: bool</span>
+<span class="sd">            The default is ``10``.    </span>
+<span class="sd">        sweeptype : int, optional</span>
+<span class="sd">            Type of the sweep. The default is ``1``.</span>
+<span class="sd">        start_freq : float, optional</span>
+<span class="sd">            Starting frequency. The default is ``1``. </span>
+<span class="sd">        stop_freq : float, optional</span>
+<span class="sd">            Stopping frequency. The default is ``1``.</span>
+<span class="sd">        step_freq : float, optional</span>
+<span class="sd">            Frequency size of the step. The default is ``1e9``.</span>
+<span class="sd">        discrete_sweep: bool, optonal</span>
+<span class="sd">            Whether the sweep is discrete. The default is ``False``.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        bool</span>
+<span class="sd">            ``True`` when successful, ``False`` when failed.</span>
+<span class="sd">        </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">siwave_setup</span><span class="o">.</span><span class="n">AddACSimSetup</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="p">,</span> <span class="n">accuracy_level</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">decade_count</span><span class="p">),</span> <span class="n">sweeptype</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">start_freq</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">stop_freq</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">step_freq</span><span class="p">),</span> <span class="n">discrete_sweep</span><span class="p">)</span>
         <span class="n">exec_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_exec_file</span><span class="p">()</span>
@@ -603,22 +671,30 @@
 <div class="viewcode-block" id="EdBSiwave.add_siwave_syz_analysis"><a class="viewcode-back" href="../../../API/EDBSiwave.html#pyaedt.edb_core.siwave.EdBSiwave.add_siwave_syz_analysis">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="nf">add_siwave_syz_analysis</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">accuracy_level</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">decade_count</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">sweeptype</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">start_freq</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">stop_freq</span><span class="o">=</span><span class="mf">1e9</span><span class="p">,</span>
                                <span class="n">step_freq</span><span class="o">=</span><span class="mf">1e6</span><span class="p">,</span> <span class="n">discrete_sweep</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Add Siwave SYZ Analysis</span>
-
+        <span class="sd">&quot;&quot;&quot;Add a SIwave SYZ analysis.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        accuracy_level : 1</span>
-<span class="sd">        decade_count : int</span>
-<span class="sd">        sweeptype : int</span>
-<span class="sd">        start_freq : float</span>
-<span class="sd">        stop_freq : float</span>
-<span class="sd">        step_freq : float</span>
-<span class="sd">        discrete_sweep: bool</span>
+<span class="sd">        accuracy_level : int, optional</span>
+<span class="sd">           Level of accuracy. The default is ``1``.</span>
+<span class="sd">        decade_count : int, optional</span>
+<span class="sd">            Number of points to calculate in each decade. The default is ``10``.    </span>
+<span class="sd">        sweeptype : int, optional</span>
+<span class="sd">            Type of the sweep. The default is ``1``.</span>
+<span class="sd">        start_freq : float, optional</span>
+<span class="sd">            Starting frequency. The default is ``1``. </span>
+<span class="sd">        stop_freq : float, optional</span>
+<span class="sd">            Stopping frequency. The default is ``1``.</span>
+<span class="sd">        step_freq : float, optional</span>
+<span class="sd">            Frequency size of the step. The default is ``1e6``.</span>
+<span class="sd">        discrete_sweep: bool, optonal</span>
+<span class="sd">            Whether the sweep is discrete. The default is ``False``.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-
+<span class="sd">        bool</span>
+<span class="sd">            ``True`` when successful, ``False`` when failed.</span>
+<span class="sd">        </span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">siwave_setup</span><span class="o">.</span><span class="n">AddSYZSimSetup</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="p">,</span> <span class="n">accuracy_level</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">decade_count</span><span class="p">),</span> <span class="n">sweeptype</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">start_freq</span><span class="p">),</span>
@@ -631,17 +707,17 @@
 
 <div class="viewcode-block" id="EdBSiwave.add_siwave_dc_analysis"><a class="viewcode-back" href="../../../API/EDBSiwave.html#pyaedt.edb_core.siwave.EdBSiwave.add_siwave_dc_analysis">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="nf">add_siwave_dc_analysis</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">accuracy_level</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Add Siwave DC Analysis</span>
+        <span class="sd">&quot;&quot;&quot;Add a SIwave DC analysis.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        accuracy_level :</span>
-<span class="sd">            Accuracy Level (Default value = 1)</span>
+<span class="sd">        accuracy_level : int, optional</span>
+<span class="sd">           Level of accuracy. The default is ``1``.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        type</span>
-<span class="sd">            Bool</span>
+<span class="sd">        bool</span>
+<span class="sd">            ``True`` when successful, ``False`` when failed.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
