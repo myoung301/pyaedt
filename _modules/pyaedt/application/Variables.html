@@ -5,7 +5,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaedt.application.Variables &#8212; PyAEDT 0.2.1 documentation</title>
+    <title>pyaedt.application.Variables &#8212; PyAEDT 0.3.dev0
+ documentation</title>
     
   <link href="../../../_static/css/theme.css" rel="stylesheet" />
   <link href="../../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -74,7 +75,7 @@
         </li>
         
         <li class="nav-item ">
-            <a class="nav-link" href="../../../API/API.html">API documentation</a>
+            <a class="nav-link" href="../../../API/API.html">API Documentation</a>
         </li>
         
         <li class="nav-item ">
@@ -142,13 +143,6 @@
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Variables Library Class</span>
 <span class="sd">----------------------------------------------------------------</span>
-
-<span class="sd">Disclaimer</span>
-<span class="sd">============================================================</span>
-
-<span class="sd">**Copyright (c) 1986-2021, ANSYS Inc. unauthorised use, distribution or duplication is prohibited**</span>
-
-<span class="sd">**This tool release is unofficial and not covered by standard Ansys Support license.**</span>
 
 
 <span class="sd">Description</span>
@@ -582,10 +576,10 @@
 <span class="sd">    Examples</span>
 <span class="sd">    ------</span>
 
-<span class="sd">    &gt;&gt;&gt; from pyaedt.Maxwell import Maxwell3D</span>
-<span class="sd">    &gt;&gt;&gt; from pyaedt.Desktop import Desktop</span>
+<span class="sd">    &gt;&gt;&gt; from pyaedt.maxwell import Maxwell3d</span>
+<span class="sd">    &gt;&gt;&gt; from pyaedt.desktop import Desktop</span>
 <span class="sd">    &gt;&gt;&gt; d = Desktop()</span>
-<span class="sd">    &gt;&gt;&gt; aedtapp = Maxwell3D()</span>
+<span class="sd">    &gt;&gt;&gt; aedtapp = Maxwell3d()</span>
 <span class="sd">    &gt;&gt;&gt; # Define some test variables</span>
 <span class="sd">    &gt;&gt;&gt; aedtapp[&quot;Var1&quot;] = 3</span>
 <span class="sd">    &gt;&gt;&gt; aedtapp[&quot;Var2&quot;] = &quot;12deg&quot;</span>
@@ -615,10 +609,8 @@
 <span class="sd">     &#39;Var2&#39;: &lt;pyaedt.application.Variables.Variable at 0x2661f3557c8&gt;}</span>
 
 <span class="sd">    See Also</span>
-<span class="sd">    ------</span>
+<span class="sd">    --------</span>
 <span class="sd">    Variable class</span>
-
-
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">variables</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -634,82 +626,66 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">design_variables</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_variable_dict</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">odesign</span><span class="p">])</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">project_variables</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_variable_dict</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">oproject</span><span class="p">])</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">independent_variables</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_variable_dict</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">odesign</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">oproject</span><span class="p">],</span> <span class="n">dependent</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">independent_project_variables</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_variable_dict</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">oproject</span><span class="p">],</span> <span class="n">dependent</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">independent_design_variables</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_variable_dict</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">odesign</span><span class="p">],</span> <span class="n">dependent</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">dependent_variables</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_variable_dict</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">odesign</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">oproject</span><span class="p">],</span> <span class="n">independent</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">variable_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">var_name</span> <span class="k">for</span> <span class="n">var_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">]</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">project_variable_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">var_name</span> <span class="k">for</span> <span class="n">var_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">project_variables</span><span class="p">]</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">independent_project_variable_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">var_name</span> <span class="k">for</span> <span class="n">var_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">independent_project_variables</span><span class="p">]</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">design_variable_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">var_name</span> <span class="k">for</span> <span class="n">var_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">design_variables</span><span class="p">]</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">independent_design_variable_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">var_name</span> <span class="k">for</span> <span class="n">var_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">independent_design_variables</span><span class="p">]</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">independent_variable_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">var_name</span> <span class="k">for</span> <span class="n">var_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">independent_variables</span><span class="p">]</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">dependent_variable_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">var_name</span> <span class="k">for</span> <span class="n">var_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dependent_variables</span><span class="p">]</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">oproject</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">_oproject</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">odesign</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">_odesign</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">messenger</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">_messenger</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
@@ -982,8 +958,10 @@
                             <span class="p">]</span>
                         <span class="p">]</span>
                     <span class="p">])</span>
+                <span class="k">return</span> <span class="kc">True</span>
             <span class="k">except</span><span class="p">:</span>
-                <span class="k">pass</span></div></div>
+                <span class="k">pass</span>
+        <span class="k">return</span> <span class="kc">False</span></div></div>
 
 
 <div class="viewcode-block" id="Variable"><a class="viewcode-back" href="../../../API/Variables.html#pyaedt.application.Variables.Variable">[docs]</a><span class="k">class</span> <span class="nc">Variable</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -1051,12 +1029,10 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">units</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the units of the expression as a string &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_units</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return the value of the expression as a float value in SI units&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value</span>
 
     <span class="nd">@property</span>
@@ -1552,7 +1528,7 @@
     
     <div class="footer-item">
       <p class="copyright">
-    &copy; Copyright Copyright (c) 2021 ANSYS, Inc. All rights reserved..<br/>
+    &copy; Copyright (c) 2021 ANSYS, Inc. All rights reserved.<br/>
 </p>
     </div>
     

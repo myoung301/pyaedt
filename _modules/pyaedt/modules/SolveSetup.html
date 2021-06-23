@@ -5,7 +5,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaedt.modules.SolveSetup &#8212; PyAEDT 0.2.1 documentation</title>
+    <title>pyaedt.modules.SolveSetup &#8212; PyAEDT 0.3.dev0
+ documentation</title>
     
   <link href="../../../_static/css/theme.css" rel="stylesheet" />
   <link href="../../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -74,7 +75,7 @@
         </li>
         
         <li class="nav-item ">
-            <a class="nav-link" href="../../../API/API.html">API documentation</a>
+            <a class="nav-link" href="../../../API/API.html">API Documentation</a>
         </li>
         
         <li class="nav-item ">
@@ -160,7 +161,7 @@
 
 <span class="kn">from</span> <span class="nn">..generic.general_methods</span> <span class="kn">import</span> <span class="n">aedt_exception_handler</span><span class="p">,</span> <span class="n">generate_unique_name</span>
 
-<span class="kn">from</span> <span class="nn">.SetupTemplates</span> <span class="kn">import</span> <span class="n">SweepHFSS</span><span class="p">,</span> <span class="n">SweepQ3D</span><span class="p">,</span> <span class="n">SetupKeys</span>
+<span class="kn">from</span> <span class="nn">.SetupTemplates</span> <span class="kn">import</span> <span class="n">SweepHFSS</span><span class="p">,</span> <span class="n">SweepQ3D</span><span class="p">,</span> <span class="n">SetupKeys</span><span class="p">,</span> <span class="n">SweepHFSS3DLayout</span>
 <span class="kn">from</span> <span class="nn">..application.DataHandlers</span> <span class="kn">import</span> <span class="n">tuple2dict</span><span class="p">,</span> <span class="n">dict2arg</span>
 
 
@@ -1017,7 +1018,7 @@
                         <span class="n">app</span> <span class="o">=</span> <span class="n">setup_data</span><span class="p">[</span><span class="s2">&quot;Data&quot;</span><span class="p">]</span>
                         <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">app</span><span class="p">:</span>
                             <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">app</span><span class="p">[</span><span class="n">el</span><span class="p">])</span> <span class="ow">is</span> <span class="n">OrderedDict</span><span class="p">:</span>
-                                <span class="bp">self</span><span class="o">.</span><span class="n">sweeps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">SweepHFSS</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">omodule</span><span class="p">,</span> <span class="n">setupname</span><span class="p">,</span> <span class="n">el</span><span class="p">,</span> <span class="n">props</span><span class="o">=</span><span class="n">app</span><span class="p">[</span><span class="n">el</span><span class="p">]))</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">sweeps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">SweepHFSS3DLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">omodule</span><span class="p">,</span> <span class="n">setupname</span><span class="p">,</span> <span class="n">el</span><span class="p">,</span> <span class="n">props</span><span class="o">=</span><span class="n">app</span><span class="p">[</span><span class="n">el</span><span class="p">]))</span>
 
                     <span class="bp">self</span><span class="o">.</span><span class="n">props</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">(</span><span class="n">setup_data</span><span class="p">)</span>
             <span class="k">except</span><span class="p">:</span>
@@ -1149,15 +1150,17 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        type</span>
+<span class="sd">        SweeHFSS3DLayout</span>
 <span class="sd">            sweep object</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">sweepname</span><span class="p">:</span>
             <span class="n">sweepname</span> <span class="o">=</span> <span class="n">generate_unique_name</span><span class="p">(</span><span class="s2">&quot;Sweep&quot;</span><span class="p">)</span>
-        <span class="n">sweep_n</span> <span class="o">=</span> <span class="n">SweepHFSS</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">omodule</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">sweepname</span><span class="p">,</span> <span class="n">sweeptype</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">sweeps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sweep_n</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">sweep_n</span></div></div>
+        <span class="n">sweep_n</span> <span class="o">=</span> <span class="n">SweepHFSS3DLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">omodule</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">sweepname</span><span class="p">,</span> <span class="n">sweeptype</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">sweep_n</span><span class="o">.</span><span class="n">create</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sweeps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sweep_n</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">sweep_n</span>
+        <span class="k">return</span> <span class="kc">False</span></div></div>
 </pre></div>
 
               </div>
@@ -1181,7 +1184,7 @@
     
     <div class="footer-item">
       <p class="copyright">
-    &copy; Copyright Copyright (c) 2021 ANSYS, Inc. All rights reserved..<br/>
+    &copy; Copyright (c) 2021 ANSYS, Inc. All rights reserved.<br/>
 </p>
     </div>
     

@@ -5,7 +5,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaedt.application.AnalysisIcepak &#8212; PyAEDT 0.2.1 documentation</title>
+    <title>pyaedt.application.AnalysisIcepak &#8212; PyAEDT 0.3.dev0
+ documentation</title>
     
   <link href="../../../_static/css/theme.css" rel="stylesheet" />
   <link href="../../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -74,7 +75,7 @@
         </li>
         
         <li class="nav-item ">
-            <a class="nav-link" href="../../../API/API.html">API documentation</a>
+            <a class="nav-link" href="../../../API/API.html">API Documentation</a>
         </li>
         
         <li class="nav-item ">
@@ -162,8 +163,10 @@
 <span class="sd">    -------</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">application</span><span class="p">,</span> <span class="n">projectname</span><span class="p">,</span> <span class="n">designname</span><span class="p">,</span> <span class="n">solutiontype</span><span class="p">,</span> <span class="n">setup_name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="n">Analysis</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">application</span><span class="p">,</span> <span class="n">projectname</span><span class="p">,</span> <span class="n">designname</span><span class="p">,</span> <span class="n">solutiontype</span><span class="p">,</span> <span class="n">setup_name</span><span class="p">)</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">application</span><span class="p">,</span> <span class="n">projectname</span><span class="p">,</span> <span class="n">designname</span><span class="p">,</span> <span class="n">solutiontype</span><span class="p">,</span> <span class="n">setup_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">specified_version</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">NG</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">AlwaysNew</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">release_on_exit</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="n">Analysis</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">application</span><span class="p">,</span> <span class="n">projectname</span><span class="p">,</span> <span class="n">designname</span><span class="p">,</span> <span class="n">solutiontype</span><span class="p">,</span> <span class="n">setup_name</span><span class="p">,</span>
+                          <span class="n">specified_version</span><span class="p">,</span> <span class="n">NG</span><span class="p">,</span> <span class="n">AlwaysNew</span><span class="p">,</span> <span class="n">release_on_exit</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_modeler</span> <span class="o">=</span> <span class="n">Modeler3D</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_mesh</span> <span class="o">=</span> <span class="n">IcepakMesh</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="c1">#self._post = PostProcessor(self)</span>
@@ -251,7 +254,6 @@
 <span class="sd">            val = ipk.get_property_value(&#39;BoundarySetup:Source1&#39;, &#39;Total Power&#39;)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1">#TODO To be improved</span>
         <span class="n">boundary</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;HFSS&quot;</span><span class="p">:</span> <span class="s2">&quot;HfssTab&quot;</span><span class="p">,</span> <span class="s2">&quot;Icepak&quot;</span><span class="p">:</span> <span class="s2">&quot;Icepak&quot;</span><span class="p">,</span> <span class="s2">&quot;Q3D&quot;</span><span class="p">:</span> <span class="s2">&quot;Q3D&quot;</span><span class="p">,</span> <span class="s2">&quot;Maxwell3D&quot;</span><span class="p">:</span> <span class="s2">&quot;Maxwell3D&quot;</span><span class="p">}</span>
         <span class="n">excitation</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;HFSS&quot;</span><span class="p">:</span> <span class="s2">&quot;HfssTab&quot;</span><span class="p">,</span> <span class="s2">&quot;Icepak&quot;</span><span class="p">:</span> <span class="s2">&quot;Icepak&quot;</span><span class="p">,</span> <span class="s2">&quot;Q3D&quot;</span><span class="p">:</span> <span class="s2">&quot;Q3D&quot;</span><span class="p">,</span> <span class="s2">&quot;Maxwell3D&quot;</span><span class="p">:</span> <span class="s2">&quot;Maxwell3D&quot;</span><span class="p">}</span>
         <span class="n">setup</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;HFSS&quot;</span><span class="p">:</span> <span class="s2">&quot;HfssTab&quot;</span><span class="p">,</span> <span class="s2">&quot;Icepak&quot;</span><span class="p">:</span> <span class="s2">&quot;Icepak&quot;</span><span class="p">,</span> <span class="s2">&quot;Q3D&quot;</span><span class="p">:</span> <span class="s2">&quot;General&quot;</span><span class="p">,</span> <span class="s2">&quot;Maxwell3D&quot;</span><span class="p">:</span> <span class="s2">&quot;General&quot;</span><span class="p">}</span>
@@ -544,7 +546,7 @@
     
     <div class="footer-item">
       <p class="copyright">
-    &copy; Copyright Copyright (c) 2021 ANSYS, Inc. All rights reserved..<br/>
+    &copy; Copyright (c) 2021 ANSYS, Inc. All rights reserved.<br/>
 </p>
     </div>
     

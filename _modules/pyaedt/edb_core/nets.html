@@ -5,7 +5,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaedt.edb_core.nets &#8212; PyAEDT 0.2.1 documentation</title>
+    <title>pyaedt.edb_core.nets &#8212; PyAEDT 0.3.dev0
+ documentation</title>
     
   <link href="../../../_static/css/theme.css" rel="stylesheet" />
   <link href="../../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -74,7 +75,7 @@
         </li>
         
         <li class="nav-item ">
-            <a class="nav-link" href="../../../API/API.html">API documentation</a>
+            <a class="nav-link" href="../../../API/API.html">API Documentation</a>
         </li>
         
         <li class="nav-item ">
@@ -227,30 +228,33 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        netname_list :</span>
-<span class="sd">            list of net names</span>
+<span class="sd">        netname_list : list</span>
+<span class="sd">            List of net names.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        type</span>
-<span class="sd">            True if one of net name is power or ground</span>
+<span class="sd">        bool</span>
+<span class="sd">            ``True`` if one of the net names is ``&quot;power&quot;`` or ``&quot;ground&quot;``.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">nets_methods</span><span class="o">.</span><span class="n">IsPowerGroundNetInList</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">builder</span><span class="p">,</span> <span class="n">netname_list</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="EdbNets.get_dcconnected_net_list"><a class="viewcode-back" href="../../../API/EDBNets.html#pyaedt.edb_core.nets.EdbNets.get_dcconnected_net_list">[docs]</a>    <span class="k">def</span> <span class="nf">get_dcconnected_net_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ground_nets</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GND&quot;</span><span class="p">]):</span>
-        <span class="sd">&quot;&quot;&quot;Get the Netlist of Nets connected to DC Through Inductors</span>
-<span class="sd">        only inductors are considered</span>
+        <span class="sd">&quot;&quot;&quot;List the nets connected to DC through inductors.</span>
+<span class="sd">        </span>
+<span class="sd">        .. note::</span>
+<span class="sd">           Only inductors are considered.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        ground_nets :</span>
-<span class="sd">            list of ground nets</span>
-<span class="sd">            return: list of dcconnected nets (Default value = [&quot;GND&quot;])</span>
+<span class="sd">        ground_nets : list, optional</span>
+<span class="sd">            List of ground nets. The default is ``[&quot;GND&quot;]``.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
+<span class="sd">        list</span>
+<span class="sd">            List of DC connected nets. </span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">temp_list</span> <span class="o">=</span> <span class="p">[]</span>
@@ -320,7 +324,7 @@
         <span class="n">component_type</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">df_list</span><span class="p">:</span>
             <span class="n">refdes</span> <span class="o">=</span> <span class="n">el</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">comp_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">core_components</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">refdes</span><span class="p">]</span><span class="o">.</span><span class="n">type</span>
+            <span class="n">comp_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">core_components</span><span class="o">.</span><span class="n">_cmp</span><span class="p">[</span><span class="n">refdes</span><span class="p">]</span><span class="o">.</span><span class="n">type</span>
             <span class="n">component_type</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">comp_type</span><span class="p">)</span>
             <span class="n">el</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">comp_type</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">df_list</span><span class="p">,</span> <span class="n">net_group</span></div>
@@ -331,28 +335,25 @@
         <span class="k">if</span> <span class="n">edb_net</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">edb_net</span>
 
-    <span class="nd">@aedt_exception_handler</span>
-    <span class="k">def</span> <span class="nf">get_component_from_net</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">net_name</span><span class="p">):</span>
-        <span class="n">edb_net</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_net_by_name</span><span class="p">(</span><span class="n">net_name</span><span class="p">)</span>
-        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">([</span><span class="n">net</span> <span class="k">for</span> <span class="n">net</span> <span class="ow">in</span> <span class="n">edb_net</span><span class="o">.</span><span class="n">Terminals</span><span class="o">.</span><span class="n">GetComponent</span><span class="p">()</span><span class="o">.</span><span class="n">GetName</span><span class="p">()]))</span>
-
 <div class="viewcode-block" id="EdbNets.delete_nets"><a class="viewcode-back" href="../../../API/EDBNets.html#pyaedt.edb_core.nets.EdbNets.delete_nets">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="nf">delete_nets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">netlist</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Delete Nets from Edb</span>
-<span class="sd">        </span>
-<span class="sd">        :examples:</span>
-
+        <span class="sd">&quot;&quot;&quot;Delete nets from EDB.</span>
+<span class="sd">       </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        netlist :</span>
-<span class="sd">            str or list of net to be deleted</span>
+<span class="sd">        netlist : str or list</span>
+<span class="sd">            The one or more nets to delete.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        type</span>
-<span class="sd">            list of nets effectively deleted</span>
+<span class="sd">        list</span>
+<span class="sd">            List of nets that were deleted.</span>
 
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        </span>
 <span class="sd">        &gt;&gt;&gt; deleted_nets = edb_core.core_nets.delete_nets([&quot;Net1&quot;,&quot;Net2&quot;])</span>
+<span class="sd">        </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">netlist</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>
             <span class="n">netlist</span><span class="o">=</span><span class="p">[</span><span class="n">netlist</span><span class="p">]</span>
@@ -367,7 +368,26 @@
             <span class="k">except</span><span class="p">:</span>
                 <span class="k">pass</span>
 
-        <span class="k">return</span> <span class="n">nets_deleted</span></div></div>
+        <span class="k">return</span> <span class="n">nets_deleted</span></div>
+
+<div class="viewcode-block" id="EdbNets.find_or_create_net"><a class="viewcode-back" href="../../../API/EDBNets.html#pyaedt.edb_core.nets.EdbNets.find_or_create_net">[docs]</a>    <span class="k">def</span> <span class="nf">find_or_create_net</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">net_name</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the net with the given name in the layout or create it and return it.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        net_name : str, optional</span>
+<span class="sd">            Name of the net to find or create. The default is ``&quot;&quot;``.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        object</span>
+<span class="sd">            Net Object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">net</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edb</span><span class="o">.</span><span class="n">Cell</span><span class="o">.</span><span class="n">Net</span><span class="o">.</span><span class="n">FindByName</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">active_layout</span><span class="p">,</span> <span class="n">net_name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">net</span><span class="o">.</span><span class="n">IsNull</span><span class="p">():</span>
+            <span class="n">net</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edb</span><span class="o">.</span><span class="n">Cell</span><span class="o">.</span><span class="n">Net</span><span class="o">.</span><span class="n">Create</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">active_layout</span><span class="p">,</span> <span class="n">net_name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">net</span></div></div>
 
 
 
@@ -394,7 +414,7 @@
     
     <div class="footer-item">
       <p class="copyright">
-    &copy; Copyright Copyright (c) 2021 ANSYS, Inc. All rights reserved..<br/>
+    &copy; Copyright (c) 2021 ANSYS, Inc. All rights reserved.<br/>
 </p>
     </div>
     

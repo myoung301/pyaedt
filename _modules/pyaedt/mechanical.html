@@ -5,7 +5,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaedt.mechanical &#8212; PyAEDT 0.2.1 documentation</title>
+    <title>pyaedt.mechanical &#8212; PyAEDT 0.3.dev0
+ documentation</title>
     
   <link href="../../_static/css/theme.css" rel="stylesheet" />
   <link href="../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -74,7 +75,7 @@
         </li>
         
         <li class="nav-item ">
-            <a class="nav-link" href="../../API/API.html">API documentation</a>
+            <a class="nav-link" href="../../API/API.html">API Documentation</a>
         </li>
         
         <li class="nav-item ">
@@ -140,13 +141,34 @@
                 
   <h1>Source code for pyaedt.mechanical</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Mechanical Class</span>
-<span class="sd">----------------------------------------------------------------</span>
+<span class="sd">This module contains all Mechanical functionalities in the ``Mechanical`` class. </span>
 
-<span class="sd">This class contains all Mechanical functionalities. It inherits all objects that belong to Mechanical.</span>
 
+<span class="sd">Examples</span>
+<span class="sd">--------</span>
+
+<span class="sd">Create an instance of ``Mechanical`` and connect to an existing HFSS design or create a new HFSS design if one does not exist.</span>
+
+<span class="sd">&gt;&gt;&gt; aedtapp = Mechanical()</span>
+
+<span class="sd">Create an instance of ``Mechanical`` and link to a project named ``&quot;projectname&quot;``. If this project does not exist, create one with this name.</span>
+
+<span class="sd">&gt;&gt;&gt; aedtapp = Mechanical(projectname)</span>
+
+<span class="sd">Create an instance of ``Mechanical`` and link to a design named ``&quot;designname&quot;`` in a project named ``projectname``.</span>
+
+<span class="sd">&gt;&gt;&gt; aedtapp = Mechanical(projectname,designame)</span>
+
+<span class="sd">Create an instance of ``Mechanical`` and open the specified project, which is named ``myfile.aedt``.</span>
+
+<span class="sd">&gt;&gt;&gt; aedtapp = Mechanical(&quot;myfile.aedt&quot;)</span>
+
+<span class="sd">Create a ``Desktop on 2021R1`` object and then creates an ``Mechanical`` object and open the specified project, which is named ``myfile.aedt``.</span>
+
+<span class="sd">&gt;&gt;&gt; aedtapp = Mechanical(specified_version=&quot;2021.1&quot;, projectname=&quot;myfile.aedt&quot;)</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
+
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
 
 <span class="kn">from</span> <span class="nn">.application.Analysis3D</span> <span class="kn">import</span> <span class="n">FieldAnalysis3D</span>
@@ -157,27 +179,31 @@
 
 
 <div class="viewcode-block" id="Mechanical"><a class="viewcode-back" href="../../API/Mechanical.html#pyaedt.mechanical.Mechanical">[docs]</a><span class="k">class</span> <span class="nc">Mechanical</span><span class="p">(</span><span class="n">FieldAnalysis3D</span><span class="p">,</span> <span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Mechanical Object</span>
+    <span class="sd">&quot;&quot;&quot;Mechanical class.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    projectname :</span>
-<span class="sd">        name of the project to be selected or full path to the project to be opened  or to the AEDTZ archive. if None try to get active project and, if nothing present to create an empty one</span>
-<span class="sd">    designname :</span>
-<span class="sd">        name of the design to be selected. if None, try to get active design and, if nothing present to create an empty one</span>
-<span class="sd">    solution_type :</span>
-<span class="sd">        solution type to be applied to design. if None default is taken</span>
-<span class="sd">    setup_name :</span>
-<span class="sd">        setup_name to be used as nominal. if none active setup is taken or nothing</span>
+<span class="sd">    projectname : str, optional</span>
+<span class="sd">         Name of the project to select or the full path to the project or AEDTZ archive to open. </span>
+<span class="sd">         The default is ``None``. If ``None``, try to get an active project and, if no projects are present, </span>
+<span class="sd">         create an empty project.</span>
+<span class="sd">    designname : str, optional</span>
+<span class="sd">        Name of the design to select. The default is ``None``. If ``None``, try to get an active design and, </span>
+<span class="sd">        if no designs are present, create an empty design.</span>
+<span class="sd">    solution_type : str, optional</span>
+<span class="sd">        Solution type to apply to the design. The default is ``None``. If ``None``, the default type is applied.</span>
+<span class="sd">    setup_name : str, optional</span>
+<span class="sd">       Name of the setup to use as the nominal. The default is ``None``. If ``None``, the active setup </span>
+<span class="sd">       is used or nothing is used.</span>
 
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projectname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">designname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">solution_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">setup_name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projectname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">designname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">solution_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">setup_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">specified_version</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">NG</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">AlwaysNew</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">release_on_exit</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 
-        <span class="n">FieldAnalysis3D</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;Mechanical&quot;</span><span class="p">,</span> <span class="n">projectname</span><span class="p">,</span> <span class="n">designname</span><span class="p">,</span> <span class="n">solution_type</span><span class="p">,</span> <span class="n">setup_name</span><span class="p">)</span>
+        <span class="n">FieldAnalysis3D</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;Mechanical&quot;</span><span class="p">,</span> <span class="n">projectname</span><span class="p">,</span> <span class="n">designname</span><span class="p">,</span> <span class="n">solution_type</span><span class="p">,</span> <span class="n">setup_name</span><span class="p">,</span>
+                                 <span class="n">specified_version</span><span class="p">,</span> <span class="n">NG</span><span class="p">,</span> <span class="n">AlwaysNew</span><span class="p">,</span> <span class="n">release_on_exit</span><span class="p">)</span>
     <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span>
 
@@ -189,26 +215,26 @@
 <div class="viewcode-block" id="Mechanical.assign_em_losses"><a class="viewcode-back" href="../../API/Mechanical.html#pyaedt.mechanical.Mechanical.assign_em_losses">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="nf">assign_em_losses</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">designname</span><span class="o">=</span><span class="s2">&quot;HFSSDesign1&quot;</span><span class="p">,</span> <span class="n">setupname</span><span class="o">=</span><span class="s2">&quot;Setup1&quot;</span><span class="p">,</span> <span class="n">sweepname</span><span class="o">=</span><span class="s2">&quot;LastAdaptive&quot;</span><span class="p">,</span> <span class="n">map_frequency</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                          <span class="n">surface_objects</span><span class="o">=</span><span class="p">[],</span> <span class="n">source_project_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">paramlist</span><span class="o">=</span><span class="p">[],</span> <span class="n">object_list</span><span class="o">=</span><span class="p">[]):</span>
-        <span class="sd">&quot;&quot;&quot;Map EM losses to Mechanical Design</span>
+        <span class="sd">&quot;&quot;&quot;Map EM losses to a Mechanical design.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        designname :</span>
-<span class="sd">            name of design of the source mapping (Default value = &quot;HFSSDesign1&quot;)</span>
-<span class="sd">        map_frequency :</span>
-<span class="sd">            string containing Frequency to be mapped. It must be None for eigen mode analysis (Default value = None)</span>
-<span class="sd">        setupname :</span>
-<span class="sd">            Name of EM Setup (Default value = &quot;Setup1&quot;)</span>
-<span class="sd">        sweepname :</span>
-<span class="sd">            Name of EM Sweep to be used for mapping. Default no sweep and LastAdaptive to be used</span>
-<span class="sd">        surface_objects :</span>
-<span class="sd">            list of objects in the source that are metals (Default value = [])</span>
-<span class="sd">        source_project_name :</span>
-<span class="sd">            Name of the source project: None to use source from the same project (Default value = None)</span>
-<span class="sd">        paramlist :</span>
-<span class="sd">            list of all params in EM to be mapped (Default value = [])</span>
-<span class="sd">        object_list :</span>
-<span class="sd">             (Default value = [])</span>
+<span class="sd">        designname : str, optional</span>
+<span class="sd">            Name of the design of the source mapping. The default is ``&quot;HFSSDesign1&quot;``.</span>
+<span class="sd">        setupname : str, optional</span>
+<span class="sd">            Name of the EM setup. The default is ``&quot;Setup1&quot;``.</span>
+<span class="sd">        sweepname : str, optional</span>
+<span class="sd">            Name of the EM sweep to use for the mapping. The default is no sweep and to use ``&quot;LastAdaptive&quot;``.</span>
+<span class="sd">        map_frequency : str, optional</span>
+<span class="sd">            Frequency to map. The default is ``None``. The value must be ``None`` for eigenmode analysis.</span>
+<span class="sd">        surface_objects : list, optional</span>
+<span class="sd">            List objects in the source that are metals. The default is ``[]``.</span>
+<span class="sd">        source_project_name : str, optional</span>
+<span class="sd">            Name of the source project. The default is ``None``, which uses the source from the same project.</span>
+<span class="sd">        paramlist : list, optional</span>
+<span class="sd">            List of all parameters in the EM to map. The default is ``[]``.</span>
+<span class="sd">        object_list : list, optional</span>
+<span class="sd">             The default is ``[]``.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -223,7 +249,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">projname</span> <span class="o">=</span> <span class="n">source_project_name</span> <span class="o">+</span> <span class="s2">&quot;.aedt&quot;</span>
         <span class="c1">#</span>
-        <span class="c1"># Generate a list of model objects from the lists made previously and use to map the HFSS losses into Icepak</span>
+        <span class="c1"># Generate a list of model objects from the lists made previously and use to map the HFSS losses into Icepak.</span>
         <span class="c1">#</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">object_list</span><span class="p">:</span>
             <span class="n">allObjects</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">primitives</span><span class="o">.</span><span class="n">get_all_objects_names</span><span class="p">(</span><span class="n">refresh_list</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -254,28 +280,33 @@
         <span class="n">bound</span> <span class="o">=</span> <span class="n">BoundaryObject</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">props</span><span class="p">,</span> <span class="s2">&quot;EMLoss&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">bound</span><span class="o">.</span><span class="n">create</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">boundaries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bound</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_messenger</span><span class="o">.</span><span class="n">add_info_message</span><span class="p">(</span><span class="s1">&#39;EM losses Mapped from design </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">designname</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_messenger</span><span class="o">.</span><span class="n">add_info_message</span><span class="p">(</span><span class="s1">&#39;EM losses mapped from design </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">designname</span><span class="p">))</span>
             <span class="k">return</span> <span class="n">bound</span>
         <span class="k">return</span> <span class="kc">False</span></div>
 
 <div class="viewcode-block" id="Mechanical.assign_thermal_map"><a class="viewcode-back" href="../../API/Mechanical.html#pyaedt.mechanical.Mechanical.assign_thermal_map">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="nf">assign_thermal_map</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">object_list</span><span class="p">,</span> <span class="n">designname</span><span class="o">=</span><span class="s2">&quot;IcepakDesign1&quot;</span><span class="p">,</span> <span class="n">setupname</span><span class="o">=</span><span class="s2">&quot;Setup1&quot;</span><span class="p">,</span> <span class="n">sweepname</span><span class="o">=</span><span class="s2">&quot;SteadyState&quot;</span><span class="p">,</span>
                            <span class="n">source_project_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">paramlist</span><span class="o">=</span><span class="p">[]):</span>
-        <span class="sd">&quot;&quot;&quot;Map Thermal losses to Mechanical Design. It works only coupled with Icepak in 2021r2</span>
+        <span class="sd">&quot;&quot;&quot;Map thermal losses to a Mechanical design. </span>
+<span class="sd">        </span>
+<span class="sd">        .. note::</span>
+<span class="sd">           This method works only when coupled with Icepak in 2021 R2.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        designname :</span>
-<span class="sd">            name of design of the source mapping (Default value = &quot;IcepakDesign1&quot;)</span>
-<span class="sd">        setupname :</span>
-<span class="sd">            Name of EM Setup (Default value = &quot;Setup1&quot;)</span>
-<span class="sd">        sweepname :</span>
-<span class="sd">            Name of EM Sweep to be used for mapping. Default no sweep and LastAdaptive to be used</span>
-<span class="sd">        source_project_name :</span>
-<span class="sd">            Name of the source project: None to use source from the same project (Default value = None)</span>
-<span class="sd">        paramlist :</span>
-<span class="sd">            list of all params in EM to be mapped (Default value = [])</span>
-<span class="sd">        object_list :</span>
+<span class="sd">        object_list : list</span>
+<span class="sd">        </span>
+<span class="sd">        designname : str, optional</span>
+<span class="sd">            Name of the design of the source mapping. The default is ``&quot;IcepakDesign1&quot;``.</span>
+<span class="sd">        setupname : str, optional</span>
+<span class="sd">            Name of the EM setup. The default is ``&quot;Setup1&quot;``.</span>
+<span class="sd">        sweepname :str, optional</span>
+<span class="sd">            Name of the EM sweep to use for the mapping. The default is no sweep and to use ``&quot;LastAdaptive&quot;``.</span>
+<span class="sd">        source_project_name : str, optional</span>
+<span class="sd">            Name of the source project. The default is ``None``, which uses the source from the same project.</span>
+<span class="sd">        paramlist : list, optional</span>
+<span class="sd">            List of all parameters in the EM to map. The default is ``[]``.</span>
+<span class="sd">        </span>
 <span class="sd">            </span>
 
 <span class="sd">        Returns</span>
@@ -283,7 +314,7 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">solution_type</span> <span class="o">==</span> <span class="s2">&quot;Structural&quot;</span><span class="p">,</span> <span class="s2">&quot;This Method works only in Mechanical Structural Solution&quot;</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">solution_type</span> <span class="o">==</span> <span class="s2">&quot;Structural&quot;</span><span class="p">,</span> <span class="s2">&quot;This method works only in a Mechanical structural solution.&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_messenger</span><span class="o">.</span><span class="n">add_info_message</span><span class="p">(</span><span class="s2">&quot;Mapping HFSS EM Lossess&quot;</span><span class="p">)</span>
         <span class="n">oName</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">project_name</span>
@@ -292,7 +323,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">projname</span> <span class="o">=</span> <span class="n">source_project_name</span> <span class="o">+</span> <span class="s2">&quot;.aedt&quot;</span>
         <span class="c1">#</span>
-        <span class="c1"># Generate a list of model objects from the lists made previously and use to map the HFSS losses into Icepak</span>
+        <span class="c1"># Generate a list of model objects from the lists made previously and use to map the HFSS losses into Icepak.</span>
         <span class="c1">#</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">object_list</span><span class="p">:</span>
             <span class="n">allObjects</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">primitives</span><span class="o">.</span><span class="n">get_all_objects_names</span><span class="p">(</span><span class="n">refresh_list</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -314,7 +345,7 @@
         <span class="n">bound</span> <span class="o">=</span> <span class="n">BoundaryObject</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">props</span><span class="p">,</span> <span class="s2">&quot;ThermalCondition&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">bound</span><span class="o">.</span><span class="n">create</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">boundaries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bound</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_messenger</span><span class="o">.</span><span class="n">add_info_message</span><span class="p">(</span><span class="s1">&#39;Thermal Conditions Mapped from design </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">designname</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_messenger</span><span class="o">.</span><span class="n">add_info_message</span><span class="p">(</span><span class="s1">&#39;Thermal conditions are mapped from design </span><span class="si">{}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">designname</span><span class="p">))</span>
             <span class="k">return</span> <span class="n">bound</span>
 
         <span class="k">return</span> <span class="kc">True</span></div>
@@ -322,20 +353,20 @@
 <div class="viewcode-block" id="Mechanical.assign_uniform_convection"><a class="viewcode-back" href="../../API/Mechanical.html#pyaedt.mechanical.Mechanical.assign_uniform_convection">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="nf">assign_uniform_convection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">objects_list</span><span class="p">,</span> <span class="n">convection_value</span><span class="p">,</span> <span class="n">convection_unit</span><span class="o">=</span><span class="s2">&quot;w_per_m2kel&quot;</span><span class="p">,</span>
                                   <span class="n">temperature</span><span class="o">=</span><span class="s2">&quot;AmbientTemp&quot;</span><span class="p">,</span> <span class="n">boundary_name</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Assign uniform convection to face list</span>
+        <span class="sd">&quot;&quot;&quot;Assign uniform convection to the face list.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        objects_list :</span>
-<span class="sd">            list of objects/faces</span>
+<span class="sd">        objects_list : list</span>
+<span class="sd">            List of objects, faces, or both.</span>
 <span class="sd">        convection_value :</span>
-<span class="sd">            convection value</span>
-<span class="sd">        convection_unit :</span>
-<span class="sd">            str optional convection units (Default value = &quot;w_per_m2kel&quot;)</span>
-<span class="sd">        temperature :</span>
-<span class="sd">            optional Temperature (Default value = &quot;AmbientTemp&quot;)</span>
-<span class="sd">        boundary_name :</span>
-<span class="sd">            optional boundary object name (Default value = &quot;&quot;)</span>
+<span class="sd">            Convection value.</span>
+<span class="sd">        convection_unit : str, optional</span>
+<span class="sd">            Unit of the convection. The default is ``&quot;w_per_m2kel&quot;``.</span>
+<span class="sd">        temperature : str, optional</span>
+<span class="sd">            Temperature. The default is ``&quot;AmbientTemp&quot;``.</span>
+<span class="sd">        boundary_name : str, optional</span>
+<span class="sd">            Name of the boundary. The default is ``&quot;&quot;``.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -343,7 +374,7 @@
 <span class="sd">            Boundary Object</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">solution_type</span> <span class="o">==</span> <span class="s2">&quot;Thermal&quot;</span><span class="p">,</span> <span class="s2">&quot;This Method works only in Mechanical Structural Solution&quot;</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">solution_type</span> <span class="o">==</span> <span class="s2">&quot;Thermal&quot;</span><span class="p">,</span> <span class="s2">&quot;This method works only in a Mechanical structural solution.&quot;</span>
 
         <span class="n">props</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">objects_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">_convert_list_to_ids</span><span class="p">(</span><span class="n">objects_list</span><span class="p">)</span>
@@ -368,16 +399,19 @@
 
 <div class="viewcode-block" id="Mechanical.assign_uniform_temperature"><a class="viewcode-back" href="../../API/Mechanical.html#pyaedt.mechanical.Mechanical.assign_uniform_temperature">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="nf">assign_uniform_temperature</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">objects_list</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="s2">&quot;AmbientTemp&quot;</span><span class="p">,</span> <span class="n">boundary_name</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Assign Uniform Temperature Boundary. Works only in Thermal module</span>
+        <span class="sd">&quot;&quot;&quot;Assign a uniform temperature boundary.</span>
+<span class="sd">        </span>
+<span class="sd">        .. note::	</span>
+<span class="sd">	     This method works only in a Mechanical thermal analysis.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        objects_list :</span>
-<span class="sd">            list of objects/faces</span>
-<span class="sd">        temperature :</span>
-<span class="sd">            Temperature Value (Default value = &quot;AmbientTemp&quot;)</span>
-<span class="sd">        boundary_name :</span>
-<span class="sd">            str optional boundary name (Default value = &quot;&quot;)</span>
+<span class="sd">        objects_list : list</span>
+<span class="sd">            List of objects, faces, or both.</span>
+<span class="sd">        temperature : str, optional.</span>
+<span class="sd">            Type of temperature. The default is ``&quot;AmbientTemp&quot;``.</span>
+<span class="sd">        boundary_name : str, optional</span>
+<span class="sd">            Name of the boundary. The default is ``&quot;&quot;``.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -385,7 +419,7 @@
 <span class="sd">            Boundary Object</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">solution_type</span> <span class="o">==</span> <span class="s2">&quot;Thermal&quot;</span><span class="p">,</span> <span class="s2">&quot;This Method works only in Mechanical Structural Solution&quot;</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">solution_type</span> <span class="o">==</span> <span class="s2">&quot;Thermal&quot;</span><span class="p">,</span> <span class="s2">&quot;This method works only in a Mechanical structural analysis.&quot;</span>
 
         <span class="n">props</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">objects_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">_convert_list_to_ids</span><span class="p">(</span><span class="n">objects_list</span><span class="p">)</span>
@@ -409,14 +443,16 @@
 
 <div class="viewcode-block" id="Mechanical.assign_frictionless_support"><a class="viewcode-back" href="../../API/Mechanical.html#pyaedt.mechanical.Mechanical.assign_frictionless_support">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="nf">assign_frictionless_support</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">objects_list</span><span class="p">,</span>  <span class="n">boundary_name</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Assign Mechanical Frictionless Support. Works only in Structural Analysis</span>
+        <span class="sd">&quot;&quot;&quot;Assign a Mechanical frictionless support. </span>
+<span class="sd">        </span>
+<span class="sd">        This method works only in a Mechanical structural analysis.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        objects_list :</span>
-<span class="sd">            list of faces to apply Frictionless support</span>
-<span class="sd">        boundary_name :</span>
-<span class="sd">            optional name of boundary (Default value = &quot;&quot;)</span>
+<span class="sd">        objects_list : list</span>
+<span class="sd">            List of faces to apply to the frictionless support.</span>
+<span class="sd">        boundary_name : str, optional</span>
+<span class="sd">            Name of the boundary. The default is ``&quot;&quot;``.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -425,8 +461,9 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">solution_type</span> <span class="o">==</span> <span class="s2">&quot;Structural&quot;</span><span class="p">,</span> <span class="s2">&quot;This Method works only in Mechanical Structural Solution&quot;</span>
-
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">solution_type</span> <span class="o">==</span> <span class="s2">&quot;Structural&quot;</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">solution_type</span> <span class="o">==</span> <span class="s2">&quot;Modal&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">messenger</span><span class="o">.</span><span class="n">add_error_message</span><span class="p">(</span><span class="s2">&quot;This method works only in Mechanical Structural Solution&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span>
         <span class="n">props</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">objects_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">_convert_list_to_ids</span><span class="p">(</span><span class="n">objects_list</span><span class="p">)</span>
 
@@ -444,16 +481,20 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">boundaries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bound</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">bound</span>
         <span class="k">return</span> <span class="kc">False</span></div>
+
 <div class="viewcode-block" id="Mechanical.assign_fixed_support"><a class="viewcode-back" href="../../API/Mechanical.html#pyaedt.mechanical.Mechanical.assign_fixed_support">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="nf">assign_fixed_support</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">objects_list</span><span class="p">,</span>  <span class="n">boundary_name</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Assign Mechanical Fixed Support. Works only in Structural Analysis</span>
+        <span class="sd">&quot;&quot;&quot;Assign a Mechanical fixed support. </span>
+<span class="sd">        </span>
+<span class="sd">        .. note::	</span>
+<span class="sd">           This method works only in a Mechanical structural analysis.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        objects_list :</span>
-<span class="sd">            list of faces to apply Fixed support</span>
-<span class="sd">        boundary_name :</span>
-<span class="sd">            optional name of boundary (Default value = &quot;&quot;)</span>
+<span class="sd">        objects_list : list</span>
+<span class="sd">            List of faces to apply to the fixed support.</span>
+<span class="sd">        boundary_name : str, optional</span>
+<span class="sd">            Name of the boundary. The default is ``&quot;&quot;``.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -461,7 +502,9 @@
 <span class="sd">            boundary object</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">solution_type</span> <span class="o">==</span><span class="s2">&quot;Structural&quot;</span><span class="p">,</span> <span class="s2">&quot;This Method works only in Mechanical Structural Solution&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">solution_type</span> <span class="o">==</span> <span class="s2">&quot;Structural&quot;</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">solution_type</span> <span class="o">==</span> <span class="s2">&quot;Modal&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">messenger</span><span class="o">.</span><span class="n">add_error_message</span><span class="p">(</span><span class="s2">&quot;This method works only in a Mechanical structural solution.&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span>
         <span class="n">props</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">objects_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">_convert_list_to_ids</span><span class="p">(</span><span class="n">objects_list</span><span class="p">)</span>
 
@@ -479,16 +522,16 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">existing_analysis_sweeps</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Existing Analysis Setup List</span>
+        <span class="sd">&quot;&quot;&quot;Return a list of existing analysis setups in the Mechanical design.</span>
+<span class="sd">                </span>
 <span class="sd">        </span>
-<span class="sd">        </span>
-<span class="sd">        :return: Return a list of all defined analysis setup names in the maxwell design.</span>
-
-<span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
+<span class="sd">        list</span>
+<span class="sd">            List of existing analysis setups.</span>
+
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">setup_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">existing_analysis_setups</span>
@@ -519,7 +562,7 @@
     
     <div class="footer-item">
       <p class="copyright">
-    &copy; Copyright Copyright (c) 2021 ANSYS, Inc. All rights reserved..<br/>
+    &copy; Copyright (c) 2021 ANSYS, Inc. All rights reserved.<br/>
 </p>
     </div>
     

@@ -5,7 +5,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaedt.application.Design &#8212; PyAEDT 0.2.1 documentation</title>
+    <title>pyaedt.application.Design &#8212; PyAEDT 0.3.dev0
+ documentation</title>
     
   <link href="../../../_static/css/theme.css" rel="stylesheet" />
   <link href="../../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -74,7 +75,7 @@
         </li>
         
         <li class="nav-item ">
-            <a class="nav-link" href="../../../API/API.html">API documentation</a>
+            <a class="nav-link" href="../../../API/API.html">API Documentation</a>
         </li>
         
         <li class="nav-item ">
@@ -172,18 +173,17 @@
 <span class="kn">import</span> <span class="nn">string</span>
 <span class="kn">import</span> <span class="nn">random</span>
 <span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">OrderedDict</span>
 <span class="kn">from</span> <span class="nn">.MessageManager</span> <span class="kn">import</span> <span class="n">AEDTMessageManager</span>
 <span class="kn">from</span> <span class="nn">.Variables</span> <span class="kn">import</span> <span class="n">VariableManager</span><span class="p">,</span> <span class="n">DataSet</span>
 <span class="kn">from</span> <span class="nn">..desktop</span> <span class="kn">import</span> <span class="n">exception_to_desktop</span><span class="p">,</span> <span class="n">Desktop</span><span class="p">,</span> <span class="n">force_close_desktop</span><span class="p">,</span> <span class="n">release_desktop</span><span class="p">,</span> <span class="n">get_version_env_variable</span>
 <span class="kn">from</span> <span class="nn">..generic.LoadAEDTFile</span> <span class="kn">import</span> <span class="n">load_entire_aedt_file</span>
 <span class="kn">from</span> <span class="nn">..generic.general_methods</span> <span class="kn">import</span> <span class="n">aedt_exception_handler</span>
+<span class="kn">from</span> <span class="nn">..generic.list_handling</span> <span class="kn">import</span> <span class="n">variation_string_to_dict</span>
 <span class="kn">from</span> <span class="nn">..modules.Boundary</span> <span class="kn">import</span> <span class="n">BoundaryObject</span>
+<span class="kn">from</span> <span class="nn">..generic.general_methods</span> <span class="kn">import</span> <span class="n">generate_unique_name</span>
 
-<span class="k">try</span><span class="p">:</span>
-    <span class="kn">import</span> <span class="nn">webbrowser</span>
-<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;webbrowser not supported&quot;</span><span class="p">)</span>
 
 <span class="n">design_solutions</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;Maxwell 2D&quot;</span><span class="p">:</span> <span class="p">[</span>
@@ -359,22 +359,6 @@
     <span class="s2">&quot;EMIT Design&quot;</span><span class="p">:</span> <span class="s2">&quot;EMIT Design&quot;</span><span class="p">,</span>
 <span class="p">}</span>
 
-<span class="c1">#TODO: refactor this to Generic ?</span>
-<span class="k">def</span> <span class="nf">_variation_string_to_dict</span><span class="p">(</span><span class="n">variation_string</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Helper function to convert a list of &quot;=&quot;-separated strings into a dictionary</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    dict</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">var_data</span> <span class="o">=</span> <span class="n">variation_string</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
-    <span class="n">variation_dict</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">var_data</span><span class="p">:</span>
-        <span class="n">pos_eq</span> <span class="o">=</span> <span class="n">var</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">)</span>
-        <span class="n">var_name</span> <span class="o">=</span> <span class="n">var</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">pos_eq</span><span class="p">]</span>
-        <span class="n">var_value</span> <span class="o">=</span> <span class="n">var</span><span class="p">[</span><span class="n">pos_eq</span><span class="o">+</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\&#39;</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
-        <span class="n">variation_dict</span><span class="p">[</span><span class="n">var_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">var_value</span>
-    <span class="k">return</span> <span class="n">variation_dict</span>
 
 <div class="viewcode-block" id="Design"><a class="viewcode-back" href="../../../API/Design.html#pyaedt.application.Design.Design">[docs]</a><span class="k">class</span> <span class="nc">Design</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Class Design. Contains all functions and objects connected to the active Project and Design&quot;&quot;&quot;</span>
@@ -396,7 +380,6 @@
 
     <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variable_name</span><span class="p">):</span>
-        <span class="k">assert</span> <span class="n">variable_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable_manager</span><span class="o">.</span><span class="n">variables</span><span class="p">,</span> <span class="s2">&quot;Variable </span><span class="si">{0}</span><span class="s2"> dies not exist !&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">variable_name</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable_manager</span><span class="p">[</span><span class="n">variable_name</span><span class="p">]</span><span class="o">.</span><span class="n">string_value</span>
 
     <span class="nd">@aedt_exception_handler</span>
@@ -404,7 +387,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">variable_manager</span><span class="p">[</span><span class="n">variable_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">variable_value</span>
         <span class="k">return</span> <span class="kc">True</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">design_type</span><span class="p">,</span> <span class="n">project_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">design_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">solution_type</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">design_type</span><span class="p">,</span> <span class="n">project_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">design_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">solution_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">specified_version</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">NG</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">AlwaysNew</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">release_on_exit</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="c1"># Get Desktop from global Desktop Environment</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_project_dictionary</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">boundaries</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
@@ -412,13 +396,14 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">design_datasets</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">main_module</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="s1">&#39;__main__&#39;</span><span class="p">]</span>
         <span class="k">if</span> <span class="s2">&quot;pyaedt_initialized&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">main_module</span><span class="p">):</span>
-            <span class="n">Desktop</span><span class="p">()</span>
+            <span class="n">Desktop</span><span class="p">(</span><span class="n">specified_version</span><span class="p">,</span> <span class="n">NG</span><span class="p">,</span> <span class="n">AlwaysNew</span><span class="p">,</span> <span class="n">release_on_exit</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_project_dictionary</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_mttime</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_desktop</span> <span class="o">=</span> <span class="n">main_module</span><span class="o">.</span><span class="n">oDesktop</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_aedt_version</span> <span class="o">=</span> <span class="n">main_module</span><span class="o">.</span><span class="n">AEDTVersion</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_desktop_install_dir</span> <span class="o">=</span> <span class="n">main_module</span><span class="o">.</span><span class="n">sDesktopinstallDirectory</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_messenger</span> <span class="o">=</span> <span class="n">AEDTMessageManager</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
         <span class="k">assert</span> <span class="n">design_type</span> <span class="ow">in</span> <span class="n">design_solutions</span><span class="p">,</span> <span class="s2">&quot;Invalid design type specified: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">design_type</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_design_type</span> <span class="o">=</span> <span class="n">design_type</span>
@@ -435,7 +420,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">solution_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_solution_type</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">project_datasets</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_project_datasets</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">design_datasets</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_design_datasets</span><span class="p">()</span>
-
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">project_properies</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -479,7 +463,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">aedt_version_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Property</span>
-<span class="sd">        </span>
+
 <span class="sd">        :return: AEDT Version</span>
 
 <span class="sd">        Parameters</span>
@@ -517,6 +501,11 @@
 
     <span class="nd">@design_name</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">design_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Property</span>
+
+<span class="sd">        :return: Change the name of the parent AEDT Design</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="s2">&quot;;&quot;</span> <span class="ow">in</span> <span class="n">new_name</span><span class="p">:</span>
             <span class="n">new_name</span> <span class="o">=</span> <span class="n">new_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
         <span class="c1"># src_dir = self.working_directory</span>
@@ -541,7 +530,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">design_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Property</span>
-<span class="sd">        </span>
+
 <span class="sd">        :return: Design Type</span>
 
 <span class="sd">        Parameters</span>
@@ -556,7 +545,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">project_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Property</span>
-<span class="sd">        </span>
+
 <span class="sd">        :return: Project Name</span>
 
 <span class="sd">        Parameters</span>
@@ -571,7 +560,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">project_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Property</span>
-<span class="sd">        </span>
+
 <span class="sd">        :return: List of available Projects</span>
 
 <span class="sd">        Parameters</span>
@@ -586,7 +575,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">project_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Property</span>
-<span class="sd">        </span>
+
 <span class="sd">        :return: Project Path</span>
 
 <span class="sd">        Parameters</span>
@@ -601,7 +590,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">project_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Property</span>
-<span class="sd">        </span>
+
 <span class="sd">        :return: Full absolute Project name and path</span>
 
 <span class="sd">        Parameters</span>
@@ -616,7 +605,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">lock_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Property</span>
-<span class="sd">        </span>
+
 <span class="sd">        :return: Full absolute Project lock file</span>
 
 <span class="sd">        Parameters</span>
@@ -631,7 +620,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">results_directory</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Property</span>
-<span class="sd">        </span>
+
 <span class="sd">        :return: Full absolute path of the aedtresults directory</span>
 
 <span class="sd">        Parameters</span>
@@ -646,7 +635,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">solution_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Property</span>
-<span class="sd">        </span>
+
 <span class="sd">        :return: Solution Type</span>
 
 <span class="sd">        Parameters</span>
@@ -695,7 +684,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">valid_design</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Property</span>
-<span class="sd">        </span>
+
 <span class="sd">        :return: True if oproject and odesign exists</span>
 
 <span class="sd">        Parameters</span>
@@ -710,7 +699,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">personallib</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Property</span>
-<span class="sd">        </span>
+
 <span class="sd">        :return: Full absolute path of the PersonalLib directory</span>
 
 <span class="sd">        Parameters</span>
@@ -725,7 +714,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">userlib</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Property</span>
-<span class="sd">        </span>
+
 <span class="sd">        :return: Full absolute path of the UserLib directory</span>
 
 <span class="sd">        Parameters</span>
@@ -740,7 +729,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">syslib</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Property</span>
-<span class="sd">        </span>
+
 <span class="sd">        :return: Full absolute path of the SysLib directory</span>
 
 <span class="sd">        Parameters</span>
@@ -755,7 +744,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">src_dir</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Property</span>
-<span class="sd">        </span>
+
 <span class="sd">        :return: Full absolute path of the python directory</span>
 
 <span class="sd">        Parameters</span>
@@ -770,7 +759,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">pyaedt_dir</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Property</span>
-<span class="sd">        </span>
+
 <span class="sd">        :return: Full absolute path of the pyaedt Root Parent</span>
 
 <span class="sd">        Parameters</span>
@@ -785,7 +774,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">library_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Property</span>
-<span class="sd">        </span>
+
 <span class="sd">        :return: list of [syslub, userlib, personallib]</span>
 
 <span class="sd">        Parameters</span>
@@ -800,7 +789,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">temp_directory</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Property</span>
-<span class="sd">        </span>
+
 <span class="sd">        :return: Full absolute path of the TEMP directory</span>
 
 <span class="sd">        Parameters</span>
@@ -815,7 +804,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">toolkit_directory</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Property</span>
-<span class="sd">        </span>
+
 <span class="sd">        :return: Full absolute path of the toolkit directory for this project - creates it if does not exist</span>
 
 <span class="sd">        Parameters</span>
@@ -833,7 +822,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">working_directory</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Property</span>
-<span class="sd">        </span>
+
 <span class="sd">        :return: Full absolute path of the working directory for this project - creates it if does not exist</span>
 
 <span class="sd">        Parameters</span>
@@ -851,7 +840,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">default_solution_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Property</span>
-<span class="sd">        </span>
+
 <span class="sd">        :return: Default solution type for the current application running</span>
 
 <span class="sd">        Parameters</span>
@@ -866,7 +855,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">odesign</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Property</span>
-<span class="sd">        </span>
+
 <span class="sd">        :return: oDesign object</span>
 
 <span class="sd">        Parameters</span>
@@ -885,7 +874,7 @@
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        des_name :</span>
-<span class="sd">            </span>
+
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -895,7 +884,7 @@
         <span class="n">activedes</span> <span class="o">=</span> <span class="n">des_name</span>
         <span class="k">if</span> <span class="n">des_name</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_assert_consistent_design_type</span><span class="p">(</span><span class="n">des_name</span><span class="p">)</span> <span class="o">==</span> <span class="n">des_name</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">insert_design</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_design_type</span><span class="p">,</span> <span class="n">design_name</span><span class="o">=</span><span class="n">des_name</span><span class="p">,</span> <span class="n">solution_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_solution_type</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_insert_design</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_design_type</span><span class="p">,</span> <span class="n">design_name</span><span class="o">=</span><span class="n">des_name</span><span class="p">,</span> <span class="n">solution_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_solution_type</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># self._odesign = self._oproject.GetActiveDesign()</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">design_list</span><span class="p">:</span>
@@ -915,14 +904,14 @@
                 <span class="n">warning_msg</span> <span class="o">=</span> <span class="s2">&quot;No design present - inserting a new design&quot;</span>
 
             <span class="k">if</span> <span class="n">warning_msg</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_messenger</span><span class="o">.</span><span class="n">add_warning_message</span><span class="p">(</span><span class="n">warning_msg</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="s1">&#39;Project&#39;</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">insert_design</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_design_type</span><span class="p">,</span> <span class="n">solution_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_solution_type</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">warning_msg</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_insert_design</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_design_type</span><span class="p">,</span> <span class="n">solution_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_solution_type</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">boundaries</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_boundaries_data</span><span class="p">()</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">oboundary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Property</span>
-<span class="sd">        </span>
+
 <span class="sd">        :return: BoundarySetup Module object</span>
 
 <span class="sd">        Parameters</span>
@@ -937,7 +926,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">omodelsetup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Property</span>
-<span class="sd">        </span>
+
 <span class="sd">        :return: ModelSetup Module object</span>
 
 <span class="sd">        Parameters</span>
@@ -953,7 +942,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">oimportexport</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Property</span>
-<span class="sd">        </span>
+
 <span class="sd">        :return: ImportExport Module object</span>
 
 <span class="sd">        Parameters</span>
@@ -968,7 +957,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">oproject</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Property</span>
-<span class="sd">        </span>
+
 <span class="sd">        :return: oProject object</span>
 
 <span class="sd">        Parameters</span>
@@ -1027,7 +1016,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">oanalysis_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Property</span>
-<span class="sd">        </span>
+
 <span class="sd">        :return: AnalysisSetup Module object</span>
 
 <span class="sd">        Parameters</span>
@@ -1042,7 +1031,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">odesktop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Property</span>
-<span class="sd">        </span>
+
 <span class="sd">        :return: oDesktop Module object</span>
 
 <span class="sd">        Parameters</span>
@@ -1057,7 +1046,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">desktop_install_dir</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Property</span>
-<span class="sd">        </span>
+
 <span class="sd">        :return: AEDT Install Dir</span>
 
 <span class="sd">        Parameters</span>
@@ -1072,7 +1061,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">messenger</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Property</span>
-<span class="sd">        </span>
+
 <span class="sd">        :return: Messenger object that can be used for logging on log file and on AEDT Message Windows</span>
 
 <span class="sd">        Parameters</span>
@@ -1087,7 +1076,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">variable_manager</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Property</span>
-<span class="sd">        </span>
+
 <span class="sd">        :return: Variable maanager that can be used to create and manage Project, Design and PostProcessing Variables</span>
 
 <span class="sd">        Parameters</span>
@@ -1106,11 +1095,11 @@
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        arg :</span>
-<span class="sd">            </span>
+
 <span class="sd">        optimetrics_type :</span>
-<span class="sd">            </span>
+
 <span class="sd">        variable_name :</span>
-<span class="sd">            </span>
+
 <span class="sd">        min_val :</span>
 <span class="sd">             (Default value = None)</span>
 <span class="sd">        max_val :</span>
@@ -1383,9 +1372,9 @@
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        name :</span>
-<span class="sd">            </span>
+
 <span class="sd">        datas :</span>
-<span class="sd">            </span>
+
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -1452,10 +1441,57 @@
         <span class="k">return</span> <span class="kc">True</span></div>
 
 <div class="viewcode-block" id="Design.release_desktop"><a class="viewcode-back" href="../../../API/Design.html#pyaedt.application.Design.Design.release_desktop">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
-    <span class="k">def</span> <span class="nf">release_desktop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;:return: Release the desktop by keeping it open&quot;&quot;&quot;</span>
-        <span class="n">release_desktop</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">release_desktop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">close_projects</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">close_desktop</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        close_projects: bool</span>
+<span class="sd">            close all projects</span>
+<span class="sd">        close_desktop: bool</span>
+<span class="sd">            close desktop after release it</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            True if desktop released</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">release_desktop</span><span class="p">(</span><span class="n">close_projects</span><span class="p">,</span> <span class="n">close_desktop</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="Design.generate_temp_project_directory"><a class="viewcode-back" href="../../../API/Design.html#pyaedt.application.Design.Design.generate_temp_project_directory">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
+    <span class="k">def</span> <span class="nf">generate_temp_project_directory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subdir_name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Generate a unique directory string to store a project</span>
+
+<span class="sd">        Creates a directory name for storage of a project in a location which is guaranteed to exist (the temp</span>
+<span class="sd">        directory of the AEDT installation). If the &#39;name&#39; parameter is defined, then add a sub-directory within</span>
+<span class="sd">        the temp directory and add a hash suffix to ensure that this directory is empty (unique name)</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        subdir_name : str</span>
+<span class="sd">            Base name of the sub-directory to be created im self.tempdirectory</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; m3d = Maxwell3d()</span>
+<span class="sd">        &gt;&gt;&gt; proj_directory = m3d.generate_temp_project_directory(&quot;Example&quot;)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">base_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">temp_directory</span>
+
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">subdir_name</span><span class="p">,</span> <span class="nb">str</span><span class="p">),</span> <span class="s2">&quot;Input argument &#39;subdir&#39; must be a string&quot;</span>
+        <span class="n">dir_name</span> <span class="o">=</span> <span class="n">generate_unique_name</span><span class="p">(</span><span class="n">subdir_name</span><span class="p">)</span>
+        <span class="n">project_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_path</span><span class="p">,</span> <span class="n">dir_name</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">project_dir</span><span class="p">):</span> <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">project_dir</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">project_dir</span>
+        <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span></div>
 
 
 <div class="viewcode-block" id="Design.load_project"><a class="viewcode-back" href="../../../API/Design.html#pyaedt.application.Design.Design.load_project">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
@@ -1682,7 +1718,7 @@
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        ___________ :</span>
-<span class="sd">            </span>
+
 <span class="sd">        material_override :</span>
 <span class="sd">            bool (Default value = True)</span>
 <span class="sd">        enable :</span>
@@ -1719,15 +1755,15 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        </span>
+
 <span class="sd">            bool</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_messenger</span><span class="o">.</span><span class="n">add_info_message</span><span class="p">(</span><span class="s2">&quot;Changing the validation design settings&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">odesign</span><span class="o">.</span><span class="n">SetDesignSettings</span><span class="p">([</span><span class="s2">&quot;NAME:Design Settings Data&quot;</span><span class="p">],</span>
-                                       <span class="p">[</span><span class="s2">&quot;NAME:Model Validation Settings&quot;</span><span class="p">,</span> 
+                                       <span class="p">[</span><span class="s2">&quot;NAME:Model Validation Settings&quot;</span><span class="p">,</span>
                                         <span class="s2">&quot;EntityCheckLevel:=&quot;</span><span class="p">,</span> <span class="n">entity_check_level</span><span class="p">,</span>
-                                        <span class="s2">&quot;IgnoreUnclassifiedObjects:=&quot;</span><span class="p">,</span> <span class="n">ignore_unclassified</span><span class="p">,</span> 
+                                        <span class="s2">&quot;IgnoreUnclassifiedObjects:=&quot;</span><span class="p">,</span> <span class="n">ignore_unclassified</span><span class="p">,</span>
                                         <span class="s2">&quot;SkipIntersectionChecks:=&quot;</span><span class="p">,</span> <span class="n">skip_intersections</span><span class="p">])</span>
         <span class="k">return</span> <span class="kc">True</span></div>
 
@@ -1753,7 +1789,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_messenger</span><span class="o">.</span><span class="n">add_info_message</span><span class="p">(</span><span class="s2">&quot;Cleanup folder from &quot;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot; project files&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">directory</span><span class="p">):</span>
             <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">directory</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">directory</span><span class="p">):</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">directory</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_messenger</span><span class="o">.</span><span class="n">add_info_message</span><span class="p">(</span><span class="s2">&quot;Project Directory cleaned&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">True</span></div>
 
@@ -1800,14 +1837,14 @@
 
 <div class="viewcode-block" id="Design.close_project"><a class="viewcode-back" href="../../../API/Design.html#pyaedt.application.Design.Design.close_project">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="nf">close_project</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">saveproject</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Close the specified project and release the Desktop</span>
+        <span class="sd">&quot;&quot;&quot;Close the specified project</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        name :</span>
-<span class="sd">            name of the project (if none take active provect) (Default value = None)</span>
+<span class="sd">            name of the project (if none take active project) (Default value = None)</span>
 <span class="sd">        saveproject : bool</span>
-<span class="sd">            Save Project before close (Default value = True)</span>
+<span class="sd">            Save project before close (Default value = True)</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -1820,7 +1857,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">project_name</span>
             <span class="n">msg_txt</span> <span class="o">=</span> <span class="s2">&quot;active &quot;</span><span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">project_name</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_messenger</span><span class="o">.</span><span class="n">add_info_message</span><span class="p">(</span><span class="s2">&quot;Closing the </span><span class="si">{}</span><span class="s2"> AEDT Project&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">msg_txt</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_messenger</span><span class="o">.</span><span class="n">add_info_message</span><span class="p">(</span><span class="s2">&quot;Closing the </span><span class="si">{}</span><span class="s2"> AEDT Project&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">msg_txt</span><span class="p">),</span> <span class="n">level</span><span class="o">=</span><span class="s2">&quot;Global&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">name</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">project_name</span><span class="p">:</span>
             <span class="n">oproj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">odesktop</span><span class="o">.</span><span class="n">SetActiveProject</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
@@ -1841,7 +1878,7 @@
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        name :</span>
-<span class="sd">            </span>
+
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -1861,7 +1898,7 @@
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        separator_name :</span>
-<span class="sd">            </span>
+
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -1869,23 +1906,7 @@
 <span class="sd">            True if the separator exists and can be deleted, False otherwise</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">obj</span> <span class="o">=</span> <span class="p">[(</span><span class="bp">self</span><span class="o">.</span><span class="n">_odesign</span><span class="p">,</span> <span class="s2">&quot;Local&quot;</span><span class="p">),</span>
-               <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">oproject</span><span class="p">,</span> <span class="s2">&quot;Project&quot;</span><span class="p">)]</span>
-
-        <span class="k">for</span> <span class="nb">object</span> <span class="ow">in</span> <span class="n">obj</span><span class="p">:</span>
-            <span class="n">desktop_object</span> <span class="o">=</span> <span class="nb">object</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">var_type</span> <span class="o">=</span> <span class="nb">object</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="n">desktop_object</span><span class="o">.</span><span class="n">ChangeProperty</span><span class="p">([</span><span class="s2">&quot;NAME:AllTabs&quot;</span><span class="p">,</span>
-                                               <span class="p">[</span><span class="s2">&quot;NAME:</span><span class="si">{0}</span><span class="s2">VariableTab&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">var_type</span><span class="p">),</span>
-                                                <span class="p">[</span><span class="s2">&quot;NAME:PropServers&quot;</span><span class="p">,</span>
-                                                 <span class="s2">&quot;</span><span class="si">{0}</span><span class="s2">Variables&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">var_type</span><span class="p">)],</span>
-                                                <span class="p">[</span><span class="s2">&quot;NAME:DeletedProps&quot;</span><span class="p">,</span>
-                                                 <span class="n">separator_name</span><span class="p">]]])</span>
-                <span class="k">return</span> <span class="kc">True</span>
-            <span class="k">except</span><span class="p">:</span>
-                <span class="k">pass</span>
-        <span class="k">return</span> <span class="kc">False</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_variable_manager</span><span class="o">.</span><span class="n">delete_separator</span><span class="p">(</span><span class="n">separator_name</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Design.delete_variable"><a class="viewcode-back" href="../../../API/Design.html#pyaedt.application.Design.Design.delete_variable">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="nf">delete_variable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sVarName</span><span class="p">):</span>
@@ -1902,28 +1923,10 @@
 <span class="sd">            none</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">sVarName</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;$&quot;</span><span class="p">:</span>
-            <span class="n">var_type</span> <span class="o">=</span> <span class="s2">&quot;Project&quot;</span>
-            <span class="n">desktop_object</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">oproject</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">var_type</span> <span class="o">=</span> <span class="s2">&quot;Local&quot;</span>
-            <span class="n">desktop_object</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_odesign</span>
-
-        <span class="n">var_list</span> <span class="o">=</span> <span class="n">desktop_object</span><span class="o">.</span><span class="n">GetVariables</span><span class="p">()</span>
-        <span class="n">lower_case_vars</span> <span class="o">=</span> <span class="p">[</span><span class="n">var_name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">var_name</span> <span class="ow">in</span> <span class="n">var_list</span><span class="p">]</span>
-
-        <span class="k">if</span> <span class="n">sVarName</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">lower_case_vars</span><span class="p">:</span>
-            <span class="n">desktop_object</span><span class="o">.</span><span class="n">ChangeProperty</span><span class="p">([</span><span class="s2">&quot;NAME:AllTabs&quot;</span><span class="p">,</span>
-                                           <span class="p">[</span><span class="s2">&quot;NAME:</span><span class="si">{0}</span><span class="s2">VariableTab&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">var_type</span><span class="p">),</span>
-                                            <span class="p">[</span><span class="s2">&quot;NAME:PropServers&quot;</span><span class="p">,</span>
-                                             <span class="s2">&quot;</span><span class="si">{0}</span><span class="s2">Variables&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">var_type</span><span class="p">)],</span>
-                                            <span class="p">[</span><span class="s2">&quot;NAME:DeletedProps&quot;</span><span class="p">,</span>
-                                             <span class="n">sVarName</span><span class="p">]]])</span>
-            <span class="k">return</span> <span class="kc">True</span>
-        <span class="k">return</span> <span class="kc">False</span></div>
+        <span class="k">return</span>  <span class="bp">self</span><span class="o">.</span><span class="n">variable_manager</span><span class="o">.</span><span class="n">delete_variable</span><span class="p">(</span><span class="n">sVarName</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Design.insert_design"><a class="viewcode-back" href="../../../API/Design.html#pyaedt.application.Design.Design.insert_design">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
-    <span class="k">def</span> <span class="nf">insert_design</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">design_type</span><span class="p">,</span> <span class="n">design_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">solution_type</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">insert_design</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">design_name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Inserts a design of the specified design type. Default design type is taked from the derived application \</span>
 <span class="sd">        class. If no design-name is given, the default design name is &lt;Design-Type&gt;Design&lt;_index&gt;. If the given or \</span>
 <span class="sd">        default design name is in use, then an underscore + index is added            to ensure that the design name\</span>
@@ -1931,17 +1934,18 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        design_type :</span>
-<span class="sd">            Type of design to insert (eg. HFSS)</span>
 <span class="sd">        design_name :</span>
 <span class="sd">            optional design name (Default value = None)</span>
-<span class="sd">        solution_type :</span>
-<span class="sd">            optional solution_type. it can be a SolutionType object (Default value = None)</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span><span class="s2">&quot;Circuit Design&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">design_type</span> <span class="o">==</span> <span class="s2">&quot;Circuit Design&quot;</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">design_type</span> <span class="o">==</span> <span class="s2">&quot;HFSS 3D Layout Design&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">edb</span><span class="o">.</span><span class="n">close_edb</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">projectname</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project_name</span><span class="p">,</span> <span class="n">designname</span><span class="o">=</span><span class="n">design_name</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_insert_design</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">design_type</span><span class="p">,</span> <span class="n">design_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">solution_type</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">assert</span> <span class="n">design_type</span> <span class="ow">in</span> <span class="n">design_solutions</span><span class="p">,</span> <span class="s2">&quot;Invalid design type for insert: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">design_type</span><span class="p">)</span>
         <span class="c1"># self.save_project() ## Commented because it saves a Projectxxx.aedt when launched on an empty Desktop</span>
         <span class="n">unique_design_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_unique_design_name</span><span class="p">(</span><span class="n">design_name</span><span class="p">)</span>
@@ -1963,7 +1967,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">odesign</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">odesign</span> <span class="o">=</span> <span class="n">name</span>
-        <span class="k">return</span> <span class="n">name</span></div>
+        <span class="k">return</span> <span class="n">name</span>
 
     <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="nf">_generate_unique_design_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">design_name</span><span class="p">):</span>
@@ -1972,7 +1976,7 @@
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        design_name :</span>
-<span class="sd">            </span>
+
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -2071,7 +2075,7 @@
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        label :</span>
-<span class="sd">            </span>
+
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -2246,9 +2250,8 @@
 
 <div class="viewcode-block" id="Design.get_evaluated_value"><a class="viewcode-back" href="../../../API/Design.html#pyaedt.application.Design.Design.get_evaluated_value">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="nf">get_evaluated_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variable_name</span><span class="p">,</span> <span class="n">variation</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns the floating-point evaluated value of a given variable</span>
-<span class="sd">        (design property or project variable) in SI-units</span>
+        <span class="sd">&quot;&quot;&quot;Returns the floating-point evaluated value of a given variable in SI-units</span>
+<span class="sd">        (design property or project variable)</span>
 
 <span class="sd">        Optionally a variation string of the form</span>
 
@@ -2298,7 +2301,7 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_variable_manager</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">expression_string</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_variable_manager</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="s2">&quot;pyaedt_evaluator&quot;</span><span class="p">,</span> <span class="n">expression</span><span class="o">=</span><span class="n">expression_string</span><span class="p">,</span> <span class="n">prop_type</span><span class="o">=</span><span class="s2">&quot;VariableProp&quot;</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_variable_manager</span><span class="o">.</span><span class="n">set_variable</span><span class="p">(</span><span class="s2">&quot;pyaedt_evaluator&quot;</span><span class="p">,</span> <span class="n">expression</span><span class="o">=</span><span class="n">expression_string</span><span class="p">,</span>
                                                     <span class="n">readonly</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">hidden</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Internal_Evaluator&quot;</span><span class="p">)</span>
             <span class="k">except</span><span class="p">:</span>
                 <span class="k">raise</span><span class="p">(</span><span class="s2">&quot;Invalid string expression </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">expression_string</span><span class="p">)</span>
@@ -2323,21 +2326,18 @@
 <span class="sd">        variation_string : str</span>
 <span class="sd">        Variation string of the form &quot;p1=1mm p2=3mm&quot;</span>
 
-<span class="sd">            Parameters</span>
-<span class="sd">            ----------</span>
-<span class="sd">            variation_string</span>
-
-<span class="sd">            Returns</span>
-<span class="sd">            -------</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">nominal</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_odesign</span><span class="o">.</span><span class="n">GetNominalVariation</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">variation_string</span><span class="p">:</span>
             <span class="c1"># decompose the nominal variation into a dictionary of name[value]</span>
-            <span class="n">nominal_dict</span> <span class="o">=</span> <span class="n">_variation_string_to_dict</span><span class="p">(</span><span class="n">nominal</span><span class="p">)</span>
+            <span class="n">nominal_dict</span> <span class="o">=</span> <span class="n">variation_string_to_dict</span><span class="p">(</span><span class="n">nominal</span><span class="p">)</span>
 
             <span class="c1"># decompose the desired variation into a dictionary of name[value]</span>
-            <span class="n">var_dict</span> <span class="o">=</span> <span class="n">_variation_string_to_dict</span><span class="p">(</span><span class="n">variation_string</span><span class="p">)</span>
+            <span class="n">var_dict</span> <span class="o">=</span> <span class="n">variation_string_to_dict</span><span class="p">(</span><span class="n">variation_string</span><span class="p">)</span>
 
             <span class="c1"># set the values of the desired variation in the active design</span>
             <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">var_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -2359,7 +2359,7 @@
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        des_name :</span>
-<span class="sd">            </span>
+
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -2417,7 +2417,7 @@
     
     <div class="footer-item">
       <p class="copyright">
-    &copy; Copyright Copyright (c) 2021 ANSYS, Inc. All rights reserved..<br/>
+    &copy; Copyright (c) 2021 ANSYS, Inc. All rights reserved.<br/>
 </p>
     </div>
     

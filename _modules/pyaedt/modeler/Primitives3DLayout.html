@@ -5,7 +5,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaedt.modeler.Primitives3DLayout &#8212; PyAEDT 0.2.1 documentation</title>
+    <title>pyaedt.modeler.Primitives3DLayout &#8212; PyAEDT 0.3.dev0
+ documentation</title>
     
   <link href="../../../_static/css/theme.css" rel="stylesheet" />
   <link href="../../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -74,7 +75,7 @@
         </li>
         
         <li class="nav-item ">
-            <a class="nav-link" href="../../../API/API.html">API documentation</a>
+            <a class="nav-link" href="../../../API/API.html">API Documentation</a>
         </li>
         
         <li class="nav-item ">
@@ -532,42 +533,24 @@
         <span class="k">return</span> <span class="n">name</span></div>
 
 <div class="viewcode-block" id="Primitives3DLayout.create_rectangle"><a class="viewcode-back" href="../../../API/Primitives3DLayout.html#pyaedt.modeler.Primitives3DLayout.Primitives3DLayout.create_rectangle">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
-    <span class="k">def</span> <span class="nf">create_rectangle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layername</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">ay</span><span class="p">,</span> <span class="n">bx</span><span class="p">,</span> <span class="n">by</span><span class="p">,</span> <span class="n">cr</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ang</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">netname</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create a Rectangle on specific layer</span>
+    <span class="k">def</span> <span class="nf">create_rectangle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layername</span><span class="p">,</span> <span class="n">origin</span><span class="p">,</span> <span class="n">dimensions</span><span class="p">,</span> <span class="n">corner_radius</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">angle</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">netname</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a Rectangle on specified layer</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        layername :</span>
-<span class="sd">            layername</span>
-<span class="sd">        x :</span>
-<span class="sd">            x position float</span>
-<span class="sd">        y :</span>
-<span class="sd">            y position float</span>
-<span class="sd">        radius :</span>
-<span class="sd">            radius float</span>
-<span class="sd">        name :</span>
-<span class="sd">            Object Name (Default value = None)</span>
-<span class="sd">        netname :</span>
-<span class="sd">            optional Netname (Default value = None)</span>
-<span class="sd">        ax :</span>
-<span class="sd">            </span>
-<span class="sd">        ay :</span>
-<span class="sd">            </span>
-<span class="sd">        bx :</span>
-<span class="sd">            </span>
-<span class="sd">        by :</span>
-<span class="sd">            </span>
-<span class="sd">        cr :</span>
-<span class="sd">             (Default value = 0)</span>
-<span class="sd">        ang :</span>
-<span class="sd">             (Default value = 0)</span>
+<span class="sd">        layername</span>
+<span class="sd">        origin</span>
+<span class="sd">        dimensions</span>
+<span class="sd">        corner_radius</span>
+<span class="sd">        angle</span>
+<span class="sd">        name</span>
+<span class="sd">        netname</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        type</span>
-<span class="sd">            Name of the created object, if successful</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span><span class="p">:</span>
             <span class="n">name</span> <span class="o">=</span> <span class="n">_uname</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
@@ -580,12 +563,12 @@
         <span class="n">vArg2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Name:=&quot;</span><span class="p">),</span> <span class="n">vArg2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
         <span class="n">vArg2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;LayerName:=&quot;</span><span class="p">),</span> <span class="n">vArg2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">layername</span><span class="p">)</span>
         <span class="n">vArg2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;lw:=&quot;</span><span class="p">),</span> <span class="n">vArg2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;0&quot;</span><span class="p">)</span>
-        <span class="n">vArg2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Ax:=&quot;</span><span class="p">),</span> <span class="n">vArg2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">arg_with_dim</span><span class="p">(</span><span class="n">ax</span><span class="p">))</span>
-        <span class="n">vArg2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Ay:=&quot;</span><span class="p">),</span> <span class="n">vArg2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">arg_with_dim</span><span class="p">(</span><span class="n">ay</span><span class="p">))</span>
-        <span class="n">vArg2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Bx:=&quot;</span><span class="p">),</span> <span class="n">vArg2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">arg_with_dim</span><span class="p">(</span><span class="n">bx</span><span class="p">))</span>
-        <span class="n">vArg2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;By:=&quot;</span><span class="p">),</span> <span class="n">vArg2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">arg_with_dim</span><span class="p">(</span><span class="n">by</span><span class="p">))</span>
-        <span class="n">vArg2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;cr:=&quot;</span><span class="p">),</span> <span class="n">vArg2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">arg_with_dim</span><span class="p">(</span><span class="n">cr</span><span class="p">))</span>
-        <span class="n">vArg2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;ang=&quot;</span><span class="p">),</span> <span class="n">vArg2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">arg_with_dim</span><span class="p">(</span><span class="n">ang</span><span class="p">))</span>
+        <span class="n">vArg2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Ax:=&quot;</span><span class="p">),</span> <span class="n">vArg2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">arg_with_dim</span><span class="p">(</span><span class="n">origin</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="n">vArg2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Ay:=&quot;</span><span class="p">),</span> <span class="n">vArg2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">arg_with_dim</span><span class="p">(</span><span class="n">origin</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+        <span class="n">vArg2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Bx:=&quot;</span><span class="p">),</span> <span class="n">vArg2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">arg_with_dim</span><span class="p">(</span><span class="n">dimensions</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="n">vArg2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;By:=&quot;</span><span class="p">),</span> <span class="n">vArg2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">arg_with_dim</span><span class="p">(</span><span class="n">dimensions</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+        <span class="n">vArg2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;cr:=&quot;</span><span class="p">),</span> <span class="n">vArg2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">arg_with_dim</span><span class="p">(</span><span class="n">corner_radius</span><span class="p">))</span>
+        <span class="n">vArg2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;ang=&quot;</span><span class="p">),</span> <span class="n">vArg2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">arg_with_dim</span><span class="p">(</span><span class="n">angle</span><span class="p">))</span>
         <span class="n">vArg1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">vArg2</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">oeditor</span><span class="o">.</span><span class="n">CreateRectangle</span><span class="p">(</span><span class="n">vArg1</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">isoutsideDesktop</span><span class="p">:</span>
@@ -595,19 +578,17 @@
         <span class="k">return</span> <span class="n">name</span></div>
 
 <div class="viewcode-block" id="Primitives3DLayout.create_line"><a class="viewcode-back" href="../../../API/Primitives3DLayout.html#pyaedt.modeler.Primitives3DLayout.Primitives3DLayout.create_line">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
-    <span class="k">def</span> <span class="nf">create_line</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layername</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="p">[],</span> <span class="n">y</span><span class="o">=</span><span class="p">[],</span> <span class="n">start_style</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">end_style</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">netname</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">create_line</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layername</span><span class="p">,</span> <span class="n">center_line_list</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">start_style</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">end_style</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">netname</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create Line based on specific list of point</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        layername :</span>
+<span class="sd">        layername : str</span>
 <span class="sd">            layer name on which create the object</span>
+<span class="sd">        center_line_list : list</span>
+<span class="sd">            list of centerline points</span>
 <span class="sd">        lw :</span>
 <span class="sd">            line width (Default value = 1)</span>
-<span class="sd">        x :</span>
-<span class="sd">            array of float containing x point of each point of the line (Default value = [])</span>
-<span class="sd">        y :</span>
-<span class="sd">            array of float containing y point of each point of the line (Default value = [])</span>
 <span class="sd">        start_style :</span>
 <span class="sd">            start style of the line. 0 Flat, 1 Extended, 2 Round (Default value = 0)</span>
 <span class="sd">        end_style :</span>
@@ -631,12 +612,12 @@
                 <span class="n">name</span> <span class="o">=</span> <span class="n">_uname</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
         <span class="n">arg</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;NAME:Contents&quot;</span><span class="p">,</span> <span class="s2">&quot;lineGeometry:=&quot;</span><span class="p">]</span>
         <span class="n">arg2</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Name:=&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="s2">&quot;LayerName:=&quot;</span><span class="p">,</span> <span class="n">layername</span><span class="p">,</span> <span class="s2">&quot;lw:=&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">arg_with_dim</span><span class="p">(</span><span class="n">lw</span><span class="p">),</span> <span class="s2">&quot;endstyle:=&quot;</span><span class="p">,</span> <span class="n">end_style</span><span class="p">,</span>
-                <span class="s2">&quot;StartCap:=&quot;</span><span class="p">,</span> <span class="n">start_style</span><span class="p">,</span> <span class="s2">&quot;n:=&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="s2">&quot;U:=&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_units</span><span class="p">]</span>
-        <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+                <span class="s2">&quot;StartCap:=&quot;</span><span class="p">,</span> <span class="n">start_style</span><span class="p">,</span> <span class="s2">&quot;n:=&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">center_line_list</span><span class="p">),</span> <span class="s2">&quot;U:=&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_units</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">center_line_list</span><span class="p">:</span>
             <span class="n">arg2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;x:=&quot;</span><span class="p">)</span>
-            <span class="n">arg2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+            <span class="n">arg2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
             <span class="n">arg2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;y:=&quot;</span><span class="p">)</span>
-            <span class="n">arg2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+            <span class="n">arg2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
         <span class="n">arg</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">arg2</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">oeditor</span><span class="o">.</span><span class="n">CreateLine</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">isoutsideDesktop</span><span class="p">:</span>
@@ -692,7 +673,7 @@
     
     <div class="footer-item">
       <p class="copyright">
-    &copy; Copyright Copyright (c) 2021 ANSYS, Inc. All rights reserved..<br/>
+    &copy; Copyright (c) 2021 ANSYS, Inc. All rights reserved.<br/>
 </p>
     </div>
     

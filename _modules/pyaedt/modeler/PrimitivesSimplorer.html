@@ -5,7 +5,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaedt.modeler.PrimitivesSimplorer &#8212; PyAEDT 0.2.1 documentation</title>
+    <title>pyaedt.modeler.PrimitivesSimplorer &#8212; PyAEDT 0.3.dev0
+ documentation</title>
     
   <link href="../../../_static/css/theme.css" rel="stylesheet" />
   <link href="../../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -74,7 +75,7 @@
         </li>
         
         <li class="nav-item ">
-            <a class="nav-link" href="../../../API/API.html">API documentation</a>
+            <a class="nav-link" href="../../../API/API.html">API Documentation</a>
         </li>
         
         <li class="nav-item ">
@@ -280,15 +281,15 @@
         <span class="k">return</span> <span class="nb">id</span><span class="p">,</span> <span class="n">name</span></div>
 
 <div class="viewcode-block" id="SimplorerComponents.create_diode"><a class="viewcode-back" href="../../../API/CircuitComponents.html#pyaedt.modeler.PrimitivesSimplorer.SimplorerComponents.create_diode">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
-    <span class="k">def</span> <span class="nf">create_diode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">compname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">model_name</span><span class="o">=</span><span class="s2">&quot;required&quot;</span><span class="p">,</span> <span class="n">xpos</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ypos</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">angle</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">use_instance_id_netlist</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">create_diode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">compname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">model_name</span><span class="o">=</span><span class="s2">&quot;required&quot;</span><span class="p">,</span> <span class="n">xpos</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ypos</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">angle</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">use_instance_id_netlist</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a new Diode</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        compname :</span>
 <span class="sd">            name (Default value = None)</span>
-<span class="sd">        value :</span>
-<span class="sd">            value</span>
+<span class="sd">        model_name : str, optional</span>
+<span class="sd">            Name of the model.  Default is ``&quot;required&quot;``.</span>
 <span class="sd">        xpos :</span>
 <span class="sd">            x pos (Default value = 0)</span>
 <span class="sd">        ypos :</span>
@@ -297,8 +298,6 @@
 <span class="sd">            angle (Default value = 0)</span>
 <span class="sd">        use_instance_id_netlist :</span>
 <span class="sd">            bool (Default value = False)</span>
-<span class="sd">        model_name :</span>
-<span class="sd">             (Default value = &quot;required&quot;)</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -397,7 +396,7 @@
     
     <div class="footer-item">
       <p class="copyright">
-    &copy; Copyright Copyright (c) 2021 ANSYS, Inc. All rights reserved..<br/>
+    &copy; Copyright (c) 2021 ANSYS, Inc. All rights reserved.<br/>
 </p>
     </div>
     

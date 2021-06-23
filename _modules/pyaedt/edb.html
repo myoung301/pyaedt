@@ -5,7 +5,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaedt.edb &#8212; PyAEDT 0.2.1 documentation</title>
+    <title>pyaedt.edb &#8212; PyAEDT 0.3.dev0
+ documentation</title>
     
   <link href="../../_static/css/theme.css" rel="stylesheet" />
   <link href="../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -74,7 +75,7 @@
         </li>
         
         <li class="nav-item ">
-            <a class="nav-link" href="../../API/API.html">API documentation</a>
+            <a class="nav-link" href="../../API/API.html">API Documentation</a>
         </li>
         
         <li class="nav-item ">
@@ -141,26 +142,29 @@
   <h1>Source code for pyaedt.edb</h1><div class="highlight"><pre>
 <span></span><span class="c1"># -*- coding: utf-8 -*-</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Edb Class</span>
-<span class="sd">-------------</span>
-<span class="sd">This class contains all EDB functionalities. It inherits all objects that belong to EDB.</span>
+<span class="sd">This module contains all EDB functionalities in the ``Edb`` class. It inherits all objects that belong to EDB.</span>
 
-<span class="sd">This class is implicitily loaded in HFSS 3D Layout when launched.</span>
+<span class="sd">This module is implicitily loaded in HFSS 3D Layout when launched.</span>
 
 
-<span class="sd">Examples:</span>
-<span class="sd">__________</span>
+<span class="sd">Examples</span>
+<span class="sd">--------</span>
+<span class="sd">Create an ``Edb`` object and a new EDB cell.</span>
 
-<span class="sd">app = Edb()     Creates an ``Edb`` object and creates a new EDB cell.</span>
+<span class="sd">&gt;&gt;&gt; app = Edb()     </span>
 
+<span class="sd">Create an ``Edb`` object and open the specified project.</span>
 
-<span class="sd">app = Edb(&quot;myfile.aedb&quot;)     Creates an ``Edb`` object and opens the specified project.</span>
+<span class="sd">&gt;&gt;&gt; app = Edb(&quot;myfile.aedb&quot;)</span>
+
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">traceback</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="kn">import</span> <span class="nn">pyaedt.edb_core.EDB_Data</span>
 
 <span class="k">try</span><span class="p">:</span>
     <span class="kn">import</span> <span class="nn">clr</span>
@@ -175,7 +179,7 @@
         <span class="n">_ironpython</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="n">edb_initialized</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;The clr is missing. Install Pythonnet or use Ironpython version if you want to use EDB Module&quot;</span><span class="p">)</span>
+    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;The clr is missing. Install Pythonnet or use an Ironpython version if you want to use the EDB Module.&quot;</span><span class="p">)</span>
     <span class="n">edb_initialized</span> <span class="o">=</span> <span class="kc">False</span>
 
 
@@ -186,20 +190,20 @@
 
 
 <div class="viewcode-block" id="Edb"><a class="viewcode-back" href="../../API/EDBMain.html#pyaedt.edb.Edb">[docs]</a><span class="k">class</span> <span class="nc">Edb</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;EDB Object</span>
+    <span class="sd">&quot;&quot;&quot;EDB object</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    edbpath :</span>
-<span class="sd">        full path to aedb folder</span>
-<span class="sd">    cellname :</span>
-<span class="sd">        name of the cell to be selected.</span>
-<span class="sd">    isreadonly :</span>
-<span class="sd">        True in case edb_core is opened in read-only mode (when owned by 3DLayout)</span>
-<span class="sd">    edbversion :</span>
-<span class="sd">        version of edb_core to use. Default &quot;2020.1&quot;</span>
-<span class="sd">    isaedtowned :</span>
-<span class="sd">        True if edb_core is launched from 3dLayout</span>
+<span class="sd">    edbpath : str</span>
+<span class="sd">        Full path to the ``aedb`` folder.</span>
+<span class="sd">    cellname : str</span>
+<span class="sd">        Name of the cell to select.</span>
+<span class="sd">    isreadonly : bool, optional</span>
+<span class="sd">        Whether to open ``edb_core`` in read-only mode when it is owned by HFSS 3D Layout. The default is ``False``.</span>
+<span class="sd">    edbversion : str, optional</span>
+<span class="sd">        Version of ``edb_core`` to use. The default is ``&quot;2021.1&quot;``.</span>
+<span class="sd">    isaedtowned : bool, optional</span>
+<span class="sd">        Whether to launch ``edb_core`` from HFSS 3D Layout. The default is ``False``.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -210,7 +214,7 @@
         <span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
         <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s2">&quot;dlls&quot;</span><span class="p">,</span> <span class="s2">&quot;EDBLib&quot;</span><span class="p">))</span>
         <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;posix&#39;</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">env_path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edbversion</span><span class="p">)</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">env_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edbversion</span><span class="p">)</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">base_path</span> <span class="o">=</span> <span class="n">env_path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edbversion</span><span class="p">)</span>
                 <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base_path</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
@@ -251,8 +255,8 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        init_dlls :</span>
-<span class="sd">             (Default value = False)</span>
+<span class="sd">        init_dlls : bool</span>
+<span class="sd">             Whether to initialize DLLs. The default is ``False``.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -277,7 +281,7 @@
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        init_dlls :</span>
-<span class="sd">             (Default value = False)</span>
+<span class="sd">             Whether to initialize DLLs. The default is ``False``.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -297,24 +301,49 @@
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;active cell set&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span></div>
 
-
-<div class="viewcode-block" id="Edb.import_layout_pcb"><a class="viewcode-back" href="../../API/EDBMain.html#pyaedt.edb.Edb.import_layout_pcb">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
-    <span class="k">def</span> <span class="nf">import_layout_pcb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_file</span><span class="p">,</span> <span class="n">working_dir</span><span class="p">,</span> <span class="n">init_dlls</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;this function import a brd file and generate a edb.def file in working dir</span>
+<div class="viewcode-block" id="Edb.create_edb"><a class="viewcode-back" href="../../API/EDBMain.html#pyaedt.edb.Edb.create_edb">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
+    <span class="k">def</span> <span class="nf">create_edb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">init_dlls</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        input_file :</span>
-<span class="sd">            full path to brd file</span>
-<span class="sd">        working_dir :</span>
-<span class="sd">            working dir where the aedb folder will be created. aedb name will be the same as brd name</span>
 <span class="sd">        init_dlls :</span>
-<span class="sd">             (Default value = False)</span>
+<span class="sd">             Whether to initialize DLLs. The default is ``False``.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">init_dlls</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_init_dlls</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">edb</span><span class="o">.</span><span class="n">Database</span><span class="o">.</span><span class="n">SetRunAsStandAlone</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_db</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edb</span><span class="o">.</span><span class="n">Database</span><span class="o">.</span><span class="n">Create</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edbpath</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">cellname</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cellname</span> <span class="o">=</span> <span class="n">generate_unique_name</span><span class="p">(</span><span class="s2">&quot;Cell&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_active_cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edb</span><span class="o">.</span><span class="n">Cell</span><span class="o">.</span><span class="n">Cell</span><span class="o">.</span><span class="n">Create</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_db</span><span class="p">,</span>  <span class="bp">self</span><span class="o">.</span><span class="n">edb</span><span class="o">.</span><span class="n">Cell</span><span class="o">.</span><span class="n">CellType</span><span class="o">.</span><span class="n">CircuitCell</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cellname</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">builder</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layout_methods</span><span class="o">.</span><span class="n">GetBuilder</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_active_cell</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;active cell set&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">builder</span></div>
+
+<div class="viewcode-block" id="Edb.import_layout_pcb"><a class="viewcode-back" href="../../API/EDBMain.html#pyaedt.edb.Edb.import_layout_pcb">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
+    <span class="k">def</span> <span class="nf">import_layout_pcb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_file</span><span class="p">,</span> <span class="n">working_dir</span><span class="p">,</span> <span class="n">init_dlls</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Import a brd file and generate an ``edb.def`` file in the working directory.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        input_file : str</span>
+<span class="sd">            Full path to the brd file.</span>
+<span class="sd">        working_dir : str</span>
+<span class="sd">            Directory in which to create the ``aedb`` folder. The aedb name will be the same as the brd name.</span>
+<span class="sd">        init_dlls : bool</span>
+<span class="sd">             Whether to initialize DLLs. The default is ``False``.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        type</span>
-<span class="sd">            aedbfile full path</span>
+<span class="sd">            Full path to the aedb file.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">init_dlls</span><span class="p">:</span>
@@ -336,10 +365,12 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">_main</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="s1">&#39;__main__&#39;</span><span class="p">]</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_messenger</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_main</span><span class="o">.</span><span class="n">oMessenger</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="n">edbpath</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">edbpath</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">edbpath</span><span class="p">):</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_messenger</span> <span class="o">=</span> <span class="n">EDBMessageManager</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;C:\Temp&#39;</span><span class="p">)</span>
-                <span class="k">else</span><span class="p">:</span>
+                <span class="k">elif</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">edbpath</span><span class="p">):</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_messenger</span> <span class="o">=</span> <span class="n">EDBMessageManager</span><span class="p">(</span><span class="n">edbpath</span><span class="p">)</span>
+
+
             <span class="bp">self</span><span class="o">.</span><span class="n">_messenger</span><span class="o">.</span><span class="n">add_info_message</span><span class="p">(</span><span class="s2">&quot;Messenger Initialized in EDB&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">edbversion</span> <span class="o">=</span> <span class="n">edbversion</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">isaedtowned</span> <span class="o">=</span> <span class="n">isaedtowned</span>
@@ -351,8 +382,9 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">isreadonly</span> <span class="o">=</span> <span class="n">isreadonly</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">cellname</span> <span class="o">=</span> <span class="n">cellname</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">edbpath</span> <span class="o">=</span> <span class="n">edbpath</span>
-
-            <span class="k">if</span> <span class="s2">&quot;.aedb&quot;</span> <span class="ow">in</span> <span class="n">edbpath</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edbpath</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">create_edb</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="s2">&quot;.aedb&quot;</span> <span class="ow">in</span> <span class="n">edbpath</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">edbpath</span> <span class="o">=</span> <span class="n">edbpath</span>
                 <span class="k">if</span> <span class="n">isaedtowned</span> <span class="ow">and</span> <span class="s2">&quot;isoutsideDesktop&quot;</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_main</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_main</span><span class="o">.</span><span class="n">isoutsideDesktop</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">open_edb_inside_aedt</span><span class="p">()</span>
@@ -382,7 +414,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">edb_exception</span><span class="p">(</span><span class="n">ex_value</span><span class="p">,</span> <span class="n">ex_traceback</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Edb.edb_exception"><a class="viewcode-back" href="../../API/EDBMain.html#pyaedt.edb.Edb.edb_exception">[docs]</a>    <span class="k">def</span> <span class="nf">edb_exception</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ex_value</span><span class="p">,</span> <span class="n">tb_data</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;writes the trace stack to the desktop when a python error occurs</span>
+        <span class="sd">&quot;&quot;&quot;Write the trace stack to the desktop when a python error occurs.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -597,19 +629,19 @@
 
 <div class="viewcode-block" id="Edb.import_cadence_file"><a class="viewcode-back" href="../../API/EDBMain.html#pyaedt.edb.Edb.import_cadence_file">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="nf">import_cadence_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputBrd</span><span class="p">,</span> <span class="n">WorkDir</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;this function import a brd file and generate a edb.def file in working dir</span>
+        <span class="sd">&quot;&quot;&quot;Import a brd file and generate an ``edb.def`` file in the working directory.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        inputBrd :</span>
-<span class="sd">            full path to brd file</span>
-<span class="sd">        WorkDir :</span>
-<span class="sd">            working dir where the aedb folder will be created. aedb name will be the same as brd name (Default value = None)</span>
+<span class="sd">        inputBrd : str</span>
+<span class="sd">            Full path to the brd file.</span>
+<span class="sd">        WorkDir : str</span>
+<span class="sd">            The directory in which to create the ``aedb`` folder. The aedb name will be the same as the brd name. The default value is ``None``.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        type</span>
-<span class="sd">            Bool</span>
+<span class="sd">            Boolean</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">import_layout_pcb</span><span class="p">(</span><span class="n">inputBrd</span><span class="p">,</span> <span class="n">working_dir</span><span class="o">=</span><span class="n">WorkDir</span><span class="p">):</span>
@@ -619,338 +651,109 @@
 
 <div class="viewcode-block" id="Edb.import_gds_file"><a class="viewcode-back" href="../../API/EDBMain.html#pyaedt.edb.Edb.import_gds_file">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="nf">import_gds_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputGDS</span><span class="p">,</span> <span class="n">WorkDir</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;this function import a brd file and generate a edb.def file in working dir</span>
+        <span class="sd">&quot;&quot;&quot;Import a brd file and generate an ``edb.def`` file in the working directory.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        inputGDS :</span>
-<span class="sd">            full path to brd file</span>
-<span class="sd">        WorkDir :</span>
-<span class="sd">            working dir where the aedb folder will be created. aedb name will be the same as brd name (Default value = None)</span>
+<span class="sd">        inputGDS : str</span>
+<span class="sd">            Full path to the brd file.</span>
+<span class="sd">        WorkDir : str</span>
+<span class="sd">            The directory in which to create the ``aedb` folder. The aedb name will be the same as the brd name. The default value is ``None``.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        type</span>
-<span class="sd">            aedbfile full path</span>
+<span class="sd">            The full path to the aedb file.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">import_layout_pcb</span><span class="p">(</span><span class="n">inputBrd</span><span class="p">,</span> <span class="n">working_dir</span><span class="o">=</span><span class="n">WorkDir</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">import_layout_pcb</span><span class="p">(</span><span class="n">inputGDS</span><span class="p">,</span> <span class="n">working_dir</span><span class="o">=</span><span class="n">WorkDir</span><span class="p">):</span>
             <span class="k">return</span> <span class="kc">True</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span></div>
 
-
-
-    <span class="c1"># def get_padstack_data_parameters(self, PadStackDef):</span>
-    <span class="c1">#     &quot;&quot;&quot;</span>
-    <span class="c1">#     Get all the Padstak Data Parameter</span>
-    <span class="c1">#</span>
-    <span class="c1">#</span>
-    <span class="c1">#     :param PadStackDef:  Padstack Definition object</span>
-    <span class="c1">#     :return: dictionary of parameters</span>
-    <span class="c1">#     &quot;&quot;&quot;</span>
-    <span class="c1">#     Antipad = self.edb_core.Definition.PadType.AntiPad</span>
-    <span class="c1">#     Pad = self.edb_core.Definition.PadType.RegularPad</span>
-    <span class="c1">#     GeometryType = self.edb_core.Definition.PadGeometryType.Rectangle</span>
-    <span class="c1">#     PadStackDefName = PadStackDef.GetName()</span>
-    <span class="c1">#     PadStackDefData = PadStackDef.GetData()</span>
-    <span class="c1">#     LayerNames = PadStackDefData.GetLayerNames()</span>
-    <span class="c1">#     padstack_pars={}</span>
-    <span class="c1">#     for Layer in LayerNames:</span>
-    <span class="c1">#         if _ironpython:</span>
-    <span class="c1">#             LayPad = PadStackDefData.GetPadParametersValue(Layer, Pad)</span>
-    <span class="c1">#         else:</span>
-    <span class="c1">#             value0 = self.edb_value(&quot;0.0um&quot;)</span>
-    <span class="c1">#             xOffset = Double(0.0)</span>
-    <span class="c1">#             yOffset = Double(0.0)</span>
-    <span class="c1">#             rotation = Double(0.0)</span>
-    <span class="c1">#             padparam_array = Array[Double]([])</span>
-    <span class="c1">#             PadStackDefData.GetPadParameters(11, Pad, GeometryType, padparam_array, xOffset,</span>
-    <span class="c1">#                                                            yOffset, rotation)</span>
-    <span class="c1">#</span>
-    <span class="c1">#         if LayPad[0]:</span>
-    <span class="c1">#             PadDiameter = LayPad[2][0]</span>
-    <span class="c1">#</span>
-    <span class="c1">#         LayAntipad = PadStackDefData.GetPadParametersValue(Layer, Antipad)</span>
-    <span class="c1">#         if LayAntipad[0]:</span>
-    <span class="c1">#             AntiPadDiameter = LayAntipad[2][0]</span>
-    <span class="c1">#</span>
-    <span class="c1">#         padstack_pars[PadStackDefName] ={&quot;Layer&quot;: Layer, &quot;PadDiameter&quot;: PadDiameter, &quot;AntiPadDiameter&quot;: AntiPadDiameter}</span>
-    <span class="c1">#     return padstack_pars</span>
-
-
-<div class="viewcode-block" id="Edb.get_rlc_from_signal_nets"><a class="viewcode-back" href="../../API/EDBMain.html#pyaedt.edb.Edb.get_rlc_from_signal_nets">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
-    <span class="k">def</span> <span class="nf">get_rlc_from_signal_nets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">CmpDict</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get RLC from signal Nets</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        CmpDict :</span>
-<span class="sd">            dictionary of components (Default value = None)</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        type</span>
-<span class="sd">            list of components that belongs to signal nets</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># CmpInf = self.GetCmpInf(layout)</span>
-        <span class="n">RlcFromSignalNets</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">for</span> <span class="n">cmp</span> <span class="ow">in</span> <span class="n">CmpDict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-            <span class="k">if</span> <span class="n">CmpDict</span><span class="p">[</span><span class="n">cmp</span><span class="p">][</span><span class="s1">&#39;PartType&#39;</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;Capacitor&#39;</span><span class="p">,</span> <span class="s1">&#39;Resistor&#39;</span><span class="p">,</span> <span class="s1">&#39;Inductor&#39;</span><span class="p">]:</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_power_gound_net</span><span class="p">(</span><span class="n">CmpDict</span><span class="p">[</span><span class="n">cmp</span><span class="p">][</span><span class="s1">&#39;Nets&#39;</span><span class="p">]):</span>
-                    <span class="n">CmpNets</span> <span class="o">=</span> <span class="n">CmpDict</span><span class="p">[</span><span class="n">cmp</span><span class="p">][</span><span class="s1">&#39;Nets&#39;</span><span class="p">]</span>
-                    <span class="n">RlcFromSignalNets</span><span class="p">[</span><span class="n">cmp</span><span class="p">]</span> <span class="o">=</span> <span class="n">CmpNets</span>
-        <span class="k">return</span> <span class="n">RlcFromSignalNets</span></div>
-
-<div class="viewcode-block" id="Edb.is_power_gound_net"><a class="viewcode-back" href="../../API/EDBMain.html#pyaedt.edb.Edb.is_power_gound_net">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
-    <span class="k">def</span> <span class="nf">is_power_gound_net</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">NetNameList</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return a True if one of the net in the list is power or ground</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        NetNameList :</span>
-<span class="sd">            list of net names</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        type</span>
-<span class="sd">            True if one of net name is power or ground</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">for</span> <span class="n">nn</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">NetNameList</span><span class="p">)):</span>
-            <span class="n">net</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edb</span><span class="o">.</span><span class="n">Cell</span><span class="o">.</span><span class="n">Net</span><span class="o">.</span><span class="n">FindByName</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">active_layout</span><span class="p">,</span> <span class="n">NetNameList</span><span class="p">[</span><span class="n">nn</span><span class="p">])</span>
-            <span class="k">if</span> <span class="n">net</span><span class="o">.</span><span class="n">IsPowerGround</span><span class="p">():</span>
-                <span class="k">return</span> <span class="kc">True</span>
-        <span class="k">return</span> <span class="kc">False</span></div>
-
-<div class="viewcode-block" id="Edb.get_rl_from_nets"><a class="viewcode-back" href="../../API/EDBMain.html#pyaedt.edb.Edb.get_rl_from_nets">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
-    <span class="k">def</span> <span class="nf">get_rl_from_nets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">CmpDict</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return an array of components with RL based on a Component Dictionary</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        CmpDict :</span>
-<span class="sd">            Input Component Dictionary</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        type</span>
-<span class="sd">            Componenet nets for component dictionary</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">RlFromNets</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">for</span> <span class="n">cmp</span> <span class="ow">in</span> <span class="n">CmpDict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-            <span class="k">if</span> <span class="n">CmpDict</span><span class="p">[</span><span class="n">cmp</span><span class="p">][</span><span class="s1">&#39;PartType&#39;</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;Resistor&#39;</span><span class="p">,</span> <span class="s1">&#39;Inductor&#39;</span><span class="p">]:</span>
-                <span class="n">CmpNets</span> <span class="o">=</span> <span class="n">CmpDict</span><span class="p">[</span><span class="n">cmp</span><span class="p">][</span><span class="s1">&#39;Nets&#39;</span><span class="p">]</span>
-                <span class="n">RlFromNets</span><span class="p">[</span><span class="n">cmp</span><span class="p">]</span> <span class="o">=</span> <span class="n">CmpNets</span>
-        <span class="k">return</span> <span class="n">RlFromNets</span></div>
-
-<div class="viewcode-block" id="Edb.get_rl_for_DC_path"><a class="viewcode-back" href="../../API/EDBMain.html#pyaedt.edb.Edb.get_rl_for_DC_path">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
-    <span class="k">def</span> <span class="nf">get_rl_for_DC_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">CmpDict</span><span class="p">,</span> <span class="n">ResMaxValue</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return the Rl DC Path of a specific dictionary list</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        CmpDict :</span>
-<span class="sd">            dictionary of components</span>
-<span class="sd">        ResMaxValue :</span>
-<span class="sd">            max value of Resistance to be considered in DC Path (Default value = 10)</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        type</span>
-<span class="sd">            Dictionary of components with nets</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">RlDCPath</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">for</span> <span class="n">cmp</span> <span class="ow">in</span> <span class="n">CmpDict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-            <span class="k">if</span> <span class="n">CmpDict</span><span class="p">[</span><span class="n">cmp</span><span class="p">][</span><span class="s1">&#39;PartType&#39;</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;Resistor&#39;</span><span class="p">,</span> <span class="s1">&#39;Inductor&#39;</span><span class="p">]:</span>
-                <span class="n">CmpNets</span> <span class="o">=</span> <span class="n">CmpDict</span><span class="p">[</span><span class="n">cmp</span><span class="p">][</span><span class="s1">&#39;Nets&#39;</span><span class="p">]</span>
-                <span class="k">if</span> <span class="n">CmpDict</span><span class="p">[</span><span class="n">cmp</span><span class="p">][</span><span class="s1">&#39;ResValue&#39;</span><span class="p">]:</span>
-                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">CmpNets</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-                        <span class="k">if</span> <span class="ow">not</span> <span class="s1">&#39;gnd&#39;</span> <span class="ow">in</span> <span class="p">[</span><span class="n">net</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">net</span> <span class="ow">in</span> <span class="n">CmpNets</span><span class="p">]:</span>
-                            <span class="k">if</span> <span class="n">CmpDict</span><span class="p">[</span><span class="n">cmp</span><span class="p">][</span><span class="s1">&#39;ResValue&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">ResMaxValue</span><span class="p">:</span>
-                                <span class="n">RlDCPath</span><span class="p">[</span><span class="n">cmp</span><span class="p">]</span> <span class="o">=</span> <span class="n">CmpNets</span>
-                    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">CmpNets</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
-                        <span class="n">NetList</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">([</span><span class="n">net</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">net</span> <span class="ow">in</span> <span class="n">CmpNets</span><span class="p">]))</span>
-                        <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">NetList</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="p">(</span><span class="s1">&#39;gnd&#39;</span> <span class="ow">in</span> <span class="n">NetList</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">CmpDict</span><span class="p">[</span><span class="n">cmp</span><span class="p">][</span><span class="s1">&#39;ResValue&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">ResMaxValue</span><span class="p">):</span>
-                            <span class="n">RlDCPath</span><span class="p">[</span><span class="n">cmp</span><span class="p">]</span> <span class="o">=</span> <span class="n">CmpNets</span>
-                        <span class="k">elif</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">NetList</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">CmpDict</span><span class="p">[</span><span class="n">cmp</span><span class="p">][</span><span class="s1">&#39;ResValue&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">ResMaxValue</span><span class="p">):</span>
-                            <span class="n">RlDCPath</span><span class="p">[</span><span class="n">cmp</span><span class="p">]</span> <span class="o">=</span> <span class="n">CmpNets</span>
-                        <span class="k">else</span><span class="p">:</span>
-                            <span class="k">pass</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="k">pass</span>
-        <span class="k">return</span> <span class="n">RlDCPath</span></div>
-
-
-
-
-
-<div class="viewcode-block" id="Edb.create_multipin_rlc"><a class="viewcode-back" href="../../API/EDBMain.html#pyaedt.edb.Edb.create_multipin_rlc">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
-    <span class="k">def</span> <span class="nf">create_multipin_rlc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">componentType</span><span class="p">,</span> <span class="n">baseComponent</span><span class="p">,</span> <span class="n">positiveNetName</span><span class="p">,</span> <span class="n">negativeNetName</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">s2pPath</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Edb.create_cutout"><a class="viewcode-back" href="../../API/EDBMain.html#pyaedt.edb.Edb.create_cutout">[docs]</a>    <span class="k">def</span> <span class="nf">create_cutout</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">signal_list</span><span class="p">,</span> <span class="n">reference_list</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GND&quot;</span><span class="p">],</span> <span class="n">extent_type</span><span class="o">=</span><span class="s2">&quot;Conforming&quot;</span><span class="p">,</span> <span class="n">expansion_size</span><span class="o">=</span><span class="mf">0.002</span><span class="p">,</span>
+                      <span class="n">use_round_corner</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">output_aedb_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">replace_design_with_cutout</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a new Cutout and Save it to a new aedb file.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        componentType :</span>
-<span class="sd">            </span>
-<span class="sd">        baseComponent :</span>
-<span class="sd">            </span>
-<span class="sd">        positiveNetName :</span>
-<span class="sd">            </span>
-<span class="sd">        negativeNetName :</span>
-<span class="sd">            </span>
-<span class="sd">        value :</span>
-<span class="sd">             (Default value = None)</span>
-<span class="sd">        s2pPath :</span>
-<span class="sd">             (Default value = None)</span>
+<span class="sd">        signal_list: list</span>
+<span class="sd">            list of signal strings</span>
+<span class="sd">        reference_list: list</span>
+<span class="sd">            list of reference lists to be added. Default [&quot;GND&quot;]</span>
+<span class="sd">        extent_type: str</span>
+<span class="sd">            type of extension: &quot;Conforming&quot; or &quot;Bounding&quot;</span>
+<span class="sd">        expansion_size: float</span>
+<span class="sd">            expansion size ratio in meter. Default 2mm</span>
+<span class="sd">        use_round_corner: bool</span>
+<span class="sd">        output_aedb_path: str, optional</span>
+<span class="sd">            the full path to new aedb file</span>
+<span class="sd">        replace_design_with_cutout</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">returnOnError</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">_signal_nets</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># validate nets in layout</span>
+        <span class="k">for</span> <span class="n">_sig</span> <span class="ow">in</span> <span class="n">signal_list</span><span class="p">:</span>
+            <span class="n">_netobj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edb</span><span class="o">.</span><span class="n">Cell</span><span class="o">.</span><span class="n">Net</span><span class="o">.</span><span class="n">FindByName</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">active_layout</span><span class="p">,</span> <span class="n">_sig</span><span class="p">)</span>
+            <span class="n">_signal_nets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_netobj</span><span class="p">)</span>
 
-        <span class="n">baseComponentName</span> <span class="o">=</span> <span class="n">baseComponent</span><span class="o">.</span><span class="n">GetName</span><span class="p">()</span>
-        <span class="n">layout</span> <span class="o">=</span> <span class="n">baseComponent</span><span class="o">.</span><span class="n">GetLayout</span><span class="p">()</span>
+        <span class="n">_ref_nets</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># validate references in layout</span>
+        <span class="k">for</span> <span class="n">_ref</span> <span class="ow">in</span> <span class="n">reference_list</span><span class="p">:</span>
+            <span class="n">_netobj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edb</span><span class="o">.</span><span class="n">Cell</span><span class="o">.</span><span class="n">Net</span><span class="o">.</span><span class="n">FindByName</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">active_layout</span><span class="p">,</span> <span class="n">_ref</span><span class="p">)</span>
+            <span class="n">_ref_nets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_netobj</span><span class="p">)</span>
 
-        <span class="n">positivePins</span><span class="p">,</span> <span class="n">negativePins</span><span class="p">,</span> <span class="n">componentTransform</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dissolve_component</span><span class="p">(</span><span class="n">baseComponent</span><span class="p">,</span> <span class="n">positiveNetName</span><span class="p">,</span> <span class="n">negativeNetName</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">positivePins</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">negativePins</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_messenger</span><span class="o">.</span><span class="n">add_error_message</span><span class="p">(</span><span class="s1">&#39;Component </span><span class="si">{}</span><span class="s1"> - failed to dissolve&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">baseComponentName</span><span class="p">))</span>
-            <span class="k">return</span> <span class="n">returnOnError</span>
 
-        <span class="n">twoPinComponent</span><span class="p">,</span> <span class="n">extraPinsComponent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_divided_componenets</span><span class="p">(</span><span class="n">positivePins</span><span class="p">,</span> <span class="n">negativePins</span><span class="p">,</span> <span class="n">componentTransform</span><span class="p">,</span> <span class="n">baseComponentName</span><span class="p">,</span> <span class="n">layout</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">twoPinComponent</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">twoPinComponent</span><span class="o">.</span><span class="n">IsNull</span><span class="p">()</span> <span class="ow">or</span> \
-            <span class="n">extraPinsComponent</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">extraPinsComponent</span><span class="o">.</span><span class="n">IsNull</span><span class="p">():</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_messenger</span><span class="o">.</span><span class="n">add_error_message</span><span class="p">(</span><span class="s1">&#39;Component </span><span class="si">{}</span><span class="s1"> - failed to create divided component&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">baseComponentName</span><span class="p">))</span>
-            <span class="k">return</span> <span class="n">returnOnError</span>
+        <span class="kn">from</span> <span class="nn">.edb_core.general</span> <span class="kn">import</span> <span class="n">convert_py_list_to_net_list</span>
+        <span class="n">_netsClip</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">edb</span><span class="o">.</span><span class="n">Cell</span><span class="o">.</span><span class="n">Net</span><span class="o">.</span><span class="n">FindByName</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">active_layout</span><span class="p">,</span> <span class="n">reference_list</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">p</span> <span class="ow">in</span>
+                     <span class="nb">enumerate</span><span class="p">(</span><span class="n">reference_list</span><span class="p">)]</span>
+        <span class="n">_netsClip</span> <span class="o">=</span> <span class="n">convert_py_list_to_net_list</span><span class="p">(</span><span class="n">_netsClip</span><span class="p">)</span>
+        <span class="n">net_signals</span><span class="o">=</span> <span class="n">convert_py_list_to_net_list</span><span class="p">(</span><span class="n">_signal_nets</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">extent_type</span> <span class="o">==</span> <span class="s2">&quot;Conforming&quot;</span><span class="p">:</span>
+            <span class="n">_poly</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">active_layout</span><span class="o">.</span><span class="n">GetExpandedExtentFromNets</span><span class="p">(</span><span class="n">net_signals</span><span class="p">,</span>
+                                                           <span class="bp">self</span><span class="o">.</span><span class="n">edb</span><span class="o">.</span><span class="n">Geometry</span><span class="o">.</span><span class="n">ExtentType</span><span class="o">.</span><span class="n">Conforming</span><span class="p">,</span>
+                                                           <span class="n">expansion_size</span><span class="p">,</span>
+                                                           <span class="kc">False</span><span class="p">,</span>
+                                                           <span class="n">use_round_corner</span><span class="p">,</span>
+                                                           <span class="mi">1</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">_poly</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">active_layout</span><span class="o">.</span><span class="n">GetExpandedExtentFromNets</span><span class="p">(</span><span class="n">net_signals</span><span class="p">,</span>
+                                                           <span class="bp">self</span><span class="o">.</span><span class="n">edb</span><span class="o">.</span><span class="n">Geometry</span><span class="o">.</span><span class="n">ExtentType</span><span class="o">.</span><span class="n">BoundingBox</span><span class="p">,</span>
+                                                           <span class="n">expansion_size</span><span class="p">,</span>
+                                                           <span class="kc">False</span><span class="p">,</span>
+                                                           <span class="n">use_round_corner</span><span class="p">,</span>
+                                                           <span class="mi">1</span><span class="p">)</span>
 
-        <span class="n">positiveGroupName</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">_positive_group&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">baseComponentName</span><span class="p">)</span>
-        <span class="n">positiveGroup</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_pingroup_from_pins</span><span class="p">(</span><span class="n">positivePins</span><span class="p">,</span> <span class="n">positiveGroupName</span><span class="p">,</span> <span class="n">layout</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">positiveGroup</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">positiveGroup</span><span class="o">.</span><span class="n">IsNull</span><span class="p">():</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_messenger</span><span class="o">.</span><span class="n">add_error_message</span><span class="p">(</span><span class="s1">&#39;Component </span><span class="si">{}</span><span class="s1"> - failed to create positive pin group&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">baseComponentName</span><span class="p">))</span>
-            <span class="k">return</span> <span class="n">returnOnError</span>
+        <span class="n">_cutout</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">active_cell</span><span class="o">.</span><span class="n">CutOut</span><span class="p">(</span><span class="n">net_signals</span><span class="p">,</span> <span class="n">_netsClip</span><span class="p">,</span> <span class="n">_poly</span><span class="p">)</span>  <span class="c1"># Create new cutout cell/design</span>
 
-        <span class="n">negativeGroupName</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">_negative_group&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">baseComponentName</span><span class="p">)</span>
-        <span class="n">negativeGroup</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_pingroup_from_pins</span><span class="p">(</span><span class="n">negativePins</span><span class="p">,</span> <span class="n">negativeGroupName</span><span class="p">,</span> <span class="n">layout</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">negativeGroup</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">negativeGroup</span><span class="o">.</span><span class="n">IsNull</span><span class="p">():</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_messenger</span><span class="o">.</span><span class="n">add_error_message</span><span class="p">(</span><span class="s1">&#39;Component </span><span class="si">{}</span><span class="s1"> - failed to create negative pin group&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">baseComponentName</span><span class="p">))</span>
-            <span class="k">return</span> <span class="n">returnOnError</span>
+        <span class="k">for</span> <span class="n">_setup</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">active_cell</span><span class="o">.</span><span class="n">SimulationSetups</span><span class="p">:</span>  <span class="c1"># The analysis setup(s) do not come over with the clipped design copy, so add the analysis setup(s) from the original here</span>
+            <span class="n">_setup_name</span> <span class="o">=</span> <span class="n">_setup</span><span class="o">.</span><span class="n">GetName</span><span class="p">()</span>  <span class="c1"># Empty string &#39;&#39; if coming from setup copy and don&#39;t set explicitly.</span>
+            <span class="k">if</span> <span class="s2">&quot;GetSimSetupInfo&quot;</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">_setup</span><span class="p">):</span>
+                <span class="n">_hfssSimSetupInfo</span> <span class="o">=</span> <span class="n">_setup</span><span class="o">.</span><span class="n">GetSimSetupInfo</span><span class="p">()</span>  <span class="c1"># setup is an Ansys.Ansoft.Edb.Utility.HFSSSimulationSetup object</span>
+                <span class="n">_hfssSimSetupInfo</span><span class="o">.</span><span class="n">Name</span> <span class="o">=</span> <span class="s1">&#39;HFSS Setup 1&#39;</span>  <span class="c1"># Set name of analysis setup</span>
+                <span class="n">_setup</span><span class="o">.</span><span class="n">SetSimSetupInfo</span><span class="p">(</span><span class="n">_hfssSimSetupInfo</span><span class="p">)</span>  <span class="c1"># Write the simulation setup info into the cell/design setup</span>
+                <span class="n">_cutout</span><span class="o">.</span><span class="n">AddSimulationSetup</span><span class="p">(</span><span class="n">_setup</span><span class="p">)</span>  <span class="c1"># Add simulation setup to the cutout design</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_model_on_component</span><span class="p">(</span><span class="n">componentType</span><span class="p">,</span> <span class="n">twoPinComponent</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">s2pPath</span><span class="p">,</span> <span class="n">negativeNetName</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_messenger</span><span class="o">.</span><span class="n">add_error_message</span><span class="p">(</span><span class="s1">&#39;Component </span><span class="si">{}</span><span class="s1"> - failed to create model on component&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">baseComponentName</span><span class="p">))</span>
-            <span class="k">return</span> <span class="n">returnOnError</span>
+        <span class="n">_dbCells</span> <span class="o">=</span> <span class="p">[</span><span class="n">_cutout</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">replace_design_with_cutout</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">active_cell</span><span class="o">.</span><span class="n">Delete</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">_dbCells</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">active_cell</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">twoPinComponent</span></div>
-
-<div class="viewcode-block" id="Edb.dissolve_component"><a class="viewcode-back" href="../../API/EDBMain.html#pyaedt.edb.Edb.dissolve_component">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
-    <span class="k">def</span> <span class="nf">dissolve_component</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">component</span><span class="p">,</span> <span class="n">positiveNetName</span><span class="p">,</span> <span class="n">negativeNetName</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        component :</span>
-<span class="sd">            </span>
-<span class="sd">        positiveNetName :</span>
-<span class="sd">            </span>
-<span class="sd">        negativeNetName :</span>
-<span class="sd">            </span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">returnOnError</span> <span class="o">=</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-
-        <span class="n">positivePins</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_pin_from_component</span><span class="p">(</span><span class="n">component</span><span class="p">,</span> <span class="n">positiveNetName</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">positivePins</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_messenger</span><span class="o">.</span><span class="n">add_error_message</span><span class="p">(</span><span class="s1">&#39;Failed to get positive pins when dissolving component&#39;</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">returnOnError</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">positivePins</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_messenger</span><span class="o">.</span><span class="n">add_error_message</span><span class="p">(</span><span class="s1">&#39;No positive pins in net </span><span class="si">{}</span><span class="s1"> on component </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">positiveNetName</span><span class="p">,</span> <span class="n">component</span><span class="o">.</span><span class="n">GetName</span><span class="p">()))</span>
-            <span class="k">return</span> <span class="n">returnOnError</span>
-
-        <span class="n">negativePins</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_pin_from_component</span><span class="p">(</span><span class="n">component</span><span class="p">,</span> <span class="n">negativeNetName</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">negativePins</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_messenger</span><span class="o">.</span><span class="n">add_error_message</span><span class="p">(</span><span class="s1">&#39;Failed to get negative pins when dissolving component&#39;</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">returnOnError</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">negativePins</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_messenger</span><span class="o">.</span><span class="n">add_error_message</span><span class="p">(</span><span class="s1">&#39;No negative pins in net </span><span class="si">{}</span><span class="s1"> on component </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">negativeNetName</span><span class="p">,</span> <span class="n">component</span><span class="o">.</span><span class="n">GetName</span><span class="p">()))</span>
-            <span class="k">return</span> <span class="n">returnOnError</span>
-
-        <span class="k">for</span> <span class="n">pin</span> <span class="ow">in</span> <span class="n">positivePins</span> <span class="o">+</span> <span class="n">negativePins</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">component</span><span class="o">.</span><span class="n">RemoveMember</span><span class="p">(</span><span class="n">pin</span><span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_messenger</span><span class="o">.</span><span class="n">add_error_message</span><span class="p">(</span><span class="s1">&#39;Failed to remove pin </span><span class="si">{}</span><span class="s1"> from component </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pin</span><span class="o">.</span><span class="n">GetName</span><span class="p">(),</span> <span class="n">component</span><span class="o">.</span><span class="n">GetName</span><span class="p">()))</span>
-
-        <span class="n">componentTransform</span> <span class="o">=</span> <span class="n">component</span><span class="o">.</span><span class="n">GetTransform</span><span class="p">()</span>
-        <span class="n">component</span><span class="o">.</span><span class="n">Delete</span><span class="p">()</span>
-
-        <span class="k">return</span> <span class="n">positivePins</span><span class="p">,</span> <span class="n">negativePins</span><span class="p">,</span> <span class="n">componentTransform</span></div>
-
-<div class="viewcode-block" id="Edb.create_divided_componenets"><a class="viewcode-back" href="../../API/EDBMain.html#pyaedt.edb.Edb.create_divided_componenets">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
-    <span class="k">def</span> <span class="nf">create_divided_componenets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">positivePins</span><span class="p">,</span> <span class="n">negativePins</span><span class="p">,</span> <span class="n">componentTransform</span><span class="p">,</span> <span class="n">baseComponentName</span><span class="p">,</span> <span class="n">layout</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        positivePins :</span>
-<span class="sd">            </span>
-<span class="sd">        negativePins :</span>
-<span class="sd">            </span>
-<span class="sd">        componentTransform :</span>
-<span class="sd">            </span>
-<span class="sd">        baseComponentName :</span>
-<span class="sd">            </span>
-<span class="sd">        layout :</span>
-<span class="sd">            </span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">returnOnError</span> <span class="o">=</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">positivePins</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">positivePins</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_messenger</span><span class="o">.</span><span class="n">add_error_message</span><span class="p">(</span><span class="s1">&#39;No positive pins supplied for component&#39;</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">returnOnError</span>
-
-        <span class="k">if</span> <span class="n">negativePins</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">negativePins</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_messenger</span><span class="o">.</span><span class="n">add_error_message</span><span class="p">(</span><span class="s1">&#39;No negative pins supplied for component&#39;</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">returnOnError</span>
-
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">positivePins</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">negativePins</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_messenger</span><span class="o">.</span><span class="n">add_error_message</span><span class="p">(</span><span class="s1">&#39;Less than two pins in both positive and negative pin lists&#39;</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">returnOnError</span>
-
-        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">p</span><span class="p">:</span> <span class="ow">not</span> <span class="n">p</span><span class="o">.</span><span class="n">GetComponent</span><span class="p">()</span><span class="o">.</span><span class="n">IsNull</span><span class="p">(),</span> <span class="n">positivePins</span><span class="p">)):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_messenger</span><span class="o">.</span><span class="n">add_error_message</span><span class="p">(</span><span class="s1">&#39;At least one positive pin already belongs to a component&#39;</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">returnOnError</span>
-
-        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">p</span><span class="p">:</span> <span class="ow">not</span> <span class="n">p</span><span class="o">.</span><span class="n">GetComponent</span><span class="p">()</span><span class="o">.</span><span class="n">IsNull</span><span class="p">(),</span> <span class="n">negativePins</span><span class="p">)):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_messenger</span><span class="o">.</span><span class="n">add_error_message</span><span class="p">(</span><span class="s1">&#39;At least one negative pin already belongs to a component&#39;</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">returnOnError</span>
-
-        <span class="n">twoPinPositivePin</span> <span class="o">=</span> <span class="n">positivePins</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">twoPinNegativePin</span> <span class="o">=</span> <span class="n">negativePins</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-
-        <span class="n">extraPinsPositivePins</span> <span class="o">=</span> <span class="n">positivePins</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
-        <span class="n">extraPinsNegativePins</span> <span class="o">=</span> <span class="n">negativePins</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
-
-        <span class="n">twoPinComponentName</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">_two_pin&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">baseComponentName</span><span class="p">)</span>
-        <span class="n">twoPinComponent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_component_from_pins</span><span class="p">([</span><span class="n">twoPinPositivePin</span><span class="p">,</span> <span class="n">twoPinNegativePin</span><span class="p">],</span> <span class="n">componentTransform</span><span class="p">,</span> <span class="n">twoPinComponentName</span><span class="p">,</span> <span class="n">layout</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">twoPinComponent</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">twoPinComponent</span><span class="o">.</span><span class="n">IsNull</span><span class="p">():</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_messenger</span><span class="o">.</span><span class="n">add_error_message</span><span class="p">(</span><span class="s1">&#39;Failed to create two pin component of divided pair&#39;</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">returnOnError</span>
-
-        <span class="n">extraPinsComponentName</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">_extra_pins&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">baseComponentName</span><span class="p">)</span>
-        <span class="n">extraPinsComponent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_component_from_pins</span><span class="p">(</span><span class="n">extraPinsPositivePins</span> <span class="o">+</span> <span class="n">extraPinsNegativePins</span><span class="p">,</span> <span class="n">componentTransform</span><span class="p">,</span> <span class="n">extraPinsComponentName</span><span class="p">,</span> <span class="n">layout</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">extraPinsComponent</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">extraPinsComponent</span><span class="o">.</span><span class="n">IsNull</span><span class="p">():</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_messenger</span><span class="o">.</span><span class="n">add_error_message</span><span class="p">(</span><span class="s1">&#39;Failed to create extra pins component of divided pair&#39;</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">returnOnError</span>
-
-        <span class="k">return</span> <span class="n">twoPinComponent</span><span class="p">,</span> <span class="n">extraPinsComponent</span></div></div>
+        <span class="k">if</span> <span class="n">output_aedb_path</span><span class="p">:</span>
+            <span class="n">db2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edb</span><span class="o">.</span><span class="n">Database</span><span class="o">.</span><span class="n">Create</span><span class="p">(</span>
+                <span class="n">output_aedb_path</span><span class="p">)</span>  <span class="c1"># Function input is the name of a .aedb folder inside which the edb.def will be created. Ex: &#39;D:/backedup/EDB/TEST PROJECTS/CUTOUT/N1.aedb&#39;</span>
+            <span class="n">_dbCells</span> <span class="o">=</span> <span class="n">convert_py_list_to_net_list</span><span class="p">(</span><span class="n">_dbCells</span><span class="p">)</span>
+            <span class="n">db2</span><span class="o">.</span><span class="n">CopyCells</span><span class="p">(</span><span class="n">_dbCells</span><span class="p">)</span>  <span class="c1"># Copies cutout cell/design to db2 project</span>
+            <span class="n">_success</span> <span class="o">=</span> <span class="n">db2</span><span class="o">.</span><span class="n">Save</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_db</span> <span class="o">=</span> <span class="n">db2</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">edbpath</span> <span class="o">=</span> <span class="n">output_aedb_path</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_active_cell</span> <span class="o">=</span> <span class="n">_cutout</span>
+        <span class="k">return</span> <span class="kc">True</span></div></div>
 
 </pre></div>
 
@@ -975,7 +778,7 @@
     
     <div class="footer-item">
       <p class="copyright">
-    &copy; Copyright Copyright (c) 2021 ANSYS, Inc. All rights reserved..<br/>
+    &copy; Copyright (c) 2021 ANSYS, Inc. All rights reserved.<br/>
 </p>
     </div>
     

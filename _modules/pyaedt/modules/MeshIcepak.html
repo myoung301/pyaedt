@@ -5,7 +5,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaedt.modules.MeshIcepak &#8212; PyAEDT 0.2.1 documentation</title>
+    <title>pyaedt.modules.MeshIcepak &#8212; PyAEDT 0.3.dev0
+ documentation</title>
     
   <link href="../../../_static/css/theme.css" rel="stylesheet" />
   <link href="../../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -74,7 +75,7 @@
         </li>
         
         <li class="nav-item ">
-            <a class="nav-link" href="../../../API/API.html">API documentation</a>
+            <a class="nav-link" href="../../../API/API.html">API Documentation</a>
         </li>
         
         <li class="nav-item ">
@@ -507,7 +508,7 @@
 
 <div class="viewcode-block" id="IcepakMesh.generate_mesh"><a class="viewcode-back" href="../../../API/MeshIcepak.html#pyaedt.modules.MeshIcepak.IcepakMesh.generate_mesh">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="nf">generate_mesh</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Generate Mesh for Setup name. Return 0 if mesh failed or 1 if passed</span>
+        <span class="sd">&quot;&quot;&quot;Generate Mesh for Setup name.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -520,7 +521,7 @@
 <span class="sd">            Boolean</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">odesign</span><span class="o">.</span><span class="n">GenerateMesh</span><span class="p">(</span><span class="n">name</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">odesign</span><span class="o">.</span><span class="n">GenerateMesh</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span></div>
 
 <div class="viewcode-block" id="IcepakMesh.assign_mesh_level_to_group"><a class="viewcode-back" href="../../../API/MeshIcepak.html#pyaedt.modules.MeshIcepak.IcepakMesh.assign_mesh_level_to_group">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="nf">assign_mesh_level_to_group</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mesh_level</span><span class="p">,</span> <span class="n">groupName</span><span class="p">,</span> <span class="n">localMeshParamEn</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -581,7 +582,7 @@
     
     <div class="footer-item">
       <p class="copyright">
-    &copy; Copyright Copyright (c) 2021 ANSYS, Inc. All rights reserved..<br/>
+    &copy; Copyright (c) 2021 ANSYS, Inc. All rights reserved.<br/>
 </p>
     </div>
     

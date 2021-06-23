@@ -5,7 +5,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PyAEDT Documentation &#8212; PyAEDT 0.2.1 documentation</title>
+    <title>PyAEDT Documentation 0.3.dev0 &#8212; PyAEDT 0.3.dev0
+ documentation</title>
     
   <link href="_static/css/theme.css" rel="stylesheet" />
   <link href="_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -75,7 +76,7 @@
         </li>
         
         <li class="nav-item ">
-            <a class="nav-link" href="API/API.html">API documentation</a>
+            <a class="nav-link" href="API/API.html">API Documentation</a>
         </li>
         
         <li class="nav-item ">
@@ -139,7 +140,7 @@
     <ul class="visible nav section-nav flex-column">
  <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#">
-   PyAEDT Documentation
+   PyAEDT Documentation  0.3.dev0
   </a>
   <ul class="visible nav section-nav flex-column">
    <li class="toc-h2 nav-item toc-entry">
@@ -208,13 +209,6 @@
     <a class="reference internal nav-link" href="#license">
      License
     </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h3 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#style-guide">
-       Style Guide
-      </a>
-     </li>
-    </ul>
    </li>
   </ul>
  </li>
@@ -244,60 +238,73 @@
               
               <div>
                 
-  <div class="section" id="pyaedt-documentation">
-<h1>PyAEDT Documentation<a class="headerlink" href="#pyaedt-documentation" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="pyaedt-documentation-version">
+<h1>PyAEDT Documentation  0.3.dev0
+<a class="headerlink" href="#pyaedt-documentation-version" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="introduction">
 <h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
 <p>PyAEDT is intended to consolidate and extend all existing
-functionalities around AEDT-based scripting to allow reuse of
-existing code, sharing of best practices, and increased collaboration.
-PyAEDT is licensed under the <a class="reference external" href="https://github.com/pyansys/PyAEDT/blob/main/LICENSE">MIT License</a>.</p>
-<p>This tool includes functionality to interact with these AEDT tools: HFSS, Icepak,
-Maxwell 3D, and Q3D.</p>
+functionalities around scripting for Ansys Electronics Dekstop (AEDT)
+to allow reuse of existing code, sharing of best practices, and increased
+collaboration. PyAEDT is licensed under the <a class="reference external" href="https://github.com/pyansys/PyAEDT/blob/main/LICENSE">MIT License</a>.</p>
+<p>PyAEDT includes functionality for interacting with the following AEDT tools and Ansys products:</p>
+<ul class="simple">
+<li><p>HFSS and HFSS 3D Layout</p></li>
+<li><p>Icepak</p></li>
+<li><p>Maxwell 2D/3D and RMxprt</p></li>
+<li><p>Q3D/2DExtractor</p></li>
+<li><p>Mechanical</p></li>
+<li><p>Nexxim</p></li>
+<li><p>Simplorer</p></li>
+<li><p>EDB Database</p></li>
+</ul>
 </div>
 <div class="section" id="what-is-pyaedt">
 <h2>What is PyAEDT?<a class="headerlink" href="#what-is-pyaedt" title="Permalink to this headline">¶</a></h2>
 <p>PyAEDT is a Python library that interacts directly with the AEDT API
 to make scripting simpler for the end user.  It uses an architecture
-that can be reused for all AEDT 3D tools (HFSS, Icepak, Maxwell 3D, and Q3D) and,
-in the future, for all other AEDT tools. Its class and method
-structures simplify operation for the end user while reusing information as much as
+that can be reused for all AEDT 3D products (HFSS, Icepak, Maxwell 3D,
+Q3D and Mechanical) as well as 2D tools and circuit tools like
+Nexxim and Simplorer. Finally it provides scripting capabilities in Ansys
+layout tools like HFSS 3D Layout and EDB. Its class and method structures simplify
+operation for the end user while reusing information as much as
 possible across the API.</p>
-<p>This figure shows an overview of the pyAEDT architecture for 3D solvers:</p>
-<div class="figure align-default" id="id1">
-<a class="reference internal image-reference" href="https://aedtdocs.pyansys.com/_images/Items.png"><img alt="https://aedtdocs.pyansys.com/_images/Items.png" src="https://aedtdocs.pyansys.com/_images/Items.png" style="width: 600pt;" /></a>
-<p class="caption"><span class="caption-text">PyAEDT Architecture Overview for 3D Solvers</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
-</div>
 </div>
 <div class="section" id="documentation-and-issues">
 <h2>Documentation and Issues<a class="headerlink" href="#documentation-and-issues" title="Permalink to this headline">¶</a></h2>
-<p>See the <a class="reference external" href="https://aedtdocs.pyansys.com">Documentation</a> page for more
-details, and the <a class="reference external" href="https://aedtdocs.pyansys.com/examples/index.html">Examples gallery</a> for some
+<p>See the <a class="reference external" href="https://aedtdocs.pyansys.com/API/API.html">API Documentation</a> page for more
+details and the <a class="reference external" href="https://aedtdocs.pyansys.com/examples/index.html">Examples gallery</a> for some
 examples.</p>
-<p>Please feel free to post issues and other questions at <a class="reference external" href="https://github.com/pyansys/pyaedt/issues">PyAedt Issues</a>.  This is the best place
-to post questions and code.</p>
+<p>To post issues, questions, and code, go to <a class="reference external" href="https://github.com/pyansys/PyAEDT/issues">PyAEDT Issues</a>.</p>
 </div>
 <div class="section" id="project-transition-legacy-support">
 <h2>Project Transition - Legacy Support<a class="headerlink" href="#project-transition-legacy-support" title="Permalink to this headline">¶</a></h2>
-<p>This project was formerly known as AEDTLib, and we'd like to thank all the early adopters, contributors, and users who submitted issues, gave feedback, and contributed code through the years. The pyaedt project has been taken up Ansys and will be leveraged in creating new Pythonic, cross-platform, and multi-language service based interfaces for Ansys's products. Your contributions to PyAEDT have shaped it into a better solution.</p>
+<p>This project was formerly known as AEDTLib.
+Thanks to all early adopters, contributors, and users who submitted issues,
+gave feedback, and contributed code through the years.</p>
+<p>With PyAEDT, Ansys is leveraging its ability to create new Pythonic,
+cross-platform, and multi-language service-based interfaces for Ansys products.
+Your contributions to PyAEDT will help shape PyAEDT into a better solution.</p>
 </div>
 <div class="section" id="dependencies">
 <h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h2>
-<p>You will need a local licenced copy of Ansys Electronics Desktop to run pyaedt prior and including 2021R1.</p>
+<p>To run PyAEDT, you must have a local licenced copy of AEDT.
+PyAEDT supports AEDT versions prior to and including 2021 R1.</p>
 </div>
 <div class="section" id="why-pyaedt">
 <h2>Why PyAEDT?<a class="headerlink" href="#why-pyaedt" title="Permalink to this headline">¶</a></h2>
-<p>Recording and reusing script is a quick and easy approach for
-automating simple operations in the AEDT UI. However, disadvantages of this approach are:</p>
+<p>A quick and easy approach for automating a simple operation in the
+AEDT UI is to record and reuse a scripts. However, disadvantages of
+this approach are:</p>
 <ul class="simple">
-<li><p>The code recorded is dirty and difficult to read and understand.</p></li>
+<li><p>Recorded code is dirty and difficult to read and understand.</p></li>
 <li><p>Recorded scripts are difficult to reuse and adapt.</p></li>
 <li><p>Complex coding is required by many global users of AEDT.</p></li>
 </ul>
 <p>The main advantages of PyAEDT are:</p>
 <ul class="simple">
 <li><p>Automatic initialization of all AEDT objects, such as desktop
-objects like the editor, boundaries, and so on)</p></li>
+objects like the editor, boundaries, and so on</p></li>
 <li><p>Error management</p></li>
 <li><p>Log management</p></li>
 <li><p>Variable management</p></li>
@@ -306,20 +313,8 @@ objects like the editor, boundaries, and so on)</p></li>
 maintaining PEP8 compliance.</p></li>
 <li><p>Code reusability across different solvers</p></li>
 <li><p>Clear documentation on functions and API</p></li>
-<li><p>Unit test of code to increase quality across different AEDT versions</p></li>
+<li><p>Unit tests of code to increase quality across different AEDT versions</p></li>
 </ul>
-<p>This figure shows an overview of the PyAEDT architecture for 3D solvers:</p>
-<div class="figure align-default">
-<a class="reference internal image-reference" href="https://aedtdocs.pyansys.com/_images/BlankDiagram3DModeler.png"><img alt="https://aedtdocs.pyansys.com/_images/BlankDiagram3DModeler.png" src="https://aedtdocs.pyansys.com/_images/BlankDiagram3DModeler.png" style="width: 600pt;" /></a>
-</div>
-<p>This figure shows an overview of the PyAEDT architecture for the HFSS 3DLayout and EDB solver:</p>
-<div class="figure align-default">
-<a class="reference internal image-reference" href="https://aedtdocs.pyansys.com/_images/BlankDiagram3DLayout.png"><img alt="https://aedtdocs.pyansys.com/_images/BlankDiagram3DLayout.png" src="https://aedtdocs.pyansys.com/_images/BlankDiagram3DLayout.png" style="width: 600pt;" /></a>
-</div>
-<p>This figure shows an overview of the PyAEDT architecture for Circuit solvers (Simplorer and Nexxim):</p>
-<div class="figure align-default">
-<a class="reference internal image-reference" href="https://aedtdocs.pyansys.com/_images/BlankDiagramCircuit.png"><img alt="https://aedtdocs.pyansys.com/_images/BlankDiagramCircuit.png" src="https://aedtdocs.pyansys.com/_images/BlankDiagramCircuit.png" style="width: 600pt;" /></a>
-</div>
 </div>
 <div class="section" id="example-workflow">
 <h2>Example Workflow<a class="headerlink" href="#example-workflow" title="Permalink to this headline">¶</a></h2>
@@ -330,36 +325,36 @@ maintaining PEP8 compliance.</p></li>
 </div>
 <div class="section" id="connect-to-desktop-from-python-ide">
 <h2>Connect to Desktop from Python IDE<a class="headerlink" href="#connect-to-desktop-from-python-ide" title="Permalink to this headline">¶</a></h2>
-<p>PyAEDT works inside AEDT and as a standalone application.
+<p>PyAEDT works both inside AEDT and as a standalone application.
 It automatically detects whether it is running in an IronPython or CPython
-environment and initializes the Desktop accordingly.  PyAEDT also provides
-advanced error management.  Usage examples follow.</p>
+environment and initializes the Desktop accordingly. PyAEDT also provides
+advanced error management. Usage examples follow.</p>
 <div class="section" id="explicit-desktop-declaration-and-error-management">
 <h3>Explicit Desktop declaration and error management<a class="headerlink" href="#explicit-desktop-declaration-and-error-management" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">AEDT</span> <span class="mi">2020</span><span class="n">R1</span> <span class="ow">in</span> <span class="n">Non</span><span class="o">-</span><span class="n">Graphical</span> <span class="n">mode</span> <span class="n">will</span> <span class="n">be</span> <span class="n">launched</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Launch</span> <span class="n">AEDT</span> <span class="mi">2021</span> <span class="n">R1</span> <span class="ow">in</span> <span class="n">Non</span><span class="o">-</span><span class="n">Graphical</span> <span class="n">mode</span>
 
 <span class="kn">from</span> <span class="nn">pyaedt</span> <span class="kn">import</span> <span class="n">Desktop</span><span class="p">,</span> <span class="n">Circuit</span>
-<span class="k">with</span> <span class="n">Desktop</span><span class="p">(</span><span class="s2">&quot;2020.1&quot;</span><span class="p">,</span> <span class="n">NG</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="k">with</span> <span class="n">Desktop</span><span class="p">(</span><span class="s2">&quot;2021.1&quot;</span><span class="p">,</span> <span class="n">NG</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="n">circuit</span> <span class="o">=</span> <span class="n">Circuit</span><span class="p">()</span>
     <span class="o">...</span>
-    <span class="c1"># Any error here will be caught by Desktop...</span>
+    <span class="c1"># Any error here will be caught by Desktop.</span>
     <span class="o">...</span>
 
-<span class="c1"># Desktop is automatically released here</span>
+<span class="c1"># Desktop is automatically released here.</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="implicit-desktop-declaration-and-error-management">
 <h3>Implicit Desktop declaration and error management<a class="headerlink" href="#implicit-desktop-declaration-and-error-management" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Launch</span> <span class="n">the</span> <span class="n">latest</span> <span class="n">version</span> <span class="n">of</span> <span class="n">Desktop</span> <span class="ow">in</span> <span class="n">Graphical</span> <span class="n">mode</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Launch</span> <span class="n">the</span> <span class="n">latest</span> <span class="n">installed</span> <span class="n">version</span> <span class="n">of</span> <span class="n">AEDT</span> <span class="ow">in</span> <span class="n">graphical</span> <span class="n">mode</span>
 
 <span class="kn">from</span> <span class="nn">pyaedt</span> <span class="kn">import</span> <span class="n">Circuit</span>
 <span class="k">with</span> <span class="n">Circuit</span> <span class="k">as</span> <span class="n">circuit</span><span class="p">:</span>
     <span class="o">...</span>
-    <span class="c1"># Any error here will be caught by Desktop...</span>
+    <span class="c1"># Any error here will be caught by Desktop.</span>
     <span class="o">...</span>
 
-<span class="c1"># Desktop is automatically released here</span>
+<span class="c1"># Desktop is automatically released here.</span>
 </pre></div>
 </div>
 </div>
@@ -386,26 +381,15 @@ advanced error management.  Usage examples follow.</p>
 </div>
 <div class="section" id="license">
 <h2>License<a class="headerlink" href="#license" title="Permalink to this headline">¶</a></h2>
-<p><code class="docutils literal notranslate"><span class="pre">PyAEDT</span></code> is licensed under the MIT license.</p>
+<p>PyAEDT is licensed under the MIT license.</p>
 <p>This PyAEDT module makes no commercial claim over Ansys
-whatsoever.  This tool extends the functionality of AEDT by adding
-an additioanl Python interface to AEDT without changing the core
-behavior or license of the original software.  The use of the
+whatsoever. PyAEDT extends the functionality of AEDT by adding
+an additional Python interface to AEDT without changing the core
+behavior or license of the original software. The use of the
 interactive APDL control of PyAEDT requires a legally licensed
-local copy of AEDT.</p>
-<p>To purchase AEDT, please visit <a class="reference external" href="https://www.ansys.com/">Ansys</a>.</p>
+local copy of AEDT. For more information about AEDT,
+visit <a class="reference external" href="https://www.ansys.com/products/electronics">Ansys</a>.</p>
 <div class="toctree-wrapper compound">
-</div>
-<div class="section" id="style-guide">
-<h3>Style Guide<a class="headerlink" href="#style-guide" title="Permalink to this headline">¶</a></h3>
-<p>PyAEDT follows the PEP8 style guidelines.  See the following links for
-additional details.</p>
-<ul class="simple">
-<li><p><a class="reference external" href="Resources/Code_Guidelines.md">Coding Guidelines</a></p></li>
-<li><p><a class="reference external" href="Resources/Installation.md">Installation Guidelines</a></p></li>
-<li><p><a class="reference external" href="https://www.python.org/dev/peps/pep-0008/">PEP 8</a></p></li>
-<li><p><a class="reference external" href="https://www.amazon.com/Robert-Martin-Clean-Code-Collection-ebook/dp/B00666M59G">Clean Code - R. C. Martin</a></p></li>
-</ul>
 </div>
 </div>
 </div>
@@ -441,7 +425,7 @@ additional details.</p>
     
     <div class="footer-item">
       <p class="copyright">
-    &copy; Copyright Copyright (c) 2021 ANSYS, Inc. All rights reserved..<br/>
+    &copy; Copyright (c) 2021 ANSYS, Inc. All rights reserved.<br/>
 </p>
     </div>
     

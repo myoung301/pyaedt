@@ -5,7 +5,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaedt.q3d &#8212; PyAEDT 0.2.1 documentation</title>
+    <title>pyaedt.q3d &#8212; PyAEDT 0.3.dev0
+ documentation</title>
     
   <link href="../../_static/css/theme.css" rel="stylesheet" />
   <link href="../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -74,7 +75,7 @@
         </li>
         
         <li class="nav-item ">
-            <a class="nav-link" href="../../API/API.html">API documentation</a>
+            <a class="nav-link" href="../../API/API.html">API Documentation</a>
         </li>
         
         <li class="nav-item ">
@@ -140,26 +141,26 @@
                 
   <h1>Source code for pyaedt.q3d</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Q3D Class</span>
-<span class="sd">---------------------</span>
-
-<span class="sd">This class contains all Q3D functionalities. It inherits all objects that belong to Q3D.</span>
+<span class="sd">This module contains all Q3D functionalities in the ``Q3d`` class. </span>
 
 
 <span class="sd">Examples:</span>
 
-<span class="sd">app = Q3d()     Creates a ``Q3d`` object and connects to an existing Q3D design or create a new Q3D design if one is not present.</span>
+<span class="sd">Create an instance of ``Q3d`` and connect to an existing Q3D design or create a new Q3D design if one does not exist.</span>
 
+<span class="sd">&gt;&gt;&gt; app = Q3d()</span>
 
-<span class="sd">app = Q2d(projectname)     Creates a ``Q2d`` object and links to a project named projectname.</span>
+<span class="sd">Create an instance of ``Q2d`` and link to a project named ``projectname``. If this project does not exist, create one with this name.</span>
 
+<span class="sd">&gt;&gt;&gt; app = Q2d(projectname)</span>
 
-<span class="sd">app = Q2d(projectname,designame)     Creates a ``Q2d`` object and links to a design named designname in a project named projectname.</span>
+<span class="sd">Create an instance of ``Q2d`` and link to a design named ``designname`` in a project named ``projectname``.</span>
 
+<span class="sd">&gt;&gt;&gt; app = Q2d(projectname,designame)</span>
 
-<span class="sd">app = Q2d(&quot;myfile.aedt&quot;)     Creates a ``Q2d`` object and opens the specified project.</span>
+<span class="sd">Create an instance of ``Q2d`` and open the specified project, which is named ``myfile.aedt``.</span>
 
-
+<span class="sd">&gt;&gt;&gt; app = Q2d(&quot;myfile.aedt&quot;)</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
@@ -173,7 +174,6 @@
 <span class="kn">import</span> <span class="nn">os</span>
 
 <div class="viewcode-block" id="QExtractor"><a class="viewcode-back" href="../../API/Q3D.html#pyaedt.q3d.QExtractor">[docs]</a><span class="k">class</span> <span class="nc">QExtractor</span><span class="p">(</span><span class="n">FieldAnalysis3D</span><span class="p">,</span> <span class="n">FieldAnalysis2D</span><span class="p">,</span> <span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">odefinition_manager</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
@@ -192,23 +192,19 @@
 <span class="sd">    &#39;&#39;&#39;</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">symmetry_multiplier</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
-        <span class="n">omodule</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_odesign</span><span class="o">.</span><span class="n">GetModule</span><span class="p">(</span><span class="s2">&quot;ModelSetup&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">omodule</span><span class="o">.</span><span class="n">GetSymmetryMultiplier</span><span class="p">())</span>
-
-
-    <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">design_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
         <span class="n">design_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">working_directory</span><span class="p">,</span> <span class="s2">&quot;design_data.json&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">design_file</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Q3DType</span><span class="p">,</span> <span class="n">projectname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">designname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">solution_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">setup_name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Q3DType</span><span class="p">,</span> <span class="n">projectname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">designname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">solution_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">setup_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">specified_version</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">NG</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">AlwaysNew</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">release_on_exit</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">Q3DType</span> <span class="o">==</span> <span class="s2">&quot;Q3D Extractor&quot;</span><span class="p">:</span>
-            <span class="n">FieldAnalysis3D</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;Q3D Extractor&quot;</span><span class="p">,</span> <span class="n">projectname</span><span class="p">,</span> <span class="n">designname</span><span class="p">,</span> <span class="n">solution_type</span><span class="p">,</span> <span class="n">setup_name</span><span class="p">)</span>
+            <span class="n">FieldAnalysis3D</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;Q3D Extractor&quot;</span><span class="p">,</span> <span class="n">projectname</span><span class="p">,</span> <span class="n">designname</span><span class="p">,</span> <span class="n">solution_type</span><span class="p">,</span> <span class="n">setup_name</span><span class="p">,</span>
+                                     <span class="n">specified_version</span><span class="p">,</span> <span class="n">NG</span><span class="p">,</span> <span class="n">AlwaysNew</span><span class="p">,</span> <span class="n">release_on_exit</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">FieldAnalysis2D</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;2D Extractor&quot;</span><span class="p">,</span> <span class="n">projectname</span><span class="p">,</span> <span class="n">designname</span><span class="p">,</span> <span class="n">solution_type</span><span class="p">,</span> <span class="n">setup_name</span><span class="p">)</span>
+            <span class="n">FieldAnalysis2D</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;2D Extractor&quot;</span><span class="p">,</span> <span class="n">projectname</span><span class="p">,</span> <span class="n">designname</span><span class="p">,</span> <span class="n">solution_type</span><span class="p">,</span> <span class="n">setup_name</span><span class="p">,</span>
+                                     <span class="n">specified_version</span><span class="p">,</span> <span class="n">NG</span><span class="p">,</span> <span class="n">AlwaysNew</span><span class="p">,</span> <span class="n">release_on_exit</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span>
@@ -218,33 +214,36 @@
         <span class="k">if</span> <span class="n">ex_type</span><span class="p">:</span>
             <span class="n">exception_to_desktop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ex_value</span><span class="p">,</span> <span class="n">ex_traceback</span><span class="p">)</span></div>
 
-
 <div class="viewcode-block" id="Q3d"><a class="viewcode-back" href="../../API/Q3D.html#pyaedt.q3d.Q3d">[docs]</a><span class="k">class</span> <span class="nc">Q3d</span><span class="p">(</span><span class="n">QExtractor</span><span class="p">,</span> <span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Q3D Object</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    projectname :</span>
-<span class="sd">        name of the project to be selected or full path to the project to be opened  or to the AEDTZ</span>
-<span class="sd">        archive. if None try to get active project and, if nothing present to create an empty one</span>
-<span class="sd">    designname :</span>
-<span class="sd">        name of the design to be selected. if None, try to get active design and, if nothing present to create an empty one</span>
-<span class="sd">    solution_type :</span>
-<span class="sd">        solution type to be applied to design. if None default is taken</span>
-<span class="sd">    setup_name :</span>
-<span class="sd">        setup_name to be used as nominal. if none active setup is taken or nothing</span>
-
+<span class="sd">    projectname : str, optional</span>
+<span class="sd">        Name of the project to select or the full path to the project or AEDTZ archive to open. </span>
+<span class="sd">        The default is ``None``. If ``None``, try to get an active project and, if no projects are present, </span>
+<span class="sd">        create an empty project.</span>
+<span class="sd">    designname : str, optional</span>
+<span class="sd">        Name of the design to select. The default is ``None``. If ``None``, try to get an active design and, </span>
+<span class="sd">        if no designs are present, create an empty design.</span>
+<span class="sd">    solution_type : str, optional</span>
+<span class="sd">        Solution type to apply to design. The default is ``None``. If ``None``, the default type is applied.</span>
+<span class="sd">    setup_name : str, optional</span>
+<span class="sd">        Name of the setup to use as the nominal. The default is ``None``. If ``None``, the active setup </span>
+<span class="sd">        is used or nothing is used.</span>
+<span class="sd">    </span>
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projectname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">designname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">solution_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">setup_name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="n">QExtractor</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;Q3D Extractor&quot;</span><span class="p">,</span> <span class="n">projectname</span><span class="p">,</span> <span class="n">designname</span><span class="p">,</span> <span class="n">solution_type</span><span class="p">,</span> <span class="n">setup_name</span><span class="p">)</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projectname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">designname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">solution_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">setup_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">specified_version</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">NG</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">AlwaysNew</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">release_on_exit</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="n">QExtractor</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;Q3D Extractor&quot;</span><span class="p">,</span> <span class="n">projectname</span><span class="p">,</span> <span class="n">designname</span><span class="p">,</span> <span class="n">solution_type</span><span class="p">,</span> <span class="n">setup_name</span><span class="p">,</span>
+                            <span class="n">specified_version</span><span class="p">,</span> <span class="n">NG</span><span class="p">,</span> <span class="n">AlwaysNew</span><span class="p">,</span> <span class="n">release_on_exit</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Q3d.auto_identify_nets"><a class="viewcode-back" href="../../API/Q3D.html#pyaedt.q3d.Q3d.auto_identify_nets">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="nf">auto_identify_nets</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Automatically Iddentify Nets</span>
-<span class="sd">        :return:</span>
+        <span class="sd">&quot;&quot;&quot;Automatically identify Nets.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -258,23 +257,25 @@
 
 <div class="viewcode-block" id="Q3d.assign_source_to_objectface"><a class="viewcode-back" href="../../API/Q3D.html#pyaedt.q3d.Q3d.assign_source_to_objectface">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="nf">assign_source_to_objectface</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">object_name</span><span class="p">,</span> <span class="n">axisdir</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">source_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">net_name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Generate a source on a face id of an object. Face ID is selected based on axisdir. It will be the face that</span>
-<span class="sd">        has the maximum/minimum in that axis dir</span>
+        <span class="sd">&quot;&quot;&quot;Generate a source on a face ID of an object. </span>
+<span class="sd">        </span>
+<span class="sd">        The face ID is selected based on ``axisdir``. It will </span>
+<span class="sd">        be the face that has the maximum/minimum in this axis direction.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        object_name :</span>
-<span class="sd">            name of the object</span>
-<span class="sd">        axisdir :</span>
-<span class="sd">            int axis direction. 0-5 (Default value = 0)</span>
-<span class="sd">        source_name :</span>
-<span class="sd">            name of the source (optional) (Default value = None)</span>
-<span class="sd">        net_name :</span>
-<span class="sd">            optional net name. in None, object_name will be considered (Default value = None)</span>
+<span class="sd">        object_name : str</span>
+<span class="sd">            Name of the object.</span>
+<span class="sd">        axisdir : optional</span>
+<span class="sd">            Initial axis direction. Choices are ``0`` through ``5``. The default is ``0``.</span>
+<span class="sd">        source_name : str, optional</span>
+<span class="sd">            Name of the source. The default is ``None``.</span>
+<span class="sd">        net_name : str, optional</span>
+<span class="sd">            Name of the net. The default is ``None``, in which case ``object_name`` is considered.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        type</span>
+<span class="sd">        BoundaryObject</span>
 <span class="sd">            source object</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -294,63 +295,66 @@
         <span class="k">return</span> <span class="kc">False</span></div>
 
 
-<div class="viewcode-block" id="Q3d.assign_source_to_object"><a class="viewcode-back" href="../../API/Q3D.html#pyaedt.q3d.Q3d.assign_source_to_object">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
-    <span class="k">def</span> <span class="nf">assign_source_to_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sheetname</span><span class="p">,</span> <span class="n">obj_name</span><span class="p">,</span> <span class="n">netname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">source_name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Generate a source on a face id of an object. Face ID is selected based on axisdir. It will be the face that</span>
-<span class="sd">        has the maximum/minimum in that axis dir</span>
+<div class="viewcode-block" id="Q3d.assign_source_to_sheet"><a class="viewcode-back" href="../../API/Q3D.html#pyaedt.q3d.Q3d.assign_source_to_sheet">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
+    <span class="k">def</span> <span class="nf">assign_source_to_sheet</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sheetname</span><span class="p">,</span> <span class="n">objectname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">netname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sourcename</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Generate a source on an object.  It will be the face that</span>
+<span class="sd">        has the maximum/minimum in this axis.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        sheetname :</span>
-<span class="sd">            name of the sheet/object on which create a source</span>
-<span class="sd">        obj_name :</span>
-<span class="sd">            name of the parent object</span>
-<span class="sd">        netname :</span>
-<span class="sd">            name of the net (optional) (Default value = None)</span>
-<span class="sd">        source_name :</span>
-<span class="sd">            name of the source (optional) (Default value = None)</span>
+<span class="sd">        sheetname : str</span>
+<span class="sd">            Name of the sheet or object on which to create the source.</span>
+<span class="sd">        objectname :  str, optional</span>
+<span class="sd">            Name of the parent object. The default is ``None``.</span>
+<span class="sd">        netname : str, optional</span>
+<span class="sd">            Name of the net. The default is ``None``.</span>
+<span class="sd">        sourcename : str,  optional</span>
+<span class="sd">            Name of the source. The default is ``None``.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        type</span>
+<span class="sd">        BoundaryObject</span>
 <span class="sd">            source object</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">netname</span><span class="p">:</span>
-            <span class="n">netname</span> <span class="o">=</span> <span class="n">obj_name</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">source_name</span><span class="p">:</span>
-            <span class="n">source_name</span> <span class="o">=</span> <span class="n">generate_unique_name</span><span class="p">(</span><span class="s2">&quot;Source&quot;</span><span class="p">)</span>
-        <span class="n">sheetname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">_convert_list_to_ids</span><span class="p">(</span><span class="n">sheetname</span><span class="p">)</span>
 
-        <span class="n">props</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">({</span><span class="s2">&quot;Faces&quot;</span><span class="p">:</span> <span class="n">sheetname</span><span class="p">,</span> <span class="s2">&quot;ParentBndID&quot;</span><span class="p">:</span> <span class="n">obj_name</span><span class="p">,</span> <span class="s2">&quot;Net&quot;</span><span class="p">:</span> <span class="n">netname</span><span class="p">})</span>
-        <span class="n">bound</span> <span class="o">=</span> <span class="n">BoundaryObject</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_name</span><span class="p">,</span> <span class="n">props</span><span class="p">,</span> <span class="s2">&quot;Source&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">sourcename</span><span class="p">:</span>
+            <span class="n">sourcename</span> <span class="o">=</span> <span class="n">generate_unique_name</span><span class="p">(</span><span class="s2">&quot;Source&quot;</span><span class="p">)</span>
+        <span class="n">sheetname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">_convert_list_to_ids</span><span class="p">(</span><span class="n">sheetname</span><span class="p">)</span>
+        <span class="n">props</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">({</span><span class="s2">&quot;Objects&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">sheetname</span><span class="p">]})</span>
+        <span class="k">if</span> <span class="n">objectname</span><span class="p">:</span>
+            <span class="n">props</span><span class="p">[</span><span class="s2">&quot;ParentBndID&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">objectname</span>
+        <span class="n">props</span><span class="p">[</span><span class="s2">&quot;TerminalType&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;ConstantVoltage&quot;</span>
+        <span class="k">if</span> <span class="n">netname</span><span class="p">:</span>
+            <span class="n">props</span><span class="p">[</span><span class="s2">&quot;Net&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">netname</span>
+        <span class="n">props</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">({</span><span class="s2">&quot;Objects&quot;</span><span class="p">:</span> <span class="n">sheetname</span><span class="p">,</span> <span class="s2">&quot;TerminalType&quot;</span><span class="p">:</span> <span class="s2">&quot;ConstantVoltage&quot;</span><span class="p">,</span> <span class="s2">&quot;Net&quot;</span><span class="p">:</span> <span class="n">netname</span><span class="p">})</span>
+        <span class="n">bound</span> <span class="o">=</span> <span class="n">BoundaryObject</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sourcename</span><span class="p">,</span> <span class="n">props</span><span class="p">,</span> <span class="s2">&quot;Source&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">bound</span><span class="o">.</span><span class="n">create</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">boundaries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bound</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">bound</span>
         <span class="k">return</span> <span class="kc">False</span></div>
 
-
 <div class="viewcode-block" id="Q3d.assign_sink_to_objectface"><a class="viewcode-back" href="../../API/Q3D.html#pyaedt.q3d.Q3d.assign_sink_to_objectface">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="nf">assign_sink_to_objectface</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">object_name</span><span class="p">,</span> <span class="n">axisdir</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sink_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">net_name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Generate a sink on a face id of an object. Face ID is selected based on axisdir. It will be the face that</span>
-<span class="sd">        has the maximum/minimum in that axis dir</span>
+        <span class="sd">&quot;&quot;&quot;Generate a sink on a face ID of an object.</span>
+<span class="sd">        </span>
+<span class="sd">        The face ID is selected based on ``axisdir``. It will </span>
+<span class="sd">        be the face that has the maximum/minimum in this axis direction.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        object_name :</span>
-<span class="sd">            name of the object</span>
-<span class="sd">        axisdir :</span>
-<span class="sd">            int axis direction. 0-5 (Default value = 0)</span>
-<span class="sd">        netname :</span>
-<span class="sd">            name of the net (optional)</span>
-<span class="sd">        sink_name :</span>
-<span class="sd">            name of the sink (optional) (Default value = None)</span>
-<span class="sd">        net_name :</span>
-<span class="sd">            optional net name. in None, object_name will be considered (Default value = None)</span>
+<span class="sd">        object_name : str</span>
+<span class="sd">            Name of the object.</span>
+<span class="sd">        axisdir : int, optional</span>
+<span class="sd">            The initial axis direction. Choices are ``0`` through ``5``. The default is ``0``.</span>
+<span class="sd">        sink_name : str, optional</span>
+<span class="sd">            Name of the sink. The default is ``None``.</span>
+<span class="sd">        net_name : str, optional</span>
+<span class="sd">            Name of the net. The default is ``None``, in which case ``object_name`` is considered.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        type</span>
+<span class="sd">        BoundaryObject</span>
 <span class="sd">            sink object</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -370,135 +374,173 @@
         <span class="k">return</span> <span class="kc">False</span></div>
 
 <div class="viewcode-block" id="Q3d.assign_sink_to_sheet"><a class="viewcode-back" href="../../API/Q3D.html#pyaedt.q3d.Q3d.assign_sink_to_sheet">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
-    <span class="k">def</span> <span class="nf">assign_sink_to_sheet</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sheetname</span><span class="p">,</span> <span class="n">obj_name</span><span class="p">,</span> <span class="n">netname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sink_name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Generate a sink on a face id of an object. Face ID is selected based on axisdir. It will be the face that</span>
-<span class="sd">        has the maximum/minimum in that axis dir</span>
+    <span class="k">def</span> <span class="nf">assign_sink_to_sheet</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sheetname</span><span class="p">,</span> <span class="n">objectname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">netname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sinkname</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Generate a sink on an object.  </span>
+<span class="sd">        </span>
+<span class="sd">        It will be the face that has the maximum/minimum in this axis direction.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        sheetname :</span>
-<span class="sd">            name of the sheet/object on which create a sink</span>
-<span class="sd">        obj_name :</span>
-<span class="sd">            name of the parent object</span>
-<span class="sd">        netname :</span>
-<span class="sd">            name of the net (optional) (Default value = None)</span>
-<span class="sd">        sink_name :</span>
-<span class="sd">            name of the source (optional) (Default value = None)</span>
+<span class="sd">            Name of the sheet or object on which to create the sink.</span>
+<span class="sd">        objectname : str, optional</span>
+<span class="sd">            Name of the parent object. The default is ``None``.</span>
+<span class="sd">        netname : str, optional</span>
+<span class="sd">            Name of the net. The default is ``None``.</span>
+<span class="sd">        sinkname : str, optional</span>
+<span class="sd">            Name of the sink. The default is ``None``.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        type</span>
-<span class="sd">            sink object</span>
+<span class="sd">        BoundaryObject</span>
+<span class="sd">            source object</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">netname</span><span class="p">:</span>
-            <span class="n">netname</span> <span class="o">=</span> <span class="n">obj_name</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">sink_name</span><span class="p">:</span>
-            <span class="n">sink_name</span> <span class="o">=</span> <span class="n">generate_unique_name</span><span class="p">(</span><span class="s2">&quot;Sink&quot;</span><span class="p">)</span>
-        <span class="n">props</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">({</span><span class="s2">&quot;Objects&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">sheetname</span><span class="p">],</span> <span class="s2">&quot;ParentBndID&quot;</span><span class="p">:</span> <span class="n">obj_name</span><span class="p">,</span> <span class="s2">&quot;Net&quot;</span><span class="p">:</span> <span class="n">netname</span><span class="p">})</span>
-        <span class="n">bound</span> <span class="o">=</span> <span class="n">BoundaryObject</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sink_name</span><span class="p">,</span> <span class="n">props</span><span class="p">,</span> <span class="s2">&quot;Sink&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">sinkname</span><span class="p">:</span>
+            <span class="n">sinkname</span> <span class="o">=</span> <span class="n">generate_unique_name</span><span class="p">(</span><span class="s2">&quot;Source&quot;</span><span class="p">)</span>
+        <span class="n">sheetname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">_convert_list_to_ids</span><span class="p">(</span><span class="n">sheetname</span><span class="p">)</span>
+        <span class="n">props</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">({</span><span class="s2">&quot;Objects&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">sheetname</span><span class="p">]})</span>
+        <span class="k">if</span> <span class="n">objectname</span><span class="p">:</span>
+            <span class="n">props</span><span class="p">[</span><span class="s2">&quot;ParentBndID&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">objectname</span>
+        <span class="n">props</span><span class="p">[</span><span class="s2">&quot;TerminalType&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;ConstantVoltage&quot;</span>
+        <span class="k">if</span> <span class="n">netname</span><span class="p">:</span>
+            <span class="n">props</span><span class="p">[</span><span class="s2">&quot;Net&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">netname</span>
+
+        <span class="n">props</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">({</span><span class="s2">&quot;Objects&quot;</span><span class="p">:</span> <span class="n">sheetname</span><span class="p">,</span> <span class="s2">&quot;TerminalType&quot;</span><span class="p">:</span> <span class="s2">&quot;ConstantVoltage&quot;</span><span class="p">,</span> <span class="s2">&quot;Net&quot;</span><span class="p">:</span> <span class="n">netname</span><span class="p">})</span>
+        <span class="n">bound</span> <span class="o">=</span> <span class="n">BoundaryObject</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sinkname</span><span class="p">,</span> <span class="n">props</span><span class="p">,</span> <span class="s2">&quot;Sink&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">bound</span><span class="o">.</span><span class="n">create</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">boundaries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bound</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">bound</span>
         <span class="k">return</span> <span class="kc">False</span></div>
 
-
 <div class="viewcode-block" id="Q3d.create_frequency_sweep"><a class="viewcode-back" href="../../API/Q3D.html#pyaedt.q3d.Q3d.create_frequency_sweep">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
-    <span class="k">def</span> <span class="nf">create_frequency_sweep</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">setupname</span><span class="p">,</span> <span class="n">unit</span><span class="p">,</span> <span class="n">freqstart</span><span class="p">,</span> <span class="n">freqstop</span><span class="p">,</span> <span class="n">fastsweep</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">create_frequency_sweep</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">setupname</span><span class="p">,</span> <span class="n">unit</span><span class="p">,</span> <span class="n">freqstart</span><span class="p">,</span> <span class="n">freqstop</span><span class="p">,</span> <span class="n">freqstep</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sweepname</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        setupname :</span>
-<span class="sd">            name of the setup to which is attached the sweep</span>
-<span class="sd">        unit :</span>
-<span class="sd">            Units (&quot;MHz&quot;, &quot;GHz&quot;....)</span>
+<span class="sd">        setupname : str</span>
+<span class="sd">            Name of the setup that is attached to the sweep.</span>
+<span class="sd">        unit : str</span>
+<span class="sd">            Unit of the frequency. For example, ``&quot;MHz&quot;`` or ``&quot;GHz&quot;``. The default is ``&quot;GHz&quot;`.</span>
 <span class="sd">        freqstart :</span>
-<span class="sd">            Starting Frequency of sweep</span>
-<span class="sd">        freqstop :</span>
-<span class="sd">            Stop Frequency of Sweep</span>
-<span class="sd">        fastsweep :</span>
-<span class="sd">            boolean =False for Fast sweep, True for interpolating (Default value = False)</span>
+<span class="sd">            Starting frequency of the sweep.</span>
+<span class="sd">        freqstop : </span>
+<span class="sd">            Stopping frequency of the sweep.</span>
+<span class="sd">        freqstep : optional</span>
+<span class="sd">            Frequency step point.</span>
+<span class="sd">        sweepname : str, optional</span>
+<span class="sd">            Name of the sweep.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">sweepname</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">sweepname</span> <span class="o">=</span> <span class="n">generate_unique_name</span><span class="p">(</span><span class="s2">&quot;Sweep&quot;</span><span class="p">)</span>
 
-        <span class="n">arg</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Name:Sweep&quot;</span><span class="p">,</span> <span class="s2">&quot;IsEnabled:=&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;RangeType:=&quot;</span><span class="p">,</span> <span class="s2">&quot;LinearCount&quot;</span><span class="p">,</span> <span class="s2">&quot;RangeStart:=&quot;</span><span class="p">,</span>
-               <span class="nb">str</span><span class="p">(</span><span class="n">freqstart</span><span class="p">)</span> <span class="o">+</span> <span class="n">unit</span><span class="p">,</span>
-               <span class="s2">&quot;RangeEnd:=&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">freqstop</span><span class="p">)</span> <span class="o">+</span> <span class="n">unit</span><span class="p">]</span>
-        <span class="n">sweeptype</span> <span class="o">=</span> <span class="s2">&quot;Fast&quot;</span> <span class="k">if</span> <span class="n">fastsweep</span> <span class="ow">is</span> <span class="kc">True</span> <span class="k">else</span> <span class="s2">&quot;Interpolating&quot;</span>
-        <span class="n">arg</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;RangeCount:=&quot;</span><span class="p">,</span> <span class="mi">451</span><span class="p">,</span> <span class="s2">&quot;Type:=&quot;</span><span class="p">]</span>
-        <span class="n">arg</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sweeptype</span><span class="p">)</span>
-        <span class="n">arg</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;SaveFields:=&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;SaveRadFields:=&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">fastsweep</span><span class="p">:</span>
-            <span class="n">arg</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;GenerateFieldsForAllFreqs:=&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;ExtrapToDC:=&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">]</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Fast Sweep Setup&quot;</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">arg</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;InterpTolerance:=&quot;</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="s2">&quot;InterpMaxSolns:=&quot;</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="s2">&quot;InterpMinSolns:=&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
-                    <span class="s2">&quot;InterpMinSubranges:=&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
-            <span class="n">arg</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;ExtrapToDC:=&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;InterpUseS:=&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;InterpUsePortImped:=&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span>
-                    <span class="s2">&quot;InterpUsePropConst:=&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">]</span>
-            <span class="n">arg</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;UseDerivativeConvergence:=&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;InterpDerivTolerance:=&quot;</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="s2">&quot;UseFullBasis:=&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">]</span>
-            <span class="n">arg</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;EnforcePassivity:=&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;PassivityErrorTolerance:=&quot;</span><span class="p">,</span> <span class="mf">0.0001</span><span class="p">]</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Interpolating Sweep Setup&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">oanalysis</span><span class="o">.</span><span class="n">InsertFrequencySweep</span><span class="p">(</span><span class="n">setupname</span><span class="p">,</span> <span class="n">arg</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Setup Created Correctly&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">setupname</span></div>
-
+        <span class="k">if</span> <span class="n">setupname</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">setup_names</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">setups</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">i</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">setupname</span><span class="p">:</span>
+                <span class="n">setupdata</span> <span class="o">=</span> <span class="n">i</span>
+                <span class="k">for</span> <span class="n">sw</span> <span class="ow">in</span> <span class="n">setupdata</span><span class="o">.</span><span class="n">sweeps</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">sweepname</span> <span class="o">==</span> <span class="n">sw</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">messenger</span><span class="o">.</span><span class="n">add_warning_message</span><span class="p">(</span><span class="s2">&quot;Sweep </span><span class="si">{}</span><span class="s2"> is already present. Rename and retry.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sweepname</span><span class="p">))</span>
+                        <span class="k">return</span> <span class="kc">False</span>
+                <span class="n">sweepdata</span> <span class="o">=</span> <span class="n">setupdata</span><span class="o">.</span><span class="n">add_sweep</span><span class="p">(</span><span class="n">sweepname</span><span class="p">,</span> <span class="s2">&quot;Discrete&quot;</span><span class="p">)</span>
+                <span class="n">sweepdata</span><span class="o">.</span><span class="n">props</span><span class="p">[</span><span class="s2">&quot;RangeStart&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">freqstart</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">freqstop</span><span class="p">:</span>
+                    <span class="n">freqstop</span> <span class="o">=</span> <span class="n">freqstart</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">freqstep</span><span class="p">:</span>
+                    <span class="n">freq_step</span> <span class="o">=</span> <span class="p">(</span><span class="n">freqstop</span><span class="o">-</span><span class="n">freqstart</span><span class="p">)</span><span class="o">/</span><span class="mi">11</span>
+                    <span class="k">if</span> <span class="n">freq_step</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="n">freqstep</span> <span class="o">=</span> <span class="n">freqstart</span>
+                <span class="n">sweepdata</span><span class="o">.</span><span class="n">props</span><span class="p">[</span><span class="s2">&quot;RangeEnd&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">freqstop</span>
+                <span class="n">sweepdata</span><span class="o">.</span><span class="n">props</span><span class="p">[</span><span class="s2">&quot;RangeStep&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">freqstep</span>
+                <span class="n">sweepdata</span><span class="o">.</span><span class="n">props</span><span class="p">[</span><span class="s2">&quot;SaveFields&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="n">sweepdata</span><span class="o">.</span><span class="n">props</span><span class="p">[</span><span class="s2">&quot;SaveRadFields&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="n">sweepdata</span><span class="o">.</span><span class="n">props</span><span class="p">[</span><span class="s2">&quot;Type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Interpolating&quot;</span>
+                <span class="n">sweepdata</span><span class="o">.</span><span class="n">props</span><span class="p">[</span><span class="s2">&quot;RangeType&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;LinearStep&quot;</span>
+                <span class="n">sweepdata</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+                <span class="k">return</span> <span class="n">sweepdata</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
 
 <div class="viewcode-block" id="Q3d.create_discrete_sweep"><a class="viewcode-back" href="../../API/Q3D.html#pyaedt.q3d.Q3d.create_discrete_sweep">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
-    <span class="k">def</span> <span class="nf">create_discrete_sweep</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">setup_name</span><span class="p">,</span> <span class="n">sweep_name</span><span class="p">,</span> <span class="n">freq</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create a Discrete Sweep with a single frequency value</span>
-<span class="sd">        name: Setup name</span>
-<span class="sd">        freq: sweep freq (including Units) as string</span>
-<span class="sd">        sweepname: name of the sweep</span>
+    <span class="k">def</span> <span class="nf">create_discrete_sweep</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">setupname</span><span class="p">,</span> <span class="n">freqstart</span><span class="p">,</span> <span class="n">freqstop</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">freqstep</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s2">&quot;GHz&quot;</span><span class="p">,</span> <span class="n">sweepname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">savefields</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a discrete sweep with a single frequency value.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        setup_name :</span>
-<span class="sd">            </span>
-<span class="sd">        sweep_name :</span>
-<span class="sd">            </span>
-<span class="sd">        freq :</span>
-<span class="sd">            </span>
+<span class="sd">        setupname : str</span>
+<span class="sd">            Name of the setup to which the sweeps belongs.</span>
+<span class="sd">        freqstart : float</span>
+<span class="sd">            Starting point for the discrete frequency.</span>
+<span class="sd">        freqstop : float, optional</span>
+<span class="sd">            Sstopping point for the discrete frequency. If ``None``, a single-point sweep will be performed.</span>
+<span class="sd">        freqstep : float, optional</span>
+<span class="sd">            Step point for the discrete frequency. If ``None``, 11 points will be created.</span>
+<span class="sd">        units  : str, optional</span>
+<span class="sd">            Unit of the discrete frequency. The default is ``&quot;GHz&quot;``.    </span>
+<span class="sd">        sweepname : str, optional</span>
+<span class="sd">            Name of the sweep.</span>
+<span class="sd">        savefields : bool, optional</span>
+<span class="sd">            Whether to save fields. The default is ``False``.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-
+<span class="sd">        SweepQ3D:</span>
+<span class="sd">            sweep option</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">oanalysis</span><span class="o">.</span><span class="n">InsertFrequencySweep</span><span class="p">(</span><span class="n">setup_name</span><span class="p">,</span>
-                                                  <span class="p">[</span>
-                                                      <span class="s2">&quot;NAME:&quot;</span> <span class="o">+</span> <span class="n">sweep_name</span><span class="p">,</span>
-                                                      <span class="s2">&quot;IsEnabled:=&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span>
-                                                      <span class="s2">&quot;RangeType:=&quot;</span><span class="p">,</span> <span class="s2">&quot;SinglePoints&quot;</span><span class="p">,</span>
-                                                      <span class="s2">&quot;RangeStart:=&quot;</span><span class="p">,</span> <span class="n">freq</span><span class="p">,</span>
-                                                      <span class="s2">&quot;RangeEnd:=&quot;</span><span class="p">,</span> <span class="n">freq</span><span class="p">,</span>
-                                                      <span class="s2">&quot;SaveSingleField:=&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span>
-                                                      <span class="s2">&quot;Type:=&quot;</span><span class="p">,</span> <span class="s2">&quot;Discrete&quot;</span><span class="p">,</span>
-                                                      <span class="s2">&quot;SaveFields:=&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span>
-                                                      <span class="s2">&quot;SaveRadFields:=&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span>
-                                                      <span class="s2">&quot;ExtrapToDC:=&quot;</span><span class="p">,</span> <span class="kc">False</span>
-                                                  <span class="p">])</span>
-        <span class="k">return</span> <span class="kc">True</span></div></div>
+        <span class="k">if</span> <span class="n">sweepname</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">sweepname</span> <span class="o">=</span> <span class="n">generate_unique_name</span><span class="p">(</span><span class="s2">&quot;Sweep&quot;</span><span class="p">)</span>
 
+        <span class="k">if</span> <span class="n">setupname</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">setup_names</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">setups</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">i</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">setupname</span><span class="p">:</span>
+                <span class="n">setupdata</span> <span class="o">=</span> <span class="n">i</span>
+                <span class="k">for</span> <span class="n">sw</span> <span class="ow">in</span> <span class="n">setupdata</span><span class="o">.</span><span class="n">sweeps</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">sweepname</span> <span class="o">==</span> <span class="n">sw</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">messenger</span><span class="o">.</span><span class="n">add_warning_message</span><span class="p">(</span><span class="s2">&quot;Sweep </span><span class="si">{}</span><span class="s2"> already present. Please rename and retry&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sweepname</span><span class="p">))</span>
+                        <span class="k">return</span> <span class="kc">False</span>
+                <span class="n">sweepdata</span> <span class="o">=</span> <span class="n">setupdata</span><span class="o">.</span><span class="n">add_sweep</span><span class="p">(</span><span class="n">sweepname</span><span class="p">,</span> <span class="s2">&quot;Discrete&quot;</span><span class="p">)</span>
+                <span class="n">sweepdata</span><span class="o">.</span><span class="n">props</span><span class="p">[</span><span class="s2">&quot;RangeStart&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">freqstart</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">freqstop</span><span class="p">:</span>
+                    <span class="n">freqstop</span> <span class="o">=</span> <span class="n">freqstart</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">freqstep</span><span class="p">:</span>
+                    <span class="n">freqstep</span> <span class="o">=</span> <span class="p">(</span><span class="n">freqstop</span> <span class="o">-</span> <span class="n">freqstart</span><span class="p">)</span> <span class="o">/</span> <span class="mi">11</span>
+                    <span class="k">if</span> <span class="n">freqstep</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="n">freqstep</span> <span class="o">=</span> <span class="n">freqstart</span>
+                <span class="n">sweepdata</span><span class="o">.</span><span class="n">props</span><span class="p">[</span><span class="s2">&quot;RangeEnd&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">freqstop</span>
+                <span class="n">sweepdata</span><span class="o">.</span><span class="n">props</span><span class="p">[</span><span class="s2">&quot;RangeStep&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">freqstep</span>
+                <span class="n">sweepdata</span><span class="o">.</span><span class="n">props</span><span class="p">[</span><span class="s2">&quot;SaveFields&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">savefields</span>
+                <span class="n">sweepdata</span><span class="o">.</span><span class="n">props</span><span class="p">[</span><span class="s2">&quot;SaveRadFields&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="n">sweepdata</span><span class="o">.</span><span class="n">props</span><span class="p">[</span><span class="s2">&quot;Type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Discrete&quot;</span>
+                <span class="n">sweepdata</span><span class="o">.</span><span class="n">props</span><span class="p">[</span><span class="s2">&quot;RangeType&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;LinearStep&quot;</span>
+                <span class="n">sweepdata</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+                <span class="k">return</span> <span class="n">sweepdata</span>
+        <span class="k">return</span> <span class="kc">False</span></div></div>
 
 <div class="viewcode-block" id="Q2d"><a class="viewcode-back" href="../../API/Q3D.html#pyaedt.q3d.Q2d">[docs]</a><span class="k">class</span> <span class="nc">Q2d</span><span class="p">(</span><span class="n">QExtractor</span><span class="p">,</span> <span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Q2D Object</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    projectname :</span>
-<span class="sd">        name of the project to be selected or full path to the project to be opened  or to the AEDTZ</span>
-<span class="sd">        archive. if None try to get active project and, if nothing present to create an empty one</span>
-<span class="sd">    designname :</span>
-<span class="sd">        name of the design to be selected. if None, try to get active design and, if nothing present to create an empty one</span>
-<span class="sd">    solution_type :</span>
-<span class="sd">        solution type to be applied to design. if None default is taken</span>
-<span class="sd">    setup_name :</span>
-<span class="sd">        setup_name to be used as nominal. if none active setup is taken or nothing</span>
-
+<span class="sd">    projectname : str, optional</span>
+<span class="sd">        Name of the project to select or the full path to the project or AEDTZ archive to open. </span>
+<span class="sd">        The default is ``None``. If ``None``, try to get an active project and, if no projects are present, </span>
+<span class="sd">        create an empty project.</span>
+<span class="sd">    designname : str, optional</span>
+<span class="sd">        Name of the design to select. The default is ``None``. If ``None``, try to get an active design and, </span>
+<span class="sd">        if no designs are present, create an empty design.</span>
+<span class="sd">    solution_type : str, optional</span>
+<span class="sd">        Solution type to apply to design. The default is ``None``. If ``None``, the default type is applied.</span>
+<span class="sd">    setup_name : str, optional</span>
+<span class="sd">        Name of the setup to use as the nominal. The default is ``None``. If ``None``, the active setup </span>
+<span class="sd">        is used or nothing is used.</span>
+<span class="sd">    </span>
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 
@@ -509,13 +551,11 @@
         <span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">dimension</span>
 
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">geometry_mode</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">odesign</span><span class="o">.</span><span class="n">GetGeometryMode</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projectname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">designname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">solution_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">setup_name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="n">QExtractor</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;2D Extractor&quot;</span><span class="p">,</span> <span class="n">projectname</span><span class="p">,</span> <span class="n">designname</span><span class="p">,</span> <span class="n">solution_type</span><span class="p">,</span> <span class="n">setup_name</span><span class="p">)</span></div>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projectname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">designname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">solution_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">setup_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">specified_version</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">NG</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">AlwaysNew</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">release_on_exit</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="n">QExtractor</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;2D Extractor&quot;</span><span class="p">,</span> <span class="n">projectname</span><span class="p">,</span> <span class="n">designname</span><span class="p">,</span> <span class="n">solution_type</span><span class="p">,</span> <span class="n">setup_name</span><span class="p">,</span>
+                            <span class="n">specified_version</span><span class="p">,</span> <span class="n">NG</span><span class="p">,</span> <span class="n">AlwaysNew</span><span class="p">,</span> <span class="n">release_on_exit</span><span class="p">)</span></div>
 </pre></div>
 
               </div>
@@ -539,7 +579,7 @@
     
     <div class="footer-item">
       <p class="copyright">
-    &copy; Copyright Copyright (c) 2021 ANSYS, Inc. All rights reserved..<br/>
+    &copy; Copyright (c) 2021 ANSYS, Inc. All rights reserved.<br/>
 </p>
     </div>
     

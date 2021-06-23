@@ -5,7 +5,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaedt.icepak &#8212; PyAEDT 0.2.1 documentation</title>
+    <title>pyaedt.icepak &#8212; PyAEDT 0.3.dev0
+ documentation</title>
     
   <link href="../../_static/css/theme.css" rel="stylesheet" />
   <link href="../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -74,7 +75,7 @@
         </li>
         
         <li class="nav-item ">
-            <a class="nav-link" href="../../API/API.html">API documentation</a>
+            <a class="nav-link" href="../../API/API.html">API Documentation</a>
         </li>
         
         <li class="nav-item ">
@@ -140,29 +141,34 @@
                 
   <h1>Source code for pyaedt.icepak</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Icepak 3d Layout Class</span>
-<span class="sd">----------------------------------------------------------------</span>
-
-<span class="sd">This class contains all Icepak functionalities. It inherits all objects that belong to Icepak.</span>
+<span class="sd">This module contains all Icepak functionalities in the ``Icepak`` class.</span>
 
 
-<span class="sd">Examples:</span>
+<span class="sd">Examples</span>
+<span class="sd">--------</span>
 
-<span class="sd">app = Icepak()     Creates an ``Icepak`` object and connects to an existing HFSS design or creates a new HFSS design if one is not present.</span>
+<span class="sd">Create an instance of ``Icepak`` and connect to an existing Icepak design or create a new Icepak design if one does not exist.</span>
 
+<span class="sd">&gt;&gt;&gt; aedtapp = Icepak()</span>
 
-<span class="sd">app = Icepak(projectname)     Creates an ``Icepak`` object and links to project named projectname. If this project doesn&#39;t exists, it creates a new one with this name.</span>
+<span class="sd">Create an instance of ``Icepak`` and link to a project named ``projectname``. If this project does not exist, create one with this name.</span>
 
+<span class="sd">&gt;&gt;&gt; aedtapp = Icepak(projectname)</span>
 
-<span class="sd">app = Icepak(projectname,designame)     Creates an ``Icepak`` object and links to a design named designname in a project named projectname.</span>
+<span class="sd">Create an instance of ``Icepak`` and link to a design named ``designname`` in a project named ``projectname``.</span>
 
+<span class="sd">&gt;&gt;&gt; aedtapp = Icepak(projectname,designame)</span>
 
-<span class="sd">app = Icepak(&quot;myfile.aedt&quot;)     Creates an ``Icepak`` object and opens the specified project.</span>
+<span class="sd">Create an instance of ``Icepak`` and open the specified project, which is ``myfile.aedt``.</span>
 
+<span class="sd">&gt;&gt;&gt; aedtapp = Icepak(&quot;myfile.aedt&quot;)</span>
 
-<span class="sd">========================================================</span>
+<span class="sd">Create an instance of ``Icepak`` using the 2021 R1 release and open the specified project, which is ``myfile.aedt``.</span>
+
+<span class="sd">&gt;&gt;&gt; aedtapp = Icepak(specified_version=&quot;2021.1&quot;, projectname=&quot;myfile.aedt&quot;)</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
+
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
 <span class="kn">import</span> <span class="nn">csv</span>
@@ -176,26 +182,41 @@
 <span class="kn">from</span>  <span class="nn">collections</span> <span class="kn">import</span> <span class="n">OrderedDict</span>
 
 <div class="viewcode-block" id="Icepak"><a class="viewcode-back" href="../../API/Icepak.html#pyaedt.icepak.Icepak">[docs]</a><span class="k">class</span> <span class="nc">Icepak</span><span class="p">(</span><span class="n">FieldAnalysisIcepak</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Icepak Object</span>
+    <span class="sd">&quot;&quot;&quot;Icepak object</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    projectname :</span>
-<span class="sd">        name of the project to be selected or full path to the project to be opened  or to the AEDTZ</span>
-<span class="sd">        archive. if None try to get active project and, if nothing present to create an empty one</span>
-<span class="sd">    designname :</span>
-<span class="sd">        name of the design to be selected. if None, try to get active design and, if nothing present to create an empty one</span>
-<span class="sd">    solution_type :</span>
-<span class="sd">        solution type to be applied to design. if None default is taken</span>
-<span class="sd">    setup_name :</span>
-<span class="sd">        setup_name to be used as nominal. if none active setup is taken or nothing</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-
+<span class="sd">    projectname : str, optional</span>
+<span class="sd">         Name of the project to select or the full path to the project or AEDTZ archive to open. </span>
+<span class="sd">         The default is ``None``. If ``None``, try to get an active project and, if no projects are present, </span>
+<span class="sd">         create an empty project.</span>
+<span class="sd">    designname : str, optional</span>
+<span class="sd">        Name of the design to select. The default is ``None``. If ``None``, try to get an active design and, </span>
+<span class="sd">        if no designs are present, create an empty design.</span>
+<span class="sd">    solution_type : str, optional</span>
+<span class="sd">        Solution type to apply to design. The default is ``None``. If ``None`, the default type is applied.</span>
+<span class="sd">    setup_name : str, optional</span>
+<span class="sd">        Name of the setup to use as the nominal. The default is ``None``. If ``None``, the active setup </span>
+<span class="sd">        is used or nothing is used.</span>
+<span class="sd">    specified_version : str, optional</span>
+<span class="sd">        Version of AEDT to use. The default is ``None``. If ``None``, the</span>
+<span class="sd">        active setup is used or the latest installed version is used.</span>
+<span class="sd">    NG: bool, optional</span>
+<span class="sd">        Whether to run AEDT in the non-graphical mode. The default </span>
+<span class="sd">        is``False``, which launches AEDT in the graphical mode.</span>
+<span class="sd">    AlwaysNew : bool, optional</span>
+<span class="sd">        Whether to launch an instance of AEDT in a new thread, even if </span>
+<span class="sd">        another instance of the ``specified_version`` is active on the machine.</span>
+<span class="sd">        The default is ``True``.</span>
+<span class="sd">    release_on_exit : bool, optional</span>
+<span class="sd">        Whether to release AEDT on exit. The default is ``True``.</span>
+<span class="sd">  </span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projectname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">designname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">solution_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">setup_name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="n">FieldAnalysisIcepak</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;Icepak&quot;</span><span class="p">,</span> <span class="n">projectname</span><span class="p">,</span> <span class="n">designname</span><span class="p">,</span> <span class="n">solution_type</span><span class="p">,</span> <span class="n">setup_name</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projectname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">designname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">solution_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">setup_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">specified_version</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">NG</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">AlwaysNew</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">release_on_exit</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="n">FieldAnalysisIcepak</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;Icepak&quot;</span><span class="p">,</span> <span class="n">projectname</span><span class="p">,</span> <span class="n">designname</span><span class="p">,</span> <span class="n">solution_type</span><span class="p">,</span> <span class="n">setup_name</span><span class="p">,</span>
+                                     <span class="n">specified_version</span><span class="p">,</span> <span class="n">NG</span><span class="p">,</span> <span class="n">AlwaysNew</span><span class="p">,</span> <span class="n">release_on_exit</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span>
@@ -207,17 +228,13 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">existing_analysis_sweeps</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Existing Analysis Setup List</span>
-<span class="sd">        </span>
-<span class="sd">        </span>
-<span class="sd">        :return: Return a list of all defined analysis setup names in the maxwell design.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
+        <span class="sd">&quot;&quot;&quot;List the existing analysis setups.       </span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-
+<span class="sd">        list</span>
+<span class="sd">            List of all defined analysis setup names in the Maxwell design.</span>
+<span class="sd">            </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">setup_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">existing_analysis_setups</span>
         <span class="n">sweep_list</span><span class="o">=</span><span class="p">[]</span>
@@ -227,12 +244,12 @@
 
 <div class="viewcode-block" id="Icepak.assign_openings"><a class="viewcode-back" href="../../API/Icepak.html#pyaedt.icepak.Icepak.assign_openings">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="nf">assign_openings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">air_faces</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Assign Opening to a list of faces</span>
+        <span class="sd">&quot;&quot;&quot;Assign opening to a list of faces.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        air_faces :</span>
-<span class="sd">            list of face name</span>
+<span class="sd">        air_faces : list</span>
+<span class="sd">            List of face names.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -260,23 +277,23 @@
 
 <div class="viewcode-block" id="Icepak.assign_2way_coupling"><a class="viewcode-back" href="../../API/Icepak.html#pyaedt.icepak.Icepak.assign_2way_coupling">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="nf">assign_2way_coupling</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">setup_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">number_of_iterations</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">continue_ipk_iterations</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ipk_iterations_per_coupling</span><span class="o">=</span><span class="mi">20</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Assign 2Way Coupling to a specific setup</span>
+        <span class="sd">&quot;&quot;&quot;Assign two-way coupling to a specific setup.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        setup_name :</span>
-<span class="sd">            str optional setup name (Default value = None)</span>
-<span class="sd">        number_of_iterations :</span>
-<span class="sd">            int optional number of iterations (Default value = 2)</span>
-<span class="sd">        continue_ipk_iterations :</span>
-<span class="sd">            bool, optional continue Icepak Iteration (Default value = True)</span>
-<span class="sd">        ipk_iterations_per_coupling :</span>
-<span class="sd">            int, optional additional iterations per coupling (Default value = 20)</span>
+<span class="sd">        setup_name : str, optional</span>
+<span class="sd">            Name of the setup. The default is ``None``.</span>
+<span class="sd">        number_of_iterations : int, optional</span>
+<span class="sd">            Number of iterations. The default is ``2``.</span>
+<span class="sd">        continue_ipk_iterations : bool, optional</span>
+<span class="sd">           Whether to continue Icepak iterations. The default is ``True``.</span>
+<span class="sd">        ipk_iterations_per_coupling : int, optional</span>
+<span class="sd">            Additional iterations per coupling. The default is ``20``.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        type</span>
-<span class="sd">            Bool</span>
+<span class="sd">        bool</span>
+<span class="sd">            ``True`` when successful, ``False`` when failed.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -294,16 +311,16 @@
 
 <div class="viewcode-block" id="Icepak.create_source_blocks_from_list"><a class="viewcode-back" href="../../API/Icepak.html#pyaedt.icepak.Icepak.create_source_blocks_from_list">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="nf">create_source_blocks_from_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">list_powers</span><span class="p">,</span> <span class="n">assign_material</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default_material</span><span class="o">=</span><span class="s2">&quot;Ceramic_material&quot;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Assign to Box in Icepak Sources coming from CSV file. assignment is made by name</span>
+        <span class="sd">&quot;&quot;&quot;Assign to a box in Icepak sources coming from the CSV file. Assignment is made by name.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        list_powers :</span>
-<span class="sd">            list of input powers. its a list of list like in the examples [[&quot;Obj1&quot;, 1], [&quot;Obj2&quot;, 3]]. it can contain multiple column for power inputs</span>
-<span class="sd">        assign_material :</span>
-<span class="sd">            bool (Default value = True)</span>
-<span class="sd">        default_material :</span>
-<span class="sd">            default material</span>
+<span class="sd">        list_powers : list</span>
+<span class="sd">            List of input powers. It is a list of list like in this exampls: ``[[&quot;Obj1&quot;, 1], [&quot;Obj2&quot;, 3]]``. it can contain multiple columns for power inputs.</span>
+<span class="sd">        assign_material : bool, optional</span>
+<span class="sd">            Whether to assign a material. The default is ``True``.</span>
+<span class="sd">        default_material : str, optional</span>
+<span class="sd">            Default material. The default is ``&quot;Ceramic_material&quot;``.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -333,20 +350,20 @@
 
 <div class="viewcode-block" id="Icepak.create_source_block"><a class="viewcode-back" href="../../API/Icepak.html#pyaedt.icepak.Icepak.create_source_block">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="nf">create_source_block</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">object_name</span><span class="p">,</span> <span class="n">input_power</span><span class="p">,</span> <span class="n">assign_material</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">material_name</span><span class="o">=</span><span class="s2">&quot;Ceramic_material&quot;</span><span class="p">,</span> <span class="n">use_object_for_name</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create Source Block for an object</span>
+        <span class="sd">&quot;&quot;&quot;Create a source block for an object.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        object_name :</span>
-<span class="sd">            name of the object</span>
-<span class="sd">        input_power :</span>
-<span class="sd">            input power. can be a string or a variable</span>
-<span class="sd">        assign_material :</span>
-<span class="sd">            bool (Default value = True)</span>
+<span class="sd">        object_name : str</span>
+<span class="sd">            Name of the object.</span>
+<span class="sd">        input_power : str or var</span>
+<span class="sd">            Input power. </span>
+<span class="sd">        assign_material : bool, optional</span>
+<span class="sd">            Whether to assign a material. The default is ``True``.</span>
 <span class="sd">        material_name :</span>
-<span class="sd">            material name to assign in case assign_material is True (Default value = &quot;Ceramic_material&quot;)</span>
-<span class="sd">        use_object_for_name :</span>
-<span class="sd">             (Default value = True)</span>
+<span class="sd">            Material to assign if ``assign_material=True``. The default is ``&quot;Ceramic_material&quot;``.</span>
+<span class="sd">        use_object_for_name : bool, optional</span>
+<span class="sd">             The default is ``True``.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -375,28 +392,28 @@
 <div class="viewcode-block" id="Icepak.create_network_block"><a class="viewcode-back" href="../../API/Icepak.html#pyaedt.icepak.Icepak.create_network_block">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="nf">create_network_block</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">object_name</span><span class="p">,</span> <span class="n">power</span><span class="p">,</span> <span class="n">rjc</span><span class="p">,</span> <span class="n">rjb</span><span class="p">,</span> <span class="n">gravity_dir</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">assign_material</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                              <span class="n">default_material</span><span class="o">=</span><span class="s2">&quot;Ceramic_material&quot;</span><span class="p">,</span> <span class="n">use_object_for_name</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create Network Block</span>
+        <span class="sd">&quot;&quot;&quot;Create a network block.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        object_name :</span>
-<span class="sd">            name of the object for which block has to be created</span>
-<span class="sd">        power :</span>
-<span class="sd">            input power, can be a value or variable</span>
+<span class="sd">        object_name : str</span>
+<span class="sd">            Name of the object for which to create the block.</span>
+<span class="sd">        power : str or var</span>
+<span class="sd">            Input power.</span>
 <span class="sd">        rjc :</span>
-<span class="sd">            rjc value</span>
+<span class="sd">            RJC value.</span>
 <span class="sd">        rjb :</span>
-<span class="sd">            rjb value</span>
+<span class="sd">            RJB value</span>
 <span class="sd">        gravity_dir :</span>
-<span class="sd">            0...5 gravity direction from -X to +Z</span>
+<span class="sd">            Gravity direction from -X to +Z. Choices are ``0`` through ``5``. </span>
 <span class="sd">        top :</span>
-<span class="sd">            is the board bounding value in mm of the top face</span>
-<span class="sd">        assign_material :</span>
-<span class="sd">            bool (Default value = True)</span>
-<span class="sd">        default_material :</span>
-<span class="sd">            default material</span>
-<span class="sd">        use_object_for_name :</span>
-<span class="sd">             (Default value = True)</span>
+<span class="sd">            Board bounding value in mm of the top face.</span>
+<span class="sd">        assign_material : bool, optional</span>
+<span class="sd">            Whether to assign a material. The default is ``True``.</span>
+<span class="sd">        default_material : str, optional</span>
+<span class="sd">            Default material if ``assign_material=True``. The default is ``&quot;Ceramic_material&quot;``.</span>
+<span class="sd">        use_object_for_name : bool, optional</span>
+<span class="sd">             The default is ``True``.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -451,21 +468,22 @@
 <div class="viewcode-block" id="Icepak.create_network_blocks"><a class="viewcode-back" href="../../API/Icepak.html#pyaedt.icepak.Icepak.create_network_blocks">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="nf">create_network_blocks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_list</span><span class="p">,</span> <span class="n">gravity_dir</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">assign_material</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                              <span class="n">default_material</span><span class="o">=</span><span class="s2">&quot;Ceramic_material&quot;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;createNetworkBlocs(listfromCsv,gravityDir,top) create network objects form csv files</span>
+        <span class="sd">&quot;&quot;&quot;Create network blocks from CSV files.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        assign_material :</span>
-<span class="sd">            param default_material:</span>
-<span class="sd">        input_list :</span>
-<span class="sd">            list of sources with input  rjc,  rjb, power. [[Objname1, rjc, rjb, power1,power2....],[Objname2, rjc2, rbj2, power1, power2...]]</span>
-<span class="sd">        gravity_dir :</span>
-<span class="sd">            0...5 gravity direction from -X to +Z</span>
+<span class="sd">        input_list : list</span>
+<span class="sd">            List of sources with inputs  ``rjc``,  ``rjb``, and ``power``. </span>
+<span class="sd">            For example: ``[[Objname1, rjc, rjb, power1,power2....],[Objname2, rjc2, rbj2, power1, power2...]]``</span>
+<span class="sd">        gravity_dir : int</span>
+<span class="sd">            Gravity direction from -X to +Z. Choices are ``0`` to ``5``.</span>
 <span class="sd">        top :</span>
-<span class="sd">            is the board bounding value in mm of the top face</span>
-<span class="sd">        default_material :</span>
-<span class="sd">             (Default value = &quot;Ceramic_material&quot;)</span>
-
+<span class="sd">            Board bounding value in mm of the top face.</span>
+<span class="sd">        assign_material : bool, optional</span>
+<span class="sd">            Whether to assign a material. The default is ``True``.</span>
+<span class="sd">        default_material : str, optional</span>
+<span class="sd">            Default material if ``assign_material=True``. The default is ``&quot;Ceramic_material&quot;``.</span>
+<span class="sd">       </span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        type</span>
@@ -496,12 +514,12 @@
 
 <div class="viewcode-block" id="Icepak.assign_block_from_sherlock_file"><a class="viewcode-back" href="../../API/Icepak.html#pyaedt.icepak.Icepak.assign_block_from_sherlock_file">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="nf">assign_block_from_sherlock_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">csv_name</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Assign block power to components based on sherlock file</span>
+        <span class="sd">&quot;&quot;&quot;Assign block power to components based on a Sherlock file.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        csv_name :</span>
-<span class="sd">            csf file from sherlock</span>
+<span class="sd">        csv_name : str</span>
+<span class="sd">            Name of the CSV file from Sherlock.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -548,17 +566,20 @@
 
 <div class="viewcode-block" id="Icepak.assign_priority_on_intersections"><a class="viewcode-back" href="../../API/Icepak.html#pyaedt.icepak.Icepak.assign_priority_on_intersections">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="nf">assign_priority_on_intersections</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">component_prefix</span><span class="o">=</span><span class="s2">&quot;COMP_&quot;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;This methods validate an icepak design and, in case of intersections automatically apply priorities to overcome simulation issue</span>
+        <span class="sd">&quot;&quot;&quot;Validate an Icepak design.</span>
+<span class="sd">        </span>
+<span class="sd">        If there are intersections, priorities are automatically applied to overcome simulation issues.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        component_prefix :</span>
-<span class="sd">            components prefix on which to search (Default value = &quot;COMP_&quot;)</span>
+<span class="sd">        component_prefix: str, optional</span>
+<span class="sd">            Component prefix on which to search. The default is ``&quot;COMP_&quot;``.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        bool</span>
-<span class="sd">            Bool</span>
+<span class="sd">             ``True`` when successful, ``False`` when failed.</span>
+<span class="sd">             </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">temp_log</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project_path</span><span class="p">,</span> <span class="s2">&quot;validation.log&quot;</span><span class="p">)</span>
         <span class="n">validate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">odesign</span><span class="o">.</span><span class="n">ValidateDesign</span><span class="p">(</span><span class="n">temp_log</span><span class="p">)</span>
@@ -583,12 +604,12 @@
 
 <div class="viewcode-block" id="Icepak.find_top"><a class="viewcode-back" href="../../API/Icepak.html#pyaedt.icepak.Icepak.find_top">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="nf">find_top</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gravityDir</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;TO BE CHECKED. Find the top location of the layout given the gravity</span>
+        <span class="sd">&quot;&quot;&quot;TO BE CHECKED. Find the top location of the layout given the gravity.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        gravityDir :</span>
-<span class="sd">            0...5 gravity direction from -X to +Z</span>
+<span class="sd">            Gravity direction from -X to +Z. Choices are ``0`` to ``5``</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -613,53 +634,49 @@
                                         <span class="n">draftangle</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">patternangle</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">separation</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">symmetric</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">symmetric_separation</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
                                         <span class="n">numcolumn_perside</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">vertical_separation</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">matname</span><span class="o">=</span><span class="s2">&quot;Al-Extruded&quot;</span><span class="p">,</span> <span class="n">center</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span>
                                         <span class="n">plane_enum</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">tolerance</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create a Heat Sink fully parametric.</span>
+        <span class="sd">&quot;&quot;&quot;Create a parametric heat sink.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        hs_height :</span>
-<span class="sd">            param hs_width: (Default value = 100)</span>
-<span class="sd">        hs_basethick :</span>
-<span class="sd">            param pitch: (Default value = 10)</span>
-<span class="sd">        thick :</span>
-<span class="sd">            param length: (Default value = 10)</span>
-<span class="sd">        height :</span>
-<span class="sd">            param draftangle: (Default value = 40)</span>
-<span class="sd">        patternangle :</span>
-<span class="sd">            param separation: (Default value = 10)</span>
-<span class="sd">        symmetric :</span>
-<span class="sd">            param symmetric_separation: (Default value = True)</span>
-<span class="sd">        numcolumn_perside :</span>
-<span class="sd">            param vertical_separation: (Default value = 2)</span>
-<span class="sd">        matname :</span>
-<span class="sd">            param center: (Default value = &quot;Al-Extruded&quot;)</span>
-<span class="sd">        plane_enum :</span>
-<span class="sd">            param rotation: (Default value = 0)</span>
-<span class="sd">        tolerance :</span>
-<span class="sd">            return: (Default value = 1e-3)</span>
-<span class="sd">        hs_width :</span>
-<span class="sd">             (Default value = 100)</span>
-<span class="sd">        pitch :</span>
-<span class="sd">             (Default value = 20)</span>
-<span class="sd">        length :</span>
-<span class="sd">             (Default value = 40)</span>
-<span class="sd">        draftangle :</span>
-<span class="sd">             (Default value = 0)</span>
-<span class="sd">        separation :</span>
-<span class="sd">             (Default value = 5)</span>
-<span class="sd">        symmetric_separation :</span>
-<span class="sd">             (Default value = 20)</span>
-<span class="sd">        vertical_separation :</span>
-<span class="sd">             (Default value = 10)</span>
-<span class="sd">        center :</span>
-<span class="sd">             (Default value = [0)</span>
-<span class="sd">        0 :</span>
-<span class="sd">            </span>
-<span class="sd">        0] :</span>
-<span class="sd">            </span>
-<span class="sd">        rotation :</span>
-<span class="sd">             (Default value = 0)</span>
-
+<span class="sd">        hs_height : int, optional</span>
+<span class="sd">            Height of the heat sink. The default value is ``100``.</span>
+<span class="sd">        hs_width: int, optional</span>
+<span class="sd">            Width of the heat sink. The default value is ``100``.</span>
+<span class="sd">        hs_basethick : int, optional</span>
+<span class="sd">            Thickness of the heat sink base. The default value is ``100``.</span>
+<span class="sd">        pitch: optional</span>
+<span class="sd">            The default value is ``10``.</span>
+<span class="sd">        thick : optional</span>
+<span class="sd">            The default value is ``10``.</span>
+<span class="sd">        length: optional</span>
+<span class="sd">            The default value is ``40``.</span>
+<span class="sd">        height : optional</span>
+<span class="sd">            The default value is ``40``.</span>
+<span class="sd">        draftangle : optional</span>
+<span class="sd">            The default value is ``0``.</span>
+<span class="sd">        patternangle : optional</span>
+<span class="sd">            The default value is ``10``.</span>
+<span class="sd">        separation : optional</span>
+<span class="sd">            The default value is ``5``.</span>
+<span class="sd">        symmetric : bool, optional</span>
+<span class="sd">            The default value is ``True``.</span>
+<span class="sd">        symmetric_separation: optional</span>
+<span class="sd">            The default value is ``20``.</span>
+<span class="sd">        numcolumn_perside : optional</span>
+<span class="sd">            The default value is ``2``.</span>
+<span class="sd">        vertical_separation: optional</span>
+<span class="sd">            The default value is ``10``.</span>
+<span class="sd">        matname : optional</span>
+<span class="sd">            The default value is ``Al-Extruded``.</span>
+<span class="sd">        center : optional</span>
+<span class="sd">           The default value is ``[0,0,0]``.</span>
+<span class="sd">        plane_enum : optional</span>
+<span class="sd">            The default value is ``0``.</span>
+<span class="sd">        rotation : optional</span>
+<span class="sd">            The default value is ``0``.</span>
+<span class="sd">        tolerance : optional</span>
+<span class="sd">            The default value is ``1e-3``.</span>
+<span class="sd">        </span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 
@@ -693,7 +710,7 @@
         <span class="n">Fin_Line</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Position</span><span class="p">(</span><span class="s1">&#39;FinLength&#39;</span><span class="p">,</span> <span class="s1">&#39;FinThickness + FinLength*sin(PatternAngle*3.14/180)&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
         <span class="n">Fin_Line</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Position</span><span class="p">(</span><span class="s1">&#39;FinLength&#39;</span><span class="p">,</span> <span class="s1">&#39;FinLength*sin(PatternAngle*3.14/180)&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
         <span class="n">Fin_Line</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Position</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">primitives</span><span class="o">.</span><span class="n">create_polyline</span><span class="p">(</span><span class="n">Fin_Line</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;Fin&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">primitives</span><span class="o">.</span><span class="n">draw_polyline</span><span class="p">(</span><span class="n">Fin_Line</span><span class="p">,</span> <span class="n">cover_surface</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Fin&quot;</span><span class="p">)</span>
         <span class="n">Fin_Line2</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">Fin_Line2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Position</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;sin(DraftAngle*3.14/180)*FinThickness&#39;</span><span class="p">,</span> <span class="s1">&#39;FinHeight&#39;</span><span class="p">))</span>
         <span class="n">Fin_Line2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Position</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;FinThickness-sin(DraftAngle*3.14/180)*FinThickness&#39;</span><span class="p">,</span> <span class="s1">&#39;FinHeight&#39;</span><span class="p">))</span>
@@ -703,7 +720,7 @@
         <span class="n">Fin_Line2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">Position</span><span class="p">(</span><span class="s1">&#39;FinLength&#39;</span><span class="p">,</span> <span class="s1">&#39;FinLength*sin(PatternAngle*3.14/180)+sin(DraftAngle*3.14/180)*FinThickness&#39;</span><span class="p">,</span> <span class="s1">&#39;FinHeight&#39;</span><span class="p">))</span>
         <span class="n">Fin_Line2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Position</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;sin(DraftAngle*3.14/180)*FinThickness&#39;</span><span class="p">,</span> <span class="s1">&#39;FinHeight&#39;</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">primitives</span><span class="o">.</span><span class="n">create_polyline</span><span class="p">(</span><span class="n">Fin_Line2</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;Fin_top&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">primitives</span><span class="o">.</span><span class="n">draw_polyline</span><span class="p">(</span><span class="n">Fin_Line2</span><span class="p">,</span> <span class="n">cover_surface</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Fin_top&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">connect</span><span class="p">([</span><span class="s2">&quot;Fin&quot;</span><span class="p">,</span> <span class="s2">&quot;Fin_top&quot;</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assignmaterial</span><span class="p">(</span><span class="s2">&quot;Fin&quot;</span><span class="p">,</span> <span class="n">matname</span><span class="p">)</span>
         <span class="c1"># self.modeler.thicken_sheet(&quot;Fin&quot;,&#39;-FinHeight&#39;)</span>
@@ -740,7 +757,7 @@
             <span class="n">Center_Line</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Position</span><span class="p">(</span><span class="s1">&#39;VerticalSeparation&#39;</span><span class="p">,</span> <span class="s1">&#39;-HSHeight-Tolerance&#39;</span><span class="p">,</span> <span class="s1">&#39;-Tolerance&#39;</span><span class="p">))</span>
             <span class="n">Center_Line</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Position</span><span class="p">(</span><span class="s1">&#39;-VerticalSeparation&#39;</span><span class="p">,</span> <span class="s1">&#39;-HSHeight-Tolerance&#39;</span><span class="p">,</span> <span class="s1">&#39;-Tolerance&#39;</span><span class="p">))</span>
             <span class="n">Center_Line</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Position</span><span class="p">(</span><span class="s1">&#39;-SymSeparation&#39;</span><span class="p">,</span> <span class="s1">&#39;Tolerance&#39;</span><span class="p">,</span> <span class="s1">&#39;-Tolerance&#39;</span><span class="p">))</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">primitives</span><span class="o">.</span><span class="n">create_polyline</span><span class="p">(</span><span class="n">Center_Line</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;Center&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">primitives</span><span class="o">.</span><span class="n">draw_polyline</span><span class="p">(</span><span class="n">Center_Line</span><span class="p">,</span> <span class="n">cover_surface</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Center&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">thicken_sheet</span><span class="p">(</span><span class="s2">&quot;Center&quot;</span><span class="p">,</span> <span class="s1">&#39;-FinHeight-2*Tolerance&#39;</span><span class="p">)</span>
             <span class="n">all_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">primitives</span><span class="o">.</span><span class="n">get_all_objects_names</span><span class="p">()</span>
             <span class="nb">list</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">all_names</span> <span class="k">if</span> <span class="s2">&quot;Fin&quot;</span> <span class="ow">in</span> <span class="n">i</span><span class="p">]</span>
@@ -771,22 +788,22 @@
 <div class="viewcode-block" id="Icepak.edit_design_settings"><a class="viewcode-back" href="../../API/Icepak.html#pyaedt.icepak.Icepak.edit_design_settings">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="nf">edit_design_settings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gravityDir</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ambtemp</span><span class="o">=</span><span class="mi">22</span><span class="p">,</span> <span class="n">performvalidation</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">CheckLevel</span><span class="o">=</span><span class="s2">&quot;None&quot;</span><span class="p">,</span>
                              <span class="n">defaultfluid</span><span class="o">=</span><span class="s2">&quot;air&quot;</span><span class="p">,</span> <span class="n">defaultsolid</span><span class="o">=</span><span class="s2">&quot;Al-Extruded&quot;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Edit Design Main settings</span>
+        <span class="sd">&quot;&quot;&quot;Edit main settings of the design.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        gravityDir :</span>
-<span class="sd">            0...5 gravity direction from -X to +Z (Default value = 0)</span>
-<span class="sd">        ambtemp :</span>
-<span class="sd">            Ambient Temperature (Default value = 22)</span>
-<span class="sd">        performvalidation : bool</span>
-<span class="sd">            Enable validation (Default value = False)</span>
-<span class="sd">        CheckLevel :</span>
-<span class="sd">            Level of check in validation. Default &quot;None&quot;</span>
-<span class="sd">        defaultfluid :</span>
-<span class="sd">            default fluid material. &quot;air&quot;</span>
-<span class="sd">        defaultsolid :</span>
-<span class="sd">            default soldi material. &quot;Al-Extruded&quot;</span>
+<span class="sd">        gravityDir : int, optional</span>
+<span class="sd">            Gravity direction from -X to +Z. Choices are ``0`` through ``5``. The default is ``0``.</span>
+<span class="sd">        ambtemp : optional</span>
+<span class="sd">            Ambient temperature. The default is ``22``.</span>
+<span class="sd">        performvalidation : bool, optional</span>
+<span class="sd">            Whether to enable validation. The default is ``False``.</span>
+<span class="sd">        CheckLevel : optional</span>
+<span class="sd">            Level of check during validation. The default is ``None``.</span>
+<span class="sd">        defaultfluid : str, optional</span>
+<span class="sd">            Default fluid material. The default is ``&quot;air&quot;``.</span>
+<span class="sd">        defaultsolid : str, optional</span>
+<span class="sd">            Default solid material. The default is ``&quot;Al-Extruded&quot;``.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -814,26 +831,26 @@
 <div class="viewcode-block" id="Icepak.assign_em_losses"><a class="viewcode-back" href="../../API/Icepak.html#pyaedt.icepak.Icepak.assign_em_losses">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="nf">assign_em_losses</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">designname</span><span class="o">=</span><span class="s2">&quot;HFSSDesign1&quot;</span><span class="p">,</span> <span class="n">setupname</span><span class="o">=</span><span class="s2">&quot;Setup1&quot;</span><span class="p">,</span> <span class="n">sweepname</span><span class="o">=</span><span class="s2">&quot;LastAdaptive&quot;</span><span class="p">,</span> <span class="n">map_frequency</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                          <span class="n">surface_objects</span><span class="o">=</span><span class="p">[],</span> <span class="n">source_project_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">paramlist</span><span class="o">=</span><span class="p">[],</span> <span class="n">object_list</span><span class="o">=</span><span class="p">[]):</span>
-        <span class="sd">&quot;&quot;&quot;Map EM losses to Icepak Design</span>
+        <span class="sd">&quot;&quot;&quot;Map EM losses to an Icepak design.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        designname :</span>
-<span class="sd">            name of design of the source mapping (Default value = &quot;HFSSDesign1&quot;)</span>
-<span class="sd">        map_frequency :</span>
-<span class="sd">            string containing Frequency to be mapped. It must be None for eigen mode analysis (Default value = None)</span>
-<span class="sd">        setupname :</span>
-<span class="sd">            Name of EM Setup (Default value = &quot;Setup1&quot;)</span>
-<span class="sd">        sweepname :</span>
-<span class="sd">            Name of EM Sweep to be used for mapping. Default no sweep and LastAdaptive to be used</span>
-<span class="sd">        surface_objects :</span>
-<span class="sd">            list of objects in the source that are metals (Default value = [])</span>
-<span class="sd">        source_project_name :</span>
-<span class="sd">            Name of the source project: None to use source from the same project (Default value = None)</span>
-<span class="sd">        paramlist :</span>
-<span class="sd">            list of all params in EM to be mapped (Default value = [])</span>
-<span class="sd">        object_list :</span>
-<span class="sd">             (Default value = [])</span>
+<span class="sd">        designname : string, optional</span>
+<span class="sd">            Name of the design of the source mapping. The default is ``&quot;HFSSDesign1&quot;``.</span>
+<span class="sd">        setupname : str, optional</span>
+<span class="sd">            Name of the EM setup. The default is ``&quot;Setup1&quot;``.</span>
+<span class="sd">        sweepname : str, optional</span>
+<span class="sd">            Name of the EM sweep to use for mapping. The default is ``&quot;LastAdaptive&quot;``.</span>
+<span class="sd">        map_frequency : optional</span>
+<span class="sd">            String containing the frequency to map. The default is ``None``. The value must be ``None`` for eigen mode analysis.</span>
+<span class="sd">        surface_objects : list, optional</span>
+<span class="sd">            List of objects in the source that are metals. The default is ``[]``.</span>
+<span class="sd">        source_project_name : str, optional</span>
+<span class="sd">            Name of the source project. The default is ``None``, which uses the source from the same project.</span>
+<span class="sd">        paramlist :list, optional</span>
+<span class="sd">            List of all params in the EM to map. The default is ``[]``.</span>
+<span class="sd">        object_list : list</span>
+<span class="sd">             The default is ``[]``.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -888,22 +905,24 @@
 <div class="viewcode-block" id="Icepak.eval_surface_quantity_from_field_summary"><a class="viewcode-back" href="../../API/Icepak.html#pyaedt.icepak.Icepak.eval_surface_quantity_from_field_summary">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="nf">eval_surface_quantity_from_field_summary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">faces_list</span><span class="p">,</span> <span class="n">quantity_name</span><span class="o">=</span><span class="s2">&quot;HeatTransCoeff&quot;</span><span class="p">,</span> <span class="n">savedir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                                                  <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sweep_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">parameter_dict_with_values</span><span class="o">=</span><span class="p">{}):</span>
-        <span class="sd">&quot;&quot;&quot;Creates the export of the Field Surface output. It will export 1 csv file for the specified variation variation</span>
+        <span class="sd">&quot;&quot;&quot;Export the field surface output.</span>
+<span class="sd">        </span>
+<span class="sd">        This method exports one CSV file for the specified variation.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        faces_list :</span>
-<span class="sd">            list of faces to apply</span>
-<span class="sd">        quantity_name :</span>
-<span class="sd">            quantity to export (Default value = &quot;HeatTransCoeff&quot;)</span>
-<span class="sd">        savedir :</span>
-<span class="sd">            directory where to save htc file (Default value = None)</span>
-<span class="sd">        filename :</span>
-<span class="sd">            name of htc file (Default value = None)</span>
-<span class="sd">        sweep_name :</span>
-<span class="sd">            name of the setup + sweep &quot;IcepakSetup1 : SteatyState&quot; (Default value = None)</span>
-<span class="sd">        parameter_dict_with_values :</span>
-<span class="sd">            dictionary of parameters defined for the specific setup with value (Default value = {})</span>
+<span class="sd">        faces_list : list</span>
+<span class="sd">            List of faces to apply</span>
+<span class="sd">        quantity_name : str, optional</span>
+<span class="sd">            Name of the quantity to export. The default is ``&quot;HeatTransCoeff&quot;``.</span>
+<span class="sd">        savedir : str, optional</span>
+<span class="sd">            Directory in which to save the HTC file. The default is ``None``.</span>
+<span class="sd">        filename : str, optional</span>
+<span class="sd">            Name of the HTC file. The default is ``None``.</span>
+<span class="sd">        sweep_name : str, optional</span>
+<span class="sd">            Name of the setup + sweep. For example: ``&quot;IcepakSetup1 : SteatyState&quot;``. The default is ``None``.</span>
+<span class="sd">        parameter_dict_with_values : optional</span>
+<span class="sd">            Dictionary of parameters defined for the specific setup with value. The default is ``{}``.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -938,22 +957,24 @@
 
 <div class="viewcode-block" id="Icepak.eval_volume_quantity_from_field_summary"><a class="viewcode-back" href="../../API/Icepak.html#pyaedt.icepak.Icepak.eval_volume_quantity_from_field_summary">[docs]</a>    <span class="k">def</span> <span class="nf">eval_volume_quantity_from_field_summary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">object_list</span><span class="p">,</span> <span class="n">quantity_name</span><span class="o">=</span><span class="s2">&quot;HeatTransCoeff&quot;</span><span class="p">,</span>  <span class="n">savedir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                                                  <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sweep_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">parameter_dict_with_values</span><span class="o">=</span><span class="p">{}):</span>
-        <span class="sd">&quot;&quot;&quot;Creates the export of the Field Volume output. It will export 1 csv file for the specified variation variation</span>
+        <span class="sd">&quot;&quot;&quot;Export the field volume output.</span>
+<span class="sd">        </span>
+<span class="sd">        This method exports one CSV file for the specified variation.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        object_list :</span>
-<span class="sd">            list of faces to apply</span>
-<span class="sd">        quantity_name :</span>
-<span class="sd">            quantity to export (Default value = &quot;HeatTransCoeff&quot;)</span>
-<span class="sd">        savedir :</span>
-<span class="sd">            directory where to save htc file (Default value = None)</span>
-<span class="sd">        filename :</span>
-<span class="sd">            name of htc file (Default value = None)</span>
+<span class="sd">        object_list : list</span>
+<span class="sd">            List of faces to apply.</span>
+<span class="sd">        quantity_name : str, optional</span>
+<span class="sd">            Name of the quantity to export. The default is ``&quot;HeatTransCoeff&quot;``.</span>
+<span class="sd">        savedir : str, optional</span>
+<span class="sd">            Directory in which to save the HTC file. The default is ``None``.</span>
+<span class="sd">        filename :  str, optional</span>
+<span class="sd">            Name of the HTC file. The default is ``None``.</span>
 <span class="sd">        sweep_name :</span>
-<span class="sd">            name of the setup + sweep &quot;IcepakSetup1 : SteatyState&quot; (Default value = None)</span>
-<span class="sd">        parameter_dict_with_values :</span>
-<span class="sd">            dictionary of parameters defined for the specific setup with value (Default value = {})</span>
+<span class="sd">            Name of the setup + sweep. For example: ``&quot;IcepakSetup1 : SteatyState&quot;``. The default is ``None``.</span>
+<span class="sd">        parameter_dict_with_values : optional</span>
+<span class="sd">            Dictionary of parameters defined for the specific setup with value. The default is ``{}``</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -987,14 +1008,14 @@
 
 <div class="viewcode-block" id="Icepak.UniteFieldsSummaryReports"><a class="viewcode-back" href="../../API/Icepak.html#pyaedt.icepak.Icepak.UniteFieldsSummaryReports">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="nf">UniteFieldsSummaryReports</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">savedir</span><span class="p">,</span> <span class="n">proj_icepak</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Unite the files created by Fields Summary for the various variations</span>
+        <span class="sd">&quot;&quot;&quot;Unite the files created by a fields summary for the variations.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        savedir :</span>
-<span class="sd">            </span>
+<span class="sd">        savedir : str</span>
+<span class="sd">                    </span>
 <span class="sd">        proj_icepak :</span>
-<span class="sd">            </span>
+<span class="sd">           </span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -1042,24 +1063,24 @@
 
 <div class="viewcode-block" id="Icepak.export_summary"><a class="viewcode-back" href="../../API/Icepak.html#pyaedt.icepak.Icepak.export_summary">[docs]</a>    <span class="k">def</span> <span class="nf">export_summary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">solution_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;Object&quot;</span><span class="p">,</span> <span class="n">geometryType</span><span class="o">=</span><span class="s2">&quot;Volume&quot;</span><span class="p">,</span> <span class="n">quantity</span><span class="o">=</span><span class="s2">&quot;Temperature&quot;</span><span class="p">,</span>
                        <span class="n">variation</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">variationlist</span><span class="o">=</span><span class="p">[]):</span>
-        <span class="sd">&quot;&quot;&quot;New method for exporting field summary of all the objercts</span>
+        <span class="sd">&quot;&quot;&quot;Export a fields summary of all objects.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        output_dir :</span>
-<span class="sd">             (Default value = None)</span>
-<span class="sd">        solution_name :</span>
-<span class="sd">             (Default value = None)</span>
-<span class="sd">        type :</span>
-<span class="sd">             (Default value = &quot;Object&quot;)</span>
-<span class="sd">        geometryType :</span>
-<span class="sd">             (Default value = &quot;Volume&quot;)</span>
-<span class="sd">        quantity :</span>
-<span class="sd">             (Default value = &quot;Temperature&quot;)</span>
-<span class="sd">        variation :</span>
-<span class="sd">             (Default value = &quot;&quot;)</span>
-<span class="sd">        variationlist :</span>
-<span class="sd">             (Default value = [])</span>
+<span class="sd">        output_dir : str, optional</span>
+<span class="sd">             Name of directory to which to export the fields summary. The default is ``None``.</span>
+<span class="sd">        solution_name : str, optional</span>
+<span class="sd">             Name of the solution. The default is ``None``.</span>
+<span class="sd">        type : string, optional</span>
+<span class="sd">             The default is ``&quot;Object&quot;``.</span>
+<span class="sd">        geometryType : str, optional</span>
+<span class="sd">             Type of the geometry. The default is ``&quot;Volume&quot;``.</span>
+<span class="sd">        quantity : str, optional</span>
+<span class="sd">             The default is ``&quot;Temperature&quot;``.</span>
+<span class="sd">        variation : str, optional</span>
+<span class="sd">             The default is ``&quot;&quot;``.</span>
+<span class="sd">        variationlist : list, optional</span>
+<span class="sd">             The default is ``[]``.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -1140,8 +1161,8 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        linkData :</span>
-<span class="sd">            list containing data in the link description</span>
+<span class="sd">        linkData : list</span>
+<span class="sd">            List containing the data in the link description.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -1173,33 +1194,33 @@
 <div class="viewcode-block" id="Icepak.create_ipk_3dcomponent_pcb"><a class="viewcode-back" href="../../API/Icepak.html#pyaedt.icepak.Icepak.create_ipk_3dcomponent_pcb">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="nf">create_ipk_3dcomponent_pcb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">compName</span><span class="p">,</span> <span class="n">setupLinkInfo</span><span class="p">,</span> <span class="n">solutionFreq</span><span class="p">,</span> <span class="n">resolution</span><span class="p">,</span> <span class="n">PCB_CS</span><span class="o">=</span><span class="s2">&quot;Global&quot;</span><span class="p">,</span>
                                    <span class="n">rad</span><span class="o">=</span><span class="s2">&quot;Nothing&quot;</span><span class="p">,</span> <span class="n">extenttype</span><span class="o">=</span><span class="s2">&quot;Bounding Box&quot;</span><span class="p">,</span> <span class="n">outlinepolygon</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">powerin</span><span class="o">=</span><span class="s2">&quot;0W&quot;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create a PCB Component in Icepak linked to HFSS3DLayout object</span>
+        <span class="sd">&quot;&quot;&quot;Create a PCB component in Icepak that is linked to an HFSS 3D Layout object.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        compName :</span>
-<span class="sd">            name of the new component</span>
+<span class="sd">        compName : str</span>
+<span class="sd">            Name of the new PCB component.</span>
 <span class="sd">        setupLinkInfo :</span>
-<span class="sd">            array of 5 elements [projectname, designname, solution name, forcesimulation (bool), preserve results (bool)</span>
+<span class="sd">            Array of five elements: ``[projectname, designname, solution name, forcesimulation (bool), preserve results (bool)``.</span>
 <span class="sd">        solutionFreq :</span>
-<span class="sd">            Freq of solution if cosimulation is requested</span>
-<span class="sd">        resolution :</span>
-<span class="sd">            resolution of the mapping (int)</span>
-<span class="sd">        PCB_CS :</span>
-<span class="sd">            coordinate System (Default value = &quot;Global&quot;)</span>
-<span class="sd">        rad :</span>
-<span class="sd">            radiating faces (Default value = &quot;Nothing&quot;)</span>
-<span class="sd">        extenttype :</span>
-<span class="sd">            extend type. Bounding Box or Polygon (Default value = &quot;Bounding Box&quot;)</span>
-<span class="sd">        outlinepolygon :</span>
-<span class="sd">            in case of extentype is Polygon the name of the polygon (Default value = &quot;&quot;)</span>
-<span class="sd">        powerin :</span>
-<span class="sd">            in case cosim is disabled, the power to dissipate (default 0W)</span>
+<span class="sd">            Frequency of the solution if cosimulation is requested.</span>
+<span class="sd">        resolution : int</span>
+<span class="sd">            Resolution of the mapping.</span>
+<span class="sd">        PCB_CS : str, optional</span>
+<span class="sd">            Coordinate system for the PCB. The default is ``&quot;Global&quot;``.</span>
+<span class="sd">        rad : str, optional</span>
+<span class="sd">            Radiating faces. The default is ``&quot;Nothing&quot;``.</span>
+<span class="sd">        extenttype : str, optional</span>
+<span class="sd">            Type of the extent. Choices are ``&quot;Bounding Box&quot;`` or ``&quot;Polygon&quot;``.  The default is ``&quot;Bounding Box&quot;``.</span>
+<span class="sd">        outlinepolygon : str, optional</span>
+<span class="sd">            Name of the polygon if ``extentype=&quot;Polygon&quot;``. The default is ``&quot;&quot;``.</span>
+<span class="sd">        powerin : str, optional</span>
+<span class="sd">            Power to dissipate if cosimulation is disabled. The default is ``&quot;0W&quot;``.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        type</span>
-<span class="sd">            Bool</span>
+<span class="sd">        bool</span>
+<span class="sd">             ``True`` when successful, ``False`` when failed.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">lowRad</span><span class="p">,</span> <span class="n">highRad</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_radiation_settings</span><span class="p">(</span><span class="n">rad</span><span class="p">)</span>
@@ -1269,29 +1290,29 @@
 <div class="viewcode-block" id="Icepak.create_pcb_from_3dlayout"><a class="viewcode-back" href="../../API/Icepak.html#pyaedt.icepak.Icepak.create_pcb_from_3dlayout">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="nf">create_pcb_from_3dlayout</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">component_name</span><span class="p">,</span> <span class="n">project_name</span><span class="p">,</span> <span class="n">design_name</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
                                  <span class="n">extenttype</span><span class="o">=</span><span class="s2">&quot;Bounding Box&quot;</span><span class="p">,</span> <span class="n">outlinepolygon</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">close_linked_project_after_import</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create a PCB Component in Icepak linked to HFSS3DLayout object linking only the geometry file (no solution linked)</span>
+        <span class="sd">&quot;&quot;&quot;Create a PCB component in Icepak that is linked to an HFSS 3D Layout object linking only to the geometry file (no solution linked)</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        component_name :</span>
-<span class="sd">            Name of the new component created in Icepak</span>
-<span class="sd">        project_name :</span>
-<span class="sd">            Project name or project full path</span>
-<span class="sd">        design_name :</span>
-<span class="sd">            design name</span>
-<span class="sd">        resolution :</span>
-<span class="sd">            resolution of the mapping. Default2</span>
+<span class="sd">        component_name : str</span>
+<span class="sd">            Name of the new PCB component created in Icepak.</span>
+<span class="sd">        project_name : str</span>
+<span class="sd">            Name of the oroject or the full path to the project.</span>
+<span class="sd">        design_name : str</span>
+<span class="sd">            Name of the design.</span>
+<span class="sd">        resolution : optional</span>
+<span class="sd">            Resolution of the mapping. The default is `2`.</span>
 <span class="sd">        extenttype :</span>
-<span class="sd">            extent type. Polygon or Bounding Box (Default value = &quot;Bounding Box&quot;)</span>
-<span class="sd">        outlinepolygon :</span>
-<span class="sd">            outline polygon in case Polygon extentyype is chosen (Default value = &quot;&quot;)</span>
-<span class="sd">        close_linked_project_after_import :</span>
-<span class="sd">            close the aedb project after the import (Default value = True)</span>
+<span class="sd">            Type of the extent. Choices are ``&quot;Polygon&quot;`` or ``&quot;Bounding Box&quot;``. The default value is ``&quot;Bounding Box&quot;``.</span>
+<span class="sd">        outlinepolygon : str, optional</span>
+<span class="sd">            Name of the outline polygon if ``extentyype=&quot;Polygon&quot;``. The default is ``&quot;&quot;``.</span>
+<span class="sd">        close_linked_project_after_import : bool, optional</span>
+<span class="sd">            Whether to close the AEDT project after the import. The default is ``True``.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        type</span>
-<span class="sd">            Bool</span>
+<span class="sd">        bool</span>
+<span class="sd">             ``True`` when successful, ``False`` when failed.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">link_data</span> <span class="o">=</span> <span class="p">[</span><span class="n">project_name</span><span class="p">,</span> <span class="n">design_name</span><span class="p">,</span>  <span class="s2">&quot;&lt;--EDB Layout Data--&gt;&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">]</span>
@@ -1314,10 +1335,10 @@
 <span class="sd">            </span>
 <span class="sd">        sourceDesign :</span>
 <span class="sd">            </span>
-<span class="sd">        sourceProject :</span>
-<span class="sd">             (Default value = None)</span>
-<span class="sd">        sourceProjectPath :</span>
-<span class="sd">             (Default value = None)</span>
+<span class="sd">        sourceProject : str, optional</span>
+<span class="sd">            The default is ``None``.</span>
+<span class="sd">        sourceProjectPath : str, optional</span>
+<span class="sd">            The default is ``None``.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -1346,16 +1367,16 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        fileName :</span>
-<span class="sd">            </span>
-<span class="sd">        filePath :</span>
-<span class="sd">            </span>
-<span class="sd">        fileFormat :</span>
-<span class="sd">             (Default value = &quot;.step&quot;)</span>
-<span class="sd">        object_list :</span>
-<span class="sd">             (Default value = [])</span>
-<span class="sd">        removed_objects :</span>
-<span class="sd">             (Default value = [])</span>
+<span class="sd">        fileName : str</span>
+<span class="sd">            Name of the file.   </span>
+<span class="sd">        filePath : str</span>
+<span class="sd">            Path to the file.</span>
+<span class="sd">        fileFormat : str, optional</span>
+<span class="sd">             Format of the file. The default is ``&quot;.step&quot;``.</span>
+<span class="sd">        object_list : list</span>
+<span class="sd">             The default is ``[]``.</span>
+<span class="sd">        removed_objects : list</span>
+<span class="sd">             The default is ``[]``.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -1391,27 +1412,27 @@
 <div class="viewcode-block" id="Icepak.globalMeshSettings"><a class="viewcode-back" href="../../API/Icepak.html#pyaedt.icepak.Icepak.globalMeshSettings">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="nf">globalMeshSettings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">meshtype</span><span class="p">,</span> <span class="n">gap_min_elements</span><span class="o">=</span><span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="n">noOgrids</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">MLM_en</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">MLM_Type</span><span class="o">=</span><span class="s2">&quot;3D&quot;</span><span class="p">,</span>
                            <span class="n">stairStep_en</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">edge_min_elements</span><span class="o">=</span><span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="nb">object</span><span class="o">=</span><span class="s2">&quot;Region&quot;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create custom Mesh tailored on PCB Design</span>
+        <span class="sd">&quot;&quot;&quot;Create a custom mesh tailored on a PCB design.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        meshtype :</span>
-<span class="sd">            1 coarse, 2 standard, 3 very accurate</span>
-<span class="sd">        gap_min_elements :</span>
-<span class="sd">            param noOgrids: (Default value = &quot;1&quot;)</span>
-<span class="sd">        MLM_en :</span>
-<span class="sd">            param MLM_Type: (Default value = True)</span>
-<span class="sd">        stairStep_en :</span>
-<span class="sd">            param edge_min_elements: (Default value = False)</span>
-<span class="sd">        object :</span>
-<span class="sd">            return: (Default value = &quot;Region&quot;)</span>
-<span class="sd">        noOgrids :</span>
-<span class="sd">             (Default value = False)</span>
-<span class="sd">        MLM_Type :</span>
-<span class="sd">             (Default value = &quot;3D&quot;)</span>
-<span class="sd">        edge_min_elements :</span>
-<span class="sd">             (Default value = &quot;1&quot;)</span>
-
+<span class="sd">        meshtype : </span>
+<span class="sd">            Type of mesh. Choices are ``1``, ``2``, and ``3``, which represent respectively a coarse, standard, or very accurate mesh.</span>
+<span class="sd">        gap_min_elements : str, optional</span>
+<span class="sd">            The default is ``&quot;1&quot;``.</span>
+<span class="sd">        noOgrids : bool, optional</span>
+<span class="sd">            The default is ``False``.</span>
+<span class="sd">        MLM_en: bool, optional</span>
+<span class="sd">            The default is ``True``.</span>
+<span class="sd">        MLM_Type: str, optional</span>
+<span class="sd">            The default is ``&quot;3D&quot;``.</span>
+<span class="sd">        stairStep_en : bool, optional</span>
+<span class="sd">            The default is ``False``.</span>
+<span class="sd">        edge_min_elements: str, optional</span>
+<span class="sd">            The default is ``&quot;1&quot;``.</span>
+<span class="sd">        object : str, optional</span>
+<span class="sd">            The default value is ``&quot;Region&quot;``.</span>
+<span class="sd">        </span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 
@@ -1457,14 +1478,10 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        scale_factor :</span>
-<span class="sd">             (Default value = 1.0)</span>
-<span class="sd">        restore_padding_values :</span>
-<span class="sd">             (Default value = [50)</span>
-<span class="sd">        50 :</span>
-<span class="sd">            </span>
-<span class="sd">        50] :</span>
-<span class="sd">            </span>
+<span class="sd">        scale_factor : float, optional</span>
+<span class="sd">             The default is ``1.0``.</span>
+<span class="sd">        restore_padding_values : list, optional</span>
+<span class="sd">             The default is ``[50,50,50,50,50,50]``.  </span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -1508,23 +1525,19 @@
 
 <div class="viewcode-block" id="Icepak.create_temp_point_monitor"><a class="viewcode-back" href="../../API/Icepak.html#pyaedt.icepak.Icepak.create_temp_point_monitor">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="nf">create_temp_point_monitor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point_name</span><span class="p">,</span> <span class="n">point_coord</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]):</span>
-        <span class="sd">&quot;&quot;&quot;Create a Temperature Monitor for simulation</span>
+        <span class="sd">&quot;&quot;&quot;Create a temperature monitor for simulation.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        point_name :</span>
-<span class="sd">            Name of the temperature monitor</span>
-<span class="sd">        point_coord :</span>
-<span class="sd">            Coordinate of the point monitor (Default value = [0)</span>
-<span class="sd">        0 :</span>
-<span class="sd">            </span>
-<span class="sd">        0] :</span>
-<span class="sd">            </span>
-
+<span class="sd">        point_name : str</span>
+<span class="sd">            Name of the temperature monitor.</span>
+<span class="sd">        point_coord : list, optional</span>
+<span class="sd">            Coordinate of the point monitor. The default is ``[0,0,0]``.</span>
+<span class="sd">        </span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        type</span>
-<span class="sd">            Boolean</span>
+<span class="sd">        bool</span>
+<span class="sd">             ``True`` when successful, ``False`` when failed.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">arg1</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;NAME:PointParameters&quot;</span><span class="p">,</span>
@@ -1548,17 +1561,17 @@
 
 <div class="viewcode-block" id="Icepak.delete_em_losses"><a class="viewcode-back" href="../../API/Icepak.html#pyaedt.icepak.Icepak.delete_em_losses">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="nf">delete_em_losses</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bound_name</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Delete EM Losses Boundaries</span>
+        <span class="sd">&quot;&quot;&quot;Delete EM losses boundaries.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        bound_name :</span>
-<span class="sd">            Name of boundary to delete</span>
+<span class="sd">        bound_name : str</span>
+<span class="sd">            Name of the boundary to delete</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        type</span>
-<span class="sd">            Boolean</span>
+<span class="sd">        bool</span>
+<span class="sd">            ``True`` when successful, ``False`` when failed.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -1567,17 +1580,17 @@
 
 <div class="viewcode-block" id="Icepak.delete_pcb_component"><a class="viewcode-back" href="../../API/Icepak.html#pyaedt.icepak.Icepak.delete_pcb_component">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="nf">delete_pcb_component</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">comp_name</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Delete PCB Component</span>
+        <span class="sd">&quot;&quot;&quot;Delete a PCB component.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        comp_name :</span>
-<span class="sd">            PCB Name</span>
+<span class="sd">        comp_name : str</span>
+<span class="sd">            Name of the PCB component.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        type</span>
-<span class="sd">            Boolean</span>
+<span class="sd">        bool</span>
+<span class="sd">            ``True`` when successful, ``False`` when failed.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">arg</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;NAME:Selections&quot;</span><span class="p">,</span>
@@ -1608,7 +1621,7 @@
     
     <div class="footer-item">
       <p class="copyright">
-    &copy; Copyright Copyright (c) 2021 ANSYS, Inc. All rights reserved..<br/>
+    &copy; Copyright (c) 2021 ANSYS, Inc. All rights reserved.<br/>
 </p>
     </div>
     

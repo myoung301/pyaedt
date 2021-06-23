@@ -5,7 +5,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaedt.desktop &#8212; PyAEDT 0.2.1 documentation</title>
+    <title>pyaedt.desktop &#8212; PyAEDT 0.3.dev0
+ documentation</title>
     
   <link href="../../_static/css/theme.css" rel="stylesheet" />
   <link href="../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -74,7 +75,7 @@
         </li>
         
         <li class="nav-item ">
-            <a class="nav-link" href="../../API/API.html">API documentation</a>
+            <a class="nav-link" href="../../API/API.html">API Documentation</a>
         </li>
         
         <li class="nav-item ">
@@ -139,27 +140,29 @@
               <div>
                 
   <h1>Source code for pyaedt.desktop</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;The ``Desktop`` module is used to initialize AEDT.</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">The ``Desktop`` module is used to initialize AEDT.</span>
 
 <span class="sd">This module initializes AEDT and MessageManager to manage AEDT.</span>
-<span class="sd">You can initialize the ``Desktop`` module before launching an app or have the app automatically initialize it to the latest installed AEDT version.</span>
+<span class="sd">You can initialize the ``Desktop`` module before launching an app or </span>
+<span class="sd">have the app automatically initialize it to the latest installed AEDT version.</span>
 
 
 <span class="sd">Examples</span>
 <span class="sd">--------</span>
-<span class="sd">Launch AEDT 2020 R1 in non-graphical mode and initialize HFSS</span>
+<span class="sd">Launch AEDT 2021 R1 in non-graphical mode and initialize HFSS.</span>
 
 <span class="sd">&gt;&gt;&gt; import pyaedt</span>
-<span class="sd">&gt;&gt;&gt; desktop = pyaedt.Desktop(&quot;2020.1&quot;, NG=True)</span>
+<span class="sd">&gt;&gt;&gt; desktop = pyaedt.Desktop(&quot;2021.1&quot;, NG=True)</span>
 <span class="sd">&gt;&gt;&gt; hfss = pyaedt.Hfss()</span>
 
-<span class="sd">Launch AEDT 2019 R3 in graphical mode and initialize HFSS</span>
+<span class="sd">Launch AEDT 2021 R1 in graphical mode and initialize HFSS.</span>
 
-<span class="sd">&gt;&gt;&gt; desktop = Desktop(&quot;2019.3&quot;)</span>
+<span class="sd">&gt;&gt;&gt; desktop = Desktop(&quot;2021.1&quot;)</span>
 <span class="sd">&gt;&gt;&gt; hfss = pyaedt.Hfss()</span>
 
-<span class="sd">The previous example initializes the ``Desktop`` module to the latest AEDT version installed on your machine in</span>
-<span class="sd">graphical mode and initializes HFSS.</span>
+<span class="sd">The previous example initializes the ``Desktop`` module to the latest AEDT version </span>
+<span class="sd">installed on your machine in graphical mode and initializes HFSS.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
@@ -210,9 +213,9 @@
 
 
 <div class="viewcode-block" id="exception_to_desktop"><a class="viewcode-back" href="../../API/Desktop.html#pyaedt.desktop.exception_to_desktop">[docs]</a><span class="k">def</span> <span class="nf">exception_to_desktop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ex_value</span><span class="p">,</span> <span class="n">tb_data</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Writes the trace stack to the desktop when a python error occurs</span>
+    <span class="sd">&quot;&quot;&quot;Writes the trace stack to the desktop when a python error occurs.</span>
 <span class="sd">    </span>
-<span class="sd">    It adds the message to AEDT Global message manager and to the log file (if present)</span>
+<span class="sd">    It adds the message to the AEDT global message manager and to the log file (if present).</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -246,32 +249,43 @@
 
 
 <div class="viewcode-block" id="update_aedt_registry"><a class="viewcode-back" href="../../API/Desktop.html#pyaedt.desktop.update_aedt_registry">[docs]</a><span class="k">def</span> <span class="nf">update_aedt_registry</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">desktop_version</span><span class="o">=</span><span class="s2">&quot;193&quot;</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Windows Only</span>
+    <span class="sd">&quot;&quot;&quot;Update AEDT registry key.</span>
 <span class="sd">    </span>
-<span class="sd">    Update aedt options registry keys. value includes &quot;&quot; if needed</span>
+<span class="sd">    .. note::</span>
+<span class="sd">       This method is only supported in Windows.</span>
 <span class="sd">    </span>
-<span class="sd">    Examples</span>
-<span class="sd">    --------</span>
-<span class="sd">    </span>
-<span class="sd">    updateAEDTRegistry(&quot;HFSS/HPCLicenseType&quot;,&#39;&quot;&#39;12&#39;&quot;&#39;)</span>
-<span class="sd">    </span>
-<span class="sd">    updateAEDTRegistry(&quot;Icepak/HPCLicenseType&quot;,&#39;&quot;&#39;8&#39;&quot;&#39;)</span>
-<span class="sd">    </span>
-<span class="sd">    updateAEDTRegistry(&quot;HFSS/UseLegacyElectronicsHPC&quot;,&quot;0&quot;)</span>
-<span class="sd">    </span>
-<span class="sd">    updateAEDTRegistry(&quot;HFSS/MPIVendor&quot;,&#39;&quot;&#39;+&quot;Intel&quot;+&#39;&quot;&#39;)</span>
-
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    key :</span>
-<span class="sd">        </span>
-<span class="sd">    value :</span>
-<span class="sd">        </span>
-<span class="sd">    desktop_version :</span>
-<span class="sd">         (Default value = &quot;193&quot;)</span>
+<span class="sd">    key : str</span>
+<span class="sd">        Registry key.</span>
+<span class="sd">    value : str</span>
+<span class="sd">        Value to which to set the registry key. Value includes &quot;&quot; if needed.</span>
+<span class="sd">    desktop_version : str, optional</span>
+<span class="sd">        Version of AEDT to use. The default is ``&quot;193&quot;``.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Update the HPC license type for HFSS in the AEDT registry.</span>
+<span class="sd">    </span>
+<span class="sd">    &gt;&gt;&gt; updateAEDTRegistry(&quot;HFSS/HPCLicenseType&quot;, &quot;12&quot;)</span>
+<span class="sd">    </span>
+<span class="sd">    Update the HPC license type for Icepak in the AEDT registry.</span>
+<span class="sd">    </span>
+<span class="sd">    &gt;&gt;&gt; updateAEDTRegistry(&quot;Icepak/HPCLicenseType&quot;, &quot;8&quot;)</span>
+<span class="sd">    </span>
+<span class="sd">    Update the legacy HPC license type for HFSS in the AEDT registry.</span>
+<span class="sd">    </span>
+<span class="sd">    &gt;&gt;&gt; updateAEDTRegistry(&quot;HFSS/UseLegacyElectronicsHPC&quot;, &quot;0&quot;)</span>
+<span class="sd">    </span>
+<span class="sd">    Update the MPI vendor for HFSS in the AEDT registry.</span>
+<span class="sd">    </span>
+<span class="sd">    &gt;&gt;&gt; updateAEDTRegistry(&quot;HFSS/MPIVendor&quot;, &quot;Intel&quot;)</span>
+
+<span class="sd">   </span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">import</span> <span class="nn">subprocess</span>
@@ -289,14 +303,14 @@
 
 
 <div class="viewcode-block" id="release_desktop"><a class="viewcode-back" href="../../API/Desktop.html#pyaedt.desktop.release_desktop">[docs]</a><span class="k">def</span> <span class="nf">release_desktop</span><span class="p">(</span><span class="n">close_projects</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">close_desktop</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Release the Desktop API</span>
+    <span class="sd">&quot;&quot;&quot;Release the AEDT API.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    close_projects :</span>
-<span class="sd">        Boolean, Close the projects opened in the session (Default value = True)</span>
-<span class="sd">    close_desktop :</span>
-<span class="sd">        Boolean, Close the active Desktop Session (Default value = True)</span>
+<span class="sd">    close_projects : bool, optional</span>
+<span class="sd">        Whether to close the projects opened in the session. The default is ``True``.</span>
+<span class="sd">    close_desktop : bool, optional</span>
+<span class="sd">        Whether to close the active AEDT session. The default is ``True``.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -361,15 +375,16 @@
 
 
 <div class="viewcode-block" id="force_close_desktop"><a class="viewcode-back" href="../../API/Desktop.html#pyaedt.desktop.force_close_desktop">[docs]</a><span class="k">def</span> <span class="nf">force_close_desktop</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;Close all the projects and kill oDesktop</span>
+    <span class="sd">&quot;&quot;&quot;Close all AEDT projects and shut down AEDT.</span>
 <span class="sd">    </span>
-<span class="sd">    :return: True (Closed) | False (Failed to Close)</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
+<span class="sd">    bool</span>
+<span class="sd">        ``True`` when successful, ``False`` when failed.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">Module</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="s1">&#39;__main__&#39;</span><span class="p">]</span>
@@ -412,7 +427,41 @@
 
 
 <div class="viewcode-block" id="Desktop"><a class="viewcode-back" href="../../API/Desktop.html#pyaedt.desktop.Desktop">[docs]</a><span class="k">class</span> <span class="nc">Desktop</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;The core module that initialize Ansys Electronics Desktop tool based on inputs provided:&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Initialize AEDT based on the inputs provided.</span>
+<span class="sd">    </span>
+<span class="sd">    .. note::</span>
+<span class="sd">       On Windows, it works without limitations in IronPython and CPython.</span>
+<span class="sd">       On Linux, it works only in embedded IronPython in AEDT.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    specified_version: str, optional</span>
+<span class="sd">        Version of AEDT to use. The default is ``None``. If ``None``, the</span>
+<span class="sd">        active setup is used or the latest installed version is used.</span>
+<span class="sd">    NG: bool, optional</span>
+<span class="sd">        Whether to launch AEDT in the non-graphical mode. The default </span>
+<span class="sd">        is ``False``, which launches AEDT in the graphical mode.</span>
+<span class="sd">    AlwaysNew: bool, optional</span>
+<span class="sd">        Whether to launch an instance of AEDT in a new thread, even if </span>
+<span class="sd">        another instance of the ``specified_version`` is active on the machine.</span>
+<span class="sd">        The default is ``True``.</span>
+<span class="sd">    release_on_exit: bool, optional</span>
+<span class="sd">        Whether to release AEDT on exit. The default is ``True``.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Launch AEDT 2021 R1 in non-graphical mode and initialize HFSS.</span>
+
+<span class="sd">    &gt;&gt;&gt; import pyaedt</span>
+<span class="sd">    &gt;&gt;&gt; desktop = pyaedt.Desktop(&quot;2021.1&quot;, NG=True)</span>
+<span class="sd">    &gt;&gt;&gt; hfss = pyaedt.Hfss()</span>
+
+<span class="sd">    Launch AEDT 2021 R1 in graphical mode and initialize HFSS.</span>
+
+<span class="sd">    &gt;&gt;&gt; desktop = Desktop(&quot;2021.1&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; hfss = pyaedt.Hfss()</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+            
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">version_keys</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
@@ -439,22 +488,17 @@
     <span class="k">def</span> <span class="nf">current_version</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">version_keys</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-
+        
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">specified_version</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">NG</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">AlwaysNew</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">release_on_exit</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Init Electronic Desktop. On Windows it works without limitations in IronPython and CPython. On Linux it works only in embedded Ironpython in AEDT</span>
-
-<span class="sd">        :param specified_version: Version of AEDT to be used. if None. Latest version of AEDT is used</span>
-<span class="sd">        :param NG: Non Graphical Boolean. True launch AEDT in NG Mode</span>
-<span class="sd">        :param AlwaysNew: New Thread Boolean. if True it launches a new instance of AEDT even if another one of the specified_version is active on the machine</span>
-<span class="sd">        :param release_on_exit: Boolean. Release Desktop on Exit</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Initialize desktop.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_main</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="s1">&#39;__main__&#39;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_main</span><span class="o">.</span><span class="n">close_on_exit</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_main</span><span class="o">.</span><span class="n">isoutsideDesktop</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_main</span><span class="o">.</span><span class="n">pyaedt_version</span> <span class="o">=</span> <span class="n">pyaedtversion</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">release</span> <span class="o">=</span> <span class="n">release_on_exit</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Launching Desktop Init&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logfile</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">module_logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="s2">&quot;oDesktop&quot;</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_main</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_main</span><span class="o">.</span><span class="n">oDesktop</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_main</span><span class="o">.</span><span class="n">AEDTVersion</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_main</span><span class="o">.</span><span class="n">oDesktop</span><span class="o">.</span><span class="n">GetVersion</span><span class="p">()[</span><span class="mi">0</span><span class="p">:</span><span class="mi">6</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_main</span><span class="o">.</span><span class="n">oDesktop</span><span class="o">.</span><span class="n">RestoreWindow</span><span class="p">()</span>
@@ -491,20 +535,21 @@
                     <span class="n">oAnsoftApp</span> <span class="o">=</span> <span class="n">StandalonePyScriptWrapper</span><span class="o">.</span><span class="n">CreateObjectNew</span><span class="p">(</span><span class="n">NG</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">oAnsoftApp</span> <span class="o">=</span> <span class="n">StandalonePyScriptWrapper</span><span class="o">.</span><span class="n">CreateObject</span><span class="p">(</span><span class="n">version</span><span class="p">)</span>
-
                 <span class="bp">self</span><span class="o">.</span><span class="n">_main</span><span class="o">.</span><span class="n">oDesktop</span> <span class="o">=</span> <span class="n">oAnsoftApp</span><span class="o">.</span><span class="n">GetAppDesktop</span><span class="p">()</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_main</span><span class="o">.</span><span class="n">isoutsideDesktop</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="k">elif</span> <span class="n">_com</span> <span class="o">==</span> <span class="s1">&#39;pythonnet_v3&#39;</span><span class="p">:</span>
                 <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">base_path</span><span class="p">)</span>
                 <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_path</span><span class="p">,</span> <span class="s1">&#39;PythonFiles&#39;</span><span class="p">,</span> <span class="s1">&#39;DesktopPlugin&#39;</span><span class="p">))</span>
-                <span class="nb">print</span><span class="p">(</span><span class="n">base_path</span><span class="p">)</span>
+                <span class="n">launch_msg</span> <span class="o">=</span> <span class="s2">&quot;Launching AEDT installation </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">base_path</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">launch_msg</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;===================================================================================&quot;</span><span class="p">)</span>
                 <span class="n">clr</span><span class="o">.</span><span class="n">AddReference</span><span class="p">(</span><span class="s2">&quot;Ansys.Ansoft.CoreCOMScripting&quot;</span><span class="p">)</span>
                 <span class="n">AnsoftCOMUtil</span> <span class="o">=</span> <span class="nb">__import__</span><span class="p">(</span><span class="s2">&quot;Ansys.Ansoft.CoreCOMScripting&quot;</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">COMUtil</span> <span class="o">=</span> <span class="n">AnsoftCOMUtil</span><span class="o">.</span><span class="n">Ansoft</span><span class="o">.</span><span class="n">CoreCOMScripting</span><span class="o">.</span><span class="n">Util</span><span class="o">.</span><span class="n">COMUtil</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_main</span><span class="o">.</span><span class="n">COMUtil</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">COMUtil</span>
                 <span class="n">StandalonePyScriptWrapper</span> <span class="o">=</span> <span class="n">AnsoftCOMUtil</span><span class="o">.</span><span class="n">Ansoft</span><span class="o">.</span><span class="n">CoreCOMScripting</span><span class="o">.</span><span class="n">COM</span><span class="o">.</span><span class="n">StandalonePyScriptWrapper</span>
-                <span class="n">oAnsoftApp</span> <span class="o">=</span> <span class="kc">None</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Launching AEDT with Module Pythonnet&quot;</span><span class="p">)</span>
+
+                <span class="n">module_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Launching AEDT with Module Pythonnet&quot;</span><span class="p">)</span>
                 <span class="n">processID</span> <span class="o">=</span> <span class="p">[]</span>
                 <span class="k">if</span> <span class="n">IsWindows</span><span class="p">:</span>
                     <span class="n">username</span> <span class="o">=</span> <span class="n">getpass</span><span class="o">.</span><span class="n">getuser</span><span class="p">()</span>
@@ -517,13 +562,13 @@
                             <span class="n">processID</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
 
                 <span class="k">if</span> <span class="n">NG</span> <span class="ow">or</span> <span class="n">AlwaysNew</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">processID</span><span class="p">:</span>
-                    <span class="c1"># forcing new object in case of non-graphical run or if no process already exists</span>
+                    <span class="c1"># Force new object if no non-graphical instance is running or if there is not an already existing process.</span>
                     <span class="n">App</span> <span class="o">=</span> <span class="n">StandalonePyScriptWrapper</span><span class="o">.</span><span class="n">CreateObjectNew</span><span class="p">(</span><span class="n">NG</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">App</span> <span class="o">=</span> <span class="n">StandalonePyScriptWrapper</span><span class="o">.</span><span class="n">CreateObject</span><span class="p">(</span><span class="n">version</span><span class="p">)</span>
                 <span class="n">processID2</span> <span class="o">=</span> <span class="p">[]</span>
                 <span class="k">if</span> <span class="n">IsWindows</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Info: Using Windows TaskManager to Load processes&quot;</span><span class="p">)</span>
+                    <span class="n">module_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Info: Using Windows TaskManager to Load processes&quot;</span><span class="p">)</span>
                     <span class="n">username</span> <span class="o">=</span> <span class="n">getpass</span><span class="o">.</span><span class="n">getuser</span><span class="p">()</span>
                     <span class="n">process</span> <span class="o">=</span> <span class="s2">&quot;ansysedt.exe&quot;</span>
                     <span class="n">output</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">popen</span><span class="p">(</span><span class="s1">&#39;tasklist /FI &quot;IMAGENAME eq ansysedt.exe&quot; /v&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
@@ -544,7 +589,7 @@
                     <span class="bp">self</span><span class="o">.</span><span class="n">_main</span><span class="o">.</span><span class="n">isoutsideDesktop</span> <span class="o">=</span> <span class="kc">True</span>
                 <span class="k">elif</span> <span class="n">version_key</span><span class="o">&gt;=</span><span class="s2">&quot;2021.1&quot;</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_main</span><span class="o">.</span><span class="n">close_on_exit</span> <span class="o">=</span> <span class="kc">True</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Info: </span><span class="si">{}</span><span class="s2"> Started with Process ID </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">version</span><span class="p">,</span> <span class="n">proc</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+                    <span class="n">module_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Info: </span><span class="si">{}</span><span class="s2"> Started with Process ID </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">version</span><span class="p">,</span> <span class="n">proc</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
                     <span class="n">context</span> <span class="o">=</span> <span class="n">pythoncom</span><span class="o">.</span><span class="n">CreateBindCtx</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
                     <span class="n">running_coms</span> <span class="o">=</span> <span class="n">pythoncom</span><span class="o">.</span><span class="n">GetRunningObjectTable</span><span class="p">()</span>
                     <span class="n">monikiers</span> <span class="o">=</span> <span class="n">running_coms</span><span class="o">.</span><span class="n">EnumRunning</span><span class="p">()</span>
@@ -558,12 +603,12 @@
                             <span class="bp">self</span><span class="o">.</span><span class="n">_main</span><span class="o">.</span><span class="n">oDesktop</span> <span class="o">=</span> <span class="n">win32com</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">Dispatch</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">QueryInterface</span><span class="p">(</span><span class="n">pythoncom</span><span class="o">.</span><span class="n">IID_IDispatch</span><span class="p">))</span>
                             <span class="k">break</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;pyaedt is not supported in versions older than 2021.1&quot;</span><span class="p">)</span>
+                    <span class="n">module_logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;PyAEDT is not supported in AEDT versions older than 2021.1.&quot;</span><span class="p">)</span>
                     <span class="n">oAnsoftApp</span> <span class="o">=</span> <span class="n">win32com</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">Dispatch</span><span class="p">(</span><span class="n">version</span><span class="p">)</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_main</span><span class="o">.</span><span class="n">oDesktop</span> <span class="o">=</span> <span class="n">oAnsoftApp</span><span class="o">.</span><span class="n">GetAppDesktop</span><span class="p">()</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_main</span><span class="o">.</span><span class="n">isoutsideDesktop</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Launching AEDT with Module win32com.client&quot;</span><span class="p">)</span>
+                <span class="n">module_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Launching AEDT with Module win32com.client&quot;</span><span class="p">)</span>
                 <span class="n">oAnsoftApp</span> <span class="o">=</span> <span class="n">win32com</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">Dispatch</span><span class="p">(</span><span class="n">version</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_main</span><span class="o">.</span><span class="n">oDesktop</span> <span class="o">=</span> <span class="n">oAnsoftApp</span><span class="o">.</span><span class="n">GetAppDesktop</span><span class="p">()</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_main</span><span class="o">.</span><span class="n">isoutsideDesktop</span> <span class="o">=</span> <span class="kc">True</span>
@@ -572,30 +617,38 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_main</span><span class="o">.</span><span class="n">oDesktop</span><span class="o">.</span><span class="n">RestoreWindow</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_main</span><span class="o">.</span><span class="n">oMessenger</span> <span class="o">=</span> <span class="n">AEDTMessageManager</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_main</span><span class="o">.</span><span class="n">pyaedt_initialized</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="c1"># Set up the log file in the AEDT project directory</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">handlers</span><span class="p">:</span>
             <span class="n">project_dir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_main</span><span class="o">.</span><span class="n">oDesktop</span><span class="o">.</span><span class="n">GetProjectDirectory</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">project_dir</span><span class="p">,</span> <span class="s2">&quot;pyaedt.log&quot;</span><span class="p">)</span>
             <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span>
-                <span class="n">filename</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">project_dir</span><span class="p">,</span> <span class="s2">&quot;pyaedt.log&quot;</span><span class="p">),</span>
+                <span class="n">filename</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">logfile</span><span class="p">,</span>
                 <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">,</span>
                 <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1">:</span><span class="si">%(name)s</span><span class="s1">:</span><span class="si">%(levelname)-8s</span><span class="s1">:</span><span class="si">%(message)s</span><span class="s1">&#39;</span><span class="p">,</span>
-                <span class="n">datefmt</span><span class="o">=</span><span class="s1">&#39;%Y/%m/</span><span class="si">%d</span><span class="s1"> %H.%M.%S&#39;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
-        <span class="n">info_msg0</span> <span class="o">=</span> <span class="s1">&#39;pyaedt v</span><span class="si">{}</span><span class="s1"> started&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pyaedtversion</span><span class="p">)</span>
-        <span class="n">info_msg1</span> <span class="o">=</span> <span class="s1">&#39;Started external COM connection with module </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">_com</span><span class="p">)</span>
-        <span class="n">info_msg2</span> <span class="o">=</span> <span class="s1">&#39;Python version </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">version</span><span class="p">)</span>
-        <span class="n">info_msg3</span> <span class="o">=</span> <span class="s1">&#39;Exe path: </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">executable</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_main</span><span class="o">.</span><span class="n">oMessenger</span><span class="o">.</span><span class="n">add_info_message</span><span class="p">(</span><span class="n">info_msg0</span><span class="p">,</span> <span class="s1">&#39;Global&#39;</span><span class="p">)</span>
+                <span class="n">datefmt</span><span class="o">=</span><span class="s1">&#39;%Y/%m/</span><span class="si">%d</span><span class="s1"> %H.%M.%S&#39;</span><span class="p">,</span>
+                <span class="n">filemode</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
+
+
+
+        <span class="n">info_msg1</span> <span class="o">=</span> <span class="s1">&#39;pyaedt v</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pyaedtversion</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+        <span class="n">info_msg2</span> <span class="o">=</span> <span class="s1">&#39;Python version </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">version</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_main</span><span class="o">.</span><span class="n">oMessenger</span><span class="o">.</span><span class="n">add_info_message</span><span class="p">(</span><span class="n">info_msg1</span><span class="p">,</span> <span class="s1">&#39;Global&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_main</span><span class="o">.</span><span class="n">oMessenger</span><span class="o">.</span><span class="n">add_info_message</span><span class="p">(</span><span class="n">info_msg2</span><span class="p">,</span> <span class="s1">&#39;Global&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_main</span><span class="o">.</span><span class="n">oMessenger</span><span class="o">.</span><span class="n">add_info_message</span><span class="p">(</span><span class="n">info_msg3</span><span class="p">,</span> <span class="s1">&#39;Global&#39;</span><span class="p">)</span>
+
+        <span class="n">info_msg3</span> <span class="o">=</span> <span class="s1">&#39;Started external COM connection with module </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">_com</span><span class="p">)</span>
+        <span class="n">info_msg4</span> <span class="o">=</span> <span class="s1">&#39;Exe path: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">executable</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">info_msg3</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">info_msg4</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="n">_com</span> <span class="o">==</span> <span class="s1">&#39;pywin32&#39;</span> <span class="ow">and</span> <span class="p">(</span><span class="n">AlwaysNew</span> <span class="ow">or</span> <span class="n">NG</span><span class="p">):</span>
-            <span class="n">info_msg5</span> <span class="o">=</span> <span class="s1">&#39;AlwaysNew or NG option is not available for pywin32 connection only. Install Pythonnet to support it.&#39;</span>
+            <span class="n">info_msg5</span> <span class="o">=</span> <span class="s1">&#39;The ``AlwaysNew`` or ``NG`` option is not available for a pywin32 connection only. Install Pythonnet to support these options.&#39;</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_main</span><span class="o">.</span><span class="n">oMessenger</span><span class="o">.</span><span class="n">add_info_message</span><span class="p">(</span><span class="n">info_msg5</span><span class="p">,</span> <span class="s1">&#39;Global&#39;</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">_com</span> <span class="o">==</span> <span class="s1">&#39;pythonnet&#39;</span><span class="p">:</span>
             <span class="n">dll_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_path</span><span class="p">,</span><span class="s2">&quot;common&quot;</span><span class="p">,</span><span class="s2">&quot;IronPython&quot;</span><span class="p">,</span> <span class="s2">&quot;dlls&quot;</span><span class="p">)</span>
             <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dll_path</span><span class="p">)</span>
-            <span class="n">info_msg5</span> <span class="o">=</span> <span class="s1">&#39;Adding IronPython common dlls to sys.path: </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dll_path</span><span class="p">)</span>
+            <span class="n">info_msg5</span> <span class="o">=</span> <span class="s1">&#39;Adding IronPython common dlls to the sys.path: </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dll_path</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_main</span><span class="o">.</span><span class="n">oMessenger</span><span class="o">.</span><span class="n">add_info_message</span><span class="p">(</span><span class="n">info_msg5</span><span class="p">,</span> <span class="s1">&#39;Global&#39;</span><span class="p">)</span>
 
     <span class="nd">@property</span>
@@ -609,14 +662,14 @@
         <span class="k">return</span> <span class="bp">self</span>
 
     <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ex_type</span><span class="p">,</span> <span class="n">ex_value</span><span class="p">,</span> <span class="n">ex_traceback</span><span class="p">):</span>
-        <span class="c1"># Write the trace stack to the log file if an exception occurred in the main script</span>
+        <span class="c1"># Write the trace stack to the log file if an exception occurred in the main script.</span>
         <span class="k">if</span> <span class="n">ex_type</span><span class="p">:</span>
             <span class="n">err</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_exception</span><span class="p">(</span><span class="n">ex_value</span><span class="p">,</span> <span class="n">ex_traceback</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">release</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">release_desktop</span><span class="p">(</span><span class="n">close_projects</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_main</span><span class="o">.</span><span class="n">close_on_exit</span><span class="p">,</span> <span class="n">close_on_exit</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_main</span><span class="o">.</span><span class="n">close_on_exit</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_exception</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ex_value</span><span class="p">,</span> <span class="n">tb_data</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Writes the trace stack to the desktop when a python error occurs</span>
+        <span class="sd">&quot;&quot;&quot;Write the trace stack to the desktop when a Python error occurs.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -656,10 +709,12 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        close_projects :</span>
-<span class="sd">             (Default value = True)</span>
-<span class="sd">        close_on_exit :</span>
-<span class="sd">             (Default value = True)</span>
+<span class="sd">        close_projects : bool, optional</span>
+<span class="sd">            Whether to close the projects opened in the session. </span>
+<span class="sd">            The default is ``True``.</span>
+<span class="sd">        close_on_exit : bool, optional</span>
+<span class="sd">            Whether to close the active AEDT session. </span>
+<span class="sd">            The default is ``True``.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -749,7 +804,7 @@
     
     <div class="footer-item">
       <p class="copyright">
-    &copy; Copyright Copyright (c) 2021 ANSYS, Inc. All rights reserved..<br/>
+    &copy; Copyright (c) 2021 ANSYS, Inc. All rights reserved.<br/>
 </p>
     </div>
     

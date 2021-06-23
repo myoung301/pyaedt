@@ -5,7 +5,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaedt.rmxprt &#8212; PyAEDT 0.2.1 documentation</title>
+    <title>pyaedt.rmxprt &#8212; PyAEDT 0.3.dev0
+ documentation</title>
     
   <link href="../../_static/css/theme.css" rel="stylesheet" />
   <link href="../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -74,7 +75,7 @@
         </li>
         
         <li class="nav-item ">
-            <a class="nav-link" href="../../API/API.html">API documentation</a>
+            <a class="nav-link" href="../../API/API.html">API Documentation</a>
         </li>
         
         <li class="nav-item ">
@@ -140,28 +141,26 @@
                 
   <h1>Source code for pyaedt.rmxprt</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">RMxprt Class</span>
-<span class="sd">-------------------</span>
+<span class="sd">This module contains all RMxprt functionalities in the ``Rmxprt`` class.</span>
 
-<span class="sd">This class contains all RMxprt functionalities. It inherits all objects that belong to RMxprt.</span>
+<span class="sd">Examples</span>
+<span class="sd">--------</span>
 
+<span class="sd">Create an instance of ``Rmxprt`` and connect to an existing RMxprt design or create a new RMxprt design if one does not exist.</span>
 
-<span class="sd">Examples:</span>
+<span class="sd">&gt;&gt;&gt; app = Rmxprt()</span>
 
-<span class="sd">app = Rmxprt()     Creates a ``Rmxprt`` object and connects to an existing RMxprt design or creates a new RMxprt design if one is not present.</span>
+<span class="sd">Create an instance of ``Rmxprt`` and link to a project named ``&quot;projectname&quot;``. If this project does not exist, create one with this name.</span>
 
+<span class="sd">&gt;&gt;&gt; app = Rmxprt(projectname)</span>
 
-<span class="sd">app = Rmxprt(projectname)     Creates a ``Rmxprt`` object and links to a project named projectname.</span>
+<span class="sd">Create an instance of ``RMxprt`` and link to a design named ``&quot;designname&quot;`` in a project named ``&quot;projectname&quot;``.</span>
 
+<span class="sd">&gt;&gt;&gt; app = Rmxprt(projectname,designame)</span>
 
-<span class="sd">app = Rmxprt(projectname,designame)     Creates a ``RMxprt`` object and links to a design named designname in a project named projectname.</span>
+<span class="sd">Create an instance of ``RMxprt`` and open the specified project, which is ``myfile.aedt``.</span>
 
-
-<span class="sd">app = Rmxprt(&quot;myfile.aedt&quot;)     Creates a ``RMxprt`` object and opens the specified project.</span>
-
-
-
-<span class="sd">========================================================</span>
+<span class="sd">&gt;&gt;&gt; app = Rmxprt(&quot;myfile.aedt&quot;)</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
@@ -182,7 +181,8 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        parameter_name :</span>
+<span class="sd">        parameter_name : str</span>
+<span class="sd">            Name of the parameter.</span>
 <span class="sd">            </span>
 
 <span class="sd">        Returns</span>
@@ -195,7 +195,7 @@
                 <span class="n">prop_server</span> <span class="o">=</span> <span class="n">key</span>
                 <span class="k">break</span>
         <span class="k">assert</span> <span class="n">prop_server</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span>\
-            <span class="s2">&quot;Unknown parameter name </span><span class="si">{0}</span><span class="s2"> in component </span><span class="si">{1}</span><span class="s2">!&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">prop_server</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">component</span><span class="p">)</span>
+            <span class="s2">&quot;Unknown parameter name </span><span class="si">{0}</span><span class="s2"> exists in component </span><span class="si">{1}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">prop_server</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">component</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">prop_server</span></div>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oeditor</span><span class="p">):</span>
@@ -212,9 +212,10 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        parameter_name :</span>
-<span class="sd">            </span>
+<span class="sd">        parameter_name : str</span>
+<span class="sd">            Name of the parameter.  </span>
 <span class="sd">        value :</span>
+<span class="sd">            Value to assign to the parameter.</span>
 <span class="sd">            </span>
 
 <span class="sd">        Returns</span>
@@ -263,26 +264,41 @@
 
 
 <div class="viewcode-block" id="Rmxprt"><a class="viewcode-back" href="../../API/RMxprt.html#pyaedt.rmxprt.Rmxprt">[docs]</a><span class="k">class</span> <span class="nc">Rmxprt</span><span class="p">(</span><span class="n">FieldAnalysisRMxprt</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;RMxprt Object</span>
+    <span class="sd">&quot;&quot;&quot;RMxprt class.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    projectname :</span>
-<span class="sd">        name of the project to be selected or full path to the project to be opened  or to the AEDTZ  archive. if None try to get active project and, if nothing present to create an empty one</span>
-<span class="sd">    designname :</span>
-<span class="sd">        name of the design to be selected. if None, try to get active design and, if nothing present to create an empty one</span>
-<span class="sd">    solution_type :</span>
-<span class="sd">        solution type to be applied to design. if None default is taken</span>
-<span class="sd">    setup_name :</span>
-<span class="sd">        setup_name to be used as nominal. if none active setup is taken or nothing</span>
+<span class="sd">    projectname : str, optional</span>
+<span class="sd">        Name of the project to select or the full path to the project or AEDTZ archive to open. </span>
+<span class="sd">        The default is ``None``. If ``None``, try to get an active project and, if no projects are present, </span>
+<span class="sd">        create an empty project.</span>
+<span class="sd">    designname : str, optional</span>
+<span class="sd">        Name of the design to select. The default is ``None``. If ``None``, try to get an active design and, </span>
+<span class="sd">        if no designs are present, create an empty design.</span>
+<span class="sd">    solution_type : str, optional</span>
+<span class="sd">        Solution type to apply to the design. The default is ``None``. If ``None``, the default type is applied.</span>
+<span class="sd">    model_units : optional</span>
+<span class="sd">    </span>
+<span class="sd">    setup_name : str, optional</span>
+<span class="sd">        Name of the setup to use as the nominal. The default is ``None``. If ``None``, the active setup </span>
+<span class="sd">        is used or nothing is used.</span>
+<span class="sd">    specified_version: str, optional</span>
+<span class="sd">        The default is ``None``.</span>
+<span class="sd">    NG : bool, optional</span>
+<span class="sd">        Whether to run AEDT in the non-graphical mode. The default is``False``.  </span>
+<span class="sd">    AlwaysNew : bool, optional</span>
+<span class="sd">    </span>
+<span class="sd">    release_on_exit : bool, optional</span>
+<span class="sd">    </span>
 
-<span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projectname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">designname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">solution_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">model_units</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">setup_name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="n">FieldAnalysisRMxprt</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;RMxprtSolution&quot;</span><span class="p">,</span> <span class="n">projectname</span><span class="p">,</span> <span class="n">designname</span><span class="p">,</span> <span class="n">solution_type</span><span class="p">,</span> <span class="n">setup_name</span><span class="p">)</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projectname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">designname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">solution_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">model_units</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">setup_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">specified_version</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">NG</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">AlwaysNew</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">release_on_exit</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="n">FieldAnalysisRMxprt</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;RMxprtSolution&quot;</span><span class="p">,</span> <span class="n">projectname</span><span class="p">,</span> <span class="n">designname</span><span class="p">,</span> <span class="n">solution_type</span><span class="p">,</span> <span class="n">setup_name</span><span class="p">,</span>
+                                     <span class="n">specified_version</span><span class="p">,</span> <span class="n">NG</span><span class="p">,</span> <span class="n">AlwaysNew</span><span class="p">,</span> <span class="n">release_on_exit</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">model_units</span> <span class="ow">or</span> <span class="n">model_units</span> <span class="o">==</span> <span class="s2">&quot;mm&quot;</span><span class="p">:</span>
             <span class="n">model_units</span> <span class="o">=</span> <span class="s2">&quot;mm&quot;</span>
         <span class="k">else</span><span class="p">:</span>
@@ -302,8 +318,6 @@
 
     <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span></div>
-
-
 </pre></div>
 
               </div>
@@ -327,7 +341,7 @@
     
     <div class="footer-item">
       <p class="copyright">
-    &copy; Copyright Copyright (c) 2021 ANSYS, Inc. All rights reserved..<br/>
+    &copy; Copyright (c) 2021 ANSYS, Inc. All rights reserved.<br/>
 </p>
     </div>
     

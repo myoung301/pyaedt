@@ -5,7 +5,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaedt.circuit &#8212; PyAEDT 0.2.1 documentation</title>
+    <title>pyaedt.circuit &#8212; PyAEDT 0.3.dev0
+ documentation</title>
     
   <link href="../../_static/css/theme.css" rel="stylesheet" />
   <link href="../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -74,7 +75,7 @@
         </li>
         
         <li class="nav-item ">
-            <a class="nav-link" href="../../API/API.html">API documentation</a>
+            <a class="nav-link" href="../../API/API.html">API Documentation</a>
         </li>
         
         <li class="nav-item ">
@@ -141,18 +142,41 @@
   <h1>Source code for pyaedt.circuit</h1><div class="highlight"><pre>
 <span></span><span class="c1"># -*- coding: utf-8 -*-</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Circuit Class</span>
-<span class="sd">-------------</span>
-<span class="sd">This class contains the link to the ``Circuit`` object. It includes all</span>
-<span class="sd">inherited classes and modules needed to create and edit circuit designs.</span>
+<span class="sd">This module contains all Circuit functionalities in the ``Circuit`` class.</span>
+
+
+<span class="sd">Examples</span>
+<span class="sd">--------</span>
+
+<span class="sd">Create an instance of ``Circuit`` and connect to an existing HFSS design or create a new HFSS design if one does not exist.</span>
+
+<span class="sd">&gt;&gt;&gt; aedtapp = Circuit()</span>
+
+<span class="sd">Create an instance of ``Circuit`` and link to a project named ``projectname``. If this project does not exist, create one with this name.</span>
+
+<span class="sd">&gt;&gt;&gt; aedtapp = Circuit(projectname)</span>
+
+<span class="sd">Create an instance of ``Circuit`` and link to a design named ``designname`` in a project named ``projectname``.</span>
+
+<span class="sd">&gt;&gt;&gt; aedtapp = Circuit(projectname,designame)</span>
+
+<span class="sd">Create an instance of ``Circuit`` and open the specified project, which is ``myfie.aedt``.</span>
+
+<span class="sd">&gt;&gt;&gt; aedtapp = Circuit(&quot;myfile.aedt&quot;)</span>
+
+<span class="sd">Create an instance of ``Circuit`` using the 2021 R1 version and open the specified project, which is ``myfie.aedt``.</span>
+
+<span class="sd">&gt;&gt;&gt; aedtapp = Circuit(specified_version=&quot;2021.1&quot;, projectname=&quot;myfile.aedt&quot;)</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
+
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
 <span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">from</span> <span class="nn">.application.AnalysisNexxim</span> <span class="kn">import</span> <span class="n">FieldAnalysisCircuit</span>
 <span class="kn">from</span> <span class="nn">.desktop</span> <span class="kn">import</span> <span class="n">exception_to_desktop</span>
 <span class="kn">from</span> <span class="nn">.generic.general_methods</span> <span class="kn">import</span> <span class="n">generate_unique_name</span><span class="p">,</span> <span class="n">aedt_exception_handler</span>
 <span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">os</span>
 
 <span class="n">RKM_MAPS</span> <span class="o">=</span> <span class="p">{</span>
     <span class="c1"># Resistors</span>
@@ -200,7 +224,7 @@
 
 
 <div class="viewcode-block" id="from_rkm"><a class="viewcode-back" href="../../API/Nexxim.html#pyaedt.circuit.from_rkm">[docs]</a><span class="k">def</span> <span class="nf">from_rkm</span><span class="p">(</span><span class="n">code</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Convert a RKM code string to a string with decimal point.</span>
+    <span class="sd">&quot;&quot;&quot;Convert a RKM code string to a string with a decimal point.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -210,7 +234,7 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    str</span>
-<span class="sd">        String with decimal point and R value.</span>
+<span class="sd">        String with a decimal point and R value.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -241,7 +265,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="c1"># matches rkm codes that start with a digit</span>
+    <span class="c1"># Matches RKM codes that start with a digit.</span>
     <span class="c1"># fd_pattern = r&#39;([0-9]+)([LREkKMGTFmuµUnNpP]+)([0-9]*)&#39;</span>
     <span class="n">fd_pattern</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;([0-9]+)([</span><span class="si">{}</span><span class="s1">]+)([0-9]*)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">RKM_MAPS</span><span class="o">.</span><span class="n">keys</span><span class="p">()),)</span>
     <span class="c1"># matches rkm codes that end with a digit</span>
@@ -299,27 +323,41 @@
 
 
 <div class="viewcode-block" id="Circuit"><a class="viewcode-back" href="../../API/Nexxim.html#pyaedt.circuit.Circuit">[docs]</a><span class="k">class</span> <span class="nc">Circuit</span><span class="p">(</span><span class="n">FieldAnalysisCircuit</span><span class="p">,</span> <span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Circuit Object</span>
+    <span class="sd">&quot;&quot;&quot;Circuit object.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    projectname : str, optional</span>
-<span class="sd">        Name of the project to be selected or full path to the project</span>
-<span class="sd">        to be opened or to the AEDTZ archive. If ``None``, try to get</span>
-<span class="sd">        active project and, if nothing present to create an empty one.</span>
+<span class="sd">        Name of the project to select or the full path to the project or AEDTZ archive to open. </span>
+<span class="sd">        The default is ``None``. If ``None``, try to get an active project and, if no projects are present, </span>
+<span class="sd">        create an empty project.</span>
 <span class="sd">    designname : str, optional</span>
-<span class="sd">        Name of the design to be selected. if ``None``, try to get</span>
-<span class="sd">        active design and, if nothing present to create an empty one.</span>
+<span class="sd">        Name of the design to select. The default is ``None``. If ``None``, try to get an active design and, </span>
+<span class="sd">        if no designs are present, create an empty design.</span>
 <span class="sd">    solution_type : str, optional</span>
-<span class="sd">        Solution type to be applied to design. If ``None``, the default is used.</span>
+<span class="sd">        Solution type to apply to the design. The default is ``None``. If ``None``, the default type is applied.</span>
 <span class="sd">    setup_name : str, optional</span>
-<span class="sd">        Setup_name to be used as nominal. If ``None`` active setup is</span>
-<span class="sd">        used or nothing.</span>
+<span class="sd">        Name of the setup to use as the nominal. The default is ``None``. If ``None``, the active setup </span>
+<span class="sd">        is used or nothing is used.</span>
+<span class="sd">    specified_version: str, optional</span>
+<span class="sd">        Version of AEDT to use. The default is ``None``. If ``None``, the</span>
+<span class="sd">        active setup is used or the latest installed version is used.</span>
+<span class="sd">    NG: bool, optional</span>
+<span class="sd">        Whether to launch AEDT in the non-graphical mode. The default </span>
+<span class="sd">        is ``False``, which launches AEDT in the graphical mode.</span>
+<span class="sd">    AlwaysNew: bool, optional</span>
+<span class="sd">        Whether to launch an instance of AEDT in a new thread, even if </span>
+<span class="sd">        another instance of the ``specified_version`` is active on the machine.</span>
+<span class="sd">        The default is ``True``.</span>
+<span class="sd">    release_on_exit: bool, optional</span>
+<span class="sd">        Whether to release AEDT on exit. The default is ``True``.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projectname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">designname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">solution_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">setup_name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="n">FieldAnalysisCircuit</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;Circuit Design&quot;</span><span class="p">,</span> <span class="n">projectname</span><span class="p">,</span> <span class="n">designname</span><span class="p">,</span> <span class="n">solution_type</span><span class="p">,</span> <span class="n">setup_name</span><span class="p">)</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projectname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">designname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">solution_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">setup_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">specified_version</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">NG</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">AlwaysNew</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">release_on_exit</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="n">FieldAnalysisCircuit</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;Circuit Design&quot;</span><span class="p">,</span> <span class="n">projectname</span><span class="p">,</span> <span class="n">designname</span><span class="p">,</span> <span class="n">solution_type</span><span class="p">,</span> <span class="n">setup_name</span><span class="p">,</span>
+                                      <span class="n">specified_version</span><span class="p">,</span> <span class="n">NG</span><span class="p">,</span> <span class="n">AlwaysNew</span><span class="p">,</span> <span class="n">release_on_exit</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span>
@@ -328,29 +366,39 @@
         <span class="k">if</span> <span class="n">ex_type</span><span class="p">:</span>
             <span class="n">exception_to_desktop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ex_value</span><span class="p">,</span> <span class="n">ex_traceback</span><span class="p">)</span>
 
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">onetwork_data_explorer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_desktop</span><span class="o">.</span><span class="n">GetTool</span><span class="p">(</span><span class="s2">&quot;NdExplorer&quot;</span><span class="p">)</span>
+
     <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="nf">_get_number_from_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stringval</span><span class="p">):</span>
         <span class="n">value</span> <span class="o">=</span> <span class="n">stringval</span><span class="p">[</span><span class="n">stringval</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;{&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;}&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">,</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">from_rkm_to_aedt</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">value</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">from_rkm_to_aedt</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="Circuit.create_schematic_from_netlist"><a class="viewcode-back" href="../../API/Nexxim.html#pyaedt.circuit.Circuit.create_schematic_from_netlist">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="nf">create_schematic_from_netlist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_to_import</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create a Circuit Schematic from a spice netlist.</span>
+        <span class="sd">&quot;&quot;&quot;Create a circuit schematic from a HSpice netlist.</span>
 
-<span class="sd">        Supported in this moment:</span>
+<span class="sd">        Supported currently:</span>
+<span class="sd">        </span>
 <span class="sd">        -R, L, C, Diodes, Bjts</span>
+<span class="sd">        </span>
 <span class="sd">        -Discrete components with syntax Uxxx net1 net2 ... netn modname</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        file_to_import : str</span>
-<span class="sd">            full path to spice file</span>
+<span class="sd">            Full path to the HSpice file.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        bool</span>
-<span class="sd">            True if completed</span>
+<span class="sd">             ``True`` when successful, ``False`` when failed.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">xpos</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">ypos</span> <span class="o">=</span> <span class="mi">0</span>
@@ -537,20 +585,23 @@
 
 <div class="viewcode-block" id="Circuit.create_schematic_from_mentor_netlist"><a class="viewcode-back" href="../../API/Nexxim.html#pyaedt.circuit.Circuit.create_schematic_from_mentor_netlist">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="nf">create_schematic_from_mentor_netlist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_to_import</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create a Circuit Schematic from a Mentor netlist.</span>
-<span class="sd">        Supported in this moment:</span>
+        <span class="sd">&quot;&quot;&quot;Create a circuit schematic from a Mentor netlist.</span>
+<span class="sd">        </span>
+<span class="sd">        Supported currently:</span>
+<span class="sd">        </span>
 <span class="sd">        -R, L, C, Diodes, Bjts</span>
+<span class="sd">        </span>
 <span class="sd">        -Discrete components with syntax Uxxx net1 net2 ... netn modname</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        file_to_import : str</span>
-<span class="sd">            Full path to spice file.</span>
+<span class="sd">            Full path to the HSpice file.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        bool</span>
-<span class="sd">            ``True`` if successful.</span>
+<span class="sd">            ``True`` when successful, ``False`` when failed.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">xpos</span> <span class="o">=</span> <span class="mi">0</span>
@@ -582,8 +633,8 @@
 
         <span class="n">column_number</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">comps</span><span class="p">)))</span>
         <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">comps</span><span class="p">:</span>
-            <span class="n">name</span> <span class="o">=</span> <span class="n">el</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>   <span class="c1">#Remove carriage return</span>
-            <span class="n">name</span> <span class="o">=</span> <span class="n">name</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>      <span class="c1">#remove quotes</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">el</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>   <span class="c1">#Remove carriage return.</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">name</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>      <span class="c1">#Remove quotes.</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">el</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">:</span>
                 <span class="n">comptype</span> <span class="o">=</span> <span class="n">el</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
@@ -638,7 +689,7 @@
                     <span class="k">if</span> <span class="n">netname</span><span class="p">:</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">modeler</span><span class="o">.</span><span class="n">components</span><span class="o">.</span><span class="n">create_page_port</span><span class="p">(</span><span class="n">netname</span><span class="p">,</span> <span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">angle</span><span class="p">)</span>
                     <span class="k">else</span><span class="p">:</span>
-                        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;notFound&quot;</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">messenger</span><span class="o">.</span><span class="n">add_info_message</span><span class="p">(</span><span class="s2">&quot;Page Port Not Created&quot;</span><span class="p">)</span>
                     <span class="nb">id</span> <span class="o">+=</span> <span class="mi">1</span>
                 <span class="n">ypos</span> <span class="o">+=</span> <span class="n">delta</span>
                 <span class="k">if</span> <span class="n">ypos</span> <span class="o">&gt;</span> <span class="n">delta</span> <span class="o">*</span> <span class="p">(</span><span class="n">column_number</span><span class="p">):</span>
@@ -663,7 +714,7 @@
 
 <div class="viewcode-block" id="Circuit.retrieve_mentor_comp"><a class="viewcode-back" href="../../API/Nexxim.html#pyaedt.circuit.Circuit.retrieve_mentor_comp">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="nf">retrieve_mentor_comp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">refid</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Identifies from the reference ID which type of component is (from Mentor Netlist)</span>
+        <span class="sd">&quot;&quot;&quot;Retrieve the type of the Mentor Netlist component for the specified reference ID.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -673,7 +724,7 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        str</span>
-<span class="sd">            refid Nexxim Type</span>
+<span class="sd">            Type of Mentor Netlist comoponet</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">refid</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;R&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="s2">&quot;resistor:RES.&quot;</span>
@@ -690,27 +741,24 @@
 
 <div class="viewcode-block" id="Circuit.get_source_pin_names"><a class="viewcode-back" href="../../API/Nexxim.html#pyaedt.circuit.Circuit.get_source_pin_names">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="nf">get_source_pin_names</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_design_name</span><span class="p">,</span> <span class="n">source_project_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">source_project_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">port_selector</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Port_selector:</span>
-<span class="sd">        - 1 Wave Port</span>
-<span class="sd">        - 2 Terminal</span>
-<span class="sd">        - 3 Circuit Port</span>
-
+        <span class="sd">&quot;&quot;&quot;List the pin names.</span>
+<span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        source_project_name :str</span>
-<span class="sd">            source project name</span>
 <span class="sd">        source_design_name : str</span>
-<span class="sd">            source design name</span>
-<span class="sd">        source_project_path : str</span>
-<span class="sd">            source project path if different than existsting one</span>
-<span class="sd">        port_selector : int</span>
-<span class="sd">             1 - Wave Port, 2  - Terminal, 3 - Circuit</span>
-<span class="sd">             (Default value = 3)</span>
+<span class="sd">            Name of the source design.</span>
+<span class="sd">        source_project_name :str, None</span>
+<span class="sd">            Name of the source project. The default is ``None``.</span>
+<span class="sd">        source_project_path : str, optional</span>
+<span class="sd">            Path to the source project if different than the existing path. The default is ``None``.</span>
+<span class="sd">        port_selector : int, optional</span>
+<span class="sd">             The type of port. Choices are ``1``, ``2``, or ``3``, corresponding respectively to ``&quot;Wave Port&quot;``, ``&quot;Terminal&quot;``, or ``&quot;Circuit Port&quot;``.</span>
+<span class="sd">             The default is ``3``, which is a circuit.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        list</span>
-<span class="sd">            pin lists</span>
+<span class="sd">            List of pin names.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">source_project_name</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">project_name</span> <span class="o">==</span> <span class="n">source_project_name</span><span class="p">:</span>
@@ -734,20 +782,21 @@
         <span class="k">return</span> <span class="n">pins</span></div>
 
 
-<div class="viewcode-block" id="Circuit.import_touchsthone_solution"><a class="viewcode-back" href="../../API/Nexxim.html#pyaedt.circuit.Circuit.import_touchsthone_solution">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
-    <span class="k">def</span> <span class="nf">import_touchsthone_solution</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">solution_name</span><span class="o">=</span><span class="s2">&quot;Imported_Data&quot;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Import Touchstone file as solution</span>
+<div class="viewcode-block" id="Circuit.import_touchstone_solution"><a class="viewcode-back" href="../../API/Nexxim.html#pyaedt.circuit.Circuit.import_touchstone_solution">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
+    <span class="k">def</span> <span class="nf">import_touchstone_solution</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">solution_name</span><span class="o">=</span><span class="s2">&quot;Imported_Data&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Import a Touchstone file as the solution.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        filename : str</span>
-<span class="sd">            sNp/ts filename</span>
-<span class="sd">        solution_name : str</span>
-<span class="sd">                solution name</span>
+<span class="sd">            Name of the Touchstone file.</span>
+<span class="sd">        solution_name : str, optional</span>
+<span class="sd">            Name of the solution. The default is ``&quot;Imported_Data&quot;``.</span>
+<span class="sd">        </span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        list</span>
-<span class="sd">            list of ports</span>
+<span class="sd">            List of ports.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">filename</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]</span> <span class="o">==</span> <span class="s2">&quot;ts&quot;</span><span class="p">:</span>
             <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
@@ -788,94 +837,100 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">odesign</span><span class="o">.</span><span class="n">ImportData</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">portnames</span></div>
 
-    <span class="c1"># @aedt_exception_handler</span>
-    <span class="c1"># def export_fullwave_spice(self, designname=None, setupname=None, is_solution_file=False, filename=None,</span>
-    <span class="c1">#                           passivity=False, causality=False, renormalize=False, impedance=50, error=0.5,</span>
-    <span class="c1">#                           poles=10000):</span>
-    <span class="c1">#     &quot;&quot;&quot;</span>
-    <span class="c1">#     This method doesn&#39;t work actually</span>
-    <span class="c1">#     Export Full Wave Spice using NDE</span>
-    <span class="c1">#</span>
-    <span class="c1">#     Parameters</span>
-    <span class="c1">#     ----------</span>
-    <span class="c1">#     designname : str</span>
-    <span class="c1">#             name of the design or the solution file full path if it is an imported file</span>
-    <span class="c1">#     setupname : str</span>
-    <span class="c1">#             name of setup if is a design</span>
-    <span class="c1">#     is_solution_file: bool</span>
-    <span class="c1">#             True if it is an imported solution</span>
-    <span class="c1">#     filename: str</span>
-    <span class="c1">#             full path to exported sp file</span>
-    <span class="c1">#     passivity: bool</span>
-    <span class="c1">#     causality: bool</span>
-    <span class="c1">#     renormalize: bool</span>
-    <span class="c1">#     impedance: float</span>
-    <span class="c1">#         impedance in case of renormalization</span>
-    <span class="c1">#     error: float</span>
-    <span class="c1">#         fitting error</span>
-    <span class="c1">#     poles: int</span>
-    <span class="c1">#         fitting poles</span>
-    <span class="c1">#</span>
-    <span class="c1">#     Returns</span>
-    <span class="c1">#     -------</span>
-    <span class="c1">#     str</span>
-    <span class="c1">#         filename if the export if successful</span>
-    <span class="c1">#     &quot;&quot;&quot;</span>
-    <span class="c1">#     if not designname:</span>
-    <span class="c1">#         designname = self.design_name</span>
-    <span class="c1">#     if not filename:</span>
-    <span class="c1">#         filename = os.path.join(self.project_path, self.design_name + &quot;.sp&quot;)</span>
-    <span class="c1">#     if is_solution_file:</span>
-    <span class="c1">#         setupname = designname</span>
-    <span class="c1">#         designname = &quot;&quot;</span>
-    <span class="c1">#     else:</span>
-    <span class="c1">#         if not setupname:</span>
-    <span class="c1">#             setupname=self.nominal_sweep</span>
-    <span class="c1">#     self.onetwork_data_explorer.ExportFullWaveSpice(designname, is_solution_file, setupname, &quot;&quot;,</span>
-    <span class="c1">#                                                     [&quot;NAME:Frequencies&quot;],</span>
-    <span class="c1">#                                                     [&quot;NAME:SpiceData&quot;, &quot;SpiceType:=&quot;, &quot;HSpice&quot;,</span>
-    <span class="c1">#                                                      &quot;EnforcePassivity:=&quot;, passivity, &quot;EnforceCausality:=&quot;,</span>
-    <span class="c1">#                                                      causality,</span>
-    <span class="c1">#                                                      &quot;UseCommonGround:=&quot;, True,</span>
-    <span class="c1">#                                                      &quot;ShowGammaComments:=&quot;, True,</span>
-    <span class="c1">#                                                      &quot;Renormalize:=&quot;, renormalize,</span>
-    <span class="c1">#                                                      &quot;RenormImpedance:=&quot;, impedance,</span>
-    <span class="c1">#                                                      &quot;FittingError:=&quot;, error,</span>
-    <span class="c1">#                                                      &quot;MaxPoles:=&quot;, poles,</span>
-    <span class="c1">#                                                      &quot;PassivityType:=&quot;, &quot;IteratedFittingOfPV&quot;,</span>
-    <span class="c1">#                                                      &quot;ColumnFittingType:=&quot;, &quot;Matrix&quot;,</span>
-    <span class="c1">#                                                      &quot;SSFittingType:=&quot;, &quot;FastFit&quot;,</span>
-    <span class="c1">#                                                      &quot;RelativeErrorToleranc:=&quot;, False,</span>
-    <span class="c1">#                                                      &quot;EnsureAccurateZfit:=&quot;, True,</span>
-    <span class="c1">#                                                      &quot;TouchstoneFormat:=&quot;, &quot;MA&quot;,</span>
-    <span class="c1">#                                                      &quot;TouchstoneUnits:=&quot;, &quot;GHz&quot;,</span>
-    <span class="c1">#                                                      &quot;TouchStonePrecision:=&quot;, 15,</span>
-    <span class="c1">#                                                      &quot;SubcircuitName:=&quot;, &quot;&quot;,</span>
-    <span class="c1">#                                                      &quot;SYZDataInAutoMode:=&quot;, False,</span>
-    <span class="c1">#                                                      &quot;ExportDirectory:=&quot;, os.path.dirname(filename)+&quot;\\&quot;,</span>
-    <span class="c1">#                                                      &quot;ExportSpiceFileName:=&quot;, os.path.basename(filename),</span>
-    <span class="c1">#                                                      &quot;FullwaveSpiceFileName:=&quot;, os.path.basename(filename)[:-2]+&quot;sss&quot;])</span>
-    <span class="c1">#     return filename</span>
+<div class="viewcode-block" id="Circuit.export_fullwave_spice"><a class="viewcode-back" href="../../API/Nexxim.html#pyaedt.circuit.Circuit.export_fullwave_spice">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
+    <span class="k">def</span> <span class="nf">export_fullwave_spice</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">designname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">setupname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">is_solution_file</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                              <span class="n">passivity</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">causality</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">renormalize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">impedance</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">error</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+                              <span class="n">poles</span><span class="o">=</span><span class="mi">10000</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This method doesn&#39;t work.</span>
+<span class="sd">        Export Full Wave HSpice file using NDE.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        designname : str, optional</span>
+<span class="sd">            Name of the design or the full path to the solution file if it is an imported file.</span>
+<span class="sd">            The default is ``None``.    </span>
+<span class="sd">        setupname : str, optional</span>
+<span class="sd">            Name of the setup if it is a design. The default is ``None``.</span>
+<span class="sd">        is_solution_file: bool, optional</span>
+<span class="sd">            Whether it is an imported solution file. The default is ``False``. </span>
+<span class="sd">        filename: str, optional</span>
+<span class="sd">            Full path to the exported HSpice file.  The default is ``None``.</span>
+<span class="sd">        passivity: bool, optional</span>
+<span class="sd">            The default is ``None``.</span>
+<span class="sd">        causality: bool, optional</span>
+<span class="sd">            The default is ``None``.</span>
+<span class="sd">        renormalize: bool, optional</span>
+<span class="sd">            Whether to renormalize. The default is ``False``.</span>
+<span class="sd">        impedance: float, optional</span>
+<span class="sd">            Impedance in case of renormalization. The default is ``False``.</span>
+<span class="sd">        error: float, optional</span>
+<span class="sd">            Fitting error. The default is ``0.05``.</span>
+<span class="sd">        poles: int, optional</span>
+<span class="sd">            Number of fitting poles. The default is ``10000``.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+<span class="sd">            File name if the export is successful.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">designname</span><span class="p">:</span>
+            <span class="n">designname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design_name</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">filename</span><span class="p">:</span>
+            <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">design_name</span> <span class="o">+</span> <span class="s2">&quot;.sp&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">is_solution_file</span><span class="p">:</span>
+            <span class="n">setupname</span> <span class="o">=</span> <span class="n">designname</span>
+            <span class="n">designname</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">setupname</span><span class="p">:</span>
+                <span class="n">setupname</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">nominal_sweep</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">onetwork_data_explorer</span><span class="o">.</span><span class="n">ExportFullWaveSpice</span><span class="p">(</span><span class="n">designname</span><span class="p">,</span> <span class="n">is_solution_file</span><span class="p">,</span> <span class="n">setupname</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+                                                        <span class="p">[],</span>
+                                                        <span class="p">[</span><span class="s2">&quot;NAME:SpiceData&quot;</span><span class="p">,</span> <span class="s2">&quot;SpiceType:=&quot;</span><span class="p">,</span> <span class="s2">&quot;HSpice&quot;</span><span class="p">,</span>
+                                                         <span class="s2">&quot;EnforcePassivity:=&quot;</span><span class="p">,</span> <span class="n">passivity</span><span class="p">,</span> <span class="s2">&quot;EnforceCausality:=&quot;</span><span class="p">,</span>
+                                                         <span class="n">causality</span><span class="p">,</span>
+                                                         <span class="s2">&quot;UseCommonGround:=&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span>
+                                                         <span class="s2">&quot;ShowGammaComments:=&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span>
+                                                         <span class="s2">&quot;Renormalize:=&quot;</span><span class="p">,</span> <span class="n">renormalize</span><span class="p">,</span>
+                                                         <span class="s2">&quot;RenormImpedance:=&quot;</span><span class="p">,</span> <span class="n">impedance</span><span class="p">,</span>
+                                                         <span class="s2">&quot;FittingError:=&quot;</span><span class="p">,</span> <span class="n">error</span><span class="p">,</span>
+                                                         <span class="s2">&quot;MaxPoles:=&quot;</span><span class="p">,</span> <span class="n">poles</span><span class="p">,</span>
+                                                         <span class="s2">&quot;PassivityType:=&quot;</span><span class="p">,</span> <span class="s2">&quot;IteratedFittingOfPV&quot;</span><span class="p">,</span>
+                                                         <span class="s2">&quot;ColumnFittingType:=&quot;</span><span class="p">,</span> <span class="s2">&quot;Matrix&quot;</span><span class="p">,</span>
+                                                         <span class="s2">&quot;SSFittingType:=&quot;</span><span class="p">,</span> <span class="s2">&quot;FastFit&quot;</span><span class="p">,</span>
+                                                         <span class="s2">&quot;RelativeErrorToleranc:=&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span>
+                                                         <span class="s2">&quot;EnsureAccurateZfit:=&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span>
+                                                         <span class="s2">&quot;TouchstoneFormat:=&quot;</span><span class="p">,</span> <span class="s2">&quot;MA&quot;</span><span class="p">,</span>
+                                                         <span class="s2">&quot;TouchstoneUnits:=&quot;</span><span class="p">,</span> <span class="s2">&quot;GHz&quot;</span><span class="p">,</span>
+                                                         <span class="s2">&quot;TouchStonePrecision:=&quot;</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span>
+                                                         <span class="s2">&quot;SubcircuitName:=&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+                                                         <span class="s2">&quot;SYZDataInAutoMode:=&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span>
+                                                         <span class="s2">&quot;ExportDirectory:=&quot;</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">&quot;</span><span class="p">,</span>
+                                                         <span class="s2">&quot;ExportSpiceFileName:=&quot;</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">filename</span><span class="p">),</span>
+                                                         <span class="s2">&quot;FullwaveSpiceFileName:=&quot;</span><span class="p">,</span>
+                                                         <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">filename</span><span class="p">),</span> <span class="s2">&quot;UseMultipleCores:=&quot;</span><span class="p">,</span>
+                                                         <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;NumberOfCores:=&quot;</span><span class="p">,</span> <span class="mi">20</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">filename</span></div>
 
 <div class="viewcode-block" id="Circuit.create_touchstone_report"><a class="viewcode-back" href="../../API/Nexxim.html#pyaedt.circuit.Circuit.create_touchstone_report">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="nf">create_touchstone_report</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">plot_name</span><span class="p">,</span> <span class="n">curvenames</span><span class="p">,</span> <span class="n">solution_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">variation_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create a touchstone plot</span>
+        <span class="sd">&quot;&quot;&quot;Create a touchstone plot.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        plot_name : str</span>
-<span class="sd">            name of the plot</span>
+<span class="sd">            Name of the plot.</span>
 <span class="sd">        curvenames : str</span>
-<span class="sd">            list of curves to plot</span>
-<span class="sd">        solution_name : str</span>
-<span class="sd">            name of solution (Default value = None)</span>
-<span class="sd">        variation_dict : dict</span>
-<span class="sd">            name of variations (Default value = None)</span>
+<span class="sd">            List of the curves to plot.</span>
+<span class="sd">        solution_name : str, optional</span>
+<span class="sd">            Name of the solution. The default value is ``None``.</span>
+<span class="sd">        variation_dict : dict, optional</span>
+<span class="sd">            Names of the variations. The default value is ``None``.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        bool</span>
-<span class="sd">            Boolean</span>
+<span class="sd">           ``True`` when successful, ``False`` when failed.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">solution_name</span><span class="p">:</span>
@@ -913,7 +968,7 @@
     
     <div class="footer-item">
       <p class="copyright">
-    &copy; Copyright Copyright (c) 2021 ANSYS, Inc. All rights reserved..<br/>
+    &copy; Copyright (c) 2021 ANSYS, Inc. All rights reserved.<br/>
 </p>
     </div>
     

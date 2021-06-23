@@ -5,7 +5,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pyaedt.modules.PostProcessor &#8212; PyAEDT 0.2.1 documentation</title>
+    <title>pyaedt.modules.PostProcessor &#8212; PyAEDT 0.3.dev0
+ documentation</title>
     
   <link href="../../../_static/css/theme.css" rel="stylesheet" />
   <link href="../../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -74,7 +75,7 @@
         </li>
         
         <li class="nav-item ">
-            <a class="nav-link" href="../../../API/API.html">API documentation</a>
+            <a class="nav-link" href="../../../API/API.html">API Documentation</a>
         </li>
         
         <li class="nav-item ">
@@ -164,7 +165,7 @@
 <span class="kn">import</span> <span class="nn">itertools</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">OrderedDict</span>
 <span class="kn">from</span> <span class="nn">..modeler.Modeler</span> <span class="kn">import</span> <span class="n">CoordinateSystem</span>
-<span class="kn">from</span> <span class="nn">..generic.general_methods</span> <span class="kn">import</span> <span class="n">aedt_exception_handler</span><span class="p">,</span> <span class="n">generate_unique_name</span>
+<span class="kn">from</span> <span class="nn">..generic.general_methods</span> <span class="kn">import</span> <span class="n">aedt_exception_handler</span><span class="p">,</span> <span class="n">generate_unique_name</span><span class="p">,</span> <span class="n">retry_ntimes</span>
 <span class="kn">from</span> <span class="nn">..application.Variables</span> <span class="kn">import</span> <span class="n">AEDT_units</span>
 
 <span class="n">report_type</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;DrivenModal&quot;</span><span class="p">:</span> <span class="s2">&quot;Modal Solution Data&quot;</span><span class="p">,</span> <span class="s2">&quot;DrivenTerminal&quot;</span><span class="p">:</span> <span class="s2">&quot;Terminal Solution Data&quot;</span><span class="p">,</span>
@@ -985,7 +986,8 @@
 
 <div class="viewcode-block" id="PostProcessor.export_field_file"><a class="viewcode-back" href="../../../API/PostProcessor.html#pyaedt.modules.PostProcessor.PostProcessor.export_field_file">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="nf">export_field_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">quantity_name</span><span class="p">,</span> <span class="n">solution</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">variation_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                          <span class="n">obj_list</span><span class="o">=</span><span class="s2">&quot;AllObjects&quot;</span><span class="p">,</span> <span class="n">obj_type</span><span class="o">=</span><span class="s2">&quot;Vol&quot;</span><span class="p">,</span> <span class="n">intrinsics</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">phase</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_points_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_points_lists</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                          <span class="n">obj_list</span><span class="o">=</span><span class="s2">&quot;AllObjects&quot;</span><span class="p">,</span> <span class="n">obj_type</span><span class="o">=</span><span class="s2">&quot;Vol&quot;</span><span class="p">,</span> <span class="n">intrinsics</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">phase</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                          <span class="n">sample_points_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_points_lists</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">export_with_sample_points</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;This function creates a new field file based on a specific solution and variation available. using Field Calculator</span>
 
 <span class="sd">        Parameters</span>
@@ -1010,10 +1012,12 @@
 <span class="sd">             (Default value = None)</span>
 <span class="sd">        sample_points_lists :</span>
 <span class="sd">             (Default value = None)</span>
+<span class="sd">         export_with_sample_points : bool</span>
+
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        type</span>
+<span class="sd">        bool</span>
 <span class="sd">            True (fld exported) | False</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1064,13 +1068,13 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">ofieldsreporter</span><span class="o">.</span><span class="n">CalculatorWrite</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;Solution:=&quot;</span>	<span class="p">,</span> <span class="n">solution</span><span class="p">],</span> <span class="n">variation_dict</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">sample_points_file</span><span class="p">:</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">ofieldsreporter</span><span class="o">.</span><span class="n">ExportToFile</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">sample_points_file</span><span class="p">,</span> <span class="n">solution</span><span class="p">,</span> <span class="n">variation_dict</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ofieldsreporter</span><span class="o">.</span><span class="n">ExportToFile</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">sample_points_file</span><span class="p">,</span> <span class="n">solution</span><span class="p">,</span> <span class="n">variation_dict</span><span class="p">,</span> <span class="n">export_with_sample_points</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">sample_points_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">project_path</span><span class="p">,</span> <span class="s2">&quot;temp_points.pts&quot;</span><span class="p">)</span>
             <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">sample_points_file</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
                 <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">sample_points_lists</span><span class="p">:</span>
                     <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">point</span><span class="p">])</span><span class="o">+</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ofieldsreporter</span><span class="o">.</span><span class="n">ExportToFile</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">sample_points_file</span><span class="p">,</span> <span class="n">solution</span><span class="p">,</span> <span class="n">variation_dict</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ofieldsreporter</span><span class="o">.</span><span class="n">ExportToFile</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">sample_points_file</span><span class="p">,</span> <span class="n">solution</span><span class="p">,</span> <span class="n">variation_dict</span><span class="p">,</span> <span class="n">export_with_sample_points</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span></div>
 
@@ -1261,7 +1265,7 @@
 
 <div class="viewcode-block" id="PostProcessor.export_field_image_with_View"><a class="viewcode-back" href="../../../API/PostProcessor.html#pyaedt.modules.PostProcessor.PostProcessor.export_field_image_with_View">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="nf">export_field_image_with_View</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plotName</span><span class="p">,</span> <span class="n">exportFilePath</span><span class="p">,</span> <span class="n">view</span><span class="o">=</span><span class="s2">&quot;iso&quot;</span><span class="p">,</span> <span class="n">wireframe</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;NOTE: on AEDT 2019.3 it works only on ISO view due to a bug in API. It woks fine from 2020R1</span>
+        <span class="sd">&quot;&quot;&quot;NOTE: on AEDT 2019.3 it works only on ISO view due to a bug in API. It woks fine from 2021R1</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1316,250 +1320,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">FieldsPlot</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">True</span></div>
 
-<div class="viewcode-block" id="PostProcessor.export_convergence_to_jpg"><a class="viewcode-back" href="../../../API/PostProcessor.html#pyaedt.modules.PostProcessor.PostProcessor.export_convergence_to_jpg">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
-    <span class="k">def</span> <span class="nf">export_convergence_to_jpg</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">Xaxis</span><span class="p">,</span> <span class="n">outputlist</span><span class="p">,</span> <span class="n">setupname</span><span class="o">=</span><span class="s2">&quot;Setup1 : LastAdaptive&quot;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;function that export JPG of Convergence Plot</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        output_dir :</span>
-<span class="sd">            Output dir</span>
-<span class="sd">        name :</span>
-<span class="sd">            Project Name</span>
-<span class="sd">        Xaxis :</span>
-<span class="sd">            Independent Variable</span>
-<span class="sd">        outputlist :</span>
-<span class="sd">            List of Parameter to export</span>
-<span class="sd">        setupname :</span>
-<span class="sd">            Name of Setupt (Default value = &quot;Setup1 : LastAdaptive&quot;)</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        type</span>
-<span class="sd">            Boolean success of command</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="c1"># Setup arguments list for createReport function</span>
-        <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Pass:=&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;All&quot;</span><span class="p">],</span> <span class="n">Xaxis</span> <span class="o">+</span> <span class="s2">&quot;:=&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;All&quot;</span><span class="p">]]</span>
-        <span class="n">args2</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;X Component:=&quot;</span><span class="p">,</span> <span class="s2">&quot;Pass&quot;</span><span class="p">,</span> <span class="s2">&quot;Y Component:=&quot;</span><span class="p">,</span> <span class="n">outputlist</span><span class="p">]</span>
-
-        <span class="c1"># Add folder for outputs</span>
-
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">output_dir</span> <span class="o">+</span> <span class="s2">&quot;//&quot;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;//Results&quot;</span><span class="p">):</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">output_dir</span> <span class="o">+</span> <span class="s2">&quot;//&quot;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;//Results&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">output_dir</span> <span class="o">+</span> <span class="s2">&quot;//&quot;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;//Pictures&quot;</span><span class="p">):</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">output_dir</span> <span class="o">+</span> <span class="s2">&quot;//&quot;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;//Pictures&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">oreportsetup</span><span class="o">.</span><span class="n">CreateReport</span><span class="p">(</span><span class="s2">&quot;Solution Convergence Plot 1&quot;</span><span class="p">,</span> <span class="s2">&quot;Eigenmode Parameters&quot;</span><span class="p">,</span> <span class="s2">&quot;Rectangular Plot&quot;</span><span class="p">,</span>
-                                       <span class="n">setupname</span><span class="p">,</span> <span class="p">[],</span> <span class="n">args</span><span class="p">,</span> <span class="n">args2</span><span class="p">,</span> <span class="p">[])</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">oreportsetup</span><span class="o">.</span><span class="n">ExportImageToFile</span><span class="p">(</span><span class="s2">&quot;Solution Convergence Plot 1&quot;</span><span class="p">,</span>
-                                            <span class="n">output_dir</span> <span class="o">+</span> <span class="s2">&quot;//&quot;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;//Pictures//&quot;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;_Convergence.jpg&quot;</span><span class="p">,</span>
-                                            <span class="mi">0</span><span class="p">,</span>
-                                            <span class="mi">0</span><span class="p">)</span>
-        <span class="k">return</span> <span class="kc">True</span></div>
-
-<div class="viewcode-block" id="PostProcessor.export_convergence_to_csv"><a class="viewcode-back" href="../../../API/PostProcessor.html#pyaedt.modules.PostProcessor.PostProcessor.export_convergence_to_csv">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
-    <span class="k">def</span> <span class="nf">export_convergence_to_csv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">Xaxis</span><span class="p">,</span> <span class="n">outputlist</span><span class="p">,</span> <span class="n">setupname</span><span class="o">=</span><span class="s2">&quot;Setup1 : LastAdaptive&quot;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;function that export CSV of Convergence Plot</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        output_dir :</span>
-<span class="sd">            Output dir</span>
-<span class="sd">        name :</span>
-<span class="sd">            Project Name</span>
-<span class="sd">        Xaxis :</span>
-<span class="sd">            independent Variable</span>
-<span class="sd">        outputlist :</span>
-<span class="sd">            List of Parameter to export</span>
-<span class="sd">        setupname :</span>
-<span class="sd">            Name of Setupt (Default value = &quot;Setup1 : LastAdaptive&quot;)</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        type</span>
-<span class="sd">            Boolean success of command</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="c1"># Setup arguments list for createReport function</span>
-        <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Pass:=&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;All&quot;</span><span class="p">],</span> <span class="n">Xaxis</span> <span class="o">+</span> <span class="s2">&quot;:=&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;All&quot;</span><span class="p">]]</span>
-        <span class="n">args2</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;X Component:=&quot;</span><span class="p">,</span> <span class="s2">&quot;Pass&quot;</span><span class="p">,</span> <span class="s2">&quot;Y Component:=&quot;</span><span class="p">,</span> <span class="n">outputlist</span><span class="p">]</span>
-
-        <span class="c1"># Add folder for outputs</span>
-
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">output_dir</span> <span class="o">+</span> <span class="s2">&quot;//&quot;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;//Results&quot;</span><span class="p">):</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">output_dir</span> <span class="o">+</span> <span class="s2">&quot;//&quot;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;//Results&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">output_dir</span> <span class="o">+</span> <span class="s2">&quot;//&quot;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;//Pictures&quot;</span><span class="p">):</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">output_dir</span> <span class="o">+</span> <span class="s2">&quot;//&quot;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;//Pictures&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">oreportsetup</span><span class="o">.</span><span class="n">CreateReport</span><span class="p">(</span><span class="s2">&quot;Solution Convergence Plot 1&quot;</span><span class="p">,</span> <span class="s2">&quot;Eigenmode Parameters&quot;</span><span class="p">,</span> <span class="s2">&quot;Rectangular Plot&quot;</span><span class="p">,</span>
-                                       <span class="n">setupname</span><span class="p">,</span> <span class="p">[],</span> <span class="n">args</span><span class="p">,</span> <span class="n">args2</span><span class="p">,</span> <span class="p">[])</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">oreportsetup</span><span class="o">.</span><span class="n">ExportToFile</span><span class="p">(</span><span class="s2">&quot;Solution Convergence Plot 1&quot;</span><span class="p">,</span>
-                                       <span class="n">output_dir</span> <span class="o">+</span> <span class="s2">&quot;//&quot;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;//Results//&quot;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;_Convergence.csv&quot;</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="kc">True</span></div>
-
-<div class="viewcode-block" id="PostProcessor.export_eigen_plot"><a class="viewcode-back" href="../../../API/PostProcessor.html#pyaedt.modules.PostProcessor.PostProcessor.export_eigen_plot">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
-    <span class="k">def</span> <span class="nf">export_eigen_plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projectdir</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">Xaxis</span><span class="p">,</span> <span class="n">outputlist</span><span class="p">,</span> <span class="n">setupname</span><span class="o">=</span><span class="s2">&quot;Setup1 :  LastAdaptive&quot;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;TO BE REFACTORED</span>
-<span class="sd">        function that export CSV of eigenmode Plot</span>
-<span class="sd">        dir: Output dir</span>
-<span class="sd">        name: project name</span>
-<span class="sd">        Xaxis=</span>
-<span class="sd">        outputlist= output quantity, in this case, egienmode</span>
-<span class="sd">        :return:</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        projectdir :</span>
-<span class="sd">            </span>
-<span class="sd">        name :</span>
-<span class="sd">            </span>
-<span class="sd">        Xaxis :</span>
-<span class="sd">            </span>
-<span class="sd">        outputlist :</span>
-<span class="sd">            </span>
-<span class="sd">        setupname :</span>
-<span class="sd">             (Default value = &quot;Setup1 :  LastAdaptive&quot;)</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="c1"># Setup arguments list for createReport function</span>
-        <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="n">Xaxis</span> <span class="o">+</span> <span class="s2">&quot;:=&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;All&quot;</span><span class="p">]]</span>
-
-        <span class="n">args2</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;X Component:=&quot;</span><span class="p">,</span> <span class="n">Xaxis</span><span class="p">,</span> <span class="s2">&quot;Y Component:=&quot;</span><span class="p">,</span> <span class="n">outputlist</span><span class="p">]</span>
-
-        <span class="c1"># Add folder for outputs</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">projectdir</span> <span class="o">+</span> <span class="s2">&quot;//&quot;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;//Results&quot;</span><span class="p">):</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">projectdir</span> <span class="o">+</span> <span class="s2">&quot;//&quot;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;//Results&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">projectdir</span> <span class="o">+</span> <span class="s2">&quot;//&quot;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;//Pictures&quot;</span><span class="p">):</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">projectdir</span> <span class="o">+</span> <span class="s2">&quot;//&quot;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;//Pictures&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">oreportsetup</span><span class="o">.</span><span class="n">CreateReport</span><span class="p">(</span><span class="s2">&quot;Eigen Modes Plot 1&quot;</span><span class="p">,</span> <span class="s2">&quot;Eigenmode Parameters&quot;</span><span class="p">,</span> <span class="s2">&quot;Rectangular Plot&quot;</span><span class="p">,</span>
-                                       <span class="n">setupname</span><span class="p">,</span> <span class="p">[],</span> <span class="n">args</span><span class="p">,</span> <span class="n">args2</span><span class="p">,</span> <span class="p">[])</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">oreportsetup</span><span class="o">.</span><span class="n">ExportImageToFile</span><span class="p">(</span><span class="s2">&quot;Eigen Modes Plot 1&quot;</span><span class="p">,</span>
-                                            <span class="n">projectdir</span> <span class="o">+</span> <span class="s2">&quot;//&quot;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;//Pictures//&quot;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;Eigen.jpg&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
-                                            <span class="mi">0</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">oreportsetup</span><span class="o">.</span><span class="n">ExportToFile</span><span class="p">(</span><span class="s2">&quot;Eigen Modes Plot 1&quot;</span><span class="p">,</span>
-                                       <span class="n">projectdir</span> <span class="o">+</span> <span class="s2">&quot;//&quot;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;//Results//&quot;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;.csv&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="kc">True</span></div>
-
-<div class="viewcode-block" id="PostProcessor.export_mechanical_script"><a class="viewcode-back" href="../../../API/PostProcessor.html#pyaedt.modules.PostProcessor.PostProcessor.export_mechanical_script">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
-    <span class="k">def</span> <span class="nf">export_mechanical_script</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">workingDir</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">aMats</span><span class="p">,</span> <span class="n">aInside</span><span class="p">,</span> <span class="n">aSurf</span><span class="p">,</span> <span class="n">emissivity</span><span class="p">,</span> <span class="n">convection</span><span class="p">,</span> <span class="n">gravity</span><span class="p">,</span>
-                                 <span class="n">ambienttemp</span><span class="o">=</span><span class="s2">&quot;22&quot;</span><span class="p">,</span> <span class="n">MechNumCores</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">discretesweep</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">WBSuppressSolids</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;export_mechanical_script Function write a PY function for Mechanical API.</span>
-<span class="sd">        It start from createMech.py file and integrates it with variables and lanuchers.</span>
-<span class="sd">        </span>
-<span class="sd">        - Added WBSuppressSolids option:</span>
-<span class="sd">            1. the objects names specified in the list are suppessed in Workbench</span>
-<span class="sd">            2. the list defaults to empty list</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        workingDir :</span>
-<span class="sd">            </span>
-<span class="sd">        name :</span>
-<span class="sd">            </span>
-<span class="sd">        aMats :</span>
-<span class="sd">            </span>
-<span class="sd">        aInside :</span>
-<span class="sd">            </span>
-<span class="sd">        aSurf :</span>
-<span class="sd">            </span>
-<span class="sd">        emissivity :</span>
-<span class="sd">            </span>
-<span class="sd">        convection :</span>
-<span class="sd">            </span>
-<span class="sd">        gravity :</span>
-<span class="sd">            </span>
-<span class="sd">        ambienttemp :</span>
-<span class="sd">             (Default value = &quot;22&quot;)</span>
-<span class="sd">        MechNumCores :</span>
-<span class="sd">             (Default value = 2)</span>
-<span class="sd">        discretesweep :</span>
-<span class="sd">             (Default value = False)</span>
-<span class="sd">        WBSuppressSolids :</span>
-<span class="sd">             (Default value = None)</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="c1"># USE this</span>
-        <span class="c1"># MechNumCores=oFilterProp.getKey(&quot;HFSSNumCores&quot;)</span>
-
-        <span class="k">if</span> <span class="n">WBSuppressSolids</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">WBSuppressSolids</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">Filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">workingDir</span><span class="p">,</span> <span class="s1">&#39;</span><span class="si">{0}</span><span class="s1">.py&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;New&quot;</span><span class="p">))</span>
-        <span class="n">Filename</span> <span class="o">=</span> <span class="n">Filename</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;/&#39;</span><span class="p">)</span>
-        <span class="n">myfullpath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;/&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;//&quot;</span><span class="p">,</span> <span class="s2">&quot;/&quot;</span><span class="p">)</span>
-        <span class="n">full_split</span> <span class="o">=</span> <span class="n">myfullpath</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
-        <span class="n">mypath</span> <span class="o">=</span> <span class="n">full_split</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">full_split</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-
-        <span class="n">i</span> <span class="o">=</span> <span class="mi">2</span>
-        <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">full_split</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span><span class="p">:</span>
-            <span class="n">mypath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">mypath</span><span class="p">,</span> <span class="n">full_split</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="n">mypath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">mypath</span><span class="p">,</span> <span class="s2">&quot;WBLib&quot;</span><span class="p">,</span> <span class="s1">&#39;createMechandTherm.py&#39;</span><span class="p">)</span>
-        <span class="n">shutil</span><span class="o">.</span><span class="n">copy2</span><span class="p">(</span><span class="n">mypath</span><span class="p">,</span> <span class="n">Filename</span><span class="p">)</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">Filename</span><span class="p">,</span> <span class="s1">&#39;a+&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">DesktopMat = { </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-            <span class="n">iMat</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="k">for</span> <span class="n">matName</span><span class="p">,</span> <span class="n">tmpObjs</span> <span class="ow">in</span> <span class="n">aMats</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
-                <span class="n">iObj</span> <span class="o">=</span> <span class="mi">0</span>
-                <span class="k">for</span> <span class="n">objName</span> <span class="ow">in</span> <span class="n">tmpObjs</span><span class="p">:</span>
-                    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;&quot;</span><span class="si">{0}</span><span class="s1">&quot; : &quot;</span><span class="si">{1}</span><span class="s1">&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">objName</span><span class="p">,</span> <span class="n">matName</span><span class="p">))</span>
-                    <span class="n">iObj</span> <span class="o">+=</span> <span class="mi">1</span>
-                    <span class="k">if</span> <span class="n">iObj</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">tmpObjs</span><span class="p">):</span>
-                        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;,</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-                <span class="n">iMat</span> <span class="o">+=</span> <span class="mi">1</span>
-                <span class="k">if</span> <span class="n">iMat</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">aMats</span><span class="p">):</span>
-                    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;,</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;AmbientTemp=</span><span class="se">\&quot;</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ambienttemp</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\&quot;</span><span class="s1">&#39;</span><span class="p">)</span>
-            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">DesktopSolveInside = { </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-            <span class="n">iObjI</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="k">for</span> <span class="n">objName</span> <span class="ow">in</span> <span class="n">aInside</span><span class="p">:</span>
-                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;&quot;</span><span class="si">{0}</span><span class="s1">&quot; : 1&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">objName</span><span class="p">))</span>
-                <span class="n">iObjI</span> <span class="o">+=</span> <span class="mi">1</span>
-                <span class="k">if</span> <span class="n">iObjI</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">aInside</span><span class="p">):</span>
-                    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;,</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">DesktopSolveSurface = { </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-            <span class="n">iObjS</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="k">for</span> <span class="n">objName</span> <span class="ow">in</span> <span class="n">aSurf</span><span class="p">:</span>
-                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;&quot;</span><span class="si">{0}</span><span class="s1">&quot; : 1&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">objName</span><span class="p">))</span>
-                <span class="n">iObjS</span> <span class="o">+=</span> <span class="mi">1</span>
-                <span class="k">if</span> <span class="n">iObjS</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">aSurf</span><span class="p">):</span>
-                    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;,</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-            <span class="c1"># create the list WBSuppressSolids in the script file</span>
-            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;WBSuppressSolids = </span><span class="si">%s</span><span class="s1"> </span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">WBSuppressSolids</span><span class="p">))</span>
-            <span class="c1"># calls the createMech class</span>
-            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;a=createMech()</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-            <span class="c1"># calls the a.assignGeometry method</span>
-            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;f=a.assignGeometry(DesktopMat,DesktopSolveSurface,DesktopSolveInside,WBSuppressSolids)</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;emissivity=</span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">emi</span> <span class="ow">in</span> <span class="n">emissivity</span><span class="p">:</span>
-                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;emissivity[</span><span class="se">\&quot;</span><span class="s2">SYS</span><span class="se">\\\\</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">emi</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2">]=&quot;</span> <span class="o">+</span> <span class="n">emissivity</span><span class="p">[</span><span class="n">emi</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;emissivity[</span><span class="se">\&quot;</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">emi</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2">]=&quot;</span> <span class="o">+</span> <span class="n">emissivity</span><span class="p">[</span><span class="n">emi</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;convection=</span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">convection</span><span class="p">:</span>
-                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;convection[&quot;</span> <span class="o">+</span> <span class="n">c</span> <span class="o">+</span> <span class="s2">&quot;]=&quot;</span> <span class="o">+</span> <span class="n">convection</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;f=a.createThermalBoundaries(convection,emissivity,AmbientTemp)</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-            <span class="c1"># f.write(&#39;f=a.importLoads()\n&#39;)</span>
-            <span class="c1"># f.write(&#39;f=a.createFrictionless(&#39; + str(gravity) + &#39;)\n&#39;)</span>
-            <span class="c1"># f.write(&quot;f=a.createStructuralSetup(True,&quot; + str(MechNumCores) + &quot;,&quot; + sWorkbenchVersion[-3:] + &quot;)&quot; + &quot;\n&quot;)</span>
-            <span class="c1"># f.write(&#39;f=a.setupSweep(&#39; + str(discretesweep) + &#39;)\n&#39;)</span>
-        <span class="k">return</span> <span class="kc">True</span></div>
-
 <div class="viewcode-block" id="PostProcessor.export_model_picture"><a class="viewcode-back" href="../../../API/PostProcessor.html#pyaedt.modules.PostProcessor.PostProcessor.export_model_picture">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="nf">export_model_picture</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">dir</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">picturename</span><span class="o">=</span><span class="s2">&quot;Model&quot;</span><span class="p">,</span> <span class="n">ShowAxis</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ShowGrid</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ShowRuler</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Synopsis:</span>
@@ -1589,6 +1349,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># Setup arguments list for createReport function</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="nb">dir</span> <span class="o">+</span> <span class="s2">&quot;//&quot;</span> <span class="o">+</span> <span class="n">name</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="nb">dir</span> <span class="o">+</span> <span class="s2">&quot;//&quot;</span> <span class="o">+</span> <span class="n">name</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="nb">dir</span> <span class="o">+</span> <span class="s2">&quot;//&quot;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;//Pictures&quot;</span><span class="p">):</span>
             <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="nb">dir</span> <span class="o">+</span> <span class="s2">&quot;//&quot;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;//Pictures&quot;</span><span class="p">)</span>
 
@@ -1618,46 +1380,8 @@
 <span class="sd">            True (executed)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Copy the plot curves as data</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">oreportsetup</span><span class="o">.</span><span class="n">CopyReportsData</span><span class="p">([</span><span class="n">PlotName</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">oreportsetup</span><span class="o">.</span><span class="n">PasteReports</span><span class="p">()</span>
-        <span class="k">return</span> <span class="kc">True</span></div>
-
-<div class="viewcode-block" id="PostProcessor.create_field_exptression"><a class="viewcode-back" href="../../../API/PostProcessor.html#pyaedt.modules.PostProcessor.PostProcessor.create_field_exptression">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
-    <span class="k">def</span> <span class="nf">create_field_exptression</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">expression_name</span><span class="p">,</span> <span class="n">Quantity</span><span class="p">,</span> <span class="n">obj_name</span><span class="p">,</span> <span class="n">obj_type</span><span class="o">=</span><span class="s2">&quot;Volume&quot;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;It create a new expression using Field Calculator given specified input</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        expression_name :</span>
-<span class="sd">            Name of the output expression</span>
-<span class="sd">        Quantity :</span>
-<span class="sd">            Field Quantity to use in expression (eg. E)</span>
-<span class="sd">        obj_name :</span>
-<span class="sd">            name of objects on which compute the expression</span>
-<span class="sd">        obj_type :</span>
-<span class="sd">            Type of objects: Volume, Surface, Line, Point (Default value = &quot;Volume&quot;)</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        type</span>
-<span class="sd">            True if succeeedd</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">ofieldsreporter</span><span class="o">.</span><span class="n">EnterQty</span><span class="p">(</span><span class="n">Quantity</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">obj_type</span><span class="o">.</span><span class="n">lower</span><span class="o">==</span><span class="s2">&quot;volume&quot;</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ofieldsreporter</span><span class="o">.</span><span class="n">EnterVol</span><span class="p">(</span><span class="n">obj_name</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">obj_type</span><span class="o">.</span><span class="n">lower</span><span class="o">==</span><span class="s2">&quot;surface&quot;</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ofieldsreporter</span><span class="o">.</span><span class="n">EnterSurf</span><span class="p">(</span><span class="n">obj_name</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">obj_type</span><span class="o">.</span><span class="n">lower</span><span class="o">==</span><span class="s2">&quot;point&quot;</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ofieldsreporter</span><span class="o">.</span><span class="n">EnterPoint</span><span class="p">(</span><span class="n">obj_name</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">obj_type</span><span class="o">.</span><span class="n">lower</span><span class="o">==</span><span class="s2">&quot;line&quot;</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ofieldsreporter</span><span class="o">.</span><span class="n">EnterLine</span><span class="p">(</span><span class="n">obj_name</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ofieldsreporter</span><span class="o">.</span><span class="n">CalcOp</span><span class="p">(</span><span class="s2">&quot;Value&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ofieldsreporter</span><span class="o">.</span><span class="n">AddNamedExpression</span><span class="p">(</span><span class="n">expression_name</span><span class="p">,</span> <span class="s2">&quot;Fields&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">True</span></div>
 
 <div class="viewcode-block" id="PostProcessor.delete_report"><a class="viewcode-back" href="../../../API/PostProcessor.html#pyaedt.modules.PostProcessor.PostProcessor.delete_report">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
@@ -1785,7 +1509,7 @@
         <span class="k">return</span> <span class="n">solution_data</span></div>
 
 <div class="viewcode-block" id="PostProcessor.get_report_data"><a class="viewcode-back" href="../../../API/PostProcessor.html#pyaedt.modules.PostProcessor.PostProcessor.get_report_data">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
-    <span class="k">def</span> <span class="nf">get_report_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expression</span><span class="o">=</span><span class="s2">&quot;dB(S(1,1))&quot;</span><span class="p">,</span> <span class="n">setup_sweep_name</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="s1">&#39;Sweep&#39;</span><span class="p">,</span> <span class="n">families_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">get_report_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expression</span><span class="o">=</span><span class="s2">&quot;dB(S(1,1))&quot;</span><span class="p">,</span> <span class="n">setup_sweep_name</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="s1">&#39;Sweep&#39;</span><span class="p">,</span> <span class="n">families_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">report_input_type</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Generate Report Data using GetSolutionDataPerVariation function. it returns the data object, the solDataArray</span>
 <span class="sd">        and the FreqVals Array.</span>
 <span class="sd">        </span>
@@ -1802,20 +1526,22 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        setup_sweep_name :</span>
+<span class="sd">        setup_sweep_name : str</span>
 <span class="sd">            Name of setup to compute report. if None, nominal sweep will be applied (Default value = &#39;&#39;)</span>
-<span class="sd">        domain :</span>
+<span class="sd">        domain : str, list</span>
 <span class="sd">            Context Type (Sweep or Time) (Default value = &#39;Sweep&#39;)</span>
-<span class="sd">        families_dict :</span>
+<span class="sd">        families_dict : dict</span>
 <span class="sd">            Dictionary of variables and values. Default {&quot;Freq&quot;: [&quot;All&quot;]}</span>
-<span class="sd">        expression :</span>
+<span class="sd">        expression : str, list</span>
 <span class="sd">            string or list of traces to include (Default value = &quot;dB(S(1)</span>
 <span class="sd">        1))&quot; :</span>
-<span class="sd">            </span>
+<span class="sd">        report_input_type : str, optional</span>
+<span class="sd">            string or list of traces to include (Default value = &quot;dB(S(1)</span>
+<span class="sd">        1))&quot; :</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        type</span>
+<span class="sd">        SolutionData</span>
 <span class="sd">            SolutionData object if successful</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1826,6 +1552,8 @@
                 <span class="n">did</span> <span class="o">=</span> <span class="mi">1</span>
             <span class="n">ctxt</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;NAME:Context&quot;</span><span class="p">,</span> <span class="s2">&quot;SimValueContext:=&quot;</span><span class="p">,</span>
                     <span class="p">[</span><span class="n">did</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;IDIID&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">]]</span>
+        <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">domain</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">list</span><span class="p">:</span>
+            <span class="n">ctxt</span> <span class="o">=</span> <span class="n">domain</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">ctxt</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Domain:=&quot;</span><span class="p">,</span> <span class="n">domain</span><span class="p">]</span>
 
@@ -1833,15 +1561,17 @@
             <span class="n">expression</span> <span class="o">=</span> <span class="p">[</span><span class="n">expression</span><span class="p">]</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">setup_sweep_name</span><span class="p">:</span>
             <span class="n">setup_sweep_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">nominal_sweep</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">post_solution_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">report_type</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Solution not supported&quot;</span><span class="p">)</span>
-            <span class="k">return</span> <span class="kc">False</span>
-        <span class="n">modal_data</span> <span class="o">=</span> <span class="n">report_type</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">post_solution_type</span><span class="p">]</span>
+
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">report_input_type</span><span class="p">:</span>
+            <span class="n">report_input_type</span> <span class="o">=</span> <span class="n">report_type</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">post_solution_type</span><span class="p">]</span>
+
 
         <span class="k">if</span> <span class="n">families_dict</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">families_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Freq&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;All&quot;</span><span class="p">]}</span>
 
-        <span class="n">solution_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_solution_data_per_variation</span><span class="p">(</span><span class="n">modal_data</span><span class="p">,</span> <span class="n">setup_sweep_name</span><span class="p">,</span> <span class="n">ctxt</span><span class="p">,</span> <span class="n">families_dict</span><span class="p">,</span> <span class="n">expression</span><span class="p">)</span>
+        <span class="n">solution_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_solution_data_per_variation</span><span class="p">(</span><span class="n">report_input_type</span><span class="p">,</span> <span class="n">setup_sweep_name</span><span class="p">,</span> <span class="n">ctxt</span><span class="p">,</span> <span class="n">families_dict</span><span class="p">,</span> <span class="n">expression</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="ow">not</span> <span class="n">solution_data</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No Data Available. Check inputs&quot;</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">False</span>
@@ -1849,7 +1579,7 @@
 
 <div class="viewcode-block" id="PostProcessor.create_rectangular_plot"><a class="viewcode-back" href="../../../API/PostProcessor.html#pyaedt.modules.PostProcessor.PostProcessor.create_rectangular_plot">[docs]</a>    <span class="nd">@aedt_exception_handler</span>
     <span class="k">def</span> <span class="nf">create_rectangular_plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expression</span><span class="o">=</span><span class="s2">&quot;dB(S(1,1))&quot;</span><span class="p">,</span> <span class="n">setup_sweep_name</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">families_dict</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Freq&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;All&quot;</span><span class="p">]},</span>
-                                <span class="n">primary_sweep_variable</span><span class="o">=</span><span class="s2">&quot;Freq&quot;</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">plotname</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                                <span class="n">primary_sweep_variable</span><span class="o">=</span><span class="s2">&quot;Freq&quot;</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">plotname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">plottype</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a 2D Rectangular plot in AEDT</span>
 
 <span class="sd">        Parameters</span>
@@ -1878,8 +1608,8 @@
         <span class="n">ctxt</span><span class="o">=</span><span class="p">[]</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">setup_sweep_name</span><span class="p">:</span>
             <span class="n">setup_sweep_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">nominal_sweep</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">post_solution_type</span> <span class="o">==</span> <span class="s2">&quot;3DLayout&quot;</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">post_solution_type</span> <span class="o">==</span> <span class="s2">&quot;NexximLNA&quot;</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">post_solution_type</span> <span class="o">==</span> <span class="s2">&quot;NexximTransient&quot;</span><span class="p">:</span>
-            <span class="k">if</span> <span class="s2">&quot;Sweep&quot;</span> <span class="ow">in</span> <span class="n">setup_sweep_name</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">post_solution_type</span> <span class="o">==</span> <span class="s2">&quot;HFSS 3D Layout Design&quot;</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">post_solution_type</span> <span class="o">==</span> <span class="s2">&quot;NexximLNA&quot;</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">post_solution_type</span> <span class="o">==</span> <span class="s2">&quot;NexximTransient&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">&quot;Freq&quot;</span> <span class="o">==</span> <span class="n">primary_sweep_variable</span> <span class="ow">or</span> <span class="s2">&quot;Freq&quot;</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">families_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
                 <span class="n">did</span> <span class="o">=</span> <span class="mi">3</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">did</span> <span class="o">=</span> <span class="mi">1</span>
@@ -1898,13 +1628,31 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">post_solution_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">report_type</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Solution not supported&quot;</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">False</span>
-        <span class="n">modal_data</span> <span class="o">=</span> <span class="n">report_type</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">post_solution_type</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">plottype</span><span class="p">:</span>
+            <span class="n">modal_data</span> <span class="o">=</span> <span class="n">report_type</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">post_solution_type</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">modal_data</span> <span class="o">=</span> <span class="n">plottype</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">plotname</span><span class="p">:</span>
             <span class="n">plotname</span> <span class="o">=</span> <span class="n">generate_unique_name</span><span class="p">(</span><span class="s2">&quot;Plot&quot;</span><span class="p">)</span>
         <span class="n">families_input</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">families_input</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">primary_sweep_variable</span><span class="o">+</span><span class="s2">&quot;:=&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">primary_sweep_variable</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">families_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+            <span class="n">families_input</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="s2">&quot;All&quot;</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">families_dict</span><span class="p">[</span><span class="n">primary_sweep_variable</span><span class="p">])</span> <span class="ow">is</span> <span class="nb">list</span><span class="p">:</span>
+            <span class="n">families_input</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">families_dict</span><span class="p">[</span><span class="n">primary_sweep_variable</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">families_input</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">families_dict</span><span class="p">[</span><span class="n">primary_sweep_variable</span><span class="p">]])</span>
         <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">families_dict</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">el</span> <span class="o">==</span> <span class="n">primary_sweep_variable</span><span class="p">:</span>
+                <span class="k">continue</span>
             <span class="n">families_input</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">el</span><span class="o">+</span><span class="s2">&quot;:=&quot;</span><span class="p">)</span>
-            <span class="n">families_input</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">families_dict</span><span class="p">[</span><span class="n">el</span><span class="p">])</span>
+            <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">families_dict</span><span class="p">[</span><span class="n">el</span><span class="p">])</span> <span class="ow">is</span> <span class="nb">list</span><span class="p">:</span>
+                <span class="n">families_input</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">families_dict</span><span class="p">[</span><span class="n">el</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">families_input</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">families_dict</span><span class="p">[</span><span class="n">el</span><span class="p">]])</span>
+
+
+
         <span class="bp">self</span><span class="o">.</span><span class="n">oreportsetup</span><span class="o">.</span><span class="n">CreateReport</span><span class="p">(</span><span class="n">plotname</span><span class="p">,</span> <span class="n">modal_data</span><span class="p">,</span> <span class="s2">&quot;Rectangular Plot&quot;</span><span class="p">,</span> <span class="n">setup_sweep_name</span><span class="p">,</span> <span class="n">ctxt</span><span class="p">,</span> <span class="n">families_input</span><span class="p">,</span>
                                                        <span class="p">[</span><span class="s2">&quot;X Component:=&quot;</span><span class="p">,</span> <span class="n">primary_sweep_variable</span><span class="p">,</span> <span class="s2">&quot;Y Component:=&quot;</span><span class="p">,</span>
                                                    <span class="n">expression</span><span class="p">])</span>
@@ -1997,7 +1745,7 @@
     
     <div class="footer-item">
       <p class="copyright">
-    &copy; Copyright Copyright (c) 2021 ANSYS, Inc. All rights reserved..<br/>
+    &copy; Copyright (c) 2021 ANSYS, Inc. All rights reserved.<br/>
 </p>
     </div>
     
