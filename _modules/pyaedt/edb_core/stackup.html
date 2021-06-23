@@ -252,14 +252,14 @@
 <span class="sd">        name : str</span>
 <span class="sd">            Name of the dielectic.</span>
 <span class="sd">        permittivity : float, optional</span>
-<span class="sd">            Permittivity of the dielectric.</span>
-<span class="sd">        loss_tangent : float</span>
-<span class="sd">            Loss tangent for the material. </span>
+<span class="sd">            Permittivity of the dielectric. The default is ``1``.</span>
+<span class="sd">        loss_tangent : float, optional</span>
+<span class="sd">            Loss tangent for the material. The default is ``01``.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        type</span>
-<span class="sd">        Material definition.</span>
+<span class="sd">            Material definition.</span>
 <span class="sd">        </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">edb</span><span class="o">.</span><span class="n">Definition</span><span class="o">.</span><span class="n">MaterialDef</span><span class="o">.</span><span class="n">FindByName</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">IsNull</span><span class="p">():</span>
@@ -284,7 +284,7 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        type</span>
-<span class="sd">        Material definition.</span>
+<span class="sd">            Material definition.</span>
 <span class="sd">        </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">edb</span><span class="o">.</span><span class="n">Definition</span><span class="o">.</span><span class="n">MaterialDef</span><span class="o">.</span><span class="n">FindByName</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">IsNull</span><span class="p">():</span>
@@ -322,7 +322,7 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        type</span>
-<span class="sd">        Material definition.</span>
+<span class="sd">            Material definition.</span>
 <span class="sd">        </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">material_def</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edb</span><span class="o">.</span><span class="n">Definition</span><span class="o">.</span><span class="n">DebyeModel</span><span class="p">()</span>
@@ -347,12 +347,12 @@
 <span class="sd">        loss_tangent : float</span>
 <span class="sd">            Loss tangent for the material.</span>
 <span class="sd">        test_frequency : float</span>
-<span class="sd">            Test frequency for the dielectric in GHz.</span>
+<span class="sd">            Test frequency in GHz for the dielectric.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        type</span>
-<span class="sd">        Material definition.</span>
+<span class="sd">            Material definition.</span>
 <span class="sd">        </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">material_def</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edb</span><span class="o">.</span><span class="n">Definition</span><span class="o">.</span><span class="n">DjordjecvicSarkarModel</span><span class="p">()</span>
