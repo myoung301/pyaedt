@@ -6,6 +6,6 @@
 Common Primitives Classes
 =========================
 
-.. autoclass:: pyaedt.modeler.Primitives
+.. automodule:: pyaedt.modeler.Primitives
     :members:
 
