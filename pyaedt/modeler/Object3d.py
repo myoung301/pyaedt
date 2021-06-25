@@ -749,8 +749,9 @@ class Object3d(object):
             vName.append("NAME:Name")
             vName.append("Value:=")
             vName.append(obj_name)
+            self._change_property(vName)
             self._m_name = obj_name
-            self._change_property(obj_name)
+
 
     @property
     def color(self):
@@ -964,6 +965,8 @@ class Object3d(object):
         vGeo3d = ["NAME:Geometry3DAttributeTab", vPropServers, vChangedProps]
 
         vOut = ["NAME:AllTabs", vGeo3d]
+        if vPropChange == ['NAME:Solve Inside', 'Value:=', True]:
+            print(1)
         self.m_Editor.ChangeProperty(vOut)
         return True
 
