@@ -956,7 +956,8 @@ class GeometryModeler(Modeler, object):
         if port_edges is None or port_edges is False:
             port_edges = []
             for e in out:
-                port_edges.append(self.primitives.create_object_from_edge(e))
+                edge_id = self.primitives.create_object_from_edge(e).id
+                port_edges.append(edge_id)
 
         sheet_name = self.primitives.get_obj_name(port_edges[0])
         point0 = self.primitives.get_edge_midpoint(port_edges[0])
@@ -1355,10 +1356,14 @@ class GeometryModeler(Modeler, object):
             objtosplit = [objtosplit]
         objnames = []
         for el in objtosplit:
-            if type(el) is int and el in list(self.primitives.objects.keys()):
+            if isinstance(el, int) and el in list(self.primitives.objects.keys()):
                 objnames.append(self.primitives.get_obj_name(el))
-            else:
+            elif isinstance(el, Object3d):
+                objnames.append(el.name)
+            elif isinstance(el, str):
                 objnames.append(el)
+            else:
+                return False
         if return_list:
             return objnames
         else:
@@ -1773,15 +1778,15 @@ class GeometryModeler(Modeler, object):
         return True
 
     @aedt_exception_handler
-    def subtract(self, theList, theList1, keepOriginals=True):
-        """Subtract objects from IDs
+    def subtract(self, blank_list, tool_list, keepOriginals=True):
+        """Subtract objects
 
         Parameters
         ----------
-        theList :
-            list of IDs from which subtract
-        theList1 :
-            list of IDs to subtract
+        blank_list : list of Object3d or list of int
+            list of objects from which to subtract (either Object3d or integer object id allowed)
+        tool_list :
+            list of objects to subtract (either Object3d or integer object id allowed)
         keepOriginals : bool
             define to keep original or not (Default value = True)
 
@@ -1791,13 +1796,16 @@ class GeometryModeler(Modeler, object):
             True if succeeded
 
         """
-        szList = self.convert_to_selections(theList)
-        szList1 = self.convert_to_selections(theList1)
+        szList = self.convert_to_selections(blank_list)
+        szList1 = self.convert_to_selections(tool_list)
         if not keepOriginals:
-            if type(theList1) is not list:
-                theList1 = [theList1]
-            for id in list(theList1):
-                    self.primitives._delete_object_from_dict(id)
+            if not isinstance(tool_list, list):
+                tool_list = [tool_list]
+            for el in list(tool_list):
+                    if isinstance(el, Object3d):
+                        self.primitives._delete_object_from_dict(el.id)
+                    else:
+                        self.primitives._delete_object_from_dict(id)
 
 
         vArg1 = ['NAME:Selections', 'Blank Parts:=', szList, 'Tool Parts:=', szList1]
@@ -2374,8 +2382,8 @@ class GeometryModeler(Modeler, object):
 
         Returns
         -------
-        type
-            inner ID, outer ID, diel ID
+        tuple of Object3d
+            inner, outer, diel
 
         """
 
@@ -2488,13 +2496,13 @@ class GeometryModeler(Modeler, object):
                 else:
                     origin[2] -= wg_thickness
                     origin[1] -= wg_thickness
-            centers=[f.center for f in self.primitives.objects[airbox].faces]
+            centers=[f.center for f in airbox.faces]
             posx = [i[wg_direction_axis] for i in centers]
             mini = posx.index(min(posx))
             maxi = posx.index(max(posx))
             if create_sheets_on_openings:
-                p1 = self.primitives.create_object_from_face(self.primitives.objects[airbox].faces[mini].id)
-                p2 = self.primitives.create_object_from_face(self.primitives.objects[airbox].faces[maxi].id)
+                p1 = self.primitives.create_object_from_face(airbox.faces[mini].id)
+                p2 = self.primitives.create_object_from_face(airbox.faces[maxi].id)
             if not name:
                 name = generate_unique_name(wgmodel)
             if wg_direction_axis == self._parent.CoordinateSystemAxis.ZAxis:
@@ -2505,7 +2513,7 @@ class GeometryModeler(Modeler, object):
             else:
                 wgbox = self.primitives.create_box(origin, [wg_length, wb, hb], name=name)
             self.subtract(wgbox, airbox, False)
-            self._parent.assignmaterial(wgbox, wg_material)
+            wgbox.material_name = wg_material
 
             return wgbox, p1, p2
         else:
@@ -2685,13 +2693,14 @@ class GeometryModeler(Modeler, object):
                     break
         new_edges = []
         for edge in connected:
-            new_edges.append(self.primitives.create_object_from_edge(edge))
+            edge_object = self.primitives.create_object_from_edge(edge)
+            new_edges.append(edge_object)
 
         self.unite(new_edges)
-        self.generate_object_history(new_edges[0])
-        self.primitives.convert_segments_to_line(new_edges[0])
+        self.generate_object_history(new_edges[0].id)
+        self.primitives.convert_segments_to_line(new_edges[0].id)
 
-        edges = self.primitives.get_object_edges(new_edges[0])
+        edges = self.primitives.get_object_edges(new_edges[0].id)
         i = 0
         edge_to_delete = []
         first_vert = None
@@ -2714,11 +2723,10 @@ class GeometryModeler(Modeler, object):
                 rad = dist
                 move_vector = GeometryOperators.v_sub(fc, first_vert)
 
-        P = self.primitives.get_existing_polyline(object_id=new_edges[0])
+        P = self.primitives.get_existing_polyline(object=new_edges[0])
 
         if edge_to_delete:
             P.remove_edges(edge_to_delete)
-            #self.primitives.delete_edges_from_polilyne(new_edges[0], edge_to_delete)
 
         angle = math.pi * (180 -360/numberofsegments)/360
 

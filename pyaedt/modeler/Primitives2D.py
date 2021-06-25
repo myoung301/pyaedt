@@ -41,8 +41,7 @@ class Primitives2D(Primitives, object):
 
         Returns
         -------
-        type
-            id
+        Object3d
 
         """
         o = self._new_object(matname=matname)
@@ -62,10 +61,10 @@ class Primitives2D(Primitives, object):
 
         vArg2 = o.export_attributes(name)
 
-        o._m_name =self.oeditor.CreateCircle(vArg1, vArg2)
+        o.name = self.oeditor.CreateCircle(vArg1, vArg2)
         self._refresh_object_types()
         id = self._update_object(o)
-        return id
+        return o
 
     @aedt_exception_handler
     def create_ellipse(self,position, major_raidus, ratio, bIsCovered=True, name=None, matname=None):
@@ -88,7 +87,7 @@ class Primitives2D(Primitives, object):
 
         Returns
         -------
-
+        Object3d
         """
         o = self._new_object(matname=matname)
 
@@ -109,11 +108,11 @@ class Primitives2D(Primitives, object):
         vArg1.append("WhichAxis:="), vArg1.append(szAxis)
 
         vArg2 = o.export_attributes(name)
-        o._m_name =self.oeditor.CreateEllipse(vArg1, vArg2)
+        o.name = self.oeditor.CreateEllipse(vArg1, vArg2)
 
         self._refresh_object_types()
         id = self._update_object(o)
-        return id
+        return o
 
     @aedt_exception_handler
     def create_rectangle(self, position, dimension_list, name=None, matname=None):
@@ -132,9 +131,7 @@ class Primitives2D(Primitives, object):
 
         Returns
         -------
-        type
-            id
-
+        Object3d
         """
         o = self._new_object(matname=matname)
 
@@ -157,8 +154,8 @@ class Primitives2D(Primitives, object):
 
         vArg2 = o.export_attributes(name)
 
-        o._m_name =self.oeditor.CreateRectangle(vArg1, vArg2)
+        o.name = self.oeditor.CreateRectangle(vArg1, vArg2)
 
         self._refresh_object_types()
         id = self._update_object(o)
-        return id
+        return o

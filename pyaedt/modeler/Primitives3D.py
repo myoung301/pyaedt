@@ -33,8 +33,7 @@ class Primitives3D(Primitives, object):
 
         Returns
         -------
-        int
-            Box ID
+        Object3d
 
         Examples
         _________
@@ -65,11 +64,11 @@ class Primitives3D(Primitives, object):
             vArg2 = o.export_attributes(name)
         else:
             vArg2 = o.export_attributes_legacy(name)
-        o._m_name = self.oeditor.CreateBox(vArg1, vArg2)
+        o.name = self.oeditor.CreateBox(vArg1, vArg2)
 
         self._refresh_object_types()
         id = self._update_object(o)
-        return id
+        return o
 
     @aedt_exception_handler
     def create_bondwire(self, start_position, end_position, h1=0.2, h2=0, alpha=80, beta=5, bond_type=0,
@@ -103,8 +102,7 @@ class Primitives3D(Primitives, object):
 
         Returns
         -------
-        int
-            Box ID
+        Object3d
 
         Examples
         _________
@@ -152,11 +150,11 @@ class Primitives3D(Primitives, object):
         vArg1.append("WhichAxis:="), vArg1.append("Z")
         vArg1.append("ReverseDirection:="), vArg1.append(False)
         vArg2 = o.export_attributes(name)
-        o._m_name =self.oeditor.CreateBondwire(vArg1, vArg2)
+        o.name = self.oeditor.CreateBondwire(vArg1, vArg2)
 
         self._refresh_object_types()
         id = self._update_object(o)
-        return id
+        return o
 
 
 
@@ -185,13 +183,13 @@ class Primitives3D(Primitives, object):
         self.oeditor.CreateRegion(arg, arg2)
         #TODO put this into Object3d Constructor?
         o._m_name = "Region"
-        o._solve_inside = True
-        o._transparency = 0
-        o._wireframe = True
+        o.solve_inside = True
+        o.transparency = 0
+        o.wireframe = True
 
         self._refresh_object_types()
         id = self._update_object(o)
-        return id
+        return o
 
     @aedt_exception_handler
     def create_circle(self, cs_plane, position, radius, numSides=0, name=None, matname=None):
@@ -214,8 +212,7 @@ class Primitives3D(Primitives, object):
 
         Returns
         -------
-        type
-            id
+        Object3d
 
         """
         o = self._new_object(matname=matname)
@@ -235,11 +232,11 @@ class Primitives3D(Primitives, object):
 
         vArg2 = o.export_attributes(name)
 
-        o._m_name =self.oeditor.CreateCircle(vArg1, vArg2)
+        o.name = self.oeditor.CreateCircle(vArg1, vArg2)
 
         self._refresh_object_types()
         id = self._update_object(o)
-        return id
+        return o
 
     @aedt_exception_handler
     def create_sphere(self, position, radius, name=None, matname=None):
@@ -258,7 +255,7 @@ class Primitives3D(Primitives, object):
 
         Returns
         -------
-
+        Object3d
         """
         o = self._new_object(matname=matname)
 
@@ -274,11 +271,11 @@ class Primitives3D(Primitives, object):
 
         vArg2 = o.export_attributes(name)
 
-        o._m_name =self.oeditor.CreateSphere(vArg1, vArg2)
+        o.name = self.oeditor.CreateSphere(vArg1, vArg2)
 
         self._refresh_object_types()
         id = self._update_object(o)
-        return id
+        return o
 
     @aedt_exception_handler
     def create_cylinder(self, cs_axis, position, radius, height, numSides=0, name=None, matname=None):
@@ -303,7 +300,7 @@ class Primitives3D(Primitives, object):
 
         Returns
         -------
-
+        Object3d
         """
         o = self._new_object(matname=matname)
 
@@ -324,11 +321,11 @@ class Primitives3D(Primitives, object):
 
         vArg2 = o.export_attributes(name)
 
-        o._m_name =self.oeditor.CreateCylinder(vArg1, vArg2)
+        o.name = self.oeditor.CreateCylinder(vArg1, vArg2)
 
         self._refresh_object_types()
         id = self._update_object(o)
-        return id
+        return o
 
     @aedt_exception_handler
     def create_ellipse(self, cs_plane, position, major_raidus, ratio, bIsCovered=True, name=None, matname=None):
@@ -353,7 +350,7 @@ class Primitives3D(Primitives, object):
 
         Returns
         -------
-
+        Object3d
         """
         o = self._new_object(matname=matname)
 
@@ -375,11 +372,11 @@ class Primitives3D(Primitives, object):
 
         vArg2 = o.export_attributes(name)
         assert vArg2
-        o._m_name =self.oeditor.CreateEllipse(vArg1, vArg2)
+        o.name = self.oeditor.CreateEllipse(vArg1, vArg2)
 
         self._refresh_object_types()
         id = self._update_object(o)
-        return id
+        return o
 
     @aedt_exception_handler
     def create_equationbased_curve(self, udpequationbasedcurveddefinition, name=None, matname=None):
@@ -396,18 +393,18 @@ class Primitives3D(Primitives, object):
 
         Returns
         -------
-
+        Object3d
         """
         o = self._new_object(matname=matname)
 
         vArg1 = udpequationbasedcurveddefinition.toScript()
         vArg2 = o.export_attributes(name)
 
-        o._m_name =self.oeditor.CreateEquationCurve(vArg1, vArg2)
+        o.name = self.oeditor.CreateEquationCurve(vArg1, vArg2)
 
         self._refresh_object_types()
         id = self._update_object(o)
-        return id
+        return o
 
     @aedt_exception_handler
     def create_helix(self, udphelixdefinition):
@@ -420,7 +417,7 @@ class Primitives3D(Primitives, object):
 
         Returns
         -------
-
+        Object3d
         """
         # TODO Test
         id = udphelixdefinition.ProfileID
@@ -436,7 +433,7 @@ class Primitives3D(Primitives, object):
         self.oeditor.CreateHelix(vArg1, vArg2)
         self._refresh_object_types()
         id = self._update_object(o)
-        return id
+        return o
 
     @aedt_exception_handler
     def convert_segments_to_line(self, object_name):
@@ -496,11 +493,10 @@ class Primitives3D(Primitives, object):
 
         Returns
         -------
-        type
-            id
-
+        Object3d
         """
-        o = self.request_new_object(matname=matname)
+
+        o = self._new_object(matname=matname)
 
         szAxis = GeometryOperators.cs_plane_str(csPlane)
         XStart, YStart, ZStart = self.pos_with_arg(position)
@@ -517,10 +513,12 @@ class Primitives3D(Primitives, object):
         vArg1.append("WhichAxis:="), vArg1.append(szAxis)
 
         vArg2 = o.export_attributes(name)
-        o._m_name =self.oeditor.CreateRectangle(vArg1, vArg2)
+        o.name = self.oeditor.CreateRectangle(vArg1, vArg2)
+
         self._refresh_object_types()
         id = self._update_object(o)
-        return id
+
+        return o
 
     @aedt_exception_handler
     def create_udm(self, udmfullname, udm_params_list, udm_library='syslib'):
@@ -537,8 +535,7 @@ class Primitives3D(Primitives, object):
 
         Returns
         -------
-        type
-            object ID
+        Object3d
 
         """
 
@@ -578,7 +575,7 @@ class Primitives3D(Primitives, object):
             object_lists = self.oeditor.GetPartsForUserDefinedModel(oname)
             for el in object_lists:
                 o = self._new_object()
-                o._m_name =el
+                o.name = el
                 if el in list(self.oeditor.GetObjectsInGroup("Solids")):
                     id = self._update_object(o)
                 elif el in list(self.oeditor.GetObjectsInGroup("Sheets")):
@@ -588,7 +585,7 @@ class Primitives3D(Primitives, object):
                 else:
                     id = self._update_object(o)
                 self.update_object_properties(o)
-            return oname
+            return o
         else:
             return False
 
@@ -615,8 +612,7 @@ class Primitives3D(Primitives, object):
 
         Returns
         -------
-        type
-            id
+        Object3d
 
         """
         o = self._new_object(matname=matname)
@@ -638,14 +634,14 @@ class Primitives3D(Primitives, object):
 
         vArg2 = o.export_attributes(name)
 
-        o._m_name =self.oeditor.CreateCone(vArg1, vArg2)
+        o.name = self.oeditor.CreateCone(vArg1, vArg2)
 
         if o.analysis_type:
             o.material_name, o.solve_inside = self._check_material(matname, self.defaultmaterial)
 
         self._refresh_object_types()
         id = self._update_object(o)
-        return id
+        return o
 
     @aedt_exception_handler
     def insert_3d_component(self, compFile, geoParams, szMatParams='', szDesignParams='', targetCS='Global'):
@@ -694,7 +690,7 @@ class Primitives3D(Primitives, object):
         vArg1.append(compFile)
 
         if self.oeditor is not None:
-            o._m_name =self.oeditor.Insert3DComponent(vArg1)
+            o.name = self.oeditor.Insert3DComponent(vArg1)
             self.refresh_all_ids()
         return id
 

@@ -35,13 +35,13 @@ class TestHFSS:
     def test_02_create_primitive(self):
         udp = self.aedtapp.modeler.Position(0, 0, 0)
         coax_dimension = 200
-        id1 = self.aedtapp.modeler.primitives.create_cylinder(self.aedtapp.CoordinateSystemPlane.XYPlane, udp, 3, coax_dimension,
+        o1 = self.aedtapp.modeler.primitives.create_cylinder(self.aedtapp.CoordinateSystemPlane.XYPlane, udp, 3, coax_dimension,
                                                          0, "inner")
-        assert isinstance(id1, int)
-        id2 = self.aedtapp.modeler.primitives.create_cylinder(self.aedtapp.CoordinateSystemPlane.XYPlane, udp, 10, coax_dimension,
+        assert isinstance(o1.id, int)
+        o2 = self.aedtapp.modeler.primitives.create_cylinder(self.aedtapp.CoordinateSystemPlane.XYPlane, udp, 10, coax_dimension,
                                                          0, "outer")
-        assert isinstance(id2, int)
-        assert self.aedtapp.modeler.subtract(id2, id1, True)
+        assert isinstance(o2.id, int)
+        assert self.aedtapp.modeler.subtract(o2, o1, True)
 
     def test_03_1_load_material(self):
         material_database = os.path.join(module_path, 'pyaedt', 'misc', 'amat.xml')
@@ -50,12 +50,13 @@ class TestHFSS:
     def test_03_2_assign_material(self):
         udp = self.aedtapp.modeler.Position(0, 0, 0)
         coax_dimension = 150
-        id1 = self.aedtapp.modeler.primitives.get_obj_id("inner")
-        id2 = self.aedtapp.modeler.primitives.create_cylinder(self.aedtapp.CoordinateSystemPlane.XYPlane, udp, 10,
+        inner = self.aedtapp.modeler.primitives.create_cylinder(self.aedtapp.CoordinateSystemPlane.XYPlane, udp, 3, coax_dimension,
+                                                             0, "inner")
+        cyl_1 = self.aedtapp.modeler.primitives.create_cylinder(self.aedtapp.CoordinateSystemPlane.XYPlane, udp, 10,
                                                               coax_dimension, 0, "die")
-        assert self.aedtapp.modeler.subtract("die", "inner", True)
-        assert self.aedtapp.assignmaterial([id1], "Copper")
-        assert self.aedtapp.assignmaterial(id2, "teflon_based")
+        assert self.aedtapp.modeler.subtract(cyl_1, inner, True)
+        assert self.aedtapp.assignmaterial(inner, "Copper")
+        assert self.aedtapp.assignmaterial(cyl_1, "teflon_based")
         assert self.aedtapp.assignmaterial("outer", "Copper")
         pass
 
@@ -68,11 +69,17 @@ class TestHFSS:
             ("die", {})
         ]
     )
-    def test_04_assign_coating(self, object_name, kwargs):
+    def test_04a_assign_coating(self, object_name, kwargs):
         id = self.aedtapp.modeler.primitives.get_obj_id(object_name)
         coat = self.aedtapp.assigncoating([id], **kwargs)
         material = coat.props.get("Material", "")
         assert material == kwargs.get("mat", "")
+
+    def test_04b_assign_coating(self):
+        id1 = self.aedtapp.modeler.primitives.get_obj_id("inner")
+        coat = self.aedtapp.assigncoating([id1], "copper")
+        assert coat
+        assert self.aedtapp.assigncoating([id1], usehuray=True, usethickness=True, istwoside=True)
 
     def test_05_create_wave_port_from_sheets(self):
         udp = self.aedtapp.modeler.Position(0, 0, 0)
@@ -137,11 +144,11 @@ class TestHFSS:
 
     def test_08_create_circuit_port_from_edges(self):
         plane = self.aedtapp.CoordinateSystemPlane.XYPlane
-        rectid1 = self.aedtapp.modeler.primitives.create_rectangle(plane, [10, 10, 10], [10, 10], name="rect1_for_port")
-        edges1 = self.aedtapp.modeler.primitives.get_object_edges(rectid1)
+        rect_1 = self.aedtapp.modeler.primitives.create_rectangle(plane, [10, 10, 10], [10, 10], name="rect1_for_port")
+        edges1 = self.aedtapp.modeler.primitives.get_object_edges(rect_1.id)
         e1 = edges1[0]
-        rectid2 = self.aedtapp.modeler.primitives.create_rectangle(plane, [30, 10, 10], [10, 10], name="rect2_for_port")
-        edges2 = self.aedtapp.modeler.primitives.get_object_edges(rectid2)
+        rect_2 = self.aedtapp.modeler.primitives.create_rectangle(plane, [30, 10, 10], [10, 10], name="rect2_for_port")
+        edges2 = self.aedtapp.modeler.primitives.get_object_edges(rect_2.id)
         e2 = edges2[0]
 
         self.aedtapp.solution_type = "DrivenModal"
@@ -382,6 +389,6 @@ class TestHFSS:
 
     def test_40_assign_current_source_to_sheet(self):
         sheet_name = "RectangleForSource"
-        self.aedtapp.modeler.primitives.create_rectangle(self.aedtapp.CoordinateSystemPlane.XYPlane, [0, 0, 0], 
+        self.aedtapp.modeler.primitives.create_rectangle(self.aedtapp.CoordinateSystemPlane.XYPlane, [0, 0, 0],
                                                          [5, 1], sheet_name, "Copper")
         assert self.aedtapp.assign_current_source_to_sheet(sheet_name)

@@ -232,7 +232,7 @@ class TestIcepak:
 
     def test_33_create_region(self):
         self.aedtapp.modeler.primitives.delete("Region")
-        assert type(self.aedtapp.modeler.primitives.create_region([100,100,100,100,100,100])) is int
+        assert isinstance(self.aedtapp.modeler.primitives.create_region([100,100,100,100,100,100]).id, int)
 
     def test_34_automatic_mesh_pcb(self):
         assert self.aedtapp.mesh.automatic_mesh_pcb()

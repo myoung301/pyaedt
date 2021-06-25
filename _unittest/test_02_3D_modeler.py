@@ -1,6 +1,5 @@
 # standard imports
 import os
-import pytest
 # Setup paths for module imports
 from .conftest import local_path, scratch_path
 
@@ -35,15 +34,12 @@ class TestModeler:
         self.aedtapp.modeler.model_units = "cm"
         assert self.aedtapp.modeler.model_units == "cm"
 
-    def test_01b_load_material_lib(self):
-        filename = os.path.join(local_path, "example_models", "amat.xml")
-        mats = self.aedtapp.materials.load_from_xml_full(filename)
-        assert mats != {}
-        assert mats is not None
 
-    def test_01c_load_material_lib(self):
-        filename = os.path.join(local_path, "example_models", "amat.xml")
-        assert self.aedtapp.materials.load_from_file(filename)
+    def test_01b_load_material_lib(self):
+        assert self.aedtapp.materials.load_from_xml_full()
+
+    def test_01b_load_material_lib(self):
+        assert self.aedtapp.materials.load_from_file(os.path.join(local_path, "example_models","amat.xml"))
 
     def test_01c_export_material_lib(self):
         self.aedtapp.materials.py2xmlFull(os.path.join(self.local_scratch.path,"export.xml"))
@@ -171,8 +167,8 @@ class TestModeler:
     def test_24_check_plane(self):
 
         udp = self.aedtapp.modeler.Position(0, 0, 0)
-        id1 = self.aedtapp.modeler.primitives.create_box(udp, [4, 5, 5])
-        plane = self.aedtapp.modeler.check_plane(id1, udp)
+        o = self.aedtapp.modeler.primitives.create_box(udp, [4, 5, 5])
+        plane = self.aedtapp.modeler.check_plane(o.id, udp)
         planes = ["XY", "XZ", "YZ"]
         assert plane in planes
 
@@ -181,10 +177,10 @@ class TestModeler:
         assert True
 
     def test_26_create_airbox(self):
-        id = self.aedtapp.modeler.create_airbox(10)
-        id2 = self.aedtapp.modeler.create_airbox(50, "Relative", "Second_airbox")
-        assert type(id) is int
-        assert type(id2) is int
+        o1 = self.aedtapp.modeler.create_airbox(10)
+        o2 = self.aedtapp.modeler.create_airbox(50, "Relative", "Second_airbox")
+        assert type(o1.id) is int
+        assert type(o2.id) is int
 
     def test_27_create_region(self):
         assert self.aedtapp.modeler.create_air_region(*[20, 20, 30, 50, 50, 100])
@@ -207,9 +203,9 @@ class TestModeler:
         position = self.aedtapp.modeler.Position(0, 0, 0)
         wg9 = self.aedtapp.modeler.create_waveguide(position, self.aedtapp.CoordinateSystemAxis.ZAxis, wgmodel="WG9",
                                                     wg_length=1500, parametrize_h=True, create_sheets_on_openings=True)
-        assert wg9[0] > 0
-        assert wg9[1] > 0
-        assert wg9[2] > 0
+        assert wg9[0].id > 0
+        assert wg9[1].id > 0
+        assert wg9[2].id > 0
         wgfail = self.aedtapp.modeler.create_waveguide(position, self.aedtapp.CoordinateSystemAxis.ZAxis,
                                                        wgmodel="MYMODEL",
                                                        wg_length=2000, parametrize_h=True)
@@ -231,6 +227,26 @@ class TestModeler:
                                                                  create_new_objects=False)
         # if create_new_objects is set to False, there should be no new objects
         assert not obj_list
+
+    def test_34_update_coordinate_system(self):
+        CS1 = self.aedtapp.modeler.coordinate_system.create(name="CS1", view="rotate")
+        CS2 = self.aedtapp.modeler.coordinate_system.create(name="CS2", view="rotate")
+        CS2.props["Reference CS"] = "CS1"
+        assert CS2.update()
+        CS1.props["OriginX"] = 10
+        CS1.props["OriginY"] = 10
+        CS1.props["OriginZ"] = 10
+        assert CS1.update()
+        assert CS2.change_cs_mode(2)
+        CS2.props["Phi"] = 30
+        CS2.props["Theta"] = 30
+        assert CS2.update()
+        CS2.props["Reference CS"] = "Global"
+        CS2.update()
+        assert self.aedtapp.modeler.oeditor.GetCoordinateSystems() == ('Global', 'CS1', 'CS2')
+        assert len(self.aedtapp.modeler.coordinate_systems)==2
+        assert CS2.delete()
+
 
     def test_35_activate_variable_for_tuning(self):
         self.aedtapp["test_opti"]="10mm"
@@ -258,57 +274,18 @@ class TestModeler:
 
     def test_36_create_coaxial(self):
         coax = self.aedtapp.modeler.create_coaxial([0, 0, 0], self.aedtapp.CoordinateSystemAxis.XAxis)
-        assert isinstance(coax[0], int)
-        assert isinstance(coax[1], int)
-        assert isinstance(coax[2], int)
+        assert isinstance(coax[0].id, int)
+        assert isinstance(coax[1].id, int)
+        assert isinstance(coax[2].id, int)
 
     def test_37_create_coordinate(self):
-        cs = self.aedtapp.modeler.create_coordinate_system()
+        cs = self.aedtapp.modeler.coordinate_system.create()
         assert cs
         assert cs.update()
         assert cs.change_cs_mode(1)
         assert cs.change_cs_mode(2)
         assert not cs.change_cs_mode(3)
         assert cs.change_cs_mode(0)
-        assert cs.delete()
 
-    def test_38_rename_coordinate(self):
-        cs = self.aedtapp.modeler.create_coordinate_system(name='oldname')
-        assert cs.name == 'oldname'
-        assert cs.rename('newname')
-        assert cs.name == 'newname'
 
-    def test_39_update_coordinate_system(self):
-        for cs in self.aedtapp.modeler.coordinate_systems:
-            cs.delete()
-        cs1 = self.aedtapp.modeler.create_coordinate_system(name="CS1", view="rotate")
-        cs2 = self.aedtapp.modeler.create_coordinate_system(name="CS2", mode="view", view="iso")
-        cs2.ref_cs = "CS1"
-        assert cs2.update()
-        cs1.props["OriginX"] = 10
-        cs1.props["OriginY"] = 10
-        cs1.props["OriginZ"] = 10
-        assert cs1.update()
-        assert cs2.change_cs_mode(2)
-        cs2.props["Phi"] = 30
-        cs2.props["Theta"] = 30
-        assert cs2.update()
-        cs2.ref_cs = "Global"
-        cs2.update()
-        assert self.aedtapp.modeler.oeditor.GetCoordinateSystems() == ('Global', 'CS1', 'CS2')
-        assert len(self.aedtapp.modeler.coordinate_systems) == 2
-        assert cs2.delete()
-
-    def test_40_set_as_working_cs(self):
-        for cs in self.aedtapp.modeler.coordinate_systems:
-            cs.delete()
-        cs1 = self.aedtapp.modeler.create_coordinate_system(name="first")
-        cs2 = self.aedtapp.modeler.create_coordinate_system(name="second", mode="view", view="iso")
-        assert cs1.set_as_working_cs()
-        assert cs2.set_as_working_cs()
-
-    def test_41_set_working_coordinate_system(self):
-        cs1 = self.aedtapp.modeler.create_coordinate_system(name="new1")
-        self.aedtapp.modeler.set_working_coordinate_system("Global")
-        self.aedtapp.modeler.set_working_coordinate_system("new1")
 

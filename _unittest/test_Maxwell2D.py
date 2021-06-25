@@ -35,24 +35,24 @@ class TestMaxwell2D:
     def test_02_create_primitive(self):
         udp = self.aedtapp.modeler.Position(0, 0, 0)
         id1 = self.aedtapp.modeler.primitives.create_rectangle(udp,[5,3],name="Rectangle1", matname="copper")
-        assert isinstance(id1, int)
+        assert isinstance(id1.id, int)
 
     def test_03_create_circle(self):
         udp = self.aedtapp.modeler.Position(0, 0, 0)
-        id1 = self.aedtapp.modeler.primitives.create_circle(udp,3,0, name="Circle1", matname="copper")
-        assert isinstance(id1, int)
-        id2 = self.aedtapp.modeler.primitives.create_circle(udp,3,8, name="Circle2", matname="copper")
-        assert isinstance(id2, int)
+        o1 = self.aedtapp.modeler.primitives.create_circle(udp,3,0, name="Circle1", matname="copper")
+        assert isinstance(o1.id, int)
+        o2 = self.aedtapp.modeler.primitives.create_circle(udp,3,8, name="Circle2", matname="copper")
+        assert isinstance(o2.id, int)
 
     def test_04_create_ellipse(self):
         udp = self.aedtapp.modeler.Position(0, 0, 0)
-        id1 = self.aedtapp.modeler.primitives.create_ellipse(udp,3,2, name="Ellipse1", matname="copper")
-        assert isinstance(id1, int)
+        o = self.aedtapp.modeler.primitives.create_ellipse(udp,3,2, name="Ellipse1", matname="copper")
+        assert isinstance(o.id, int)
 
     def test_05_create_poly(self):
         udp = [self.aedtapp.modeler.Position(0, 0, 0),self.aedtapp.modeler.Position(10, 5, 0)]
-        id1 = self.aedtapp.modeler.primitives.create_polyline(udp, name="Ellipse1", matname="copper")
-        assert isinstance(id1, Polyline)
+        o = self.aedtapp.modeler.primitives.create_polyline(udp, name="Ellipse1", matname="copper")
+        assert isinstance(o, Polyline)
 
 
     def test_03_assign_initial_mesh_from_slider(self):

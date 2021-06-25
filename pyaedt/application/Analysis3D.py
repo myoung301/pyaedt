@@ -243,8 +243,8 @@ class FieldAnalysis3D(Analysis, object):
 
         Parameters
         ----------
-        obj : str, list
-            list of objects to which assign materials
+        obj : str, Object3d
+            object or list of objects to which the material is assigned
         mat : str
             material to assign
 
@@ -254,6 +254,8 @@ class FieldAnalysis3D(Analysis, object):
             True if succeeded | False if failed
 
         """
+        if not isinstance(obj, list):
+            obj = [obj]
         mat = mat.lower()
         selections = self.modeler.convert_to_selections(obj)
         arg1 = ["NAME:Selections"]
@@ -269,12 +271,6 @@ class FieldAnalysis3D(Analysis, object):
                 arg2.append("SolveInside:="), arg2.append(False)
             self.modeler.oeditor.AssignMaterial(arg1, arg2)
             self._messenger.add_info_message('Assign Material ' + mat + ' to object ' + selections)
-            if type(obj) is list:
-                for el in obj:
-                    self.modeler.primitives[el].material_name = mat
-            else:
-                self.modeler.primitives[obj].material_name = mat
-            return True
         elif self.materials.checkifmaterialexists(mat):
             self.materials._aedmattolibrary(mat)
             Mat = self.materials.material_keys[mat]
@@ -284,26 +280,20 @@ class FieldAnalysis3D(Analysis, object):
                 arg2.append("SolveInside:="), arg2.append(False)
             self.modeler.oeditor.AssignMaterial(arg1, arg2)
             self._messenger.add_info_message('Assign Material ' + mat + ' to object ' + selections)
-            if type(obj) is list:
-                for el in obj:
-                    self.modeler.primitives[el].material_name = mat
-            else:
-                self.modeler.primitives[obj].material_name = mat
-
-            return True
         else:
             self._messenger.add_error_message("Material Does Not Exists")
             return False
 
+        for el in obj:
+            if isinstance(el, str):
+                self.modeler.primitives[el].material_name = mat
+            else:
+                el.material_name = mat
+        return True
+
     @aedt_exception_handler
     def get_all_conductors_names(self):
         """Get all conductors in active design
-        
-        
-        :return: objname list
-
-        Parameters
-        ----------
 
         Returns
         -------

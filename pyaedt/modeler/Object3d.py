@@ -574,23 +574,26 @@ class Object3d(object):
     * object_units
 
     """
-    def __init__(self, parent, name=None):
-        if name:
-            self._m_name = name
+    def __init__(self, parent, name=None, id=None):
+        if id:
+            self = self.parent.objects[id]
         else:
-            self._m_name = _uname()
-        self._parent = parent
-        self.flags = ""
-        self._transparency = 0.3
-        self._part_coordinate_system = "Global"
-        self._solve_inside = True
-        self._wireframe = False
-        self._model = True
-        self._color = (132, 132, 193)
-        self._bounding_box = None
-        self._object_type = None
-        self._material_name = self._parent.defaultmaterial
-        self._solve_inside = None
+            if name:
+                self._m_name = name
+            else:
+                self._m_name = _uname()
+            self._parent = parent
+            self.flags = ""
+            self._transparency = 0.3
+            self._part_coordinate_system = "Global"
+            self._solve_inside = True
+            self._wireframe = False
+            self._model = True
+            self._color = (132, 132, 193)
+            self._bounding_box = None
+            self._object_type = None
+            self._material_name = self._parent.defaultmaterial
+            self._solve_inside = None
 
     @property
     def analysis_type(self):
@@ -747,7 +750,7 @@ class Object3d(object):
             vName.append("Value:=")
             vName.append(obj_name)
             self._m_name = obj_name
-            self._change_property(vName)
+            self._change_property(obj_name)
 
     @property
     def color(self):
@@ -874,7 +877,7 @@ class Object3d(object):
         if name:
             obj_name = name
         else:
-            obj_name = self.name
+            obj_name = self._m_name
 
         args = ["NAME:Attributes",
                 "Name:=", obj_name,
@@ -961,8 +964,6 @@ class Object3d(object):
         vGeo3d = ["NAME:Geometry3DAttributeTab", vPropServers, vChangedProps]
 
         vOut = ["NAME:AllTabs", vGeo3d]
-        if vPropChange == ['NAME:Solve Inside', 'Value:=', True]:
-            print(1)
         self.m_Editor.ChangeProperty(vOut)
         return True
 
