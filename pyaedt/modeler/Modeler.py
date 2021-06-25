@@ -26,7 +26,7 @@ from ..application.Variables import AEDT_units
 from ..generic.general_methods import generate_unique_name, retry_ntimes, aedt_exception_handler
 import math
 from ..application.DataHandlers import dict2arg
-from .Object3d import EdgePrimitive, FacePrimitive, VertexPrimitive
+from .Object3d import EdgePrimitive, FacePrimitive, VertexPrimitive, Object3d
 
 
 class CoordinateSystem(object):
@@ -1532,8 +1532,8 @@ class GeometryModeler(Modeler, object):
 
         Parameters
         ----------
-        objid :
-            if str, it is considered an objecname. if Int it is considered an object id
+        objid : str, int, Object3d
+            Object name, id or Object3d
         vector :
             List of Vector [x1,y1,z1] or  Application.Position object
         attachObject :

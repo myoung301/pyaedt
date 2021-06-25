@@ -134,8 +134,8 @@ cs_selected.delete()
 # Get a point coordinate under another coordinate system
 # ------------------------------------------------------
 # A point coordinate can be translated respect any coordinate system
-hfss.modeler.primitives.create_box([-10, -10, -10], [20, 20, 20], "Box1")
-p = hfss.modeler.primitives['Box1'].faces[0].vertices[0].position
+box = hfss.modeler.primitives.create_box([-10, -10, -10], [20, 20, 20], "Box1")
+p = box.faces[0].vertices[0].position
 print('Global: ', p)
 p2 = hfss.modeler.global_to_cs(p, 'CS5')
 print('CS5 :', p2)
