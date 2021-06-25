@@ -741,21 +741,28 @@ class Primitives(object):
     @property
     def solids(self):
         """List of all objects of type 'Solid'"""
+        self._solids = list(self.oeditor.GetObjectsInGroup("Solids"))
+        self._all_object_names = self._solids + self._sheets + self._lines
         return self._solids
 
     @property
     def sheets(self):
         """List of all objects of type 'Sheet'"""
+        self._sheets = list(self.oeditor.GetObjectsInGroup("Sheets"))
+        self._all_object_names = self._solids + self._sheets + self._lines
         return self._sheets
 
     @property
     def lines(self):
         """List of all objects of type 'Line'"""
+        self._lines = list(self.oeditor.GetObjectsInGroup("Lines"))
+        self._all_object_names = self._solids + self._sheets + self._lines
         return self._lines
 
     @property
     def object_names(self):
         """List of all objects of type 'Line'"""
+        self._refresh_object_types()
         return self._all_object_names
 
     @aedt_exception_handler
@@ -996,7 +1003,7 @@ class Primitives(object):
         Object3d
 
         """
-        if "Region" in self.get_all_objects_names():
+        if "Region" in self.objects_names:
             return None
         obj = self._new_object()
         arg = ["NAME:RegionParameters"]
@@ -1371,7 +1378,7 @@ class Primitives(object):
             Boolean
 
         """
-        objnames = self.get_all_objects_names()
+        objnames = self.objects_names
         num_del = 0
         for el in objnames:
             if case_sensitive:
@@ -1478,11 +1485,12 @@ class Primitives(object):
         self._lines = list(self.oeditor.GetObjectsInGroup("Lines"))
         self._all_object_names = self._solids + self._sheets + self._lines
 
+
     @aedt_exception_handler
     def refresh_all_ids(self):
 
         self._refresh_object_types()
-        all_object_names = self.get_all_objects_names()
+        all_object_names = self.objects_names
 
         for el in self._solids:
             if el not in all_object_names:
@@ -1622,6 +1630,7 @@ class Primitives(object):
                                                "Geometry3DAttributeTab", name, 'Surface Material')
         return o
 
+    '''
     @aedt_exception_handler
     def get_all_objects_names(self, refresh_list=False, get_solids=True, get_sheets=True, get_lines=True):
         """Get all objects names in the design
@@ -1691,6 +1700,7 @@ class Primitives(object):
         """
         return self.get_all_objects_names(refresh_list=refresh_list, get_solids=False, get_sheets=False, get_lines=True)
 
+    '''
     @aedt_exception_handler
     def get_objects_by_material(self, materialname):
         """Get objects ID list of specified material
@@ -2268,7 +2278,7 @@ class Primitives(object):
                 # Not Found, keep looking
                 pass
         else:
-            for obj in self.get_all_objects_names():
+            for obj in self.object_names:
                 vArg1[2] = obj
                 try:
                     edgeID = self.oeditor.GetEdgeByPosition(vArg1)
@@ -2340,7 +2350,7 @@ class Primitives(object):
                 # Not Found, keep looking
                 pass
         else:
-            for obj in self.get_all_objects_names():
+            for obj in self.objects_names:
                 vArg1[2] = obj
                 try:
                     face_id = self.oeditor.GetFaceByPosition(vArg1)

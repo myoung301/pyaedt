@@ -211,10 +211,13 @@ class TestPrimitives:
         udp2 = [5, 0, 0]
         udp3 = [5, 5, 0]
         arrofpos = [udp1, udp2, udp3]
-        P = self.aedtapp.modeler.primitives.create_polyline(arrofpos, name="poly_vector")
-        assert type(self.aedtapp.modeler.get_vertices_of_line("poly_vector")) is list
+        my_name = "poly_vector"
+        P = self.aedtapp.modeler.primitives.create_polyline(arrofpos, name=my_name)
+        assert isinstance(self.aedtapp.modeler.get_vertices_of_line(my_name), list)
         rect = self.aedtapp.modeler.primitives.create_rectangle(self.aedtapp.CoordinateSystemPlane.YZPlane, [0,-2,-2],[4,3], name="rect_1")
         assert self.aedtapp.modeler.sweep_along_path(rect, P.id )
+        assert self.aedtapp.modeler.primitives.solids
+
 
 
     def test_10_sweep_around_axis(self):
@@ -275,21 +278,20 @@ class TestPrimitives:
         assert "Poly1" in all_objects_list
         assert "Poly2" in all_objects_list
 
-        objnames = self.aedtapp.modeler.primitives.get_all_objects_names()
-        solidnames = self.aedtapp.modeler.primitives.get_all_objects_names(get_lines=False, get_sheets=False)
-        for solid in solidnames:
+        for solid in solid_list:
             solid_object = self.aedtapp.modeler.primitives[solid]
             assert solid_object.is3d
             assert solid_object.object_type is "Solid"
-        sheetnames = self.aedtapp.modeler.primitives.get_all_objects_names(get_lines=False, get_solids=False)
-        for sheet in sheetnames:
+
+        for sheet in sheet_list:
             assert self.aedtapp.modeler.primitives[sheet].is3d is False
             assert self.aedtapp.modeler.primitives[sheet].object_type is "Sheet"
-        listnames = self.aedtapp.modeler.primitives.get_all_objects_names(get_sheets=False, get_solids=False)
-        for line in listnames:
+
+        for line in line_list:
             assert self.aedtapp.modeler.primitives[line].is3d is False
             assert self.aedtapp.modeler.primitives[line].object_type is "Line"
-        assert len(objnames) == len(solidnames) + len(listnames) + len(sheetnames)
+
+        assert len(all_objects_list) == len(solid_list) + len(line_list) + len(sheet_list)
 
     def test_15_get_object_by_material(self):
         listsobj = self.aedtapp.modeler.primitives.get_objects_by_material("vacuum")
@@ -334,7 +336,7 @@ class TestPrimitives:
     def test_21_delete_object(self):
         deleted = self.aedtapp.modeler.primitives.delete("MyRectangl_new")
         assert deleted
-        assert "MyRectangl_new" not in self.aedtapp.modeler.primitives.get_all_objects_names()
+        assert "MyRectangl_new" not in self.aedtapp.modeler.primitives.object_names
 
     def test_22_get_face_vertices(self):
         plane = self.aedtapp.CoordinateSystemPlane.XYPlane
@@ -404,7 +406,7 @@ class TestPrimitives:
     def test_30_getmodel_objects(self):
         list1 = self.aedtapp.modeler.primitives.get_model_objects()
         list2 = self.aedtapp.modeler.primitives.get_model_objects(False)
-        list3 = self.aedtapp.modeler.primitives.get_all_objects_names()
+        list3 = self.aedtapp.modeler.primitives.object_names
         assert len(list1) + len(list2) == len(list3)
 
     def test_31_create_rect_sheet_to_ground(self):

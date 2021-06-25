@@ -26,13 +26,15 @@ m2d.save_project(os.path.join(project_dir,"M2d.aedt"))
 ###################################################
 #  create rectangle and duplicate it
 
-id1=m2d.modeler.primitives.create_rectangle([0,0,0],[20,10],"Rectangle1", "copper")
-m2d.modeler.duplicate_along_line(id1, [14,0,0])
+rect = m2d.modeler.primitives.create_rectangle([0, 0, 0],[20, 10],"Rectangle1", "copper")
+#TODO can we return all newly created objects ?
+m2d.modeler.duplicate_along_line(rect, [14, 0, 0])
+
 
 ###################################################
 #  create air region
 
-m2d.modeler.primitives.create_region([100,100,100,100,100,100])
+m2d.modeler.primitives.create_region([100, 100, 100, 100, 100, 100])
 
 ###################################################
 #  Assign Windings to sheets and balloon to air region
@@ -46,11 +48,11 @@ m2d.assign_balloon(m2d.modeler.primitives["Region"].edges)
 # This method add a transient setup
 
 setup = m2d.create_setup()
-setup.props["StopTime"] ="0.02s"
+setup.props["StopTime"] = "0.02s"
 setup.props["TimeStep"] = "0.0002s"
 setup.props["SaveFieldsType"] = "Every N Steps"
 setup.props["N Steps"] = "1"
-setup.props["Steps From"] ="0s"
+setup.props["Steps From"] = "0s"
 setup.props["Steps To"] = "0.002s"
 setup.update()
 

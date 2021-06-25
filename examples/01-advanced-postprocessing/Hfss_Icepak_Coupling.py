@@ -80,26 +80,26 @@ aedtapp["inner"] = "3mm"
 # Alternatively the material can be assigned usign assignmaterial function
 
 
-id1 = aedtapp.modeler.primitives.create_cylinder(aedtapp.CoordinateSystemPlane.XYPlane, udp, "inner", "$coax_dimension",
+cyl_1 = aedtapp.modeler.primitives.create_cylinder(aedtapp.CoordinateSystemPlane.XYPlane, udp, "inner", "$coax_dimension",
                                                  0, "inner")
-id2 = aedtapp.modeler.primitives.create_cylinder(aedtapp.CoordinateSystemPlane.XYPlane, udp, 8, "$coax_dimension",
+cyl_2 = aedtapp.modeler.primitives.create_cylinder(aedtapp.CoordinateSystemPlane.XYPlane, udp, 8, "$coax_dimension",
                                                  0, matname="teflon_based")
-id3 = aedtapp.modeler.primitives.create_cylinder(aedtapp.CoordinateSystemPlane.XYPlane, udp, 10, "$coax_dimension",
+cyl_3 = aedtapp.modeler.primitives.create_cylinder(aedtapp.CoordinateSystemPlane.XYPlane, udp, 10, "$coax_dimension",
                                                  0, "outer")
 
 ################################################################
 # Material Assigment
-# User can assign material directly when creating primitive, as done for id2 or assign after the object has been created
+# Material can be assigned directly at creation, as done for cyl2, or assign after the object has been created
 
-aedtapp.assignmaterial([id1, id3], "Copper")
+aedtapp.assignmaterial([cyl_1, cyl_3], "Copper")
 
 ################################################################
 # Modeler Operations
 # Subtract, add, etc. can be done using id of object or object name
 
 
-aedtapp.modeler.subtract(id3, id2, True)
-aedtapp.modeler.subtract(id2, id1, True)
+aedtapp.modeler.subtract(cyl_3, cyl_2, True)
+aedtapp.modeler.subtract(cyl_2, cyl_1, True)
 
 ################################################################
 # Mesh Operations

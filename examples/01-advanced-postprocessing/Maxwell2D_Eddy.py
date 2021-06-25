@@ -41,9 +41,8 @@ hole = M3D.modeler.primitives.create_box([18, 18, 0], [108, 108, 19], name="Hole
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # different modeler operation can be applied using subtract, material assignment, solve_inside
 
-M3D.modeler.subtract([plate], [hole])
-M3D.assignmaterial(plate, "aluminum")
-M3D.solve_inside("Plate")
+M3D.modeler.subtract(plate, hole)
+plate.solve_inside = True
 adaptive_frequency = "200Hz"
 p_plate = M3D.post.volumetric_loss("Plate")  # Create fields postprocessing variable for loss in object Plate
 M3D.save_project(project_name)  # unable to save file by passing the file name or directory as an argument.
@@ -53,9 +52,9 @@ M3D.save_project(project_name)  # unable to save file by passing the file name o
 
 center_hole = M3D.modeler.Position(119, 25, 49)
 center_coil = M3D.modeler.Position(94, 0, 49)
-coil_hole = M3D.modeler.primitives.create_box(center_hole, [150, 150, 100], name="Coil_Hole")  # All positions in model units
-coil = M3D.modeler.primitives.create_box(center_coil, [200, 200, 100], name="Coil")  # All positions in model units
-M3D.modeler.subtract([coil], [coil_hole])
+coil_hole = M3D.modeler.primitives.create_box(center_hole, [150, 150, 100], name="Coil_Hole")
+coil = M3D.modeler.primitives.create_box(center_coil, [200, 200, 100], name="Coil", matname="copper")
+M3D.modeler.subtract(coil, coil_hole)
 M3D.assignmaterial(coil, "copper")
 M3D.solve_inside("Coil")
 p_coil = M3D.post.volumetric_loss("Coil")
@@ -68,7 +67,7 @@ M3D.modeler.create_coordinate_system(origin=[200, 100, 0], mode="view", view="XY
 ##############################
 # Create coil terminal
 
-M3D.modeler.section(["Coil"], M3D.CoordinateSystemPlane.ZXPlane)
+M3D.modeler.section(coil, M3D.CoordinateSystemPlane.ZXPlane)
 M3D.modeler.separate_bodies(["Coil_Section1"])
 M3D.modeler.primitives.delete("Coil_Section1_Separate1")
 M3D.assign_current(["Coil_Section1"], amplitude=2472)
