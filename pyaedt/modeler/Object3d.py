@@ -575,25 +575,17 @@ class Object3d(object):
 
     """
     def __init__(self, parent, name=None, id=None):
-        if id:
-            self = self.parent.objects[id]
+        if name:
+            self._m_name = name
         else:
-            if name:
-                self._m_name = name
-            else:
-                self._m_name = _uname()
-            self._parent = parent
-            self.flags = ""
-            self._transparency = 0.3
-            self._part_coordinate_system = "Global"
-            self._solve_inside = True
-            self._wireframe = False
-            self._model = True
-            self._color = (132, 132, 193)
-            self._bounding_box = None
-            self._object_type = None
-            self._material_name = self._parent.defaultmaterial
-            self._solve_inside = None
+            self._m_name = _uname()
+        self._parent = parent
+        self.flags = ""
+        self._part_coordinate_system = "Global"
+        self._bounding_box = None
+        self._material_name = None
+        self.update_object_type()
+        self.update_properties()
 
     @property
     def analysis_type(self):
@@ -744,13 +736,17 @@ class Object3d(object):
 
     @name.setter
     def name(self, obj_name):
-        if obj_name != self._m_name:
-            vName = []
-            vName.append("NAME:Name")
-            vName.append("Value:=")
-            vName.append(obj_name)
-            self._change_property(vName)
-            self._m_name = obj_name
+        if obj_name not in self._parent.object_names:
+            if obj_name != self._m_name:
+                vName = []
+                vName.append("NAME:Name")
+                vName.append("Value:=")
+                vName.append(obj_name)
+                self._change_property(vName)
+        else:
+            #TODO check for name conflict
+            pass
+        self._m_name = obj_name
 
 
     @property
@@ -867,9 +863,14 @@ class Object3d(object):
         else:
             obj_name = self.name
 
-        args = ["NAME:Attributes", "Name:=", obj_name, "Flags:=", self.flags, "Color:=", self.color_string,
-                "Transparency:=", self.transparency, "PartCoordinateSystem:=", self.part_coordinate_system,
-                "MaterialName:=", self.material_name, "SolveInside:=", self.solve_inside]
+        args = ["NAME:Attributes",
+                "Name:=", obj_name,
+                "Flags:=", self.flags,
+                "Color:=", self.color_string,
+                "Transparency:=", self.transparency,
+                "PartCoordinateSystem:=", self.part_coordinate_system,
+                "MaterialName:=", self.material_name,
+                "SolveInside:=", self.solve_inside]
 
         return args
 
@@ -889,7 +890,7 @@ class Object3d(object):
                 "UDMId:=", "",
                 "MaterialValue:=", chr(34) + self._material_name + chr(34),
                 "SurfaceMaterialValue:=", chr(34) +"Steel-oxidised-surface"+ chr(34),
-                "SolveInside:=", self.solve_inside]
+                "SolveInside:=", None]#self.solve_inside]
 
         if self._parent.version >= "2021.1":
             args += ["ShellElement:="	, False,
@@ -986,10 +987,14 @@ class Object3d(object):
         n = 10
         all_prop = retry_ntimes(n, self.m_Editor.GetProperties, "Geometry3DAttributeTab", self._m_name)
 
+        self._solve_inside = False
         if 'Solve Inside' in all_prop:
             solveinside = retry_ntimes(n, self.m_Editor.GetPropertyValue, "Geometry3DAttributeTab", self._m_name, 'Solve Inside')
             if solveinside == 'false' or solveinside == 'False':
                 self._solve_inside = False
+            else:
+                self._solve_inside = True
+
         if 'Material' in all_prop:
             mat = retry_ntimes(n, self.m_Editor.GetPropertyValue, "Geometry3DAttributeTab", self._m_name, 'Material')
             if mat:
@@ -1012,6 +1017,8 @@ class Object3d(object):
                                      "Geometry3DAttributeTab", self._m_name, 'Display Wireframe')
             if wireframe == 'true' or wireframe == 'True':
                 self._wireframe = True
+            else:
+                self._wireframe = False
         if 'Transparent' in all_prop:
             transp = retry_ntimes(n, self.m_Editor.GetPropertyValue, "Geometry3DAttributeTab", self._m_name, 'Transparent')
             try:

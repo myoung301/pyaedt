@@ -123,6 +123,20 @@ def desktop_init():
     if config["test_desktops"]:
         run_desktop_tests()
 
+def pyaedt_unittest_check_desktop_error(func):
+    @wraps(func)
+    def inner_function(*args, **kwargs):
+        args[0].cache.update()
+        func(*args, **kwargs)
+        try:
+            args[0].aedtapp.design_name
+        except Exception as e:
+            pytest.exit("Desktop Crashed - Aborting the test!")
+        args[0].cache.update()
+        assert args[0].cache.no_new_errors
+
+    return inner_function
+#
 # def pyaedt_unittest_same_design(func):
 #     @wraps(func)
 #     def inner_function(*args, **kwargs):

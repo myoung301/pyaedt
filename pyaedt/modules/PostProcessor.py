@@ -1125,7 +1125,7 @@ class PostProcessor(object):
         coordinateSystemForExportPlot = self.modeler.create_coordinate_system(origin=center, mode='view', view=view)
         wireframes = []
         if wireframe:
-            names = self._primitives.get_all_objects_names()
+            names = self._primitives.object_names
             for el in names:
                 if not self._primitives[el].wireframe:
                     wireframes.append(el)

@@ -1,16 +1,34 @@
 from ..generic.general_methods import aedt_exception_handler
-from .Primitives import Primitives, Polyline
+from .Primitives import Primitives
 from .GeometryOperators import GeometryOperators
+from ..application.Analysis import CoordinateSystemAxis
 from .Object3d import Object3d
 import os
 
 class Primitives3D(Primitives, object):
-    """Class for management of all Primitives of 3D Tools"""
+    """Class for management of all Primitives of 3D Tools
+
+    Methods
+    -------
+
+    create_box
+    create_cylinder
+    create_polyhedron
+    create_cone
+
+    create_bondwire
+
+    Perhaps momve to 2D ?
+    create_circle
+    create_ellipse
+    create_rectangle
+
+    """
 
     def __init__(self, parent, modeler):
         Primitives.__init__(self, parent, modeler)
 
-    @aedt_exception_handler
+    @property
     def is3d(self):
         """Returns True always to indicate a 3D analysis type"""
         return True
@@ -44,8 +62,6 @@ class Primitives3D(Primitives, object):
         >>> #Material and name are not mandatory fields
         >>> object_id = hfss.modeler.primivites.create_box(origin, dimensions, name="mybox", matname="copper")
         """
-        o = self._new_object(matname=matname)
-
         XPosition, YPosition, ZPosition = self.pos_with_arg(position)
         if XPosition is None or YPosition is None or ZPosition is None:
             raise AttributeError("Position Argument must be a valid 3 Element List")
@@ -59,16 +75,174 @@ class Primitives3D(Primitives, object):
         vArg1.append("XSize:="), vArg1.append(XSize)
         vArg1.append("YSize:="), vArg1.append(YSize)
         vArg1.append("ZSize:="), vArg1.append(ZSize)
+        vArg2 = self._default_solid_object_attributes(name=name, matname=matname)
+        new_object_name = self.oeditor.CreateBox(vArg1, vArg2)
+        return self._create_solid_object(new_object_name)
 
-        if self.version >= "2019.3":
-            vArg2 = o.export_attributes(name)
-        else:
-            vArg2 = o.export_attributes_legacy(name)
-        o.name = self.oeditor.CreateBox(vArg1, vArg2)
+    @aedt_exception_handler
+    def create_cylinder(self, cs_axis, position, radius, height, numSides=0, name=None, matname=None):
+        """Create a cylinder
 
-        self._refresh_object_types()
-        id = self._update_object(o)
-        return o
+        Parameters
+        ----------
+        cs_axis :
+            CoordinateSystemAxis
+        position :
+            ApplicationName.modeler.Position(x,y,z) object
+        radius :
+            radius float
+        height :
+            height float
+        numSides :
+            Number of sides. 0 for circle (Default value = 0)
+        name :
+            Object Name (Default value = None)
+        matname :
+            material name. Optional, if nothing default material will be assigned
+
+        Returns
+        -------
+        Object3d
+        """
+        szAxis = GeometryOperators.cs_axis_str(cs_axis)
+        XCenter, YCenter, ZCenter = self.pos_with_arg(position)
+
+        Radius = self.arg_with_dim(radius)
+        Height = self.arg_with_dim(height)
+
+        vArg1 = ["NAME:CylinderParameters"]
+        vArg1.append("XCenter:="), vArg1.append(XCenter)
+        vArg1.append("YCenter:="), vArg1.append(YCenter)
+        vArg1.append("ZCenter:="), vArg1.append(ZCenter)
+        vArg1.append("Radius:="), vArg1.append(Radius)
+        vArg1.append("Height:="), vArg1.append(Height)
+        vArg1.append("WhichAxis:="), vArg1.append(szAxis)
+        vArg1.append("NumSides:="), vArg1.append('{}'.format(numSides))
+        vArg2 = self._default_solid_object_attributes(name=name, matname=matname)
+        new_object_name = self.oeditor.CreateCylinder(vArg1, vArg2)
+        return self._create_solid_object(new_object_name)
+
+    @aedt_exception_handler
+    def create_polyhedron(self, cs_axis=None, center_position=(0.0, 0.0, 0.0), start_position=(0.0, 1.0, 0.0),
+                          height=1.0, num_sides=12, name=None, matname=None):
+        """Create a regular polyhedron
+
+        Parameters
+        ----------
+        cs_axis : CoordinateSystemAxis, default=ZAxis
+            Axis of rotation of the start-point around the center-point
+        center_position : indexable of float. default=[0, 0, 0]
+            Center position in [x, y, z] coordinates
+        start_position : indexable of float. default=[0, 0, 0]
+            Start position in [x, y, z] coordinates
+        height : float, default=1
+            radius float
+        num_sides : int, default=12
+            number of sides of the polyhedron
+        name :
+            Object Name (Default value = None)
+        matname :
+            material name. Optional, if nothing default material will be assigned
+
+        Returns
+        -------
+        Object3d
+        """
+        cs_axis = GeometryOperators.cs_axis_str(cs_axis)
+        x_center, y_center, z_center = self.pos_with_arg(center_position)
+        x_start, y_start, z_start = self.pos_with_arg(start_position)
+
+        height = self.arg_with_dim(height)
+
+        vArg1 = ["NAME:PolyhedronParameters"]
+        vArg1.append("XCenter:="), vArg1.append(x_center)
+        vArg1.append("YCenter:="), vArg1.append(y_center)
+        vArg1.append("ZCenter:="), vArg1.append(z_center)
+        vArg1.append("XStart:="), vArg1.append(x_start)
+        vArg1.append("YStart:="), vArg1.append(y_start)
+        vArg1.append("ZStart:="), vArg1.append(z_start)
+        vArg1.append("Height:="), vArg1.append(height)
+        vArg1.append("NumSides:="), vArg1.append(int(num_sides))
+        vArg1.append("WhichAxis:="), vArg1.append(cs_axis)
+        vArg2 = self._default_solid_object_attributes(name=name, matname=matname)
+        new_object_name = self.oeditor.CreateRegularPolyhedron(vArg1, vArg2)
+        return self._create_solid_object(new_object_name)
+
+    @aedt_exception_handler
+    def create_cone(self, cs_axis, position, bottom_radius, top_radius, height, name=None, matname=None):
+        """Create a cone
+
+        Parameters
+        ----------
+        cs_axis : CoordinateSystemAxis
+            CoordinateSystem Axis
+        position :
+            ApplicationName.modeler.Position(x,y,z) object
+        bottom_radius :
+            bottom radius
+        top_radius :
+            topradius radius
+        height :
+            height
+        name :
+            Object Name (Default value = None)
+        matname :
+            material name. Optional, if nothing default material will be assigned
+
+        Returns
+        -------
+        Object3d
+
+        """
+        XCenter, YCenter, ZCenter = self.pos_with_arg(position)
+        szAxis = GeometryOperators.cs_axis_str(cs_axis)
+        Height = self.arg_with_dim(height)
+        RadiusBt = self.arg_with_dim(bottom_radius)
+        RadiusUp = self.arg_with_dim(top_radius)
+
+        vArg1 = ["NAME:ConeParameters"]
+        vArg1.append("XCenter:="), vArg1.append(XCenter)
+        vArg1.append("YCenter:="), vArg1.append(YCenter)
+        vArg1.append("ZCenter:="), vArg1.append(ZCenter)
+        vArg1.append("WhichAxis:="), vArg1.append(szAxis)
+        vArg1.append("Height:="), vArg1.append(Height)
+        vArg1.append("BottomRadius:="), vArg1.append(RadiusBt)
+        vArg1.append("TopRadius:="), vArg1.append(RadiusUp)
+        vArg2 = self._default_solid_object_attributes(name=name, matname=matname)
+        new_object_name = self.oeditor.CreateCone(vArg1, vArg2)
+        return self._create_solid_object(new_object_name)
+
+    @aedt_exception_handler
+    def create_sphere(self, position, radius, name=None, matname=None):
+        """Create a sphere
+
+        Parameters
+        ----------
+        position :
+            ApplicationName.modeler.Position(x,y,z) object
+        radius :
+            radius float
+        name :
+            Object Name (Default value = None)
+        matname :
+            material name. Optional, if nothing default material will be assigned
+
+        Returns
+        -------
+        Object3d
+        """
+        XCenter, YCenter, ZCenter = self.pos_with_arg(position)
+
+        Radius = self.arg_with_dim(radius)
+
+        vArg1 = ["NAME:SphereParameters"]
+        vArg1.append("XCenter:="), vArg1.append(XCenter)
+        vArg1.append("YCenter:="), vArg1.append(YCenter)
+        vArg1.append("ZCenter:="), vArg1.append(ZCenter)
+        vArg1.append("Radius:="), vArg1.append(Radius)
+        vArg2 = self._default_solid_object_attributes(name=name, matname=matname)
+        new_object_name = self.oeditor.CreateSphere(vArg1, vArg2)
+        return self._create_solid_object(new_object_name)
 
     @aedt_exception_handler
     def create_bondwire(self, start_position, end_position, h1=0.2, h2=0, alpha=80, beta=5, bond_type=0,
@@ -113,8 +287,6 @@ class Primitives3D(Primitives, object):
         >>> #Material and name are not mandatory fields
         >>> object_id = hfss.modeler.primivites.create_bondwire(origin, endpos,h1=0.5, h2=0.1, alpha=75, beta=4,bond_type=0, name="mybox", matname="copper")
         """
-        o = self._new_object(matname=matname)
-
         XPosition, YPosition, ZPosition = self.pos_with_arg(start_position)
         if XPosition is None or YPosition is None or ZPosition is None:
             raise AttributeError("Position Argument must be a valid 3 Element List")
@@ -149,21 +321,14 @@ class Primitives3D(Primitives, object):
         vArg1.append("beta:="), vArg1.append(self.arg_with_dim(beta, "deg"))
         vArg1.append("WhichAxis:="), vArg1.append("Z")
         vArg1.append("ReverseDirection:="), vArg1.append(False)
-        vArg2 = o.export_attributes(name)
-        o.name = self.oeditor.CreateBondwire(vArg1, vArg2)
-
-        self._refresh_object_types()
-        id = self._update_object(o)
-        return o
-
-
+        vArg2 = self._default_solid_object_attributes(name=name, matname=matname)
+        new_object_name = self.oeditor.CreateBondwire(vArg1, vArg2)
+        return self._create_solid_object(new_object_name)
 
     @aedt_exception_handler
     def create_region(self, pad_percent):
-        if "Region" in self.get_all_objects_names():
+        if "Region" in self.object_names:
             return None
-        o = self._new_object()
-
         arg = ["NAME:RegionParameters"]
         p = ["+X", "+Y", "+Z", "-X", "-Y", "-Z"]
         i = 0
@@ -181,18 +346,60 @@ class Primitives3D(Primitives, object):
                 "UseMaterialAppearance:=", False, "IsLightweight:=", False]
 
         self.oeditor.CreateRegion(arg, arg2)
-        #TODO put this into Object3d Constructor?
-        o._m_name = "Region"
-        o.solve_inside = True
+        o = self._create_solid_object("Region")
         o.transparency = 0
         o.wireframe = True
 
-        self._refresh_object_types()
-        id = self._update_object(o)
-        return o
+        #o._m_name = "Region"
+        #o.solve_inside = True
+        #self._refresh_object_types()
+        #id = self._update_object(o)
+        #return o
 
     @aedt_exception_handler
-    def create_circle(self, cs_plane, position, radius, numSides=0, name=None, matname=None):
+    def create_rectangle(self, csPlane, position, dblList, is_covered=True, name=None, matname=None):
+        """Create a rectangle
+
+        Parameters
+        ----------
+        cs_plane : CoordinateSystemPlane
+            CoordinateSystem Plane
+        position :
+            ApplicationName.modeler.Position(x,y,z) object
+        dimension_list :
+            dimension list
+        name :
+            Object Name (Default value = None)
+        matname :
+            material name. Optional, if nothing default material will be assigned
+
+        Returns
+        -------
+        Object3d
+        """
+        szAxis = GeometryOperators.cs_plane_str(csPlane)
+        XStart, YStart, ZStart = self.pos_with_arg(position)
+
+        Width = self.arg_with_dim(dblList[0])
+        Height = self.arg_with_dim(dblList[1])
+
+        vArg1 = ["NAME:RectangleParameters"]
+        vArg1.append("IsCovered:="), vArg1.append(is_covered)
+        vArg1.append("XStart:="), vArg1.append(XStart)
+        vArg1.append("YStart:="), vArg1.append(YStart)
+        vArg1.append("ZStart:="), vArg1.append(ZStart)
+        vArg1.append("Width:="), vArg1.append(Width)
+        vArg1.append("Height:="), vArg1.append(Height)
+        vArg1.append("WhichAxis:="), vArg1.append(szAxis)
+        vArg2 = self._default_sheet_object_attributes(name=name, matname=matname)
+        new_object_name = self.oeditor.CreateRectangle(vArg1, vArg2)
+        if is_covered:
+            return self._create_sheet_object(new_object_name)
+        else:
+            return self._create_line_object(new_object_name)
+
+    @aedt_exception_handler
+    def create_circle(self, cs_plane, position, radius, numSides=0, is_covered=True, name=None, matname=None):
         """Create a circle
 
         Parameters
@@ -215,120 +422,26 @@ class Primitives3D(Primitives, object):
         Object3d
 
         """
-        o = self._new_object(matname=matname)
-
         szAxis = GeometryOperators.cs_plane_str(cs_plane)
         XCenter, YCenter, ZCenter = self.pos_with_arg(position)
         Radius = self.arg_with_dim(radius)
-
-
         vArg1 = ["NAME:CircleParameters"]
+        vArg1.append("IsCovered:="), vArg1.append(is_covered)
         vArg1.append("XCenter:="), vArg1.append(XCenter)
         vArg1.append("YCenter:="), vArg1.append(YCenter)
         vArg1.append("ZCenter:="), vArg1.append(ZCenter)
         vArg1.append("Radius:="), vArg1.append(Radius)
         vArg1.append("WhichAxis:="), vArg1.append(szAxis)
         vArg1.append("NumSegments:="), vArg1.append('{}'.format(numSides))
-
-        vArg2 = o.export_attributes(name)
-
-        o.name = self.oeditor.CreateCircle(vArg1, vArg2)
-
-        self._refresh_object_types()
-        id = self._update_object(o)
-        return o
+        vArg2 = self._default_sheet_object_attributes(name=name, matname=matname)
+        new_object_name = self.oeditor.CreateCircle(vArg1, vArg2)
+        if is_covered:
+            return self._create_sheet_object(new_object_name)
+        else:
+            return self._create_line_object(new_object_name)
 
     @aedt_exception_handler
-    def create_sphere(self, position, radius, name=None, matname=None):
-        """Create a sphere
-
-        Parameters
-        ----------
-        position :
-            ApplicationName.modeler.Position(x,y,z) object
-        radius :
-            radius float
-        name :
-            Object Name (Default value = None)
-        matname :
-            material name. Optional, if nothing default material will be assigned
-
-        Returns
-        -------
-        Object3d
-        """
-        o = self._new_object(matname=matname)
-
-        XCenter, YCenter, ZCenter = self.pos_with_arg(position)
-
-        Radius = self.arg_with_dim(radius)
-
-        vArg1 = ["NAME:SphereParameters"]
-        vArg1.append("XCenter:="), vArg1.append(XCenter)
-        vArg1.append("YCenter:="), vArg1.append(YCenter)
-        vArg1.append("ZCenter:="), vArg1.append(ZCenter)
-        vArg1.append("Radius:="), vArg1.append(Radius)
-
-        vArg2 = o.export_attributes(name)
-
-        o.name = self.oeditor.CreateSphere(vArg1, vArg2)
-
-        self._refresh_object_types()
-        id = self._update_object(o)
-        return o
-
-    @aedt_exception_handler
-    def create_cylinder(self, cs_axis, position, radius, height, numSides=0, name=None, matname=None):
-        """Create a cylinder
-
-        Parameters
-        ----------
-        cs_axis :
-            ApplicationName.CoordinateSystemAxis object
-        position :
-            ApplicationName.modeler.Position(x,y,z) object
-        radius :
-            radius float
-        height :
-            height float
-        numSides :
-            Number of sides. 0 for circle (Default value = 0)
-        name :
-            Object Name (Default value = None)
-        matname :
-            material name. Optional, if nothing default material will be assigned
-
-        Returns
-        -------
-        Object3d
-        """
-        o = self._new_object(matname=matname)
-
-        szAxis = GeometryOperators.cs_axis_str(cs_axis)
-        XCenter, YCenter, ZCenter = self.pos_with_arg(position)
-
-        Radius = self.arg_with_dim(radius)
-        Height = self.arg_with_dim(height)
-
-        vArg1 = ["NAME:CylinderParameters"]
-        vArg1.append("XCenter:="), vArg1.append(XCenter)
-        vArg1.append("YCenter:="), vArg1.append(YCenter)
-        vArg1.append("ZCenter:="), vArg1.append(ZCenter)
-        vArg1.append("Radius:="), vArg1.append(Radius)
-        vArg1.append("Height:="), vArg1.append(Height)
-        vArg1.append("WhichAxis:="), vArg1.append(szAxis)
-        vArg1.append("NumSides:="), vArg1.append('{}'.format(numSides))
-
-        vArg2 = o.export_attributes(name)
-
-        o.name = self.oeditor.CreateCylinder(vArg1, vArg2)
-
-        self._refresh_object_types()
-        id = self._update_object(o)
-        return o
-
-    @aedt_exception_handler
-    def create_ellipse(self, cs_plane, position, major_raidus, ratio, bIsCovered=True, name=None, matname=None):
+    def create_ellipse(self, cs_plane, position, major_raidus, ratio, is_covered=True, name=None, matname=None):
         """Create a ellipse
 
         Parameters
@@ -341,7 +454,7 @@ class Primitives3D(Primitives, object):
             radius float
         ratio :
             Ratio float
-        bIsCovered :
+        is_covered :
             Boolean (Default value = True)
         name :
             Object Name (Default value = None)
@@ -352,8 +465,6 @@ class Primitives3D(Primitives, object):
         -------
         Object3d
         """
-        o = self._new_object(matname=matname)
-
         szAxis = GeometryOperators.cs_plane_str(cs_plane)
         XStart, YStart, ZStart = self.pos_with_arg(position)
 
@@ -362,21 +473,19 @@ class Primitives3D(Primitives, object):
         Ratio = ratio
 
         vArg1 = ["NAME:EllipseParameters"]
-        vArg1.append("IsCovered:="), vArg1.append(bIsCovered)
+        vArg1.append("IsCovered:="), vArg1.append(is_covered)
         vArg1.append("XCenter:="), vArg1.append(XStart)
         vArg1.append("YCenter:="), vArg1.append(YStart)
         vArg1.append("ZCenter:="), vArg1.append(ZStart)
         vArg1.append("MajRadius:="), vArg1.append(MajorRadius)
         vArg1.append("Ratio:="), vArg1.append(Ratio)
         vArg1.append("WhichAxis:="), vArg1.append(szAxis)
-
-        vArg2 = o.export_attributes(name)
-        assert vArg2
-        o.name = self.oeditor.CreateEllipse(vArg1, vArg2)
-
-        self._refresh_object_types()
-        id = self._update_object(o)
-        return o
+        vArg2 = self._default_sheet_object_attributes(name=name, matname=matname)
+        new_object_name = self.oeditor.CreateEllipse(vArg1, vArg2)
+        if is_covered:
+            return self._create_sheet_object(new_object_name)
+        else:
+            return self._create_line_object(new_object_name)
 
     @aedt_exception_handler
     def create_equationbased_curve(self, udpequationbasedcurveddefinition, name=None, matname=None):
@@ -475,52 +584,6 @@ class Primitives3D(Primitives, object):
         return True
 
     @aedt_exception_handler
-    def create_rectangle(self, csPlane, position, dblList, name=None, matname=None):
-        """Create a rectangle
-
-        Parameters
-        ----------
-        cs_plane : CoordinateSystemPlane
-            CoordinateSystem Plane
-        position :
-            ApplicationName.modeler.Position(x,y,z) object
-        dimension_list :
-            dimension list
-        name :
-            Object Name (Default value = None)
-        matname :
-            material name. Optional, if nothing default material will be assigned
-
-        Returns
-        -------
-        Object3d
-        """
-
-        o = self._new_object(matname=matname)
-
-        szAxis = GeometryOperators.cs_plane_str(csPlane)
-        XStart, YStart, ZStart = self.pos_with_arg(position)
-
-        Width = self.arg_with_dim(dblList[0])
-        Height = self.arg_with_dim(dblList[1])
-
-        vArg1 = ["NAME:RectangleParameters"]
-        vArg1.append("XStart:="), vArg1.append(XStart)
-        vArg1.append("YStart:="), vArg1.append(YStart)
-        vArg1.append("ZStart:="), vArg1.append(ZStart)
-        vArg1.append("Width:="), vArg1.append(Width)
-        vArg1.append("Height:="), vArg1.append(Height)
-        vArg1.append("WhichAxis:="), vArg1.append(szAxis)
-
-        vArg2 = o.export_attributes(name)
-        o.name = self.oeditor.CreateRectangle(vArg1, vArg2)
-
-        self._refresh_object_types()
-        id = self._update_object(o)
-
-        return o
-
-    @aedt_exception_handler
     def create_udm(self, udmfullname, udm_params_list, udm_library='syslib'):
         """Create User Defined Model
 
@@ -538,8 +601,6 @@ class Primitives3D(Primitives, object):
         Object3d
 
         """
-
-
         vArg1 = ["NAME:UserDefinedModelParameters",["NAME:Definition"], ["NAME:Options"]]
         vArgParamVector = ["NAME:GeometryParams"]
 
@@ -588,60 +649,6 @@ class Primitives3D(Primitives, object):
             return o
         else:
             return False
-
-    @aedt_exception_handler
-    def create_cone(self, cs_axis, position, bottom_radius, top_radius, height, name=None, matname=None):
-        """Create a cone
-
-        Parameters
-        ----------
-        cs_axis : CoordinateSystemAxis
-            CoordinateSystem Axis
-        position :
-            ApplicationName.modeler.Position(x,y,z) object
-        bottom_radius :
-            bottom radius
-        top_radius :
-            topradius radius
-        height :
-            height
-        name :
-            Object Name (Default value = None)
-        matname :
-            material name. Optional, if nothing default material will be assigned
-
-        Returns
-        -------
-        Object3d
-
-        """
-        o = self._new_object(matname=matname)
-
-        XCenter, YCenter, ZCenter = self.pos_with_arg(position)
-        szAxis = GeometryOperators.cs_axis_str(cs_axis)
-        Height = self.arg_with_dim(height)
-        RadiusBt = self.arg_with_dim(bottom_radius)
-        RadiusUp = self.arg_with_dim(top_radius)
-
-        vArg1 = ["NAME:ConeParameters"]
-        vArg1.append("XCenter:="), vArg1.append(XCenter)
-        vArg1.append("YCenter:="), vArg1.append(YCenter)
-        vArg1.append("ZCenter:="), vArg1.append(ZCenter)
-        vArg1.append("WhichAxis:="), vArg1.append(szAxis)
-        vArg1.append("Height:="), vArg1.append(Height)
-        vArg1.append("BottomRadius:="), vArg1.append(RadiusBt)
-        vArg1.append("TopRadius:="), vArg1.append(RadiusUp)
-
-        vArg2 = o.export_attributes(name)
-
-        o.name = self.oeditor.CreateCone(vArg1, vArg2)
-
-        if o.analysis_type:
-            o.material_name, o.solve_inside = self._check_material(matname, self.defaultmaterial)
-
-        self._refresh_object_types()
-        id = self._update_object(o)
-        return o
 
     @aedt_exception_handler
     def insert_3d_component(self, compFile, geoParams, szMatParams='', szDesignParams='', targetCS='Global'):
@@ -730,7 +737,7 @@ class Primitives3D(Primitives, object):
             list of the solids names
 
         """
-        return self.get_all_objects_names(refresh_list=refresh_list, get_solids=True, get_sheets=False, get_lines=False)
+        return self.solids
 
     @aedt_exception_handler
     def get_face_normal(self, faceId, bounding_box=None):

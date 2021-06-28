@@ -260,7 +260,7 @@ class TestModeler:
         assert isinstance(coax[2].id, int)
 
     def test_37_create_coordinate(self):
-        cs = self.aedtapp.modeler.coordinate_system.create()
+        cs = self.aedtapp.modeler.create_coordinate_system(name='tester')
         assert cs
         assert cs.update()
         assert cs.change_cs_mode(1)
@@ -308,4 +308,20 @@ class TestModeler:
         cs1 = self.aedtapp.modeler.create_coordinate_system(name="new1")
         self.aedtapp.modeler.set_working_coordinate_system("Global")
         self.aedtapp.modeler.set_working_coordinate_system("new1")
+
+    def test_42_sweep_around_axis(self):
+        udp1 = [0, 0, 0]
+        udp2 = [5, 0, 0]
+        arrofpos = [udp1, udp2]
+        p1 = self.aedtapp.modeler.primitives.create_polyline(arrofpos, name="poly_vector_1")
+        p2 = self.aedtapp.modeler.primitives.create_polyline(arrofpos, name="poly_vector_2")
+        p3 = self.aedtapp.modeler.primitives.create_polyline(arrofpos, name="poly_vector_3")
+        assert self.aedtapp.modeler.sweep_around_axis(p1, self.aedtapp.CoordinateSystemAxis.YAxis)
+        assert self.aedtapp.modeler.sweep_around_axis(p2.name, self.aedtapp.CoordinateSystemAxis.YAxis)
+        assert self.aedtapp.modeler.sweep_around_axis(p3.id, self.aedtapp.CoordinateSystemAxis.YAxis)
+        assert p1.object_type == "Sheet"
+        assert p2.object_type == "Sheet"
+        assert p3.object_type == "Sheet"
+        assert self.aedtapp.modeler.sweep_around_axis(p1, self.aedtapp.CoordinateSystemAxis.ZAxis)
+        assert p1.object_type == "Solid"
 

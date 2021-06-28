@@ -3,9 +3,12 @@ from .Primitives import Primitives
 
 
 class Primitives2D(Primitives, object):
-    """Class for management of all Primitives of 2D Tools"""
+    """Class for management of all Primitives of 2D Tools
 
-    @aedt_exception_handler
+    Methods
+    """
+
+    @property
     def is3d(self):
         """Returns False always to indicate a 3D analysis type"""
         return False

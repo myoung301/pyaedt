@@ -1298,7 +1298,7 @@ class GeometryModeler(Modeler, object):
         group_objs = list(self.oeditor.GetObjectsInGroup(group))
         if not group_objs:
             return None
-        all_objs = self.primitives.get_all_objects_names()
+        all_objs = self.primitives.object_names
         objs_to_unmodel = [i for i in all_objs if i not in group_objs]
         if objs_to_unmodel:
             self.set_object_model_state(objs_to_unmodel, False)
@@ -1325,7 +1325,7 @@ class GeometryModeler(Modeler, object):
         """
         if type(object) is int:
             object = self.primitives.get_obj_name(object)
-        all_objs = self.primitives.get_all_objects_names()
+        all_objs = self.primitives.object_names
         objs_to_unmodel = [i for i in all_objs if i != object]
         if objs_to_unmodel:
             self.set_object_model_state(objs_to_unmodel, False)
@@ -1442,10 +1442,10 @@ class GeometryModeler(Modeler, object):
         vArg3 = ['NAME:Options', 'DuplicateAssignments:=', False]
         # id = []
         if self.oeditor is not None:
-            objs = self.primitives.get_all_objects_names()
+            objs = self.primitives.object_names
             idStr = self.oeditor.DuplicateMirror(vArg1, vArg2, vArg3)
             self.primitives.refresh_all_ids()
-            objs2 = self.primitives.get_all_objects_names()
+            objs2 = self.primitives.object_names
             thelist = [i for i in objs2 if i not in objs]
             return True, thelist
         else:
@@ -1518,10 +1518,10 @@ class GeometryModeler(Modeler, object):
         vArg3 = ["NAME:Options", "DuplicateBoundaries:=", "true"]
 
         id = []
-        objs = self.primitives.get_all_objects_names()
+        objs = self.primitives.object_names
         idList = self.oeditor.DuplicateAroundAxis(vArg1, vArg2, vArg3)
         self.primitives.refresh_all_ids()
-        objs2 = self.primitives.get_all_objects_names()
+        objs2 = self.primitives.object_names
         thelist = [i for i in objs2 if i not in objs]
 
         return True, thelist
@@ -1558,10 +1558,10 @@ class GeometryModeler(Modeler, object):
         vArg3 = ["NAME:Options", "DuplicateBoundaries:=", "true"]
 
         id = []
-        objs = self.primitives.get_all_objects_names()
+        objs = self.primitives.object_names
         idList = self.oeditor.DuplicateAlongLine(vArg1, vArg2, vArg3)
         self.primitives.refresh_all_ids()
-        objs2 = self.primitives.get_all_objects_names()
+        objs2 = self.primitives.object_names
         thelist = [i for i in objs2 if i not in objs]
         return True, thelist
 
@@ -1623,7 +1623,7 @@ class GeometryModeler(Modeler, object):
 
         self.oeditor.SweepAlongVector(vArg1, vArg2)
 
-        return True
+        return self._update_object(objid)
 
     @aedt_exception_handler
     def sweep_along_path(self, objid, sweep_object, draft_angle=0, draft_type="Round", is_check_face_intersection=False, twist_angle=0):
@@ -1654,8 +1654,26 @@ class GeometryModeler(Modeler, object):
         vArg2.append('TwistAngle:='), vArg2.append(str(twist_angle) + 'deg')
 
         self.oeditor.SweepAlongPath(vArg1, vArg2)
-        return True
 
+        return self._update_object(objid)
+
+    def _get_object(self, obj):
+        #TODO vectorize this
+        if isinstance(obj, int):
+            return self.primitives.objects[obj]
+        elif isinstance(obj, str):
+            id = self.primitives.objects_names[obj]
+            return self.primitives.objects[id]
+        else:
+            return obj
+
+    def _update_object(self, obj):
+        '''Use to update any object3d derivatives that have potentially been modified by a modeler operation'''
+        self.primitives._refresh_object_types()
+        o = self._get_object(obj)
+        o.update_object_type()
+        o.update_properties()
+        return o
 
     @aedt_exception_handler
     def sweep_around_axis(self, objid, cs_axis, sweep_angle=360, draft_angle=0):
@@ -1687,7 +1705,7 @@ class GeometryModeler(Modeler, object):
 
         self.oeditor.SweepAroundAxis(vArg1, vArg2)
 
-        return True
+        return self._update_object(objid)
 
     @aedt_exception_handler
     def section(self, object_list, plane, create_new=True, section_cross_object=False):
@@ -1724,6 +1742,7 @@ class GeometryModeler(Modeler, object):
                 "SectionPlane:=", planes[plane],
                 "SectionCrossObject:=", section_cross_object
             ])
+        self.primitives.refresh_all_ids()
         return True
 
     @aedt_exception_handler
@@ -1812,6 +1831,7 @@ class GeometryModeler(Modeler, object):
         vArg2 = ['NAME:SubtractParameters', 'KeepOriginals:=', keepOriginals]
 
         self.oeditor.Subtract(vArg1, vArg2)
+        self.primitives.refresh_all_ids()
 
         return True
 
@@ -2021,11 +2041,11 @@ class GeometryModeler(Modeler, object):
         szSelections = self.convert_to_selections(objid)
         vArg1 = ['NAME:Selections', 'Selections:=', szSelections]
 
-        objs = self.primitives.get_all_objects_names()
+        objs = self.primitives.object_names
         self.oeditor.Copy(vArg1)
-        newObj = self.oeditor.Paste()
+        self.oeditor.Paste()
         self.primitives.refresh_all_ids()
-        objs2 = self.primitives.get_all_objects_names()
+        objs2 = self.primitives.objects_names
         thelist = [i for i in objs2 if i not in objs]
         return True, thelist[0]
 
@@ -2847,10 +2867,10 @@ class GeometryModeler(Modeler, object):
                     "NAME:Selections",
                     "Selections:=", obj
                 ])
-            originals = self.primitives.get_all_objects_names()
+            originals = self.primitives.object_names
             self.oeditor.Paste()
             self.primitives.refresh_all_ids()
-            added = self.primitives.get_all_objects_names()
+            added = self.primitives.object_names
             cloned = [i for i in added if i not in originals]
             solids = self.primitives.get_all_solids_names()
             self.subtract(cloned[0], ",".join(solids))
@@ -3524,7 +3544,7 @@ class GeometryModeler(Modeler, object):
         -------
 
         """
-        all_objects = self.primitives.get_all_objects_names()
+        all_objects = self.primitives.object_names
         if objects and groups:
             object_selection = self.convert_to_selections(objects, return_list=False)
             group_selection = self.convert_to_selections(groups, return_list=False)

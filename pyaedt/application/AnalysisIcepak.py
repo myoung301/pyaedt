@@ -306,7 +306,7 @@ class FieldAnalysisIcepak(Analysis, object):
             for el in component_header:
                 component_data[el] = [i[k] for i in data]
                 k += 1
-        all_objs = self.modeler.primitives.get_all_objects_names()
+        all_objs = self.modeler.primitives.object_names
         i = 0
         for mat in material_data["Name"]:
             list_mat_obj = ["COMP_" + rd for rd, md in zip(component_data["Ref Des"], component_data["Material"]) if

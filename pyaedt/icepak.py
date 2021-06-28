@@ -280,7 +280,7 @@ class Icepak(FieldAnalysisIcepak):
             bounding object if created
 
         """
-        if object_name in self.modeler.primitives.get_all_objects_names():
+        if object_name in self.modeler.primitives.object_names:
             faces = self.modeler.primitives.get_object_faces(object_name)
             k = 0
             faceCenter = {}
@@ -397,7 +397,7 @@ class Icepak(FieldAnalysisIcepak):
                 k += 1
         total_power = 0
         i=0
-        all_objects = self.modeler.primitives.get_all_objects_names()
+        all_objects = self.modeler.primitives.object_names
         for power in component_data["Applied Power (W)"]:
             try:
                 float(power)
@@ -540,7 +540,7 @@ class Icepak(FieldAnalysisIcepak):
         -------
 
         """
-        all_objs = self.modeler.primitives.get_all_objects_names()
+        all_objs = self.modeler.primitives.object_names
         self['FinPitch'] = self.modeler.primitives.arg_with_dim(pitch)
         self['FinThickness'] = self.modeler.primitives.arg_with_dim(thick)
         self['FinLength'] = self.modeler.primitives.arg_with_dim(length)
@@ -587,7 +587,7 @@ class Icepak(FieldAnalysisIcepak):
         self.modeler.duplicate_along_line("Fin", self.Position(0, 'FinSeparation+FinThickness', 0), num,True)
         self.modeler.duplicate_along_line("Fin", self.Position(0, '-FinSeparation-FinThickness', 0), num/4, True)
 
-        all_names = self.modeler.primitives.get_all_objects_names()
+        all_names = self.modeler.primitives.object_names
         list = [i for i in all_names if "Fin" in i]
         if numcolumn_perside>0:
             self.modeler.duplicate_along_line(list,
@@ -595,10 +595,10 @@ class Icepak(FieldAnalysisIcepak):
                                                           0),
                                              'NumColumnsPerSide', True)
 
-        all_names = self.modeler.primitives.get_all_objects_names()
+        all_names = self.modeler.primitives.object_names
         list = [i for i in all_names if "Fin" in i]
         self.modeler.split(list, self.CoordinateSystemPlane.ZXPlane, "PositiveOnly")
-        all_names = self.modeler.primitives.get_all_objects_names()
+        all_names = self.modeler.primitives.object_names
         list = [i for i in all_names if "Fin" in i]
         self.modeler.create_coordinate_system(self.Position(0, 'HSHeight', 0), mode="view", view="XY", name="TopRight")
 
@@ -1246,7 +1246,7 @@ class Icepak(FieldAnalysisIcepak):
         """
 
         if not object_list:
-            allObjects = self.modeler.primitives.get_all_objects_names(refresh_list=True)
+            allObjects = self.modeler.primitives.object_names
             if removed_objects:
                 for rem in removed_objects:
                     allObjects.remove(rem)

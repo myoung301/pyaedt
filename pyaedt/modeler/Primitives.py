@@ -19,7 +19,7 @@ import time
 import numbers
 from copy import copy
 from .GeometryOperators import GeometryOperators
-from .Object3d import Object3d, EdgePrimitive, FacePrimitive, VertexPrimitive, _dim_arg
+from .Object3d import Object3d, EdgePrimitive, FacePrimitive, VertexPrimitive, _dim_arg, _uname
 from ..generic.general_methods import aedt_exception_handler, retry_ntimes
 from ..application.Variables import Variable
 
@@ -33,6 +33,7 @@ default_materials = {"Icepak": "air", "HFSS": "vacuum", "Maxwell 3D": "vacuum", 
                      "2D Extractor": "copper", "Q3D Extractor": "copper", "HFSS 3D Layout": "copper", "Mechanical" : "copper"}
 
 aedt_wait_time = 0.1
+
 
 class PolylineSegment():
 
@@ -113,14 +114,11 @@ class Polyline(Object3d):
         The constructor is intended to be called from the Primitives.create_polyline method
 
         """
-        Object3d.__init__(self, parent)
+        self._parent = parent
 
         if src_object:
             self.__dict__ = src_object.__dict__.copy()
         else:
-            #TODO refactor the request_new_object mechanism to avoid using objects[0]
-            self._parent.objects[0] = self
-            self._material_name, self._solve_inside = self._parent._check_material(matname, self._parent.defaultmaterial)
 
             self._xsection = self._crosssection(type=xsection_type, orient=xsection_orient, width=xsection_width,
                                                 topwidth=xsection_topwidth, height=xsection_height, num_seg=xsection_num_seg,
@@ -143,12 +141,15 @@ class Polyline(Object3d):
 
             varg1 = self._point_segment_string_array()
 
-            varg2 = self.export_attributes(name)
+            varg2 = self._parent._default_object_attributes("Generic", name=name, matname=matname)
 
-            self.name = self.m_Editor.CreatePolyline(varg1, varg2)
+            new_object_name = self.m_Editor.CreatePolyline(varg1, varg2)
 
             self._parent._refresh_object_types()
-            self._parent._update_object(self)
+            assert new_object_name in self._parent._all_object_names
+            Object3d.__init__(self, parent, name=new_object_name)
+            self._parent.objects[self.id] = self
+            self._parent.objects_names[self.name] = self.id
 
     @property
     def start_point(self):
@@ -733,6 +734,9 @@ class Primitives(object):
     def __init__(self, parent, modeler):
         self._modeler = modeler
         self._parent = parent
+        self._solids = []
+        self._sheets = []
+        self._lines = []
         self.objects = defaultdict(Object3d)
         self.objects_names = defaultdict()
         self._currentId = 0
@@ -889,6 +893,11 @@ class Primitives(object):
     @aedt_exception_handler
     def _update_object(self, o):
 
+        assert o.name in self._all_object_names
+        self.objects[o.id] = o
+        self.objects_names[o.name] = o.id
+        return o
+
         # Store the new object infos
         self.objects[o.id] = o
         self.objects_names[o.name] = o.id
@@ -1032,22 +1041,23 @@ class Primitives(object):
 
 
     @aedt_exception_handler
-    def create_object_from_edge(self, edgeID):
-        """Create object from edge id
+    def create_object_from_edge(self, edge):
+        """Create object from edge id or from EdgePrimitive object
 
         Parameters
         ----------
-            edgeID: int
-                Edge id
+            edgeID: int or EdgePrimitive
+                Edge specifier (either an integer edge-id or an EdgePrimitive object
+
         Returns
         -------
         type
             Object3d
         """
+        if isinstance(edge, EdgePrimitive):
+            edge_id = edge.id
 
-        o = self._new_object()
-
-        obj = self._find_object_from_edge_id(edgeID)
+        obj = self._find_object_from_edge_id(edge_id)
 
         if obj is not None:
 
@@ -1056,44 +1066,35 @@ class Primitives(object):
             varg1.append('NewPartsModelFlag:='), varg1.append('Model')
 
             varg2 = ['NAME:BodyFromEdgeToParameters']
-            varg2.append('Edges:='), varg2.append([edgeID])
-            o.name = self.oeditor.CreateObjectFromEdges(varg1, ['NAME:Parameters', varg2])[0]
+            varg2.append('Edges:='), varg2.append([edge_id])
 
-            self._refresh_object_types()
-            id = self._update_object(o)
-
-        return o
+            new_object_name = self.oeditor.CreateObjectFromEdges(varg1, ['NAME:Parameters', varg2])[0]
+            return self._create_line_object(new_object_name)
 
     @aedt_exception_handler
-    def create_object_from_face(self, faceid):
+    def create_object_from_face(self, face):
         """Create object from edge id
 
         Parameters
-            faceid: int
+            face : int or FacePrimitive
                 Face id
         Returns
         -------
         type
             Object3d
         """
-        o = self._new_object()
-
-        obj = self._find_object_from_face_id(faceid)
-
+        if isinstance(face, FacePrimitive):
+            face_id = face.id
+        obj = self._find_object_from_face_id(face_id)
         if obj is not None:
-
             varg1 = ['NAME:Selections']
             varg1.append('Selections:='), varg1.append(obj)
             varg1.append('NewPartsModelFlag:='), varg1.append('Model')
 
             varg2 = ['NAME:BodyFromFaceToParameters']
-            varg2.append('FacesToDetach:='), varg2.append([faceid])
-            o.name = self.oeditor.CreateObjectFromFaces(varg1, ['NAME:Parameters', varg2])[0]
-
-            self._refresh_object_types()
-            id = self._update_object(o)
-
-        return o
+            varg2.append('FacesToDetach:='), varg2.append([face_id])
+            new_object_name = self.oeditor.CreateObjectFromFaces(varg1, ['NAME:Parameters', varg2])[0]
+            return self._create_sheet_object(new_object_name)
 
     @aedt_exception_handler
     def create_polyline(self, position_list, segment_type=None,
@@ -1450,25 +1451,22 @@ class Primitives(object):
 
         return list_objs
 
+    @property
+    def model_objects(self):
+        """List of names of all objects of type 'model'"""
+        return self._get_model_objects(model=True)
+
+    @property
+    def non_model_objects(self):
+        """List of names of all objects of type 'non-model'"""
+        return self._get_model_objects(model=False)
+
     @aedt_exception_handler
-    def get_model_objects(self, model=True):
-        """Return all objects name of Model objects
-
-        Parameters
-        ----------
-        model :
-            bool True to return model objects. False to return Non-Model objects (Default value = True)
-
-        Returns
-        -------
-        type
-            objects lists
-
-        """
+    def _get_model_objects(self, model=True):
         list_objs = []
-        for el in self.objects:
-            if self.objects[el].model==model:
-                list_objs.append(self.objects[el].name)
+        for id, obj in self.objects.items():
+            if obj.model == model:
+                list_objs.append(obj.name)
         return list_objs
 
     @aedt_exception_handler
@@ -1479,37 +1477,75 @@ class Primitives(object):
             self.refresh_all_ids()
 
     @aedt_exception_handler
-    def _refresh_object_types(self):
+    def _refresh_solids(self):
         self._solids = list(self.oeditor.GetObjectsInGroup("Solids"))
+        self._all_object_names = self._solids + self._sheets + self._lines
+
+    @aedt_exception_handler
+    def _refresh_sheets(self):
         self._sheets = list(self.oeditor.GetObjectsInGroup("Sheets"))
+        self._all_object_names = self._solids + self._sheets + self._lines
+
+    @aedt_exception_handler
+    def _refresh_lines(self):
         self._lines = list(self.oeditor.GetObjectsInGroup("Lines"))
         self._all_object_names = self._solids + self._sheets + self._lines
 
+    @aedt_exception_handler
+    def _refresh_object_types(self):
+        self._refresh_solids()
+        self._refresh_sheets()
+        self._refresh_lines()
+        self._all_object_names = self._solids + self._sheets + self._lines
+
+    def _create_line_object(self, name):
+        self._refresh_lines()
+        return self._create_object(name)
+
+    def _create_sheet_object(self, name):
+        self._refresh_sheets()
+        return self._create_object(name)
+
+    def _create_solid_object(self, name):
+        self._refresh_solids()
+        return self._create_object(name)
+
+    def _create_generic_object(self, name):
+        self._refresh_object_types()
+        return self._create_object(name)
+
+    def _create_object(self, name):
+        assert name in self._all_object_names
+        o = Object3d(self, name)
+        self.objects[o.id] = o
+        self.objects_names[o.name] = o.id
+        return o
 
     @aedt_exception_handler
     def refresh_all_ids(self):
 
         self._refresh_object_types()
-        all_object_names = self.objects_names
-
+        known_objects = self.objects_names
+        add_objects = []
         for el in self._solids:
-            if el not in all_object_names:
-                o = Object3d(self, name=el)
-                self._update_object(o)
+            if el not in known_objects:
+                add_objects.append(el)
 
         for el in self._sheets:
-            if el not in all_object_names:
-                o = Object3d(self, name=el)
-                self._update_object(o)
+            if el not in known_objects:
+                add_objects.append(el)
 
         for el in self._lines:
-            if el not in all_object_names:
-                o = Object3d(self, name=el)
-                self._update_object(o)
+            if el not in known_objects:
+                add_objects.append(el)
 
-        for el in all_object_names:
-            if el not in self._all_object_names:
-                self._delete_object_from_dict(el)
+        for obj_name in add_objects:
+            o = Object3d(self, name=obj_name)
+            self._update_object(o)
+
+        for obj_name in known_objects:
+            if obj_name not in self._all_object_names:
+                self._delete_object_from_dict(obj_name)
 
         return len(self.objects)
 
@@ -2624,8 +2660,7 @@ class Primitives(object):
 
         # select all edges
         all_edges = []
-        solids = self.get_all_solids_names()
-        solids = [s for s in solids if s not in list_of_bodies]
+        solids = [s for s in self.solids if s not in list_of_bodies]
         for solid in solids:
             edges = self.get_object_edges(solid)
             all_edges.extend(edges)
@@ -2756,8 +2791,7 @@ class Primitives(object):
 
         # select all edges
         all_edges = []
-        solids = self.get_all_solids_names()
-        solids = [s for s in solids if s not in list_of_bodies]
+        solids = [s for s in self.solids if s not in list_of_bodies]
         for solid in solids:
             edges = self.get_object_edges(solid)
             all_edges.extend(edges)
@@ -2879,4 +2913,55 @@ class Primitives(object):
                 distance = d
         return selected_edge
 
+    @aedt_exception_handler
+    def _default_line_object_attributes(self, name=None, matname=None):
+        return self._default_object_attributes("Line", name, matname, )
+
+    @aedt_exception_handler
+    def _default_sheet_object_attributes(self, name=None, matname=None):
+        return self._default_object_attributes("Sheet", name, matname, )
+
+    @aedt_exception_handler
+    def _default_solid_object_attributes(self, name=None, matname=None):
+        return self._default_object_attributes("Solid", name, matname, )
+
+    @aedt_exception_handler
+    def _default_object_attributes(self, object_type, name=None, matname=None):
+
+        if not matname:
+            matname = self.defaultmaterial
+
+        material, is_dielectric = self._check_material(matname, self.defaultmaterial)
+
+        #TODO Check this !
+        solve_inside = False
+        if is_dielectric:
+            solve_inside = True
+
+        if not name:
+            name = _uname()
+
+        args = ["NAME:Attributes",
+                "Name:=", name,
+                "Flags:=", "",
+                "Color:=", "(132 132 193)",
+                "Transparency:=", 0.3,
+                "PartCoordinateSystem:=", "Global",
+                "SolveInside:=", solve_inside]
+
+        if self.version >= "2019.3":
+            args += ["MaterialValue:=", chr(34) + material + chr(34),
+                     "UDMId:=", "",
+                     "SurfaceMaterialValue:=", chr(34) +"Steel-oxidised-surface"+ chr(34)]
+        else:
+            args += ["MaterialName:=", material]
+
+        if self.version >= "2021.1":
+            args += ["ShellElement:="	, False,
+                     "ShellElementThickness:=", "0mm",
+                     "IsMaterialEditable:=", True,
+                     "UseMaterialAppearance:=", False,
+                     "IsLightweight:=", False]
+
+        return args
 
