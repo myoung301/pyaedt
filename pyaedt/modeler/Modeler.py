@@ -813,6 +813,22 @@ class GeometryModeler(Modeler, object):
         return get_total_transformation(point, ref_cs)
 
     @aedt_exception_handler
+    def delete_all_objects(self):
+        """Delete all line, solid and sheet objects
+
+        Returns
+        -------
+         bool
+            True if operation succeeded, False otherwise
+        """
+        try:
+            self.primitives.delete()
+            return True
+        except:
+            return False
+
+
+    @aedt_exception_handler
     def set_working_coordinate_system(self, name):
         """ Set the working coordinate system to name.
 

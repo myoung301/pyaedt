@@ -21,9 +21,13 @@ import string
 import time
 import math
 import itertools
+#TODO Clarify these 2 imports
+import tempfile
+from IPython.display import Image, display
 from collections import OrderedDict
 from ..modeler.Modeler import CoordinateSystem
 from ..generic.general_methods import aedt_exception_handler, generate_unique_name, retry_ntimes
+from ..generic.filesystem import Scratch
 from ..application.Variables import AEDT_units
 
 report_type = {"DrivenModal": "Modal Solution Data", "DrivenTerminal": "Terminal Solution Data",
@@ -586,6 +590,9 @@ class PostProcessor(object):
         """
         self._parent = parent
         self.FieldsPlot = {}
+        self.scratch_path = tempfile.TemporaryDirectory().name
+        if not os.path.isdir(self.scratch_path):
+            os.mkdir(self.scratch_path)
 
     @property
     def _primitives(self):
@@ -1125,7 +1132,7 @@ class PostProcessor(object):
         coordinateSystemForExportPlot = self.modeler.create_coordinate_system(origin=center, mode='view', view=view)
         wireframes = []
         if wireframe:
-            names = self._primitives.get_all_objects_names()
+            names = self._primitives.object_names
             for el in names:
                 if not self._primitives[el].wireframe:
                     wireframes.append(el)
@@ -1152,6 +1159,10 @@ class PostProcessor(object):
         self.oreportsetup.DeleteFieldPlot([name])
         self.FieldsPlot.pop(name, None)
         return True
+
+    def nb_display(self, show_axis=True, show_grid=True, show_ruler=True):
+        file_name = self.export_model_picture(self.scratch_path, picturename="Model", show_axis=show_axis, show_grid=show_grid, show_ruler=True)
+        return Image(file_name, width=500)
 
     @aedt_exception_handler
     def export_model_picture(self, dir, name=None, picturename="Model", show_axis=True, show_grid=True, show_ruler=True):

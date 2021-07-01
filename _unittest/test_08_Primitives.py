@@ -526,6 +526,7 @@ class TestPrimitives(BasisTest):
         assert len(list1) + len(list2) == len(list3)
 
     def test_31_create_rect_sheet_to_ground(self):
+        #TODO: works even if a Region does not exist !!
         box = self.create_copper_box(name="MyBox")
         rect = self.create_rectangle(name="MyRectangle")
         groundplane = self.aedtapp.modeler.create_sheet_to_ground("MyBox")

@@ -78,7 +78,7 @@ class PolylineSegment():
         self.arc_plane = arc_plane
 
 
-class Polyline(object):
+class Polyline(Object3d):
     """Polyline class.
 
     This class provides methods for creating and manipulating polyline objects within
@@ -777,6 +777,7 @@ class Primitives(object):
         self._solids = []
         self._sheets = []
         self._lines = []
+        self._all_object_names = []
         self.objects = defaultdict(Object3d)
         self.object_id_dict = defaultdict()
         self._currentId = 0
@@ -1380,48 +1381,43 @@ class Primitives(object):
             return ",".join(objnames)
 
     @aedt_exception_handler
-    def delete(self, objects):
+    def delete(self, objects=None):
         """Delete objects or groups.
 
         Parameters
         ----------
-        objects : list
-            List of objects or group names.
+        objects : list, default=None
+            List of objects or group names. of ''None'' then delete all objects
 
         Returns
         -------
         bool
             ``True`` when successful, ``False`` when failed
         """
-        if type(objects) is not list:
+        if not objects:
+            objects = self.object_names
+        elif type(objects) is not list:
             objects = [objects]
+        print("Deleting objects: {}".format(objects))
 
-        while len(objects) > 100:
-            objs = objects[:100]
+        slice = min(100, len(objects))
+        num_objects = len(objects)
+        remaining = num_objects
+        while remaining > 0:
+            objs = objects[:slice]
             objects_str = self.convert_to_selections(objs, return_list=False)
             arg = [
                 "NAME:Selections",
                 "Selections:="	, objects_str
                 ]
             self.oeditor.Delete(arg)
-            for el in objs:
-                self._delete_object_from_dict(el)
-
-
-            objects = objects[100:]
-
-        objects_str = self.convert_to_selections(objects, return_list=False)
-        arg = [
-            "NAME:Selections",
-            "Selections:="	, objects_str
-            ]
-        self.oeditor.Delete(arg)
-
-        for el in objects:
-            self._delete_object_from_dict(el)
+            self.cleanup_objects()
+            remaining -= slice
+            if remaining > 0:
+                objects = objects[slice:]
 
         if len(objects) > 0:
-            self.messenger.add_info_message("Deleted {} Objects".format(len(objects)))
+            self.messenger.add_info_message("Deleted {} Objects".format(num_objects))
 
         return True
 
@@ -1615,30 +1611,12 @@ class Primitives(object):
                 added_objects.append(obj_name)
         return added_objects
 
+    #TODO Remove this eventually
     @aedt_exception_handler
     def refresh_all_ids(self):
 
-        known_objects = self.object_id_dict
-        add_objects = []
-        for el in self._solids:
-            if el not in known_objects:
-                add_objects.append(el)
-
-        for el in self._sheets:
-            if el not in known_objects:
-                add_objects.append(el)
-
-        for el in self._lines:
-            if el not in known_objects:
-                add_objects.append(el)
-
-        for obj_name in add_objects:
-            o = Object3d(self, name=obj_name)
-            self._update_object(o)
-
-        for obj_name in known_objects:
-            if obj_name not in self._all_object_names:
-                self._delete_object_from_dict(obj_name)
+        self.add_new_objects()
+        self.cleanup_objects()
 
         return len(self.objects)
 

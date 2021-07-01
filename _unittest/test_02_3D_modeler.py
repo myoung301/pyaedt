@@ -54,12 +54,9 @@ class TestModeler:
         assert len(bounding) == 6
 
     def test_03_objects(self):
-        try:
-            print(self.aedtapp.modeler.oeditor)
-            print(self.aedtapp.modeler.odefinition_manager)
-            print(self.aedtapp.modeler.omaterial_manager)
-        except:
-            assert False
+        print(self.aedtapp.modeler.oeditor)
+        print(self.aedtapp.modeler.odefinition_manager)
+        print(self.aedtapp.modeler.omaterial_manager)
 
     def test_04_convert_to_selection(self):
         assert type(self.aedtapp.modeler.convert_to_selections("inner", True)) is list
@@ -68,6 +65,10 @@ class TestModeler:
     def test_05_split(self):
         box1 = self.aedtapp.modeler.primitives.create_box([-10, -10, -10], [20, 20, 20], "box_to_split")
         assert self.aedtapp.modeler.split("box_to_split", 1)
+
+    def test_delete_all_objects(self):
+        box1 = self.aedtapp.modeler.primitives.create_box([-10, -10, -10], [20, 20, 20], "box_to_split")
+        self.aedtapp.modeler.delete_all_objects()
 
     def test_06_duplicate_and_mirror(self):
         udp = self.aedtapp.modeler.Position(20, 20, 20)

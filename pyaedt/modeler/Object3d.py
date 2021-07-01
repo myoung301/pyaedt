@@ -591,6 +591,7 @@ class Object3d(object):
     def __str__(self):
         self.update_properties()
         return """
+         {}
          name: {}    id: {}    object_type: {}
          bounding_box: {}
          --- read/write properties  ----
@@ -601,7 +602,7 @@ class Object3d(object):
          transparency: {}
          display_wireframe {}
          part_coordinate_system: {}
-         """.format(self._m_name, self.id, self.object_type, self.bounding_box, self._solve_inside, self._model, self._material_name,
+         """.format(type(self), self._m_name, self.id, self.object_type, self.bounding_box, self._solve_inside, self._model, self._material_name,
                     self.color, self.transparency, self.display_wireframe, self.part_coordinate_system)
 
     @property
