@@ -957,7 +957,7 @@ class Object3d(object):
         new_obj_tuple = self._parent.modeler.clone(self.id)
         success = new_obj_tuple[0]
         assert success, "Could not clone the object {}".format(self.name)
-        new_name = new_obj_tuple[1]
+        new_name = new_obj_tuple[1][0]
         new_object = self._parent[new_name]
         return new_object
 

@@ -2058,12 +2058,9 @@ class GeometryModeler(Modeler, object):
         szSelections = self.convert_to_selections(objid)
         vArg1 = ['NAME:Selections', 'Selections:=', szSelections]
 
-        objs = self.primitives.object_names
         self.oeditor.Copy(vArg1)
         self.oeditor.Paste()
         new_objects = self.primitives.add_new_objects()
-        #objs2 = self.primitives.object_id_dict
-        #thelist = [i for i in objs2 if i not in objs]
         return True, new_objects
 
     @aedt_exception_handler

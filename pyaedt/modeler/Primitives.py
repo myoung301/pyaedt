@@ -1605,7 +1605,7 @@ class Primitives(object):
 
     def add_new_objects(self):
         added_objects = []
-        for obj_name in self._all_object_names:
+        for obj_name in self.object_names:
             if obj_name not in self.object_id_dict:
                 self._create_object(obj_name)
                 added_objects.append(obj_name)

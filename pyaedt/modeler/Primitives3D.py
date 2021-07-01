@@ -3,6 +3,7 @@ from .Primitives import Primitives
 from .GeometryOperators import GeometryOperators
 from ..application.Analysis import CoordinateSystemAxis
 from .Object3d import Object3d
+import numbers
 import os
 
 class Primitives3D(Primitives, object):
@@ -360,8 +361,9 @@ class Primitives3D(Primitives, object):
         
         Parameters
         ----------
-        pad_percent : float
-            Global padding percentage for all dimensions
+        pad_percent : float or list of float
+            If float, use padding in per-cent for all dimensions
+            If list, then interpret as adding for  ["+X", "+Y", "+Z", "-X", "-Y", "-Z"]
 
         Returns
         -------
@@ -376,6 +378,9 @@ class Primitives3D(Primitives, object):
         """
         if "Region" in self.object_names:
             return None
+        if isinstance(pad_percent, numbers.Number):
+            pad_percent = [pad_percent] * 6
+
         arg = ["NAME:RegionParameters"]
         p = ["+X", "+Y", "+Z", "-X", "-Y", "-Z"]
         i = 0
@@ -394,7 +399,6 @@ class Primitives3D(Primitives, object):
 
         self.oeditor.CreateRegion(arg, arg2)
         o = self._create_solid_object("Region")
-        o.transparency = 0
         o.wireframe = True
         return o
 
