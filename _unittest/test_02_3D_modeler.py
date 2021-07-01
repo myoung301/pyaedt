@@ -1,12 +1,12 @@
 # standard imports
 import os
+import pytest
 # Setup paths for module imports
 from .conftest import local_path, scratch_path
 
 # Import required modules
 from pyaedt import Hfss
 from pyaedt.generic.filesystem import Scratch
-from pyaedt.modeler.Object3d import Object3d
 import gc
 test_project_name = "Coax_HFSS"
 
@@ -35,12 +35,15 @@ class TestModeler:
         self.aedtapp.modeler.model_units = "cm"
         assert self.aedtapp.modeler.model_units == "cm"
 
-
     def test_01b_load_material_lib(self):
-        assert self.aedtapp.materials.load_from_xml_full()
+        filename = os.path.join(local_path, "example_models", "amat.xml")
+        mats = self.aedtapp.materials.load_from_xml_full(filename)
+        assert mats != {}
+        assert mats is not None
 
-    def test_01b_load_material_lib(self):
-        assert self.aedtapp.materials.load_from_file(os.path.join(local_path, "example_models","amat.xml"))
+    def test_01c_load_material_lib(self):
+        filename = os.path.join(local_path, "example_models", "amat.xml")
+        assert self.aedtapp.materials.load_from_file(filename)
 
     def test_01c_export_material_lib(self):
         self.aedtapp.materials.py2xmlFull(os.path.join(self.local_scratch.path,"export.xml"))
@@ -133,30 +136,10 @@ class TestModeler:
         # TODO
         assert True
 
-    def create_polyline(self, name=None):
-        if not name:
-            name = "Poly1"
-
-        test_points = [[0, 100, 0],
-                       [-100, 0, 0],
-                       [-50, -50, 0],
-                       [0, 0, 0]]
-
-        if self.aedtapp.modeler.primitives[name]:
-            self.aedtapp.modeler.primitives.delete(name)
-
-        p1 = self.aedtapp.modeler.primitives.create_polyline(position_list=test_points, name=name)
-        return p1, test_points
-
     def test_19_clone(self):
-        p1, points = self.create_polyline(name="Poly1")
-        status1, cloned = self.aedtapp.modeler.clone("Poly1")
-        status2, cloned = self.aedtapp.modeler.clone("Poly2")
-        status3, cloned = self.aedtapp.modeler.clone("Poly3")
-        assert status1
-        assert status2
-        assert status3
-        assert isinstance(cloned, list)
+        status, cloned = self.aedtapp.modeler.clone("Poly1")
+        assert status
+        assert type(cloned) is str
 
     def test_20_intersect(self):
         udp = self.aedtapp.modeler.Position(0, 0, 0)
@@ -188,8 +171,8 @@ class TestModeler:
     def test_24_check_plane(self):
 
         udp = self.aedtapp.modeler.Position(0, 0, 0)
-        o = self.aedtapp.modeler.primitives.create_box(udp, [4, 5, 5])
-        plane = self.aedtapp.modeler.check_plane(o.id, udp)
+        id1 = self.aedtapp.modeler.primitives.create_box(udp, [4, 5, 5])
+        plane = self.aedtapp.modeler.check_plane(id1, udp)
         planes = ["XY", "XZ", "YZ"]
         assert plane in planes
 
@@ -198,10 +181,10 @@ class TestModeler:
         assert True
 
     def test_26_create_airbox(self):
-        o1 = self.aedtapp.modeler.create_airbox(10)
-        o2 = self.aedtapp.modeler.create_airbox(50, "Relative", "Second_airbox")
-        assert type(o1.id) is int
-        assert type(o2.id) is int
+        id = self.aedtapp.modeler.create_airbox(10)
+        id2 = self.aedtapp.modeler.create_airbox(50, "Relative", "Second_airbox")
+        assert type(id) is int
+        assert type(id2) is int
 
     def test_27_create_region(self):
         assert self.aedtapp.modeler.create_air_region(*[20, 20, 30, 50, 50, 100])
@@ -224,9 +207,9 @@ class TestModeler:
         position = self.aedtapp.modeler.Position(0, 0, 0)
         wg9 = self.aedtapp.modeler.create_waveguide(position, self.aedtapp.CoordinateSystemAxis.ZAxis, wgmodel="WG9",
                                                     wg_length=1500, parametrize_h=True, create_sheets_on_openings=True)
-        assert wg9[0].id > 0
-        assert wg9[1].id > 0
-        assert wg9[2].id > 0
+        assert wg9[0] > 0
+        assert wg9[1] > 0
+        assert wg9[2] > 0
         wgfail = self.aedtapp.modeler.create_waveguide(position, self.aedtapp.CoordinateSystemAxis.ZAxis,
                                                        wgmodel="MYMODEL",
                                                        wg_length=2000, parametrize_h=True)
@@ -275,12 +258,12 @@ class TestModeler:
 
     def test_36_create_coaxial(self):
         coax = self.aedtapp.modeler.create_coaxial([0, 0, 0], self.aedtapp.CoordinateSystemAxis.XAxis)
-        assert isinstance(coax[0].id, int)
-        assert isinstance(coax[1].id, int)
-        assert isinstance(coax[2].id, int)
+        assert isinstance(coax[0], int)
+        assert isinstance(coax[1], int)
+        assert isinstance(coax[2], int)
 
     def test_37_create_coordinate(self):
-        cs = self.aedtapp.modeler.create_coordinate_system(name='tester')
+        cs = self.aedtapp.modeler.create_coordinate_system()
         assert cs
         assert cs.update()
         assert cs.change_cs_mode(1)
@@ -328,20 +311,4 @@ class TestModeler:
         cs1 = self.aedtapp.modeler.create_coordinate_system(name="new1")
         self.aedtapp.modeler.set_working_coordinate_system("Global")
         self.aedtapp.modeler.set_working_coordinate_system("new1")
-
-    def test_42_sweep_around_axis(self):
-        udp1 = [0, 0, 0]
-        udp2 = [5, 0, 0]
-        arrofpos = [udp1, udp2]
-        p1 = self.aedtapp.modeler.primitives.create_polyline(arrofpos, name="poly_vector_1")
-        p2 = self.aedtapp.modeler.primitives.create_polyline(arrofpos, name="poly_vector_2")
-        p3 = self.aedtapp.modeler.primitives.create_polyline(arrofpos, name="poly_vector_3")
-        assert self.aedtapp.modeler.sweep_around_axis(p1, self.aedtapp.CoordinateSystemAxis.YAxis)
-        assert self.aedtapp.modeler.sweep_around_axis(p2.name, self.aedtapp.CoordinateSystemAxis.YAxis)
-        assert self.aedtapp.modeler.sweep_around_axis(p3.id, self.aedtapp.CoordinateSystemAxis.YAxis)
-        assert p1.object_type == "Sheet"
-        assert p2.object_type == "Sheet"
-        assert p3.object_type == "Sheet"
-        assert self.aedtapp.modeler.sweep_around_axis(p1, self.aedtapp.CoordinateSystemAxis.ZAxis)
-        assert p1.object_type == "Solid"
 
