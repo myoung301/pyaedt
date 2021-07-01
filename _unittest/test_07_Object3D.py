@@ -130,20 +130,6 @@ class TestObject3D:
         assert len(new_object.edges) == 12
         assert new_object.display_wireframe == initial_object.display_wireframe
 
-    def test_08_export_attributes(self):
-        o = self.create_copper_box()
-        initial_object = o
-        attr_list = initial_object.export_attributes()
-        attr_legacy_list = initial_object.export_attributes_legacy()
-
-        attr_list_name = initial_object.export_attributes("some_name")
-        attr_legacy_list_name = initial_object.export_attributes_legacy("some_name")
-
-        assert "some_name" in attr_legacy_list_name
-        assert not None in attr_legacy_list
-        assert not None in attr_list
-        assert "some_name" in attr_list_name
-
     def test_08_set_model(self):
         o = self.create_copper_box()
         initial_object = o

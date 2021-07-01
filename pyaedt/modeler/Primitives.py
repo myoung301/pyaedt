@@ -12,7 +12,7 @@ from .GeometryOperators import GeometryOperators
 from .Object3d import Object3d, EdgePrimitive, FacePrimitive, VertexPrimitive, _dim_arg, _uname
 from ..generic.general_methods import aedt_exception_handler, retry_ntimes
 from ..application.Variables import Variable
-
+from collections import OrderedDict
 if "IronPython" in sys.version or ".NETFramework" in sys.version:
     _ironpython = True
 else:
@@ -487,10 +487,9 @@ class Polyline(Object3d):
         >>> P2 = P1.clone()
 
         """
-        ret, new_name = self._parent._modeler.clone(self)
-        new_object = Polyline(self._parent, src_object=self._parent[new_name])
-        self._parent.objects[new_object.id] = new_object
-        return new_object
+        ret, new_names = self._parent._modeler.clone(self)
+        clone_name = new_names[0]
+        return Polyline(self._parent, src_object=self._parent[clone_name])
 
     @aedt_exception_handler
     def remove_vertex(self, position, abstol=1e-9):
@@ -966,7 +965,6 @@ class Primitives(object):
         str or bool
             String if a material name, Boolean if the material is a dielectric.
         """
-
         if matname:
             matname = matname.lower()
             if self._parent.materials.checkifmaterialexists(matname):
@@ -1093,7 +1091,7 @@ class Primitives(object):
 
         Parameters
         ----------
-            edgeID: int or EdgePrimitive
+            edge: int or EdgePrimitive
                 Edge specifier (either an integer edge-id or an EdgePrimitive object
 
         Returns
@@ -1136,6 +1134,7 @@ class Primitives(object):
             face_id = face.id
         obj = self._find_object_from_face_id(face_id)
         if obj is not None:
+
             varg1 = ['NAME:Selections']
             varg1.append('Selections:='), varg1.append(obj)
             varg1.append('NewPartsModelFlag:='), varg1.append('Model')
@@ -1322,14 +1321,11 @@ class Primitives(object):
 
         vArg1.append(vArgParamVector)
         namergs = name.replace(".dll", "").split("/")
-        o._m_name =name
-        vArg2 = o.export_attributes(namergs[-1])
+        o._m_name = namergs[-1]
+        vArg2 = self._default_object_attributes("Solid", o._m_name )
         self.oeditor.CreateUserDefinedPart(vArg1, vArg2)
 
-        self._refresh_object_types()
-        id = self._update_object(o)
-
-        return o
+        return self._create_solid_object(o._m_name)
 
     @aedt_exception_handler
     def get_obj_name(self, partId):
@@ -2926,15 +2922,15 @@ class Primitives(object):
 
     @aedt_exception_handler
     def _default_line_object_attributes(self, name=None, matname=None):
-        return self._default_object_attributes("Line", name, matname, )
+        return self._default_object_attributes("Line", name, matname )
 
     @aedt_exception_handler
     def _default_sheet_object_attributes(self, name=None, matname=None):
-        return self._default_object_attributes("Sheet", name, matname, )
+        return self._default_object_attributes("Sheet", name, matname )
 
     @aedt_exception_handler
     def _default_solid_object_attributes(self, name=None, matname=None):
-        return self._default_object_attributes("Solid", name, matname, )
+        return self._default_object_attributes("Solid", name, matname )
 
     @aedt_exception_handler
     def _default_object_attributes(self, object_type, name=None, matname=None):

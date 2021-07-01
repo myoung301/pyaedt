@@ -874,51 +874,6 @@ class Object3d(object):
 
         self._solve_inside = fs
 
-    @aedt_exception_handler
-    def export_attributes_legacy(self, name=None):
-        if name:
-            obj_name = name
-        else:
-            obj_name = self.name
-
-        args = ["NAME:Attributes",
-                "Name:=", obj_name,
-                "Flags:=", self.flags,
-                "Color:=", self.color_string,
-                "Transparency:=", self.transparency,
-                "PartCoordinateSystem:=", self.part_coordinate_system,
-                "MaterialName:=", self.material_name,
-                "SolveInside:=", self.solve_inside]
-
-        return args
-
-    @aedt_exception_handler
-    def export_attributes(self, name=None):
-        if name:
-            obj_name = name
-        else:
-            obj_name = self._m_name
-
-        args = ["NAME:Attributes",
-                "Name:=", obj_name,
-                "Flags:=", self.flags,
-                "Color:=", self.color_string,
-                "Transparency:=", self.transparency,
-                "PartCoordinateSystem:=", self.part_coordinate_system,
-                "UDMId:=", "",
-                "MaterialValue:=", chr(34) + self._material_name + chr(34),
-                "SurfaceMaterialValue:=", chr(34) +"Steel-oxidised-surface"+ chr(34),
-                "SolveInside:=", None]#self.solve_inside]
-
-        if self._parent.version >= "2021.1":
-            args += ["ShellElement:="	, False,
-                     "ShellElementThickness:=", "0mm",
-                     "IsMaterialEditable:=", True,
-                     "UseMaterialAppearance:=", False,
-                     "IsLightweight:=", False]
-
-        return args
-
     @property
     def display_wireframe(self):
         """Get or set the display_wireframe property of the part as a boolean value
