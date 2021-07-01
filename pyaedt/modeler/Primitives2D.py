@@ -3,19 +3,16 @@ from .Primitives import Primitives
 
 
 class Primitives2D(Primitives, object):
-    """Class for management of all Primitives of 2D Tools
-
-    Methods
-    """
+    """Primitives2D class."""
 
     @property
     def is3d(self):
-        """Returns False always to indicate a 3D analysis type"""
+        """Returns False always to indicate a 3D analysis type."""
         return False
 
     @property
     def plane2d(self):
-        """ """
+        """Create a 2D plane."""
         plane = "Z"
         if self._parent.design_type == "Maxwell 2D":
             if self._parent.odesign.GetGeometryMode()=="about Z":
@@ -27,7 +24,7 @@ class Primitives2D(Primitives, object):
 
     @aedt_exception_handler
     def create_circle(self, position, radius, num_sides=0, is_covered=True, name=None, matname=None):
-        """Create a circle
+        """Create a circle.
 
         Parameters
         ----------
@@ -40,13 +37,16 @@ class Primitives2D(Primitives, object):
         is_covered : bool
             Specify whether the ellipse is a sheet (covered) or a line object
         name : str, default=None
-            Object Name (if not specified, a unique name NewObject_xxxxxx will be generated for the object)
+            Name of the object. The default is ``None``. If ``None`` ,
+            a unique name NewObject_xxxxxx will be assigned)
         matname : str, default=None
-            material name. If not defined the default material will be assigned
+             Name of the material. The default is ``None``. If ``None``,
+            the default material is assigned.
 
         Returns
         -------
-        Object3d
+        type
+            Object3d
 
         Examples
         --------
@@ -75,7 +75,7 @@ class Primitives2D(Primitives, object):
 
     @aedt_exception_handler
     def create_ellipse(self,position, major_radius, ratio, is_covered=True, name=None, matname=None):
-        """Create a ellipse
+        """Create an ellipse.
 
         Parameters
         ----------
@@ -88,18 +88,19 @@ class Primitives2D(Primitives, object):
         is_covered : bool
             Specify whether the ellipse is a sheet (covered) or a line object
         name : str, default=None
-            Object Name (if not specified, a unique name NewObject_xxxxxx will be generated for the object)
+            Name of the object. The default is ``None``. If ``None`` ,
+            a unique name NewObject_xxxxxx will be assigned)
         matname : str, default=None
-            material name. If not defined the default material will be assigned
+             Name of the material. The default is ``None``. If ``None``,
+             the default material is assigned.
 
         Returns
         -------
-        Object3d
+        type
+            Object3d
 
-        Returns
-        -------
-        Object3d
-
+        Examples
+        --------
         >>> ellipse1 = aedtapp.modeler.primitives.create_ellipse([0, -2, -2], 4.0, 0.2)
         >>> ellipse2 = aedtapp.modeler.primitives.create_ellipse(position=[0, -2, -2], major_radius=4.0, ratio=0.2,
         ...                                                     name="MyEllipse", matname="Copper")
@@ -122,7 +123,7 @@ class Primitives2D(Primitives, object):
 
     @aedt_exception_handler
     def create_rectangle(self, position, dimension_list, is_covered=True, name=None, matname=None):
-        """Create a rectangle
+        """Create a rectangle.
 
         Parameters
         ----------
@@ -133,9 +134,11 @@ class Primitives2D(Primitives, object):
         is_covered : bool
             Specify whether the ellipse is a sheet (covered) or a line object
         name : str, default=None
-            Object Name (if not specified, a unique name NewObject_xxxxxx will be generated for the object)
+            Name of the object. The default is ``None``. If ``None`` ,
+            a unique name NewObject_xxxxxx will be assigned)
         matname : str, default=None
-            material name. If not defined the default material will be assigned
+             Name of the material. The default is ``None``. If ``None``,
+             the default material is assigned.
 
         Returns
         -------
@@ -183,9 +186,11 @@ class Primitives2D(Primitives, object):
         is_covered : bool
             Specify whether the ellipse is a sheet (covered) or a line object
         name : str, default=None
-            Object Name (if not specified, a unique name NewObject_xxxxxx will be generated for the object)
+            Name of the object. The default is ``None``. If ``None`` ,
+            a unique name NewObject_xxxxxx will be assigned)
         matname : str, default=None
-            material name. If not defined the default material will be assigned
+             Name of the material. The default is ``None``. If ``None``,
+             the default material is assigned.
 
         Returns
         -------
