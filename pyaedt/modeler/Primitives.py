@@ -149,7 +149,7 @@ class Polyline(Object3d):
             assert new_object_name in self._parent._all_object_names
             Object3d.__init__(self, parent, name=new_object_name)
             self._parent.objects[self.id] = self
-            self._parent.objects_names[self.name] = self.id
+            self._parent.object_id_dict[self.name] = self.id
 
     @property
     def start_point(self):
@@ -738,7 +738,7 @@ class Primitives(object):
         self._sheets = []
         self._lines = []
         self.objects = defaultdict(Object3d)
-        self.objects_names = defaultdict()
+        self.object_id_dict = defaultdict()
         self._currentId = 0
         self.refresh()
 
@@ -786,8 +786,8 @@ class Primitives(object):
         """
         if isinstance(partId, int) and partId in self.objects:
             return self.objects[partId]
-        elif partId in self.objects_names:
-            return self.objects[self.objects_names[partId]]
+        elif partId in self.object_id_dict:
+            return self.objects[self.object_id_dict[partId]]
         return None
 
     @aedt_exception_handler
@@ -878,16 +878,16 @@ class Primitives(object):
             Bool
 
         """
-        if type(objname) is str and objname in self.objects_names:
-            id1 = self.objects_names[objname]
-            self.objects_names.pop(objname)
+        if isinstance(objname, str) and objname in self.object_id_dict:
+            id1 = self.object_id_dict[objname]
+            self.object_id_dict.pop(objname)
             if id1 in self.objects:
                 self.objects.pop(id1)
         elif objname in self.objects:
             name = self.objects[objname].name
             self.objects.pop(objname)
-            if name in self.objects_names:
-                self.objects_names.pop(name)
+            if name in self.object_id_dict:
+                self.object_id_dict.pop(name)
         return True
 
     @aedt_exception_handler
@@ -895,12 +895,12 @@ class Primitives(object):
 
         assert o.name in self._all_object_names
         self.objects[o.id] = o
-        self.objects_names[o.name] = o.id
+        self.object_id_dict[o.name] = o.id
         return o
 
         # Store the new object infos
         self.objects[o.id] = o
-        self.objects_names[o.name] = o.id
+        self.object_id_dict[o.name] = o.id
 
         o.update_object_type()
         o.update_properties()
@@ -1012,9 +1012,8 @@ class Primitives(object):
         Object3d
 
         """
-        if "Region" in self.objects_names:
+        if "Region" in self.object_id_dict:
             return None
-        obj = self._new_object()
         arg = ["NAME:RegionParameters"]
         p = ["+X", "+Y", "+Z", "-X", "-Y", "-Z"]
         i = 0
@@ -1031,13 +1030,7 @@ class Primitives(object):
                 "\"air\"", "SurfaceMateriaobjidue:=", "\"\"", "SolveInside:=", True, "IsMaterialEditable:=", True,
                 "UseMaterialAppearance:=", False, "IsLightweight:=", False]
         self.oeditor.CreateRegion(arg, arg2)
-        obj.name = "Region"
-        obj.solve_inside = True
-        obj.transparency = 0
-        obj.wireframe = True
-        id = self._update_object(obj)
-        self.objects[id] = obj
-        return obj
+        return self._create_object("Region")
 
 
     @aedt_exception_handler
@@ -1056,6 +1049,8 @@ class Primitives(object):
         """
         if isinstance(edge, EdgePrimitive):
             edge_id = edge.id
+        else:
+            edge_id = edge
 
         obj = self._find_object_from_edge_id(edge_id)
 
@@ -1069,7 +1064,7 @@ class Primitives(object):
             varg2.append('Edges:='), varg2.append([edge_id])
 
             new_object_name = self.oeditor.CreateObjectFromEdges(varg1, ['NAME:Parameters', varg2])[0]
-            return self._create_line_object(new_object_name)
+            return self._create_object(new_object_name)
 
     @aedt_exception_handler
     def create_object_from_face(self, face):
@@ -1094,7 +1089,7 @@ class Primitives(object):
             varg2 = ['NAME:BodyFromFaceToParameters']
             varg2.append('FacesToDetach:='), varg2.append([face_id])
             new_object_name = self.oeditor.CreateObjectFromFaces(varg1, ['NAME:Parameters', varg2])[0]
-            return self._create_sheet_object(new_object_name)
+            return self._create_object(new_object_name)
 
     @aedt_exception_handler
     def create_polyline(self, position_list, segment_type=None,
@@ -1330,7 +1325,7 @@ class Primitives(object):
             True if succeeded, False otherwise
 
         """
-        if type(objects) is not list:
+        if not isinstance(objects, list):
             objects = [objects]
 
         while len(objects) > 100:
@@ -1379,7 +1374,7 @@ class Primitives(object):
             Boolean
 
         """
-        objnames = self.objects_names
+        objnames = self.object_id_dict
         num_del = 0
         for el in objnames:
             if case_sensitive:
@@ -1418,9 +1413,9 @@ class Primitives(object):
             object id
 
         """
-        if objname in self.objects_names:
-            if self.objects_names[objname] in self.objects:
-                return self.objects_names[objname]
+        if objname in self.object_id_dict:
+            if self.object_id_dict[objname] in self.objects:
+                return self.object_id_dict[objname]
         return None
 
     @aedt_exception_handler
@@ -1499,33 +1494,52 @@ class Primitives(object):
         self._all_object_names = self._solids + self._sheets + self._lines
 
     def _create_line_object(self, name):
-        self._refresh_lines()
         return self._create_object(name)
 
     def _create_sheet_object(self, name):
-        self._refresh_sheets()
         return self._create_object(name)
 
     def _create_solid_object(self, name):
-        self._refresh_solids()
         return self._create_object(name)
 
     def _create_generic_object(self, name):
-        self._refresh_object_types()
         return self._create_object(name)
 
     def _create_object(self, name):
+        self._refresh_object_types()
         assert name in self._all_object_names
         o = Object3d(self, name)
         self.objects[o.id] = o
-        self.objects_names[o.name] = o.id
+        self.object_id_dict[o.name] = o.id
+        self.cleanup_objects()
         return o
+
+    def cleanup_objects(self):
+        new_object_dict = {}
+        new_object_id_dict = {}
+        for obj_name in self.object_id_dict:
+            if obj_name in self._all_object_names:
+                id = self.object_id_dict[obj_name]
+                new_object_id_dict[obj_name] = id
+                new_object_dict[id] = self.objects[id]
+            else:
+                pass
+
+        self.objects = new_object_dict
+        self.object_id_dict = new_object_id_dict
+
+    def add_new_objects(self):
+        added_objects = []
+        for obj_name in self._all_object_names:
+            if obj_name not in self.object_id_dict:
+                self._create_object(obj_name)
+                added_objects.append(obj_name)
+        return added_objects
 
     @aedt_exception_handler
     def refresh_all_ids(self):
 
-        self._refresh_object_types()
-        known_objects = self.objects_names
+        known_objects = self.object_id_dict
         add_objects = []
         for el in self._solids:
             if el not in known_objects:
@@ -1599,7 +1613,7 @@ class Primitives(object):
 
             # Store the new object infos
             self.objects[o.id] = o
-            self.objects_names[o.name] = o.id
+            self.object_id_dict[o.name] = o.id
 
         return len(self.objects)
 
@@ -1969,7 +1983,7 @@ class Primitives(object):
 
         """
         oFaceIDs = []
-        if type(partId) is str and partId in self.objects_names:
+        if type(partId) is str and partId in self.object_id_dict:
             oFaceIDs = self.oeditor.GetFaceIDs(partId)
             oFaceIDs = [int(i) for i in oFaceIDs]
         elif partId in self.objects:
@@ -1995,7 +2009,7 @@ class Primitives(object):
 
         """
         oEdgeIDs = []
-        if type(partId) is str and partId in self.objects_names:
+        if type(partId) is str and partId in self.object_id_dict:
             oEdgeIDs = self.oeditor.GetEdgeIDsFromObject(partId)
             oEdgeIDs = [int(i) for i in oEdgeIDs]
         elif partId in self.objects:
@@ -2039,7 +2053,7 @@ class Primitives(object):
 
         """
         oVertexIDs = []
-        if type(partID) is str and partID in self.objects_names:
+        if type(partID) is str and partID in self.object_id_dict:
             oVertexIDs = self.oeditor.GetVertexIDsFromObject(partID)
             oVertexIDs = [int(i) for i in oVertexIDs]
         elif partID in self.objects:
@@ -2233,8 +2247,8 @@ class Primitives(object):
 
         """
 
-        if type(partID) is str and partID in self.objects_names:
-            partID = self.objects_names[partID]
+        if type(partID) is str and partID in self.object_id_dict:
+            partID = self.object_id_dict[partID]
 
         if partID in self.objects and self.objects[partID].object_type == "Line":
             vertices = self.get_object_vertices(partID)
@@ -2386,7 +2400,7 @@ class Primitives(object):
                 # Not Found, keep looking
                 pass
         else:
-            for obj in self.objects_names:
+            for obj in self.object_id_dict:
                 vArg1[2] = obj
                 try:
                     face_id = self.oeditor.GetFaceByPosition(vArg1)

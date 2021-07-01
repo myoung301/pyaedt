@@ -21,9 +21,13 @@ import string
 import time
 import math
 import itertools
+#TODO Clarify these 2 imports
+import tempfile
+from IPython.display import Image, display
 from collections import OrderedDict
 from ..modeler.Modeler import CoordinateSystem
 from ..generic.general_methods import aedt_exception_handler, generate_unique_name, retry_ntimes
+from ..generic.filesystem import Scratch
 from ..application.Variables import AEDT_units
 
 report_type = {"DrivenModal": "Modal Solution Data", "DrivenTerminal": "Terminal Solution Data",
@@ -586,6 +590,9 @@ class PostProcessor(object):
         """
         self._parent = parent
         self.FieldsPlot = {}
+        self.scratch_path = tempfile.TemporaryDirectory().name
+        if not os.path.isdir(self.scratch_path):
+            os.mkdir(self.scratch_path)
 
     @property
     def _primitives(self):
@@ -1153,8 +1160,12 @@ class PostProcessor(object):
         self.FieldsPlot.pop(name, None)
         return True
 
+    def nb_display(self, show_axis=True, show_grid=True, show_ruler=True):
+        file_name = self.export_model_picture(self.scratch_path, picturename="Model", show_axis=show_axis, show_grid=show_grid, show_ruler=True)
+        return Image(file_name, width=500)
+
     @aedt_exception_handler
-    def export_model_picture(self, dir, name, picturename="Model", ShowAxis=True, ShowGrid=True, ShowRuler=True):
+    def export_model_picture(self, dir, name=None, picturename="Model", show_axis=True, show_grid=True, show_ruler=True):
         """Synopsis:
         function that export Model Snapshot. It works only in Graphical Mode
         Arguments:
@@ -1167,7 +1178,7 @@ class PostProcessor(object):
             project name" (use to compose the path)
         picturename :
             image name" (default="Model"; extension ".jpg" is automatically added)
-        ShowAxis :
+        show_axis :
             True (default) | False
         ShowGrid :
             True (default) | False
@@ -1176,27 +1187,32 @@ class PostProcessor(object):
 
         Returns
         -------
-        type
-            True (executed) | False
+        str
+            Filename of the exported image
 
         """
 
         # Setup arguments list for createReport function
-        if not os.path.exists(dir + "//" + name):
-            os.mkdir(dir + "//" + name)
-        if not os.path.exists(dir + "//" + name + "//Pictures"):
-            os.mkdir(dir + "//" + name + "//Pictures")
+        if isinstance(name, str):
+            project_dir = os.path.join(dir, name)
+            if not os.path.exists(project_dir):
+                os.mkdir(project_dir)
+            pictures_dir = os.path.join(project_dir, "Pictures")
+            if not os.path.exists(pictures_dir):
+                os.mkdir(pictures_dir)
+            picture_file = os.path.join(pictures_dir, picturename + ".jpg")
+        else:
+            picture_file = os.path.join(dir, picturename + ".jpg")
 
         # open the 3D modeler and remove the selection on other objects
         self.oeditor.ShowWindow()
         self.steal_focus_oneditor()
         self.oeditor.FitAll()
         # export the image
-        arg = ["NAME:SaveImageParams", "ShowAxis:=", ShowAxis, "ShowGrid:=", ShowGrid, "ShowRuler:=", ShowRuler,
+        arg = ["NAME:SaveImageParams", "ShowAxis:=", show_axis, "ShowGrid:=", show_grid, "ShowRuler:=", show_ruler,
                "ShowRegion:=", "Default", "Selections:=", ""]
-        self.oeditor.ExportModelImageToFile(dir + "//" + name + "//Pictures//" + picturename + ".jpg", 0, 0,
-                                             arg)
-        return True
+        self.oeditor.ExportModelImageToFile(picture_file, 0, 0, arg)
+        return picture_file
 
     @aedt_exception_handler
     def copy_report_data(self, PlotName):

@@ -1107,7 +1107,7 @@ class GeometryModeler(Modeler, object):
             self.connect([p1.id, p2.id])
             #rect = self.primitives.create_rectangle(self._parent.CoordinateSystemPlane.ZXPlane,start,pos)
 
-        return p1.id
+        return p1
 
     @aedt_exception_handler
     def _get_faceid_on_axis(self, objname, axisdir):
@@ -1311,7 +1311,7 @@ class GeometryModeler(Modeler, object):
     @aedt_exception_handler
     def get_object_bounding_box(self, object):
         """return single object bounding box
-
+        .. Deprecate
         Parameters
         ----------
         object :
@@ -1662,7 +1662,7 @@ class GeometryModeler(Modeler, object):
         if isinstance(obj, int):
             return self.primitives.objects[obj]
         elif isinstance(obj, str):
-            id = self.primitives.objects_names[obj]
+            id = self.primitives.object_id_dict[obj]
             return self.primitives.objects[id]
         else:
             return obj
@@ -1670,6 +1670,7 @@ class GeometryModeler(Modeler, object):
     def _update_object(self, obj):
         '''Use to update any object3d derivatives that have potentially been modified by a modeler operation'''
         self.primitives._refresh_object_types()
+        self.primitives.cleanup_objects()
         o = self._get_object(obj)
         o.update_object_type()
         o.update_properties()
@@ -1929,7 +1930,7 @@ class GeometryModeler(Modeler, object):
             bool
 
         """
-        if self.primitives.objects[self.primitives.objects_names[object_name]].is3d:
+        if self.primitives.objects[self.primitives.object_id_dict[object_name]].is3d:
             if edge_list:
                 edge_list = self._convert_list_to_ids(edge_list)
                 vertices_list = []
@@ -1995,7 +1996,7 @@ class GeometryModeler(Modeler, object):
             Bool
 
         """
-        if self.primitives.objects[self.primitives.objects_names[object_name]].is3d:
+        if self.primitives.objects[self.primitives.object_id_dict[object_name]].is3d:
             if edge_list:
                 edge_list = self._convert_list_to_ids(edge_list)
                 vertices_list = []
@@ -2044,10 +2045,10 @@ class GeometryModeler(Modeler, object):
         objs = self.primitives.object_names
         self.oeditor.Copy(vArg1)
         self.oeditor.Paste()
-        self.primitives.refresh_all_ids()
-        objs2 = self.primitives.objects_names
-        thelist = [i for i in objs2 if i not in objs]
-        return True, thelist[0]
+        new_objects = self.primitives.add_new_objects()
+        #objs2 = self.primitives.object_id_dict
+        #thelist = [i for i in objs2 if i not in objs]
+        return True, new_objects
 
     @aedt_exception_handler
     def intersect(self, theList, keeporiginal=False):
@@ -2940,7 +2941,7 @@ class GeometryModeler(Modeler, object):
         str
             Object name if exists
         """
-        for object in list(self.primitives.objects_names.keys()):
+        for object in list(self.primitives.object_id_dict.keys()):
             try:
                 oEdgeIDs = self.oeditor.GetEdgeIDsFromObject(object)
                 if str(edge_id) in oEdgeIDs:

@@ -77,15 +77,15 @@ class TestHFSS:
 
     def test_05_create_wave_port_from_sheets(self):
         udp = self.aedtapp.modeler.Position(0, 0, 0)
-        id5 = self.aedtapp.modeler.primitives.create_circle(self.aedtapp.CoordinateSystemPlane.YZPlane,udp,10, name="sheet1")
+        o5 = self.aedtapp.modeler.primitives.create_circle(self.aedtapp.CoordinateSystemPlane.YZPlane,udp,10, name="sheet1")
         self.aedtapp.solution_type ="DrivenTerminal"
-        ports = self.aedtapp.create_wave_port_from_sheet(id5, 5, self.aedtapp.AxisDir.XNeg, 40, 2, "sheet1_Port", True)
+        ports = self.aedtapp.create_wave_port_from_sheet(o5, 5, self.aedtapp.AxisDir.XNeg, 40, 2, "sheet1_Port", True)
         assert ports[0].name == "sheet1_Port"
         assert ports[0].name in [i.name for i in self.aedtapp.boundaries]
         self.aedtapp.solution_type ="DrivenModal"
         udp = self.aedtapp.modeler.Position(5, 0, 0)
-        id6 = self.aedtapp.modeler.primitives.create_circle(self.aedtapp.CoordinateSystemPlane.YZPlane,udp,10, name="sheet2")
-        ports = self.aedtapp.create_wave_port_from_sheet(id6, 5, self.aedtapp.AxisDir.XPos, 40, 2, "sheet2_Port", True)
+        o6 = self.aedtapp.modeler.primitives.create_circle(self.aedtapp.CoordinateSystemPlane.YZPlane,udp,10, name="sheet2")
+        ports = self.aedtapp.create_wave_port_from_sheet(o6, 5, self.aedtapp.AxisDir.XPos, 40, 2, "sheet2_Port", True)
         assert ports[0].name == "sheet2_Port"
         assert ports[0].name in [i.name for i in self.aedtapp.boundaries]
 

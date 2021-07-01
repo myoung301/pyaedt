@@ -81,9 +81,10 @@ class BasisTest:
             if not application:
                 application = Hfss
             if self.test_project:
-                self.aedtapp = application(projectname=self.test_project, specified_version=desktop_version, AlwaysNew=new_thread, NG=non_graphical)
+                self.aedtapp = application(projectname=self.test_project, designname=design_name,
+                                           specified_version=desktop_version, AlwaysNew=new_thread, NG=non_graphical)
             else:
-                self.aedtapp = application(projectname=project_name, specified_version=desktop_version, AlwaysNew=new_thread, NG=non_graphical)
+                self.aedtapp = application(specified_version=desktop_version, AlwaysNew=new_thread, NG=non_graphical)
 
             #self.aedtapp.save_project()
 
@@ -134,6 +135,7 @@ def pyaedt_unittest_check_desktop_error(func):
             pytest.exit("Desktop Crashed - Aborting the test!")
         args[0].cache.update()
         assert args[0].cache.no_new_errors
+        return func(*args, **kwargs)
 
     return inner_function
 #

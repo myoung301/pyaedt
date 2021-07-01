@@ -584,8 +584,25 @@ class Object3d(object):
         self._part_coordinate_system = "Global"
         self._bounding_box = None
         self._material_name = None
+        self._transparency = None
         self.update_object_type()
         self.update_properties()
+
+    def __str__(self):
+        self.update_properties()
+        return """
+         name: {}    id: {}    object_type: {}
+         bounding_box: {}
+         --- read/write properties  ----
+         solve_inside: {} 
+         model: {}
+         material_name: {}
+         color: {}
+         transparency: {}
+         display_wireframe {}
+         part_coordinate_system: {}
+         """.format(self._m_name, self.id, self.object_type, self.bounding_box, self._solve_inside, self._model, self._material_name,
+                    self.color, self.transparency, self.display_wireframe, self.part_coordinate_system)
 
     @property
     def analysis_type(self):

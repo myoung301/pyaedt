@@ -1,69 +1,91 @@
 # standard imports
-import os
+import math
+
 # Setup paths for module imports
-from .conftest import local_path, scratch_path
+from .conftest import local_path, scratch_path, BasisTest, pyaedt_unittest_check_desktop_error
+from pyaedt.maxwell import Maxwell2d
 
-# Import required modules
-from pyaedt import Hfss
-from pyaedt.generic.filesystem import Scratch
-from pyaedt.modeler.Object3d import Object3d
-import gc
-test_project_name = "Coax_HFSS"
-
-
-class TestModeler:
+class TestModeler(BasisTest):
     def setup_class(self):
-        # set a scratch directory and the environment / test data
-        with Scratch(scratch_path) as self.local_scratch:
-            try:
-                example_project = os.path.join(local_path, 'example_models', test_project_name + '.aedt')
-                self.test_project = self.local_scratch.copyfile(example_project)
-
-                self.aedtapp = Hfss(self.test_project)
-            except Exception as e:
-                # self.desktop.force_close_desktop()
-                print(e)
-
-    def teardown_class(self):
-        self.aedtapp.close_project(self.aedtapp.project_name)
-        # self.desktop.force_close_desktop()
-        self.local_scratch.remove()
-        gc.collect()
+        BasisTest.setup_class(self, project_name="test_primitives", design_name="2D_Primitives", application=Maxwell2d)
 
     def test_01_model_units(self):
         model_units = self.aedtapp.modeler.model_units
+        assert model_units == "mm"
         self.aedtapp.modeler.model_units = "cm"
         assert self.aedtapp.modeler.model_units == "cm"
-
-
-    def test_01b_load_material_lib(self):
-        assert self.aedtapp.materials.load_from_xml_full()
-
-    def test_01b_load_material_lib(self):
-        assert self.aedtapp.materials.load_from_file(os.path.join(local_path, "example_models","amat.xml"))
-
-    def test_01c_export_material_lib(self):
-        self.aedtapp.materials.py2xmlFull(os.path.join(self.local_scratch.path,"export.xml"))
-        assert os.path.exists(os.path.join(self.local_scratch.path,"export.xml"))
 
     def test_02_boundingbox(self):
         bounding = self.aedtapp.modeler.obounding_box
         assert len(bounding) == 6
 
     def test_03_objects(self):
-        try:
-            print(self.aedtapp.modeler.oeditor)
-            print(self.aedtapp.modeler.odefinition_manager)
-            print(self.aedtapp.modeler.omaterial_manager)
-        except:
-            assert False
+            assert self.aedtapp.modeler.oeditor
+            assert self.aedtapp.modeler.odefinition_manager
+            assert self.aedtapp.modeler.omaterial_manager
 
-    def test_04_convert_to_selection(self):
-        assert type(self.aedtapp.modeler.convert_to_selections("inner", True)) is list
-        assert type(self.aedtapp.modeler.convert_to_selections("inner", False)) is str
+    def test_create_rectangle(self):
+        rect1 = self.aedtapp.modeler.primitives.create_rectangle([0, -2, -2], [3, 4])
+        rect2 = self.aedtapp.modeler.primitives.create_rectangle(position=[0, -2, -2], dimension_list=[3, 4],
+                                                                 name="MyRectangle", matname="Copper")
+        assert rect1.solve_inside
+        assert rect1.model
+        assert rect1.material_name == "vacuum"
+        assert math.isclose(rect1.faces[0].area, 3.0 * 4.0)
 
+        assert rect2.solve_inside
+        assert rect2.model
+        assert rect2.material_name == "copper"
+        assert math.isclose(rect1.faces[0].area, 3.0 * 4.0)
+
+    def test_create_circle(self):
+        circle1 = self.aedtapp.modeler.primitives.create_circle([0, -2, 0], 3)
+        circle2 = self.aedtapp.modeler.primitives.create_circle(position=[0, -2, -2], radius=3, num_sides=6,
+                                                 name="MyCircle", matname="Copper")
+        assert circle1.solve_inside
+        assert circle1.model
+        assert circle1.material_name == "vacuum"
+        assert math.isclose(circle1.faces[0].area, math.pi * 3.0 * 3.0)
+
+        assert circle2.solve_inside
+        assert circle2.model
+        assert circle2.material_name == "copper"
+        assert math.isclose(circle1.faces[0].area, math.pi * 3.0 * 3.0)
+
+    def test_create_ellipse(self):
+        ellipse1 = self.aedtapp.modeler.primitives.create_ellipse([0, -2, 0], 4.0, 0.2)
+        ellipse2 = self.aedtapp.modeler.primitives.create_ellipse(position=[0, -2, 0], major_radius=4.0, ratio=0.2,
+                                                                  name="MyEllipse", matname="Copper")
+        assert ellipse1.solve_inside
+        assert ellipse1.model
+        assert ellipse1.material_name == "vacuum"
+        assert math.isclose(ellipse2.faces[0].area, math.pi * 4.0 * 4.0 * 0.2)
+
+        assert ellipse2.solve_inside
+        assert ellipse2.model
+        assert ellipse2.material_name == "copper"
+        assert math.isclose(ellipse2.faces[0].area, math.pi * 4.0 * 4.0 * 0.2)
+
+    def test_create_regular_polygon(self):
+        pg1 = self.aedtapp.modeler.primitives.create_regular_polygon([0, 0, 0], [0, 2, 0])
+        pg2 = self.aedtapp.modeler.primitives.create_regular_polygon(position=[0, 0, 0], start_point=[0, 2, 0],
+                                                                     num_sides=3, name="MyPolygon", matname="Copper")
+        assert pg1.solve_inside
+        assert pg1.model
+        assert pg1.material_name == "vacuum"
+        assert math.isclose(pg1.faces[0].area, 10.392304845413264)
+
+        assert pg2.solve_inside
+        assert pg2.model
+        assert pg2.material_name == "copper"
+        assert math.isclose(pg2.faces[0].area, 5.196152422706631)
+
+
+
+
+'''
     def test_05_split(self):
-        box1 = self.aedtapp.modeler.primitives.create_box([-10, -10, -10], [20, 20, 20], "box_to_split")
+        box1 = self.aedtapp.modeler.primitives.create_rectangle([-10, -10, -10], [20, 20, 20], "box_to_split")
         assert self.aedtapp.modeler.split("box_to_split", 1)
 
     def test_06_duplicate_and_mirror(self):
@@ -133,30 +155,10 @@ class TestModeler:
         # TODO
         assert True
 
-    def create_polyline(self, name=None):
-        if not name:
-            name = "Poly1"
-
-        test_points = [[0, 100, 0],
-                       [-100, 0, 0],
-                       [-50, -50, 0],
-                       [0, 0, 0]]
-
-        if self.aedtapp.modeler.primitives[name]:
-            self.aedtapp.modeler.primitives.delete(name)
-
-        p1 = self.aedtapp.modeler.primitives.create_polyline(position_list=test_points, name=name)
-        return p1, test_points
-
     def test_19_clone(self):
-        p1, points = self.create_polyline(name="Poly1")
-        status1, cloned = self.aedtapp.modeler.clone("Poly1")
-        status2, cloned = self.aedtapp.modeler.clone("Poly2")
-        status3, cloned = self.aedtapp.modeler.clone("Poly3")
-        assert status1
-        assert status2
-        assert status3
-        assert isinstance(cloned, list)
+        status, cloned = self.aedtapp.modeler.clone("Poly1")
+        assert status
+        assert type(cloned) is str
 
     def test_20_intersect(self):
         udp = self.aedtapp.modeler.Position(0, 0, 0)
@@ -344,4 +346,4 @@ class TestModeler:
         assert p3.object_type == "Sheet"
         assert self.aedtapp.modeler.sweep_around_axis(p1, self.aedtapp.CoordinateSystemAxis.ZAxis)
         assert p1.object_type == "Solid"
-
+'''

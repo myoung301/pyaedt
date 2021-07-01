@@ -274,7 +274,7 @@ class FieldAnalysis3D(Analysis, object):
         elif self.materials.checkifmaterialexists(mat):
             self.materials._aedmattolibrary(mat)
             Mat = self.materials.material_keys[mat]
-            if Mat.is_dielectric():
+            if Mat.is_dielectric() or isinstance(self, Maxwell):
                 arg2.append("SolveInside:="), arg2.append(True)
             else:
                 arg2.append("SolveInside:="), arg2.append(False)

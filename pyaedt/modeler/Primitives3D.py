@@ -40,14 +40,14 @@ class Primitives3D(Primitives, object):
 
         Parameters
         ----------
-        position :
-            ApplicationName.modeler.Position(x,y,z) object
-        dimensions_list :
+        position : list of float
+            Lower bottom left corner of the Box [x, y, z]
+        dimensions_list : list of float
             list of dimensions of X, Y, Z
-        name :
-            box name. Optional, if nothing default name will be assigned
+        name : str, default=None
+            Object Name (if not specified a name will be assigned automatically)
         matname :
-            material name. Optional, if nothing or if invalid, default material will be assigned
+            material name. Optional, if nothing default material will be assigned
 
         Returns
         -------
@@ -55,12 +55,10 @@ class Primitives3D(Primitives, object):
 
         Examples
         _________
-        >>> from pyaedt import hfss
-        >>> hfss = HFSS()
-        >>> origin = [0,0,0]
-        >>> dimensions = [10,5,20]
-        >>> #Material and name are not mandatory fields
-        >>> object_id = hfss.modeler.primivites.create_box(origin, dimensions, name="mybox", matname="copper")
+        >>> from pyaedt import Hfss
+        >>> aedtapp = Hfss()
+        >>> ret_object = aedtapp.modeler.primitives.create_box(position=[0,0,0], dimensions_list=[10,5,20],
+        ...                                                name="mybox", matname="copper")
         """
         XPosition, YPosition, ZPosition = self.pos_with_arg(position)
         if XPosition is None or YPosition is None or ZPosition is None:
@@ -95,14 +93,22 @@ class Primitives3D(Primitives, object):
             height float
         numSides :
             Number of sides. 0 for circle (Default value = 0)
-        name :
-            Object Name (Default value = None)
+        name : str, default=None
+            Object Name (if not specified a name will be assigned automatically)
         matname :
             material name. Optional, if nothing default material will be assigned
 
         Returns
         -------
         Object3d
+
+        Examples
+        _________
+        >>> from pyaedt import Hfss
+        >>> aedtapp = Hfss()
+        >>> ret_object = aedtapp.modeler.primitives.create_cylinder(cs_axis='Z', position=[0,0,0], radius=2, height=3,
+        ...                                                name="mycyl", matname="vacuum")                           
+
         """
         szAxis = GeometryOperators.cs_axis_str(cs_axis)
         XCenter, YCenter, ZCenter = self.pos_with_arg(position)
@@ -139,15 +145,23 @@ class Primitives3D(Primitives, object):
             radius float
         num_sides : int, default=12
             number of sides of the polyhedron
-        name :
-            Object Name (Default value = None)
+        name : str, default=None
+            Object Name (if not specified a name will be assigned automatically)
         matname :
             material name. Optional, if nothing default material will be assigned
 
         Returns
         -------
         Object3d
+
+        Examples
+        _________
+        >>> from pyaedt import Hfss
+        >>> aedtapp = Hfss()
+        >>> ret_obj = aedtapp.modeler.primitives.create_polyhedron(cs_axis='X', center_position=[0, 0, 0], start_position=[0,5,0],
+        ...                                                      height=0.5, num_sides=8, name="mybox", matname="copper")
         """
+        test = cs_axis
         cs_axis = GeometryOperators.cs_axis_str(cs_axis)
         x_center, y_center, z_center = self.pos_with_arg(center_position)
         x_start, y_start, z_start = self.pos_with_arg(start_position)
@@ -176,22 +190,30 @@ class Primitives3D(Primitives, object):
         ----------
         cs_axis : CoordinateSystemAxis
             CoordinateSystem Axis
-        position :
-            ApplicationName.modeler.Position(x,y,z) object
-        bottom_radius :
-            bottom radius
-        top_radius :
-            topradius radius
-        height :
-            height
-        name :
-            Object Name (Default value = None)
+        position : list of float
+            Center position of the bottom of the cone
+        bottom_radius : float
+            Bottom radius of the cone
+        top_radius : float
+            Top radius of the cone
+        height : float
+            Height of the cone
+        name : str, default=None
+            Object Name (if not specified a name will be assigned automatically)
         matname :
             material name. Optional, if nothing default material will be assigned
 
         Returns
         -------
         Object3d
+
+        Examples
+        _________
+        >>> from pyaedt import Hfss
+        >>> aedtapp = Hfss()
+        >>> ret_object = aedtapp.modeler.primitives.create_cone(cs_axis='Z', position=[0,0,0],
+        ...                                                    bottom_radius=2, top_radius=3, height=4,
+        ...                                                    name="mybox", matname="copper")
 
         """
         XCenter, YCenter, ZCenter = self.pos_with_arg(position)
@@ -218,18 +240,26 @@ class Primitives3D(Primitives, object):
 
         Parameters
         ----------
-        position :
-            ApplicationName.modeler.Position(x,y,z) object
+        position : list of float
+            Center position of the sphere [x, y, z]
         radius :
             radius float
-        name :
-            Object Name (Default value = None)
+        name : str, default=None
+            Object Name (if not specified a name will be assigned automatically)
         matname :
             material name. Optional, if nothing default material will be assigned
 
         Returns
         -------
         Object3d
+
+        Examples
+        --------
+        >>> from pyaedt import Hfss
+        >>> aedtapp = Hfss()
+        >>> ret_object = aedtapp.modeler.primitives.create_sphere(position=[0,0,0], radius=2,
+        ...                                                      name="mybox", matname="copper")             
+
         """
         XCenter, YCenter, ZCenter = self.pos_with_arg(position)
 
@@ -269,8 +299,8 @@ class Primitives3D(Primitives, object):
             wire diameter
         facets: int
             wire facets
-        name :
-            box name. Optional, if nothing default name will be assigned
+        name : str, default=None
+            Object Name (if not specified a name will be assigned automatically)
         matname :
             material name. Optional, if nothing default material will be assigned
 
@@ -281,11 +311,10 @@ class Primitives3D(Primitives, object):
         Examples
         _________
         >>> from pyaedt import Hfss
-        >>> hfss = Hfss()
-        >>> origin = [0,0,0]
-        >>> endpos = [10,5,20]
-        >>> #Material and name are not mandatory fields
-        >>> object_id = hfss.modeler.primivites.create_bondwire(origin, endpos,h1=0.5, h2=0.1, alpha=75, beta=4,bond_type=0, name="mybox", matname="copper")
+        >>> aedtapp = Hfss()
+        >>> ret_obj = aedtapp.modeler.primitives.create_bondwire(start_position=[0, 0, 0], end_position=[10,5,20],
+        ...                                                      h1=0.5, h2=0.1, alpha=75, beta=4,bond_type=0, 
+        ...                                                      name="mybox", matname="copper")
         """
         XPosition, YPosition, ZPosition = self.pos_with_arg(start_position)
         if XPosition is None or YPosition is None or ZPosition is None:
@@ -327,6 +356,24 @@ class Primitives3D(Primitives, object):
 
     @aedt_exception_handler
     def create_region(self, pad_percent):
+        """Create a 3D solution region object
+        
+        Parameters
+        ----------
+        pad_percent : float
+            Global padding percentage for all dimensions
+
+        Returns
+        -------
+        Object3d
+
+        Examples
+        --------
+        >>> from pyaedt import Hfss
+        >>> aedtapp = Hfss()
+        >>> ret_obj = aedtapp.modeler.primitives.create_region(pad_percent=300)
+
+        """
         if "Region" in self.object_names:
             return None
         arg = ["NAME:RegionParameters"]
@@ -349,12 +396,7 @@ class Primitives3D(Primitives, object):
         o = self._create_solid_object("Region")
         o.transparency = 0
         o.wireframe = True
-
-        #o._m_name = "Region"
-        #o.solve_inside = True
-        #self._refresh_object_types()
-        #id = self._update_object(o)
-        #return o
+        return o
 
     @aedt_exception_handler
     def create_rectangle(self, csPlane, position, dblList, is_covered=True, name=None, matname=None):
@@ -393,10 +435,7 @@ class Primitives3D(Primitives, object):
         vArg1.append("WhichAxis:="), vArg1.append(szAxis)
         vArg2 = self._default_sheet_object_attributes(name=name, matname=matname)
         new_object_name = self.oeditor.CreateRectangle(vArg1, vArg2)
-        if is_covered:
-            return self._create_sheet_object(new_object_name)
-        else:
-            return self._create_line_object(new_object_name)
+        return self._create_object(new_object_name)
 
     @aedt_exception_handler
     def create_circle(self, cs_plane, position, radius, numSides=0, is_covered=True, name=None, matname=None):
@@ -435,10 +474,7 @@ class Primitives3D(Primitives, object):
         vArg1.append("NumSegments:="), vArg1.append('{}'.format(numSides))
         vArg2 = self._default_sheet_object_attributes(name=name, matname=matname)
         new_object_name = self.oeditor.CreateCircle(vArg1, vArg2)
-        if is_covered:
-            return self._create_sheet_object(new_object_name)
-        else:
-            return self._create_line_object(new_object_name)
+        return self._create_object(new_object_name)
 
     @aedt_exception_handler
     def create_ellipse(self, cs_plane, position, major_raidus, ratio, is_covered=True, name=None, matname=None):
@@ -482,10 +518,7 @@ class Primitives3D(Primitives, object):
         vArg1.append("WhichAxis:="), vArg1.append(szAxis)
         vArg2 = self._default_sheet_object_attributes(name=name, matname=matname)
         new_object_name = self.oeditor.CreateEllipse(vArg1, vArg2)
-        if is_covered:
-            return self._create_sheet_object(new_object_name)
-        else:
-            return self._create_line_object(new_object_name)
+        return self._create_object(new_object_name)
 
     @aedt_exception_handler
     def create_equationbased_curve(self, udpequationbasedcurveddefinition, name=None, matname=None):
