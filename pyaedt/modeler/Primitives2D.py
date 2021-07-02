@@ -57,8 +57,8 @@ class Primitives2D(Primitives, object):
 
         """
         szAxis = self.plane2d
-        XCenter, YCenter, ZCenter = self.pos_with_arg(position)
-        Radius = self.arg_with_dim(radius)
+        XCenter, YCenter, ZCenter = self._pos_with_arg(position)
+        Radius = self._arg_with_dim(radius)
 
         vArg1 = ["NAME:CircleParameters"]
         vArg1.append("IsCovered:="), vArg1.append(is_covered)
@@ -106,14 +106,14 @@ class Primitives2D(Primitives, object):
         ...                                                     name="MyEllipse", matname="Copper")
         """
         szAxis = self.plane2d
-        XStart, YStart, ZStart = self.pos_with_arg(position)
+        XStart, YStart, ZStart = self._pos_with_arg(position)
 
         vArg1 = ["NAME:EllipseParameters"]
         vArg1.append("IsCovered:="), vArg1.append(is_covered)
         vArg1.append("XCenter:="), vArg1.append(XStart)
         vArg1.append("YCenter:="), vArg1.append(YStart)
         vArg1.append("ZCenter:="), vArg1.append(ZStart)
-        vArg1.append("MajRadius:="), vArg1.append(self.arg_with_dim(major_radius))
+        vArg1.append("MajRadius:="), vArg1.append(self._arg_with_dim(major_radius))
         vArg1.append("Ratio:="), vArg1.append(ratio)
         vArg1.append("WhichAxis:="), vArg1.append(szAxis)
 
@@ -150,13 +150,13 @@ class Primitives2D(Primitives, object):
 
         """
         szAxis = self.plane2d
-        XStart, YStart, ZStart = self.pos_with_arg(position)
+        XStart, YStart, ZStart = self._pos_with_arg(position)
         if self.plane2d == "Z":
-            Height  = self.arg_with_dim(dimension_list[0])
-            Width = self.arg_with_dim(dimension_list[1])
+            Height  = self._arg_with_dim(dimension_list[0])
+            Width = self._arg_with_dim(dimension_list[1])
         else:
-            Width = self.arg_with_dim(dimension_list[0])
-            Height = self.arg_with_dim(dimension_list[1])
+            Width = self._arg_with_dim(dimension_list[0])
+            Height = self._arg_with_dim(dimension_list[1])
 
         vArg1 = ["NAME:RectangleParameters"]
         vArg1.append("IsCovered:="), vArg1.append(is_covered)
@@ -201,8 +201,8 @@ class Primitives2D(Primitives, object):
         ...                                                     name="MyPolygon", matname="Copper")
 
         """
-        x_center, y_center, z_center = self.pos_with_arg(position)
-        x_start, y_start, z_start = self.pos_with_arg(start_point)
+        x_center, y_center, z_center = self._pos_with_arg(position)
+        x_start, y_start, z_start = self._pos_with_arg(start_point)
 
         if num_sides:
             n_sides = int(num_sides)

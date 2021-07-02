@@ -169,14 +169,14 @@ class VertexPrimitive(object):
         vArg2 = ["NAME:ChamferParameters"]
         vArg2.append('Edges:='), vArg2.append([])
         vArg2.append('Vertices:='), vArg2.append([self.id])
-        vArg2.append('LeftDistance:='), vArg2.append(self._parent._parent.arg_with_dim(left_distance))
+        vArg2.append('LeftDistance:='), vArg2.append(self._parent._parent._arg_with_dim(left_distance))
         if not right_distance:
             right_distance = left_distance
         if chamfer_type == 0:
-            vArg2.append('RightDistance:='), vArg2.append(self._parent._parent.arg_with_dim(right_distance))
+            vArg2.append('RightDistance:='), vArg2.append(self._parent._parent._arg_with_dim(right_distance))
             vArg2.append('ChamferType:='), vArg2.append('Symmetric')
         elif chamfer_type == 1:
-            vArg2.append('RightDistance:='), vArg2.append(self._parent._parent.arg_with_dim(right_distance))
+            vArg2.append('RightDistance:='), vArg2.append(self._parent._parent._arg_with_dim(right_distance))
             vArg2.append('ChamferType:='), vArg2.append('Left Distance-Right Distance')
         elif chamfer_type == 2:
             vArg2.append('Angle:='), vArg2.append(str(angle) + "deg")
@@ -217,8 +217,8 @@ class VertexPrimitive(object):
         vArg2 = ["NAME:FilletParameters"]
         vArg2.append('Edges:='), vArg2.append([])
         vArg2.append('Vertices:='), vArg2.append([self.id])
-        vArg2.append('Radius:='), vArg2.append(self._parent._parent.arg_with_dim(radius))
-        vArg2.append('Setback:='), vArg2.append(self._parent._parent.arg_with_dim(setback))
+        vArg2.append('Radius:='), vArg2.append(self._parent._parent._arg_with_dim(radius))
+        vArg2.append('Setback:='), vArg2.append(self._parent._parent._arg_with_dim(setback))
         self._parent.m_Editor.Fillet(vArg1, ["NAME:Parameters", vArg2])
         if self._parent.name in list(self._parent.m_Editor.GetObjectsInGroup("UnClassified")):
             self._parent.odesign.Undo()
@@ -316,14 +316,14 @@ class EdgePrimitive(object):
         vArg2 = ["NAME:ChamferParameters"]
         vArg2.append('Edges:='), vArg2.append([self.id])
         vArg2.append('Vertices:='), vArg2.append([])
-        vArg2.append('LeftDistance:='), vArg2.append(self._parent._parent.arg_with_dim(left_distance))
+        vArg2.append('LeftDistance:='), vArg2.append(self._parent._parent._arg_with_dim(left_distance))
         if not right_distance:
             right_distance=left_distance
         if chamfer_type == 0:
-            vArg2.append('RightDistance:='), vArg2.append(self._parent._parent.arg_with_dim(right_distance))
+            vArg2.append('RightDistance:='), vArg2.append(self._parent._parent._arg_with_dim(right_distance))
             vArg2.append('ChamferType:='), vArg2.append('Symmetric')
         elif chamfer_type == 1:
-            vArg2.append('RightDistance:='), vArg2.append(self._parent._parent.arg_with_dim(right_distance))
+            vArg2.append('RightDistance:='), vArg2.append(self._parent._parent._arg_with_dim(right_distance))
             vArg2.append('ChamferType:='), vArg2.append('Left Distance-Right Distance')
         elif chamfer_type == 2:
             vArg2.append('Angle:='), vArg2.append(str(angle)+"deg")
@@ -362,8 +362,8 @@ class EdgePrimitive(object):
         vArg2 = ["NAME:FilletParameters"]
         vArg2.append('Edges:='), vArg2.append([self.id])
         vArg2.append('Vertices:='), vArg2.append([])
-        vArg2.append('Radius:='), vArg2.append(self._parent._parent.arg_with_dim(radius))
-        vArg2.append('Setback:='), vArg2.append(self._parent._parent.arg_with_dim(setback))
+        vArg2.append('Radius:='), vArg2.append(self._parent._parent._arg_with_dim(radius))
+        vArg2.append('Setback:='), vArg2.append(self._parent._parent._arg_with_dim(setback))
         self._parent.m_Editor.Fillet(vArg1, ["NAME:Parameters", vArg2])
         if self._parent.name in list(self._parent.m_Editor.GetObjectsInGroup("UnClassified")):
             self._parent.odesign.Undo()
@@ -585,6 +585,9 @@ class Object3d(object):
         self._bounding_box = None
         self._material_name = None
         self._transparency = None
+        self._update()
+
+    def _update(self):
         self.update_object_type()
         self.update_properties()
 
@@ -900,6 +903,18 @@ class Object3d(object):
         fModel = _to_boolean(fModel)
         self._change_property(vArg1)
         self._model = fModel
+
+
+    @aedt_exception_handler
+    def translate(self, vector):
+        """Clones the object and returns the Object3d object
+
+        Returns
+        -------
+        Object3d
+        """
+        self._parent.modeler.translate(self.id, vector)
+        return self
 
     @aedt_exception_handler
     def clone(self):

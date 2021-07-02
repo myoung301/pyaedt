@@ -61,12 +61,10 @@ class Primitives3D(Primitives, object):
         >>> ret_object = aedtapp.modeler.primitives.create_box(position=[0,0,0], dimensions_list=[10,5,20],
         ...                                                name="mybox", matname="copper")
         """
-        XPosition, YPosition, ZPosition = self.pos_with_arg(position)
-        if XPosition is None or YPosition is None or ZPosition is None:
-            raise AttributeError("Position Argument must be a valid 3 Element List")
-        XSize, YSize, ZSize = self.pos_with_arg(dimensions_list)
-        if XSize is None or YSize is None or YSize is None:
-            raise AttributeError("Dimension Argument must be a valid 3 Element List")
+        assert len(position) == 3, "Position Argument must be a valid 3 Element List"
+        assert len(dimensions_list) == 3, "Dimension Argument must be a valid 3 Element List"
+        XPosition, YPosition, ZPosition = self._pos_with_arg(position)
+        XSize, YSize, ZSize = self._pos_with_arg(dimensions_list)
         vArg1 = ["NAME:BoxParameters"]
         vArg1.append("XPosition:="), vArg1.append(XPosition)
         vArg1.append("YPosition:="), vArg1.append(YPosition)
@@ -112,10 +110,10 @@ class Primitives3D(Primitives, object):
 
         """
         szAxis = GeometryOperators.cs_axis_str(cs_axis)
-        XCenter, YCenter, ZCenter = self.pos_with_arg(position)
+        XCenter, YCenter, ZCenter = self._pos_with_arg(position)
 
-        Radius = self.arg_with_dim(radius)
-        Height = self.arg_with_dim(height)
+        Radius = self._arg_with_dim(radius)
+        Height = self._arg_with_dim(height)
 
         vArg1 = ["NAME:CylinderParameters"]
         vArg1.append("XCenter:="), vArg1.append(XCenter)
@@ -164,10 +162,10 @@ class Primitives3D(Primitives, object):
         """
         test = cs_axis
         cs_axis = GeometryOperators.cs_axis_str(cs_axis)
-        x_center, y_center, z_center = self.pos_with_arg(center_position)
-        x_start, y_start, z_start = self.pos_with_arg(start_position)
+        x_center, y_center, z_center = self._pos_with_arg(center_position)
+        x_start, y_start, z_start = self._pos_with_arg(start_position)
 
-        height = self.arg_with_dim(height)
+        height = self._arg_with_dim(height)
 
         vArg1 = ["NAME:PolyhedronParameters"]
         vArg1.append("XCenter:="), vArg1.append(x_center)
@@ -217,11 +215,11 @@ class Primitives3D(Primitives, object):
         ...                                                    name="mybox", matname="copper")
 
         """
-        XCenter, YCenter, ZCenter = self.pos_with_arg(position)
+        XCenter, YCenter, ZCenter = self._pos_with_arg(position)
         szAxis = GeometryOperators.cs_axis_str(cs_axis)
-        Height = self.arg_with_dim(height)
-        RadiusBt = self.arg_with_dim(bottom_radius)
-        RadiusUp = self.arg_with_dim(top_radius)
+        Height = self._arg_with_dim(height)
+        RadiusBt = self._arg_with_dim(bottom_radius)
+        RadiusUp = self._arg_with_dim(top_radius)
 
         vArg1 = ["NAME:ConeParameters"]
         vArg1.append("XCenter:="), vArg1.append(XCenter)
@@ -262,9 +260,9 @@ class Primitives3D(Primitives, object):
         ...                                                      name="mybox", matname="copper")             
 
         """
-        XCenter, YCenter, ZCenter = self.pos_with_arg(position)
+        XCenter, YCenter, ZCenter = self._pos_with_arg(position)
 
-        Radius = self.arg_with_dim(radius)
+        Radius = self._arg_with_dim(radius)
 
         vArg1 = ["NAME:SphereParameters"]
         vArg1.append("XCenter:="), vArg1.append(XCenter)
@@ -317,10 +315,10 @@ class Primitives3D(Primitives, object):
         ...                                                      h1=0.5, h2=0.1, alpha=75, beta=4,bond_type=0, 
         ...                                                      name="mybox", matname="copper")
         """
-        XPosition, YPosition, ZPosition = self.pos_with_arg(start_position)
+        XPosition, YPosition, ZPosition = self._pos_with_arg(start_position)
         if XPosition is None or YPosition is None or ZPosition is None:
             raise AttributeError("Position Argument must be a valid 3 Element List")
-        XSize, YSize, ZSize = self.pos_with_arg(end_position)
+        XSize, YSize, ZSize = self._pos_with_arg(end_position)
         if XSize is None or YSize is None or YSize is None:
             raise AttributeError("Dimension Argument must be a valid 3 Element List")
         if bond_type==0:
@@ -335,7 +333,7 @@ class Primitives3D(Primitives, object):
             return False
         vArg1 = ["NAME:BondwireParameters"]
         vArg1.append("WireType:="), vArg1.append(bondwire)
-        vArg1.append("WireDiameter:="), vArg1.append(self.arg_with_dim(diameter))
+        vArg1.append("WireDiameter:="), vArg1.append(self._arg_with_dim(diameter))
         vArg1.append("NumSides:="), vArg1.append(str(facets))
         vArg1.append("XPadPos:="), vArg1.append(XPosition)
         vArg1.append("YPadPos:="), vArg1.append(YPosition)
@@ -344,24 +342,25 @@ class Primitives3D(Primitives, object):
         vArg1.append("YDir:="), vArg1.append(YSize)
         vArg1.append("ZDir:="), vArg1.append(ZSize)
         vArg1.append("Distance:="), vArg1.append(
-            self.arg_with_dim(GeometryOperators.points_distance(start_position, end_position)))
-        vArg1.append("h1:="), vArg1.append(self.arg_with_dim(h1))
-        vArg1.append("h2:="), vArg1.append(self.arg_with_dim(h2))
-        vArg1.append("alpha:="), vArg1.append(self.arg_with_dim(alpha, "deg"))
-        vArg1.append("beta:="), vArg1.append(self.arg_with_dim(beta, "deg"))
+            self._arg_with_dim(GeometryOperators.points_distance(start_position, end_position)))
+        vArg1.append("h1:="), vArg1.append(self._arg_with_dim(h1))
+        vArg1.append("h2:="), vArg1.append(self._arg_with_dim(h2))
+        vArg1.append("alpha:="), vArg1.append(self._arg_with_dim(alpha, "deg"))
+        vArg1.append("beta:="), vArg1.append(self._arg_with_dim(beta, "deg"))
         vArg1.append("WhichAxis:="), vArg1.append("Z")
         vArg1.append("ReverseDirection:="), vArg1.append(False)
         vArg2 = self._default_solid_object_attributes(name=name, matname=matname)
         new_object_name = self.oeditor.CreateBondwire(vArg1, vArg2)
         return self._create_solid_object(new_object_name)
 
+    '''
     @aedt_exception_handler
-    def create_region(self, pad_percent):
+    def create_region(self, pad_percent=300):
         """Create a 3D solution region object
         
         Parameters
         ----------
-        pad_percent : float or list of float
+        pad_percent : float or list of float, default=100
             If float, use padding in per-cent for all dimensions
             If list, then interpret as adding for  ["+X", "+Y", "+Z", "-X", "-Y", "-Z"]
 
@@ -401,6 +400,7 @@ class Primitives3D(Primitives, object):
         o = self._create_solid_object("Region")
         o.wireframe = True
         return o
+    '''
 
     @aedt_exception_handler
     def create_rectangle(self, csPlane, position, dblList, is_covered=True, name=None, matname=None):
@@ -424,10 +424,10 @@ class Primitives3D(Primitives, object):
         Object3d
         """
         szAxis = GeometryOperators.cs_plane_str(csPlane)
-        XStart, YStart, ZStart = self.pos_with_arg(position)
+        XStart, YStart, ZStart = self._pos_with_arg(position)
 
-        Width = self.arg_with_dim(dblList[0])
-        Height = self.arg_with_dim(dblList[1])
+        Width = self._arg_with_dim(dblList[0])
+        Height = self._arg_with_dim(dblList[1])
 
         vArg1 = ["NAME:RectangleParameters"]
         vArg1.append("IsCovered:="), vArg1.append(is_covered)
@@ -466,8 +466,8 @@ class Primitives3D(Primitives, object):
 
         """
         szAxis = GeometryOperators.cs_plane_str(cs_plane)
-        XCenter, YCenter, ZCenter = self.pos_with_arg(position)
-        Radius = self.arg_with_dim(radius)
+        XCenter, YCenter, ZCenter = self._pos_with_arg(position)
+        Radius = self._arg_with_dim(radius)
         vArg1 = ["NAME:CircleParameters"]
         vArg1.append("IsCovered:="), vArg1.append(is_covered)
         vArg1.append("XCenter:="), vArg1.append(XCenter)
@@ -506,9 +506,9 @@ class Primitives3D(Primitives, object):
         Object3d
         """
         szAxis = GeometryOperators.cs_plane_str(cs_plane)
-        XStart, YStart, ZStart = self.pos_with_arg(position)
+        XStart, YStart, ZStart = self._pos_with_arg(position)
 
-        MajorRadius = self.arg_with_dim(major_raidus)
+        MajorRadius = self._arg_with_dim(major_raidus)
         # Ratio = self.arg_with_dim(ratio)
         Ratio = ratio
 
@@ -546,11 +546,8 @@ class Primitives3D(Primitives, object):
         vArg1 = udpequationbasedcurveddefinition.toScript()
         vArg2 = o.export_attributes(name)
 
-        o.name = self.oeditor.CreateEquationCurve(vArg1, vArg2)
-
-        self._refresh_object_types()
-        id = self._update_object(o)
-        return o
+        new_name = self.oeditor.CreateEquationCurve(vArg1, vArg2)
+        return self._create_object(new_name)
 
     @aedt_exception_handler
     def create_helix(self, udphelixdefinition):
@@ -576,10 +573,8 @@ class Primitives3D(Primitives, object):
 
         vArg2 = udphelixdefinition.toScript(self.model_units)
 
-        self.oeditor.CreateHelix(vArg1, vArg2)
-        self._refresh_object_types()
-        id = self._update_object(o)
-        return o
+        new_name = self.oeditor.CreateHelix(vArg1, vArg2)
+        return self._create_object(new_name)
 
     @aedt_exception_handler
     def convert_segments_to_line(self, object_name):
@@ -671,19 +666,9 @@ class Primitives3D(Primitives, object):
         oname = self.oeditor.CreateUserDefinedModel(vArg1)
         if oname:
             object_lists = self.oeditor.GetPartsForUserDefinedModel(oname)
-            for el in object_lists:
-                o = self._new_object()
-                o.name = el
-                if el in list(self.oeditor.GetObjectsInGroup("Solids")):
-                    id = self._update_object(o)
-                elif el in list(self.oeditor.GetObjectsInGroup("Sheets")):
-                    id = self._update_object(o)
-                elif el in list(self.oeditor.GetObjectsInGroup("Lines")):
-                    id = self._update_object(o)
-                else:
-                    id = self._update_object(o)
-                self.update_object_properties(o)
-            return o
+            for new_name in object_lists:
+                self._create_object(new_name)
+            return True
         else:
             return False
 

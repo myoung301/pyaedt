@@ -254,21 +254,6 @@ class Polyline(Object3d):
 
     @aedt_exception_handler
     def _pl_point(self, pt):
-        """Property array data for a polyline point.
-
-        Generate the XYZ point data property array for AEDT. The X, Y, and Z coordinates are taken
-        from the first three elements of the point. Numeric values are converted to strings with model units.
-
-        Parameters
-        ------
-        pt : list or indexable object
-            Position in X, Y, and Z coordinates.
-
-        Returns
-        -------
-        list
-        """
-        #
         pt_data= ["NAME:PLPoint"]
         pt_data.append('X:=')
         pt_data.append(_dim_arg(pt[0], self._parent.model_units))
@@ -670,9 +655,7 @@ class Polyline(Object3d):
         arg2.append(arg3)
         arg1.append(arg2)
         self._parent.oeditor.ChangeProperty(arg1)
-
-        self._parent._refresh_object_types()
-        self._parent._update_object(self)
+        self._update()
         return True
 
     @aedt_exception_handler
@@ -764,8 +747,6 @@ class Polyline(Object3d):
             varg1 += seg_str[9:]
         self._parent.oeditor.InsertPolylineSegment(varg1)
 
-        self._parent._update_object(self)
-
         return True
 
 class Primitives(object):
@@ -830,25 +811,6 @@ class Primitives(object):
             return self.objects[self.object_id_dict[partId]]
         return None
 
-    @aedt_exception_handler
-    def __setitem__(self, partId, partName):
-        """Rename an existing part in the 3D modler.
-
-        Parameters
-        ----------
-        partId : int
-            Object ID of the part to rename.
-        partName : str
-            New name for the part.
-
-        Returns
-        -------
-        bool
-            ``True`` when successful, ``False`` when failed
-        """
-        self.objects[partId].name = partName
-        return True
-
     @property
     def oproject(self):
         """ """
@@ -870,10 +832,6 @@ class Primitives(object):
         return default_materials[self._parent._design_type]
 
     @property
-    def variable_manager(self):
-        return self._parent.variable_manager
-
-    @property
     def messenger(self):
         """ """
         return self._parent._messenger
@@ -889,11 +847,6 @@ class Primitives(object):
         return self._modeler
 
     @property
-    def design_types(self):
-        """ """
-        return self._parent._modeler
-
-    @property
     def oeditor(self):
         """ """
         return self.modeler.oeditor
@@ -902,49 +855,6 @@ class Primitives(object):
     def model_units(self):
         """ """
         return self.modeler.model_units
-
-    @aedt_exception_handler
-    def _delete_object_from_dict(self, objname):
-        """Delete an object from the dictionaries.
-
-        Parameters
-        ----------
-        objname : int or str
-            Object ID or object name from the 3D modeler.
-
-        Returns
-        -------
-        bool
-            ``True`` when successful, ``False`` when failed.
-        """
-        if isinstance(objname, str) and objname in self.object_id_dict:
-            id1 = self.object_id_dict[objname]
-            self.object_id_dict.pop(objname)
-            if id1 in self.objects:
-                self.objects.pop(id1)
-        elif objname in self.objects:
-            name = self.objects[objname].name
-            self.objects.pop(objname)
-            if name in self.object_id_dict:
-                self.object_id_dict.pop(name)
-        return True
-
-    @aedt_exception_handler
-    def _update_object(self, o):
-
-        assert o.name in self._all_object_names
-        self.objects[o.id] = o
-        self.object_id_dict[o.name] = o.id
-        return o
-
-        # Store the new object infos
-        self.objects[o.id] = o
-        self.object_id_dict[o.name] = o.id
-
-        o.update_object_type()
-        o.update_properties()
-
-        return o.id
 
     @aedt_exception_handler
     def _check_material(self, matname, defaultmatname):
@@ -1050,22 +960,25 @@ class Primitives(object):
         return False
 
     @aedt_exception_handler
-    def create_region(self, pad_percent):
+    def create_region(self, pad_percent=300):
         """Create an air region.
 
         Parameters
         ----------
-        pad_percent : list
-            Percent to pad.
+        pad_percent : float or list of float, default=300
+            If float, use padding in per-cent for all dimensions
+            If list, then interpret as adding for  ["+X", "+Y", "+Z", "-X", "-Y", "-Z"]
 
         Returns
         -------
-        type
-            Object3d
+        Object3d
 
         """
-        if "Region" in self.object_id_dict:
+        if "Region" in self.object_names:
             return None
+        if isinstance(pad_percent, numbers.Number):
+            pad_percent = [pad_percent] * 6
+
         arg = ["NAME:RegionParameters"]
         p = ["+X", "+Y", "+Z", "-X", "-Y", "-Z"]
         i = 0
@@ -1535,12 +1448,33 @@ class Primitives(object):
                 list_objs.append(obj.name)
         return list_objs
 
-    @aedt_exception_handler
+    @property
+    def model_consistency(self):
+        """Summary of detected inconsistencies between the AEDT modeler and pyaedt structures
+
+        Returns
+        -------
+        dict
+        """
+        obj_names = self.object_names
+        obj_names_from_dict = list(self.object_id_dict.keys())
+        missing = []
+        for name in obj_names:
+            if name not in obj_names_from_dict:
+                missing.append(name)
+        non_existent = []
+        for name in obj_names_from_dict:
+            if name not in obj_names:
+                non_existent.append(name)
+        report = {
+            "Missing Objects": missing,
+            "Non-Existent Objects": non_existent
+        }
+        return report
+
     def refresh(self):
         self._refresh_all_ids_from_aedt_file()
-        #TODO: Why do we need this ?
-        if not self.objects:
-            self.refresh_all_ids()
+        self.add_new_objects()
 
     @aedt_exception_handler
     def _refresh_solids(self):
@@ -1619,9 +1553,7 @@ class Primitives(object):
     @aedt_exception_handler
     def _refresh_all_ids_from_aedt_file(self):
         if not self._parent.design_properties or "ModelSetup" not in self._parent.design_properties:
-            return 0
-
-        self._refresh_object_types()
+            return False
 
         try:
             groups = self._parent.design_properties['ModelSetup']['GeometryCore']['GeometryOperations']['Groups'][
@@ -1643,13 +1575,7 @@ class Primitives(object):
                 self._parent.design_properties['ModelSetup']['GeometryCore']['GeometryOperations']['ToplevelParts'][
                     'GeometryPart']['Attributes']
 
-            o = Object3d(self, name=attribs['Name'])
-
-            o.update_object_type()
-
-            if o.analysis_type:
-                o._solve_inside = attribs['SolveInside']
-                o._material_name = attribs['MaterialValue'][1:-1]
+            o = self._create_object(name=attribs['Name'])
 
             o.part_coordinate_system = attribs['PartCoordinateSystem']
             if "NonModel" in attribs['Flags']:
@@ -1668,10 +1594,6 @@ class Primitives(object):
             o._m_groupName = groupname
             o._color = attribs['Color']
             o.m_surfacematerial = attribs['SurfaceMaterialValue']
-
-            # Store the new object infos
-            self.objects[o.id] = o
-            self.object_id_dict[o.name] = o.id
 
         return len(self.objects)
 
@@ -1938,7 +1860,6 @@ class Primitives(object):
 
         vect = GeometryOperators.distance_vector(p, a1, a2)
 
-        #vect = self.modeler.Position([i for i in d])
         if portonplane:
             vect[divmod(axisdir, 3)[1]] = 0
         self.modeler.translate(second_edge, vect)
@@ -2268,7 +2189,7 @@ class Primitives(object):
         list
             List of object names.
         """
-        XCenter, YCenter, ZCenter = self.pos_with_arg(position, units)
+        XCenter, YCenter, ZCenter = self._pos_with_arg(position, units)
         vArg1 = ['NAME:Parameters']
         vArg1.append('XPosition:='), vArg1.append(XCenter)
         vArg1.append('YPosition:='), vArg1.append(YCenter)
@@ -2298,7 +2219,7 @@ class Primitives(object):
             Edge ID of the first object touching this position.
         """
         edgeID = -1
-        XCenter, YCenter, ZCenter = self.pos_with_arg(position, units)
+        XCenter, YCenter, ZCenter = self._pos_with_arg(position, units)
 
         vArg1 = ['NAME:EdgeParameters']
         vArg1.append('BodyName:='), vArg1.append('')
@@ -2370,7 +2291,7 @@ class Primitives(object):
             Face ID of the first object touching this position.
         """
         face_id = -1
-        XCenter, YCenter, ZCenter = self.pos_with_arg(position, units)
+        XCenter, YCenter, ZCenter = self._pos_with_arg(position, units)
 
         vArg1 = ['NAME:FaceParameters']
         vArg1.append('BodyName:='), vArg1.append('')
@@ -2396,71 +2317,24 @@ class Primitives(object):
 
         return face_id
 
-    @aedt_exception_handler
-    def arg_with_dim(self, Value, units=None):
-        """
-
-        Parameters
-        ----------
-        Value :
-        units : str, optional
-           Units, such as ``"m"``. The default is ``None``, which means that the
-           model units are used.
-
-        Returns
-        -------
-
-        """
-        if type(Value) is str:
-            val = Value
+    def _arg_with_dim(self, prop_value, units=None):
+        if isinstance(prop_value, str):
+            val = prop_value
         else:
             if units is None:
                 units = self.model_units
-            val = "{0}{1}".format(Value, units)
-
+                assert isinstance(prop_value, numbers.Number), "Argument {} must be a numeric value".format(prop_value)
+            val = "{0}{1}".format(prop_value, units)
         return val
 
-    @aedt_exception_handler
-    def pos_with_arg(self, pos, units=None):
-        """
+    def _pos_with_arg(self, pos, units=None):
+        posx = self._arg_with_dim(pos[0], units)
+        posy = self._arg_with_dim(pos[1], units)
+        posz = self._arg_with_dim(pos[2], units)
 
-        Parameters
-        ----------
-        pos :
-
-        units : str, optional
-            Units, such as ``"m"``. The default is ``None``, which means that the
-            model units are used.
-
-        Returns
-        -------
-
-        """
-        try:
-            posx = self.arg_with_dim(pos[0], units)
-        except:
-            posx = None
-        try:
-            posy = self.arg_with_dim(pos[1], units)
-        except:
-            posy = None
-        try:
-            posz = self.arg_with_dim(pos[2], units)
-        except:
-            posz = None
         return posx, posy, posz
 
-    @aedt_exception_handler
     def _str_list(self, theList):
-        """
-
-        Parameters
-        ----------
-        theList :
-
-        Returns
-        -------
-        """
         szList = ''
         for id in theList:
             o = self.objects[id]
@@ -2470,18 +2344,7 @@ class Primitives(object):
 
         return szList
 
-    @aedt_exception_handler
     def _find_object_from_edge_id(self, lval):
-        """
-
-        Parameters
-        ----------
-        lval :
-
-        Returns
-        -------
-        """
-
         objList = []
         objListSheets = self.sheets
         if len(objListSheets) > 0:
@@ -2496,17 +2359,7 @@ class Primitives(object):
 
         return None
 
-    @aedt_exception_handler
     def _find_object_from_face_id(self, lval):
-        """
-
-        Parameters
-        ----------
-        lval :
-
-        Returns
-        -------
-        """
         if self.oeditor is not None:
             objList = []
             objListSheets = self.sheets

@@ -512,7 +512,6 @@ class GeometryModeler(Modeler, object):
         """ """
         return self._parent.materials
 
-
     @aedt_exception_handler
     def _convert_list_to_ids(self,input_list, convert_objects_ids_to_name=True):
         """
@@ -987,10 +986,10 @@ class GeometryModeler(Modeler, object):
 
         Parameters
         ----------
-        objectname :
-            
-        startposition :
-            
+        objectname : str
+            name of the object
+        startposition : list of float
+
         offset :
             
         plane :
@@ -998,36 +997,35 @@ class GeometryModeler(Modeler, object):
 
         Returns
         -------
-
+        position : list of float
         """
-        v1=startposition[0]
-        v2=startposition[1]
-        v3=startposition[2]
+        position = [0, 0, 0]
         angle = 0
         if plane==0:
             while angle<=360:
-                startposition[0] =  v1 + offset*math.cos(math.pi*angle/180)
-                startposition[1] =  v2 + offset*math.sin(math.pi*angle/180)
+                position[0] =  startposition[0] + offset*math.cos(math.pi*angle/180)
+                position[1] =  startposition[1] + offset*math.sin(math.pi*angle/180)
                 if objectname in self.primitives.get_bodynames_from_position(startposition):
                     angle = 400
                 else:
                     angle += 90
         elif plane==1:
             while angle<=360:
-                startposition[1] = v2 + offset*math.cos(math.pi*angle/180)
-                startposition[2] = v3 + offset*math.sin(math.pi*angle/180)
+                position[1] = startposition[1] + offset*math.cos(math.pi*angle/180)
+                position[2] = startposition[2] + offset*math.sin(math.pi*angle/180)
                 if objectname in self.primitives.get_bodynames_from_position(startposition):
                     angle = 400
                 else:
                     angle += 90
         elif plane == 2:
             while angle<=360:
-                startposition[0] = v1 + offset*math.cos(math.pi*angle/180)
-                startposition[2] = v3 + offset*math.sin(math.pi*angle/180)
+                position[0] = startposition[0] + offset*math.cos(math.pi*angle/180)
+                position[2] = startposition[2] + offset*math.sin(math.pi*angle/180)
                 if objectname in self.primitives.get_bodynames_from_position(startposition):
                     angle = 400
                 else:
                     angle += 90
+        return position
 
 
     @aedt_exception_handler
@@ -1098,30 +1096,21 @@ class GeometryModeler(Modeler, object):
         axisdist = obj_cent[divmod(axisdir,3)[1]]-gnd_cent[divmod(axisdir,3)[1]]
         if axisdir<3:
             axisdist = -axisdist
-        pos= [axisdist, sheet_dim]
-        rect = 0
-        offset = [i for i in start]
+
         if divmod(axisdir,3)[1] == 0:
-            self.find_point_around(objectname,offset, sheet_dim, self._parent.CoordinateSystemPlane.YZPlane)
-            p1 = self.primitives.create_polyline([start, offset])
-            p2 = self.primitives.create_polyline([start, offset])
-            self.translate(p2.id, [axisdist, 0, 0])
-            self.connect([p1.id, p2.id])
-            #rect = self.primitives.create_rectangle(self._parent.CoordinateSystemPlane.XYPlane,  start,pos)
+            cs = self._parent.CoordinateSystemPlane.YZPlane
+            vector = [axisdist, 0, 0]
         elif divmod(axisdir,3)[1]== 1:
-            self.find_point_around(objectname,offset, sheet_dim, self._parent.CoordinateSystemPlane.ZXPlane)
-            p1 = self.primitives.create_polyline([start, offset])
-            p2 = self.primitives.create_polyline([start, offset])
-            self.translate(p2.id, [0, axisdist, 0])
-            self.connect([p1.id, p2.id])
-            #rect = self.primitives.create_rectangle(self._parent.CoordinateSystemPlane.YZPlane,start,pos)
+            cs = self._parent.CoordinateSystemPlane.ZXPlane
+            vector = [0, axisdist, 0]
         elif divmod(axisdir,3)[1] == 2:
-            self.find_point_around(objectname,offset, sheet_dim, self._parent.CoordinateSystemPlane.XYPlane)
-            p1 = self.primitives.create_polyline([self.Position(start), self.Position(offset)])
-            p2 = self.primitives.create_polyline([self.Position(start), self.Position(offset)])
-            self.translate(p2.id, [0,0,axisdist])
-            self.connect([p1.id, p2.id])
-            #rect = self.primitives.create_rectangle(self._parent.CoordinateSystemPlane.ZXPlane,start,pos)
+            cs = self._parent.CoordinateSystemPlane.XYPlane
+            vector = [0, 0, axisdist]
+
+        offset = self.find_point_around(objectname, start, sheet_dim, cs)
+        p1 = self.primitives.create_polyline([start, offset])
+        p2 = p1.clone().translate(vector)
+        self.connect([p1, p2])
 
         return p1
 
@@ -1444,8 +1433,8 @@ class GeometryModeler(Modeler, object):
 
         """
         selections = self.convert_to_selections(objid)
-        Xpos, Ypos, Zpos = self.primitives.pos_with_arg(position)
-        Xnorm, Ynorm, Znorm = self.primitives.pos_with_arg(vector)
+        Xpos, Ypos, Zpos = self.primitives._pos_with_arg(position)
+        Xnorm, Ynorm, Znorm = self.primitives._pos_with_arg(vector)
 
         vArg1 = ['NAME:Selections', 'Selections:=', selections, 'NewPartsModelFlag:=', 'Model']
         vArg2 = ['NAME:DuplicateToMirrorParameters']
@@ -1487,8 +1476,8 @@ class GeometryModeler(Modeler, object):
 
         """
         selections = self.convert_to_selections(objid)
-        Xpos, Ypos, Zpos = self.primitives.pos_with_arg(position)
-        Xnorm, Ynorm, Znorm = self.primitives.pos_with_arg(vector)
+        Xpos, Ypos, Zpos = self.primitives._pos_with_arg(position)
+        Xnorm, Ynorm, Znorm = self.primitives._pos_with_arg(vector)
 
         vArg1 = ['NAME:Selections', 'Selections:=', selections, 'NewPartsModelFlag:=', 'Model']
         vArg2 = ['NAME:MirrorParameters']
@@ -1529,7 +1518,7 @@ class GeometryModeler(Modeler, object):
 
         vArg1 = ['NAME:Selections', 'Selections:=', selections, 'NewPartsModelFlag:=', 'Model']
         vArg2 = ["NAME:DuplicateAroundAxisParameters", "CreateNewObjects:=", create_new_objects, "WhichAxis:=",
-                 GeometryOperators.cs_axis_str(cs_axis), "AngleStr:=", self.primitives.arg_with_dim(angle, 'deg'), "Numclones:=",
+                 GeometryOperators.cs_axis_str(cs_axis), "AngleStr:=", self.primitives._arg_with_dim(angle, 'deg'), "Numclones:=",
                  str(nclones)]
         vArg3 = ["NAME:Options", "DuplicateBoundaries:=", "true"]
 
@@ -1562,7 +1551,7 @@ class GeometryModeler(Modeler, object):
 
         """
         selections = self.convert_to_selections(objid)
-        Xpos, Ypos, Zpos = self.primitives.pos_with_arg(vector)
+        Xpos, Ypos, Zpos = self.primitives._pos_with_arg(vector)
 
         vArg1 = ['NAME:Selections', 'Selections:=', selections, 'NewPartsModelFlag:=', 'Model']
         vArg2 = ["NAME:DuplicateToAlongLineParameters"]
@@ -1602,7 +1591,7 @@ class GeometryModeler(Modeler, object):
 
         vArg1 = ['NAME:Selections', 'Selections:=', selections, 'NewPartsModelFlag:=', 'Model']
         vArg2 = ["NAME:SheetThickenParameters"]
-        vArg2.append('Thickness:='), vArg2.append(self.primitives.arg_with_dim(thickness))
+        vArg2.append('Thickness:='), vArg2.append(self.primitives._arg_with_dim(thickness))
         vArg2.append('BothSides:='), vArg2.append(bBothSides)
 
         if self.oeditor is not None:
@@ -1628,10 +1617,10 @@ class GeometryModeler(Modeler, object):
         bool
         """
         selections = self.convert_to_selections(objid)
-        vectorx, vectory, vectorz = self.primitives.pos_with_arg(sweep_vector)
+        vectorx, vectory, vectorz = self.primitives._pos_with_arg(sweep_vector)
         vArg1 = ['NAME:Selections', 'Selections:=', selections, 'NewPartsModelFlag:=', 'Model']
         vArg2 = ["NAME:VectorSweepParameters"]
-        vArg2.append('DraftAngle:='), vArg2.append(self.primitives.arg_with_dim(draft_angle, 'deg'))
+        vArg2.append('DraftAngle:='), vArg2.append(self.primitives._arg_with_dim(draft_angle, 'deg'))
         vArg2.append('DraftType:='), vArg2.append(GeometryOperators.draft_type_str(draft_type))
         vArg2.append('SweepVectorX:='), vArg2.append(vectorx)
         vArg2.append('SweepVectorY:='), vArg2.append(vectory)
@@ -1664,7 +1653,7 @@ class GeometryModeler(Modeler, object):
         selections = self.convert_to_selections(objid) + "," + self.convert_to_selections(sweep_object)
         vArg1 = ['NAME:Selections', 'Selections:=', selections, 'NewPartsModelFlag:=', 'Model']
         vArg2 = ["NAME:PathSweepParameters"]
-        vArg2.append('DraftAngle:='), vArg2.append(self.primitives.arg_with_dim(draft_angle, 'deg'))
+        vArg2.append('DraftAngle:='), vArg2.append(self.primitives._arg_with_dim(draft_angle, 'deg'))
         vArg2.append('DraftType:='), vArg2.append(GeometryOperators.draft_type_str(draft_type))
         vArg2.append('CheckFaceFaceIntersection:='), vArg2.append(is_check_face_intersection)
         vArg2.append('TwistAngle:='), vArg2.append(str(twist_angle) + 'deg')
@@ -1716,9 +1705,9 @@ class GeometryModeler(Modeler, object):
 
         vArg1 = ['NAME:Selections', 'Selections:=', selections, 'NewPartsModelFlag:=', 'Model']
         vArg2 = ['NAME:AxisSweepParameters', 'DraftAngle:=',
-                 self.primitives.arg_with_dim(draft_angle, 'deg'),
+                 self.primitives._arg_with_dim(draft_angle, 'deg'),
                  'DraftType:=', 'Round', 'CheckFaceFaceIntersection:=', False, 'SweepAxis:=', GeometryOperators.cs_axis_str(cs_axis),
-                 'SweepAngle:=', self.primitives.arg_with_dim(sweep_angle, 'deg'), 'NumOfSegments:=', '0']
+                 'SweepAngle:=', self.primitives._arg_with_dim(sweep_angle, 'deg'), 'NumOfSegments:=', '0']
 
         self.oeditor.SweepAroundAxis(vArg1, vArg2)
 
@@ -1806,7 +1795,7 @@ class GeometryModeler(Modeler, object):
         vArg1 = ['NAME:Selections', 'Selections:=', selections, 'NewPartsModelFlag:=', 'Model']
         vArg2 = ["NAME:RotateParameters"]
         vArg2.append('RotateAxis:='), vArg2.append(GeometryOperators.cs_axis_str(cs_axis))
-        vArg2.append('RotateAngle:='), vArg2.append(self.primitives.arg_with_dim(angle, unit))
+        vArg2.append('RotateAngle:='), vArg2.append(self.primitives._arg_with_dim(angle, unit))
 
         if self.oeditor is not None:
             self.oeditor.Rotate(vArg1, vArg2)
@@ -1837,11 +1826,7 @@ class GeometryModeler(Modeler, object):
         if not keepOriginals:
             if not isinstance(tool_list, list):
                 tool_list = [tool_list]
-            for el in list(tool_list):
-                    if isinstance(el, Object3d):
-                        self.primitives._delete_object_from_dict(el.id)
-                    else:
-                        self.primitives._delete_object_from_dict(id)
+            self.cleanup_objects()
 
 
         vArg1 = ['NAME:Selections', 'Blank Parts:=', szList, 'Tool Parts:=', szList1]
@@ -1910,8 +1895,7 @@ class GeometryModeler(Modeler, object):
         szSelections = self.convert_to_selections(theList)
 
         delList = theList[1::]
-        for id in delList:
-            self.primitives._delete_object_from_dict(id)
+        self.cleanup_objects()
 
         vArg1 = ['NAME:Selections', 'Selections:=', szSelections]
         vArg2 = ['NAME:UniteParameters', 'KeepOriginals:=', False]
@@ -1964,14 +1948,14 @@ class GeometryModeler(Modeler, object):
         vArg2 = ["NAME:ChamferParameters"]
         vArg2.append('Edges:='), vArg2.append(edge_list)
         vArg2.append('Vertices:='), vArg2.append(vertices_list)
-        vArg2.append('LeftDistance:='), vArg2.append(self.primitives.arg_with_dim(left_distance))
+        vArg2.append('LeftDistance:='), vArg2.append(self.primitives._arg_with_dim(left_distance))
         if not right_distance:
             right_distance=left_distance
         if chamfer_type == 0:
-            vArg2.append('RightDistance:='), vArg2.append(self.primitives.arg_with_dim(right_distance))
+            vArg2.append('RightDistance:='), vArg2.append(self.primitives._arg_with_dim(right_distance))
             vArg2.append('ChamferType:='), vArg2.append('Symmetric')
         elif chamfer_type == 1:
-            vArg2.append('RightDistance:='), vArg2.append(self.primitives.arg_with_dim(right_distance))
+            vArg2.append('RightDistance:='), vArg2.append(self.primitives._arg_with_dim(right_distance))
             vArg2.append('ChamferType:='), vArg2.append('Left Distance-Right Distance')
         elif chamfer_type == 2:
             vArg2.append('Angle:='), vArg2.append(str(angle)+"deg")
@@ -2030,8 +2014,8 @@ class GeometryModeler(Modeler, object):
         vArg2 = ["NAME:FilletParameters"]
         vArg2.append('Edges:='), vArg2.append(edge_list)
         vArg2.append('Vertices:='), vArg2.append(vertices_list)
-        vArg2.append('Radius:='), vArg2.append(self.primitives.arg_with_dim(radius))
-        vArg2.append('Setback:='), vArg2.append(self.primitives.arg_with_dim(setback))
+        vArg2.append('Radius:='), vArg2.append(self.primitives._arg_with_dim(radius))
+        vArg2.append('Setback:='), vArg2.append(self.primitives._arg_with_dim(setback))
         self.oeditor.Fillet(vArg1, ["NAME:Parameters", vArg2])
         if object_name in list(self.oeditor.GetObjectsInGroup("UnClassified")):
             self.odesign.Undo()
@@ -2094,7 +2078,7 @@ class GeometryModeler(Modeler, object):
             return False
         if not keeporiginal:
             for el in theList[1:]:
-                self.primitives._delete_object_from_dict(el)
+                self.primitives.self.cleanup_objects()
         self.messenger.add_info_message("Intersection Succeeded")
         #self.primitives.refresh_all_ids()
         return True
@@ -2128,14 +2112,14 @@ class GeometryModeler(Modeler, object):
             self.messenger.add_error_message("Error in connection. Reverting Operation")
             return False
 
-        self.primitives._delete_object_from_dict(object2)
+        self.primitives.cleanup_objects()
         self.messenger.add_info_message("Connection Correctly created")
         return True
 
     @aedt_exception_handler
     def translate(self, objid, vector):
         """Translate Object from list
-
+        .. Deprecate to Object3d
         Parameters
         ----------
         objid :
@@ -2149,7 +2133,7 @@ class GeometryModeler(Modeler, object):
             True if succeeded
 
         """
-        Xvec, Yvec, Zvec = self.primitives.pos_with_arg(vector)
+        Xvec, Yvec, Zvec = self.primitives._pos_with_arg(vector)
         szSelections = self.convert_to_selections(objid)
 
         vArg1 = ['NAME:Selections', 'Selections:=', szSelections, 'NewPartsModelFlag:=', 'Model']
@@ -2254,7 +2238,7 @@ class GeometryModeler(Modeler, object):
 
         """
 
-        Xvec, Yvec, Zvec = self.primitives.pos_with_arg(faceposition)
+        Xvec, Yvec, Zvec = self.primitives._pos_with_arg(faceposition)
 
         if type(obj) is int:
             obj = self.primitives.get_obj_name(obj)
@@ -2265,9 +2249,9 @@ class GeometryModeler(Modeler, object):
             off1, off2, off3 = self._offset_on_plane(i, offset)
             vArg1 = ['NAME:FaceParameters']
             vArg1.append('BodyName:='), vArg1.append(obj)
-            vArg1.append('XPosition:='), vArg1.append(Xvec + "+" + self.primitives.arg_with_dim(off1))
-            vArg1.append('YPosition:='), vArg1.append(Yvec + "+" + self.primitives.arg_with_dim(off2))
-            vArg1.append('ZPosition:='), vArg1.append(Zvec + "+" + self.primitives.arg_with_dim(off3))
+            vArg1.append('XPosition:='), vArg1.append(Xvec + "+" + self.primitives._arg_with_dim(off1))
+            vArg1.append('YPosition:='), vArg1.append(Yvec + "+" + self.primitives._arg_with_dim(off2))
+            vArg1.append('ZPosition:='), vArg1.append(Zvec + "+" + self.primitives._arg_with_dim(off3))
             try:
                 face_id = self.oeditor.GetFaceByPosition(vArg1)
                 if i < 4:
@@ -2487,20 +2471,20 @@ class GeometryModeler(Modeler, object):
             if not wg_thickness:
                 wg_thickness = wgheight / 20
             if parametrize_h:
-                self._parent[wgmodel + "_H"] = self.primitives.arg_with_dim(wgheight)
+                self._parent[wgmodel + "_H"] = self.primitives._arg_with_dim(wgheight)
                 h = wgmodel + "_H"
-                hb = wgmodel + "_H + 2*" + self.primitives.arg_with_dim(wg_thickness)
+                hb = wgmodel + "_H + 2*" + self.primitives._arg_with_dim(wg_thickness)
             else:
-                h = self.primitives.arg_with_dim(wgheight)
-                hb = self.primitives.arg_with_dim(wgheight) + " + 2*" + self.primitives.arg_with_dim(wg_thickness)
+                h = self.primitives._arg_with_dim(wgheight)
+                hb = self.primitives._arg_with_dim(wgheight) + " + 2*" + self.primitives._arg_with_dim(wg_thickness)
 
             if parametrize_w:
-                self._parent[wgmodel + "_W"] = self.primitives.arg_with_dim(wgwidth)
+                self._parent[wgmodel + "_W"] = self.primitives._arg_with_dim(wgwidth)
                 w = wgmodel + "_W"
-                wb = wgmodel + "_W + " + self.primitives.arg_with_dim(2 * wg_thickness)
+                wb = wgmodel + "_W + " + self.primitives._arg_with_dim(2 * wg_thickness)
             else:
-                w = self.primitives.arg_with_dim(wgwidth)
-                wb = self.primitives.arg_with_dim(wgwidth) + " + 2*" + self.primitives.arg_with_dim(wg_thickness)
+                w = self.primitives._arg_with_dim(wgwidth)
+                wb = self.primitives._arg_with_dim(wgwidth) + " + 2*" + self.primitives._arg_with_dim(wg_thickness)
             if wg_direction_axis == self._parent.CoordinateSystemAxis.ZAxis:
                 airbox = self.primitives.create_box(origin, [w, h, wg_length])
 
@@ -3492,6 +3476,12 @@ class GeometryModeler(Modeler, object):
                 self.Y = value
             elif item == 2:
                 self.Z = value
+
+        def __iter__(self):
+            return self
+
+        def __len__(self):
+            return 3
 
         def __init__(self, *args):
             """class Position

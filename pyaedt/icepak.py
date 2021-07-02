@@ -541,25 +541,25 @@ class Icepak(FieldAnalysisIcepak):
 
         """
         all_objs = self.modeler.primitives.object_names
-        self['FinPitch'] = self.modeler.primitives.arg_with_dim(pitch)
-        self['FinThickness'] = self.modeler.primitives.arg_with_dim(thick)
-        self['FinLength'] = self.modeler.primitives.arg_with_dim(length)
-        self['FinHeight'] = self.modeler.primitives.arg_with_dim(height)
+        self['FinPitch'] = self.modeler.primitives._arg_with_dim(pitch)
+        self['FinThickness'] = self.modeler.primitives._arg_with_dim(thick)
+        self['FinLength'] = self.modeler.primitives._arg_with_dim(length)
+        self['FinHeight'] = self.modeler.primitives._arg_with_dim(height)
         self['DraftAngle'] = draftangle
         self['PatternAngle'] = patternangle
-        self['FinSeparation'] = self.modeler.primitives.arg_with_dim(separation)
-        self['VerticalSeparation'] = self.modeler.primitives.arg_with_dim(vertical_separation)
-        self['HSHeight'] = self.modeler.primitives.arg_with_dim(hs_height)
-        self['HSWidth'] = self.modeler.primitives.arg_with_dim(hs_width)
-        self['HSBaseThick'] = self.modeler.primitives.arg_with_dim(hs_basethick)
+        self['FinSeparation'] = self.modeler.primitives._arg_with_dim(separation)
+        self['VerticalSeparation'] = self.modeler.primitives._arg_with_dim(vertical_separation)
+        self['HSHeight'] = self.modeler.primitives._arg_with_dim(hs_height)
+        self['HSWidth'] = self.modeler.primitives._arg_with_dim(hs_width)
+        self['HSBaseThick'] = self.modeler.primitives._arg_with_dim(hs_basethick)
         if numcolumn_perside>1:
             self['NumColumnsPerSide'] = numcolumn_perside
         if symmetric:
-            self['SymSeparation'] = self.modeler.primitives.arg_with_dim(symmetric_separation)
+            self['SymSeparation'] = self.modeler.primitives._arg_with_dim(symmetric_separation)
         # ipk['PatternDirection'] = 'Y'
         # ipk['LengthDirection'] = 'X'
         # ipk['HeightDirection'] = 'Z'
-        self['Tolerance'] = self.modeler.primitives.arg_with_dim(tolerance)
+        self['Tolerance'] = self.modeler.primitives._arg_with_dim(tolerance)
 
         #self.modeler.primitives.create_box([0, 0, '-HSBaseThick'], ['HSWidth', 'HSHeight', 'FinHeight+HSBaseThick'], "Outline")
         self.modeler.primitives.create_box(['-HSWidth/200', '-HSHeight/200', '-HSBaseThick'], ['HSWidth*1.01', 'HSHeight*1.01', 'HSBaseThick+Tolerance'], "HSBase", matname)

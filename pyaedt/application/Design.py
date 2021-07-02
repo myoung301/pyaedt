@@ -355,6 +355,7 @@ class DesignCache(object):
 
 class Design(object):
     """Class Design. Contains all functions and objects connected to the active Project and Design"""
+
     def __str__(self):
         pyaedt_details = "      pyaedt API\n"
         pyaedt_details += "pyaedt running AEDT Version {} \n".format(self._aedt_version)
@@ -397,6 +398,7 @@ class Design(object):
         self._desktop_install_dir = main_module.sDesktopinstallDirectory
         self._messenger = AEDTMessageManager(self)
         self.logger = logging.getLogger(__name__)
+        sys.modules['__main__']._error_cache = []
 
         assert design_type in design_solutions, "Invalid design type specified: {}".format(design_type)
         self._design_type = design_type
