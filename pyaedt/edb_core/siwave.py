@@ -485,9 +485,11 @@ class EdBSiwave(object):
         return True
 
     @aedt_exception_handler
-    def create_exec_file(self):
-        workdir = os.path.dirname(self.parent.edbpath)
-        file_name = os.path.join(workdir,os.path.splitext(os.path.basename(self.parent.edbpath))[0] + '.exec')
+    def create_exec_file(self, workdir=None, file_name=None):
+        if not workdir:
+            workdir = os.path.dirname(self.parent.edbpath)
+        if not file_name:
+            file_name = os.path.join(workdir,os.path.splitext(os.path.basename(self.parent.edbpath))[0] + '.exec')
         if os.path.isfile(file_name):
             os.remove(file_name)
         f = open(file_name,"w")
