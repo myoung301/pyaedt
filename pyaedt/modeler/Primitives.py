@@ -89,9 +89,9 @@ class Polyline(Object3d):
 
     Parameters
     ----------
-    parent :
+    parent : 
     position_list : list, optional
-        The default is ''None``.
+        The default is ''None``. 
     object_id : optional
         The default is ''None``.
     segment_type : optional
@@ -105,11 +105,11 @@ class Polyline(Object3d):
     matname : str, optional
         Name of the material. The default is ''None``.
     xsection_type : str, optional
-        Cross-section type. Choices are ``"Line"``, ``"Circle"``, ``"Rectangle"``
+        Cross-section type. Choices are ``"Line"``, ``"Circle"``, ``"Rectangle"`` 
         and ``"Isosceles Trapezoid"``. The default is ``None``.
     xsection_orient : str, optional
-        Direction of the normal vector to the width of the cross-section.
-        Choices are ``"X"``, ``"Y"``, ``"Z"``, and ``"Auto"``. The
+        Direction of the normal vector to the width of the cross-section. 
+        Choices are ``"X"``, ``"Y"``, ``"Z"``, and ``"Auto"``. The 
         default is ``None``.
     xsection_width : float or str, optional
         Width or diameter of the cross-section for all types. The default is
@@ -118,17 +118,17 @@ class Polyline(Object3d):
         Top width of the cross-section for type ``"Isosceles Trapezoid"`` only.
         The default is ``0``.
     xsection_height : float or str, optional
-        Height of the cross-section for type ``"Rectangle"`` or ``"Isosceles
+        Height of the cross-section for type ``"Rectangle"`` or ``"Isosceles 
         Trapezoid"`` only. The default is ``0``.
     xsection_num_seg : int, optional
-        Number of segments in the cross-section surface for types ``"Circle"``,
-        ``"Rectangle"`` or ``"Isosceles Trapezoid"``. The default is ``0``.
+        Number of segments in the cross-section surface for types ``"Circle"``, 
+        ``"Rectangle"`` or ``"Isosceles Trapezoid"``. The default is ``0``. 
         The value must be ``0`` or greater than ``2``.
     xsection_bend_type : str, optional
         Type of the bend. The default is ``None``, which sets the bend type
-        to ``"Corner"``. For the type ``"Circle"``, the bend type
+        to ``"Corner"``. For the type ``"Circle"``, the bend type 
         should be set to ``"Curved"``.
-
+        
     Methods
     -------
     set_crosssection_properties
@@ -216,7 +216,6 @@ class Polyline(Object3d):
         position_list = [ self._parent.get_vertex_position(id) for id in id_list]
         return position_list
 
-    @aedt_exception_handler
     def _crosssection(self, type=None, orient=None, width=0, topwidth=0, height=0, num_seg=0, bend_type=None):
         """Generate the properties array for the polyline cross-section.
         """
@@ -252,7 +251,6 @@ class Polyline(Object3d):
 
         return arg_str
 
-    @aedt_exception_handler
     def _pl_point(self, pt):
         pt_data= ["NAME:PLPoint"]
         pt_data.append('X:=')
@@ -263,7 +261,6 @@ class Polyline(Object3d):
         pt_data.append(_dim_arg(pt[2], self._parent.model_units))
         return pt_data
 
-    @aedt_exception_handler
     def _point_segment_string_array(self):
         """Retrieve a parameter array for points and segments.
 
@@ -360,7 +357,6 @@ class Polyline(Object3d):
 
         return varg1
 
-    @aedt_exception_handler
     def _segment_array(self, segment_data, start_index=0, start_point=None):
         """Retrieve a property array for a polyline segment.
 
@@ -375,7 +371,7 @@ class Polyline(Object3d):
             Starting vertex index of the segment within a compound polyline. The
             default is ``0``.
         start_point : list, optional
-            Position of the first point for type ``AngularArc``. The default is
+            Position of the first point for type ``AngularArc``. The default is 
             ``None``. Float values are considered in model units.
 
         Returns
@@ -488,7 +484,7 @@ class Polyline(Object3d):
         position : list
             List of x, y, z coordinates specifying the vertex to be removed.
         abstol : float, optional
-            Absolute tolerance of the comparison of a specified position to the
+            Absolute tolerance of the comparison of a specified position to the 
             vertex positions. The default is ``1e-9``.
 
         Returns
@@ -499,18 +495,18 @@ class Polyline(Object3d):
         Examples
         --------
         Use floating point values for the vertex positions.
-
+        
         >>> P = primitives.create_polyline([[0, 1, 2], [0, 2, 3], [2, 1, 4]])
         >>> P.remove_vertex([0, 1, 2])
 
         Use string expressions for the vertex position.
-
+        
         >>> P = primitives.create_polyline([[0, 1, 2], [0, 2, 3], [2, 1, 4]])
         >>> P.remove_vertex(["0mm", "1mm", "2mm"])
 
         Use string expressions for the vertex position and include an absolute
         tolerance when searching for the vertex to be removed.
-
+        
         >>> P = primitives.create_polyline([[0, 1, 2], [0, 2, 3], [2, 1, 4]])
         >>> P.remove_vertex(["0mm", "1mm", "2mm"], abstol=1e-6)
         """
@@ -545,18 +541,18 @@ class Polyline(Object3d):
     def remove_edges(self, edge_id):
         """Remove a vertex from an existing polyline by position.
 
-        You must enter the exact position of the vertex as a list
+        You must enter the exact position of the vertex as a list 
         of ``[x, y, z]`` coordinates in the object coordinate system.
 
         Parameters
         ----------
         edge_id : int or list of int
-            One or more edge IDs within the total number of edges within the polyline.
-
+            One or more edge IDs within the total number of edges within the polyline.            
+        
         Returns
         -------
         bool
-            ``True`` when successful, ``False`` when failed.
+            ``True`` when successful, ``False`` when failed. 
 
         Examples
         --------
@@ -583,28 +579,28 @@ class Polyline(Object3d):
         Parameters
         ----------
         type : str, optional
-            Cross-section type. Choices are ``"Line"``, ``"Circle"``, ``"Rectangle"``
+            Cross-section type. Choices are ``"Line"``, ``"Circle"``, ``"Rectangle"`` 
             and ``"Isosceles Trapezoid"``. The default is ``None``.
         orient : str, optional
-            Direction of the normal vector to the width of the cross-section.
-            Choices are ``"X"``, ``"Y"``, ``"Z"``, and ``"Auto"``. The default
+            Direction of the normal vector to the width of the cross-section. 
+            Choices are ``"X"``, ``"Y"``, ``"Z"``, and ``"Auto"``. The default 
             is ``None``, which sents the orientation to ``"Auto"``.
         width : float or str, optional
            Width or diameter of the cross-section for all types. The default is
            ``0``.
         topwidth : float or str
-           Top width of the cross-section for type ``"Isosceles Trapezoid"``
+           Top width of the cross-section for type ``"Isosceles Trapezoid"`` 
            only. The default is ``0``.
         height : float or str
-            Height of the cross-section for type ``"Rectangle"`` or ``"Isosceles
+            Height of the cross-section for type ``"Rectangle"`` or ``"Isosceles 
             Trapezoid"`` only. The default is ``0``.
         num_seg : int, optional
-            Number of segments in the cross-section surface for types ``"Circle"``,
-            ``"Rectangle"`` or ``"Isosceles Trapezoid"``. The default is ``0``.
+            Number of segments in the cross-section surface for types ``"Circle"``, 
+            ``"Rectangle"`` or ``"Isosceles Trapezoid"``. The default is ``0``. 
             The value must be ``0`` or greater than ``2``.
         bend_type : str, optional
             Type of the bend. The default is ``None``, which sets the bend type
-            to ``"Corner"``. For the type ``"Circle"``, the bend type should be
+            to ``"Corner"``. For the type ``"Circle"``, the bend type should be 
             set to ``"Curved"``.
 
         Returns
@@ -895,15 +891,15 @@ class Primitives(object):
     def value_in_object_units(self, value):
         """Convert a numerical length string, such as ``10mm`` to a floating point value.
 
-        Converts a numerical length string, such as ``10mm``, to a floating point value
-        in the defined object units ``self.object_units``. If a list of such objects is
+        Converts a numerical length string, such as ``10mm``, to a floating point value 
+        in the defined object units ``self.object_units``. If a list of such objects is 
         given, the entire list is converted.
 
         Parameters
         ----------
         value : string or list of strings
             Numerical length string to convert.
-
+        
         Returns
         -------
         float or list of floats
@@ -940,10 +936,10 @@ class Primitives(object):
         """"
         Parameters
         ----------
-        object :
+        object : 
             Object name or object ID.
-
-        Returns:
+        
+        Returns: 
         bool
             ``True`` when successful, ``False`` when failed
         """
@@ -1073,49 +1069,49 @@ class Primitives(object):
         position_list : list
             Array of positions of each point of the polyline.
             A position is a list of 2D or 3D coordinates. Position coordinate values
-            can be numbers or valid AEDT string expressions. For example, ``[0, 1, 2]``,
+            can be numbers or valid AEDT string expressions. For example, ``[0, 1, 2]``, 
             ``["0mm", "5mm", "1mm"]``, or ``["x1", "y1"]``.
         segment_type : str or PolylineSegment or list, optional
             The default behavior is to connect all points as ``"Line"`` segments. The
             default is ``None``. For a string, ``"Line"`` or ``"Arc"`` is valid. For a
-            ``"PolylineSegment"``, for ``"Line",`` ``"Arc"``, ``"Spline"``, or
-            ``"AngularArc"``, a list of segment types (str or PolylineSegment) is
+            ``"PolylineSegment"``, for ``"Line",`` ``"Arc"``, ``"Spline"``, or 
+            ``"AngularArc"``, a list of segment types (str or PolylineSegment) is 
             valid for a compound polyline.
         cover_surface : bool, optional
             The default is ``False``.
         close_surface : bool, optional
-            The default is ``False``, which automatically joins the starting and
+            The default is ``False``, which automatically joins the starting and 
             ending points.
         name: str, optional
             Name of the polyline. The default is ``None``.
         matname: str, optional
             Name of the material. The default is ``None``, in which case a name
-            is automatically assigned.
+            is automatically assigned. 
         xsection_type : str, optional
-            Type of the cross-section. Choices are ``"Line"``, ``"Circle"``,
+            Type of the cross-section. Choices are ``"Line"``, ``"Circle"``, 
             ``"Rectangle"``, and ``"Isosceles Trapezoid"``. The default is ``None``.
         xsection_orient : str, optional
             Direction of the normal vector to the width of the cross-section.
-            Choices are ``"X"``, ``"Y"``, ``"Z"``, and ``"Auto"``. The default is
+            Choices are ``"X"``, ``"Y"``, ``"Z"``, and ``"Auto"``. The default is 
             ``None``, which sets the direction to ``"Auto"``.
         xsection_width : float or str, optional
-            Width or diameter of the cross-section for all  types. The
+            Width or diameter of the cross-section for all  types. The 
             default is ``1``.
         xsection_topwidth : float or str, optional
             Top width of the cross-section for type ``"Isosceles Trapezoid"`` only.
             The default is ``1``.
         xsection_height : float or str
-            Height of the cross-section for type ``"Rectangle"`` or ``"Isosceles
+            Height of the cross-section for type ``"Rectangle"`` or ``"Isosceles 
             Trapezoid"`` only. The default is ``1``.
         xsection_num_seg : int, optional
-            Number of segments in the cross-section surface for types ``"Circle"``,
+            Number of segments in the cross-section surface for types ``"Circle"``, 
             ``"Rectangle"``, or ``"Isosceles Trapezoid"``. The default is ``0``. The
             value must be ``0`` or greater than ``2``.
         xsection_bend_type : str, optional
             Type of the bend for the cross-section. The default is ``None``, which sets
-            the bend type to ``"Corner"``. For the type ``"Circle"``, the bend type
+            the bend type to ``"Corner"``. For the type ``"Circle"``, the bend type 
             should be set to ``"Curved"``.
-
+        
         Returns
         -------
         Polyline
@@ -1126,7 +1122,7 @@ class Primitives(object):
         Examples
         -------
         Set up the desktop environment.
-
+        
         >>> from pyaedt.desktop import Desktop
         >>> from pyaedt.Maxwell import Maxwell3d
         >>> from pyaedt.modeler.Primitives import PolylineSegment
@@ -1136,34 +1132,34 @@ class Primitives(object):
         >>> primitives = aedtapp.modeler.primitives
 
         Define some test data points.
-
+        
         >>> test_points = [["0mm", "0mm", "0mm"], ["100mm", "20mm", "0mm"],
         ...                ["71mm", "71mm", "0mm"], ["0mm", "100mm", "0mm"]]
 
-        The default behavior assumes that all points are to be connected by line segments.
+        The default behavior assumes that all points are to be connected by line segments. 
         Optionally specify the name.
-
+        
         >>> P1 = primitives.create_polyline(test_points, name="PL_line_segments")
 
         Specify that the first segment is a line and the last three points define a three-point arc.
-
+        
         >>> P2 = primitives.create_polyline(test_points, segment_type=["Line", "Arc"], name="PL_line_plus_arc")
 
-        Redraw the 3-point arc alone from the last three points and additionally specify five segments
+        Redraw the 3-point arc alone from the last three points and additionally specify five segments 
         using ``PolylineSegment``.
-
+        
         >>> P3 = primitives.create_polyline(test_points[1:],
         ...                               segment_type=PolylineSegment(type="Arc", num_seg=7),
         ...                               name="PL_segmented_arc")
 
-        Specify that the four points form a spline and add a circular cross-section with a
+        Specify that the four points form a spline and add a circular cross-section with a 
         diameter of 1 mm.
-
+        
         >>> P4 = primitives.create_polyline(test_points, segment_type="Spline", name="PL_spline",
         ...                               xsection_type="Circle", xsection_width="1mm")
 
         Use the ``PolylineSegment`` object to specify more detail about the individual segments.
-        Create a center point arc starting from the position ``test_points[1]``, rotating
+        Create a center point arc starting from the position ``test_points[1]``, rotating 
         about the center point position ``test_points[0]` in the XY plane.
 
         >>> start_point = test_points[1]
@@ -2194,7 +2190,6 @@ class Primitives(object):
         vArg1.append('XPosition:='), vArg1.append(XCenter)
         vArg1.append('YPosition:='), vArg1.append(YCenter)
         vArg1.append('ZPosition:='), vArg1.append(ZCenter)
-
         list_of_bodies = list(self.oeditor.GetBodyNamesByPosition(vArg1))
         return list_of_bodies
 
@@ -2292,7 +2287,6 @@ class Primitives(object):
         """
         face_id = -1
         XCenter, YCenter, ZCenter = self._pos_with_arg(position, units)
-
         vArg1 = ['NAME:FaceParameters']
         vArg1.append('BodyName:='), vArg1.append('')
         vArg1.append('XPosition:='), vArg1.append(XCenter)
@@ -2314,7 +2308,6 @@ class Primitives(object):
                 except Exception:
                     # Not Found, keep looking
                     pass
-
         return face_id
 
     def _arg_with_dim(self, prop_value, units=None):

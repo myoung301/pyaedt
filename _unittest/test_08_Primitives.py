@@ -137,7 +137,6 @@ class TestPrimitives(BasisTest):
        assert len(self.aedtapp.modeler.primitives.object_names) == len(self.aedtapp.modeler.primitives.objects)
        pass
 
-
     @pyaedt_unittest_check_desktop_error
     def test_center_and_centroid(self):
         o = self.create_copper_box()
