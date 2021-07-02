@@ -4,9 +4,9 @@
    contain the root `toctree` directive.
 
 Simplorer
-=========
+===================================
 
-.. automodule:: pyaedt.simplorer
+.. automodule:: pyaedt.Simplorer
     :members:
 
 

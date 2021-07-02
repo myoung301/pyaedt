@@ -5,8 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>HFSS 3D Layout &#8212; PyAEDT 0.3.dev0
- documentation</title>
+    <title>HFSS3DLayout Objects &#8212; PyAEDT 0.2.0 documentation</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet" />
   <link href="../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -36,10 +35,11 @@
     <script src="../_static/doctools.js"></script>
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="AEDT Mechanical" href="Mechanical.html" />
-    <link rel="prev" title="EDB Data Classes" href="EDBData.html" />
+    <link rel="prev" title="EDB Stackup" href="EDBStackup.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
     
@@ -59,7 +59,7 @@
 
     <a class="navbar-brand" href="../index.html">
     
-      <img src="../_static/pyansys-logo-black-cropped.png" class="logo" alt="logo" />
+      <img src="../_static/logo-ansys.png" class="logo" alt="logo" />
     
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
@@ -77,15 +77,11 @@
         </li>
         
         <li class="nav-item active">
-            <a class="nav-link" href="API.html">API Documentation</a>
+            <a class="nav-link" href="API.html">API documentation</a>
         </li>
         
         <li class="nav-item ">
             <a class="nav-link" href="../Resources/Code_Guidelines.html">Code Guidelines</a>
-        </li>
-        
-        <li class="nav-item ">
-            <a class="nav-link" href="../Resources/Contributing.html">Contributing</a>
         </li>
         
         
@@ -333,26 +329,14 @@
       <ul class="simple">
       </ul>
      </li>
-     <li class="toctree-l3 has-children">
-      <a class="reference internal" href="EDBData.html">
-       EDB Data Classes
-      </a>
-      <input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" type="checkbox"/>
-      <label for="toctree-checkbox-19">
-       <i class="fas fa-chevron-down">
-       </i>
-      </label>
-      <ul class="simple">
-      </ul>
-     </li>
     </ul>
    </li>
    <li class="toctree-l2 current active has-children">
     <a class="current reference internal" href="#">
-     HFSS 3D Layout
+     HFSS3DLayout Objects
     </a>
-    <input checked="" class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" type="checkbox"/>
-    <label for="toctree-checkbox-20">
+    <input checked="" class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" type="checkbox"/>
+    <label for="toctree-checkbox-19">
      <i class="fas fa-chevron-down">
      </i>
     </label>
@@ -363,8 +347,8 @@
     <a class="reference internal" href="Mechanical.html">
      AEDT Mechanical
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" type="checkbox"/>
-    <label for="toctree-checkbox-21">
+    <input class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" type="checkbox"/>
+    <label for="toctree-checkbox-20">
      <i class="fas fa-chevron-down">
      </i>
     </label>
@@ -375,8 +359,8 @@
     <a class="reference internal" href="RMxprt.html">
      RMxprt
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-22" name="toctree-checkbox-22" type="checkbox"/>
-    <label for="toctree-checkbox-22">
+    <input class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" type="checkbox"/>
+    <label for="toctree-checkbox-21">
      <i class="fas fa-chevron-down">
      </i>
     </label>
@@ -387,10 +371,10 @@
  </li>
  <li class="toctree-l1 has-children">
   <a class="reference internal" href="DesktopMessenger.html">
-   Desktop and Messenger
+   Desktop &amp; Messenger
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-23" name="toctree-checkbox-23" type="checkbox"/>
-  <label for="toctree-checkbox-23">
+  <input class="toctree-checkbox" id="toctree-checkbox-22" name="toctree-checkbox-22" type="checkbox"/>
+  <label for="toctree-checkbox-22">
    <i class="fas fa-chevron-down">
    </i>
   </label>
@@ -409,20 +393,20 @@
  </li>
  <li class="toctree-l1 has-children">
   <a class="reference internal" href="CoreModules.html">
-   Application Modules
+   application modules
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-24" name="toctree-checkbox-24" type="checkbox"/>
-  <label for="toctree-checkbox-24">
+  <input class="toctree-checkbox" id="toctree-checkbox-23" name="toctree-checkbox-23" type="checkbox"/>
+  <label for="toctree-checkbox-23">
    <i class="fas fa-chevron-down">
    </i>
   </label>
   <ul>
    <li class="toctree-l2 has-children">
     <a class="reference internal" href="AnalysisCore.html">
-     Analysis Application Modules
+     Analysis application modules
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-25" name="toctree-checkbox-25" type="checkbox"/>
-    <label for="toctree-checkbox-25">
+    <input class="toctree-checkbox" id="toctree-checkbox-24" name="toctree-checkbox-24" type="checkbox"/>
+    <label for="toctree-checkbox-24">
      <i class="fas fa-chevron-down">
      </i>
     </label>
@@ -471,32 +455,32 @@
    </li>
    <li class="toctree-l2 has-children">
     <a class="reference internal" href="ModelerCore.html">
-     Modeler
+     modeler
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-26" name="toctree-checkbox-26" type="checkbox"/>
-    <label for="toctree-checkbox-26">
+    <input class="toctree-checkbox" id="toctree-checkbox-25" name="toctree-checkbox-25" type="checkbox"/>
+    <label for="toctree-checkbox-25">
      <i class="fas fa-chevron-down">
      </i>
     </label>
     <ul>
      <li class="toctree-l3">
       <a class="reference internal" href="Modeler.html">
-       Modeler
+       modeler
       </a>
      </li>
      <li class="toctree-l3">
       <a class="reference internal" href="Modeler3D.html">
-       Modeler 3D
+       modeler 3D
       </a>
      </li>
      <li class="toctree-l3">
       <a class="reference internal" href="Modeler2D.html">
-       Modeler 2D
+       modeler 2D
       </a>
      </li>
      <li class="toctree-l3">
       <a class="reference internal" href="Modeler3DLayout.html">
-       Modeler 3D Layout
+       modeler 3DLayout
       </a>
      </li>
     </ul>
@@ -505,8 +489,8 @@
     <a class="reference internal" href="Design.html">
      Design
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-27" name="toctree-checkbox-27" type="checkbox"/>
-    <label for="toctree-checkbox-27">
+    <input class="toctree-checkbox" id="toctree-checkbox-26" name="toctree-checkbox-26" type="checkbox"/>
+    <label for="toctree-checkbox-26">
      <i class="fas fa-chevron-down">
      </i>
     </label>
@@ -517,8 +501,8 @@
     <a class="reference internal" href="Variables.html">
      Variables
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-28" name="toctree-checkbox-28" type="checkbox"/>
-    <label for="toctree-checkbox-28">
+    <input class="toctree-checkbox" id="toctree-checkbox-27" name="toctree-checkbox-27" type="checkbox"/>
+    <label for="toctree-checkbox-27">
      <i class="fas fa-chevron-down">
      </i>
     </label>
@@ -529,8 +513,8 @@
     <a class="reference internal" href="DesignXPlorer.html">
      Design XPloration
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-29" name="toctree-checkbox-29" type="checkbox"/>
-    <label for="toctree-checkbox-29">
+    <input class="toctree-checkbox" id="toctree-checkbox-28" name="toctree-checkbox-28" type="checkbox"/>
+    <label for="toctree-checkbox-28">
      <i class="fas fa-chevron-down">
      </i>
     </label>
@@ -543,17 +527,12 @@
   <a class="reference internal" href="Primitives.html">
    Primitives
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-30" name="toctree-checkbox-30" type="checkbox"/>
-  <label for="toctree-checkbox-30">
+  <input class="toctree-checkbox" id="toctree-checkbox-29" name="toctree-checkbox-29" type="checkbox"/>
+  <label for="toctree-checkbox-29">
    <i class="fas fa-chevron-down">
    </i>
   </label>
   <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="CommonPrimitives.html">
-     Common Primitives Classes
-    </a>
-   </li>
    <li class="toctree-l2">
     <a class="reference internal" href="Primitives3D.html">
      Primitives 3D
@@ -566,7 +545,7 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="Primitives3DLayout.html">
-     Primitives 3D Layout
+     Primitives Layout
     </a>
    </li>
    <li class="toctree-l2">
@@ -580,8 +559,8 @@
   <a class="reference internal" href="Mesh.html">
    Mesh
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-31" name="toctree-checkbox-31" type="checkbox"/>
-  <label for="toctree-checkbox-31">
+  <input class="toctree-checkbox" id="toctree-checkbox-30" name="toctree-checkbox-30" type="checkbox"/>
+  <label for="toctree-checkbox-30">
    <i class="fas fa-chevron-down">
    </i>
   </label>
@@ -590,8 +569,8 @@
     <a class="reference internal" href="Mesh3D.html">
      Mesh 3D
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-32" name="toctree-checkbox-32" type="checkbox"/>
-    <label for="toctree-checkbox-32">
+    <input class="toctree-checkbox" id="toctree-checkbox-31" name="toctree-checkbox-31" type="checkbox"/>
+    <label for="toctree-checkbox-31">
      <i class="fas fa-chevron-down">
      </i>
     </label>
@@ -602,8 +581,8 @@
     <a class="reference internal" href="MeshIcepak.html">
      Mesh Icepak
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-33" name="toctree-checkbox-33" type="checkbox"/>
-    <label for="toctree-checkbox-33">
+    <input class="toctree-checkbox" id="toctree-checkbox-32" name="toctree-checkbox-32" type="checkbox"/>
+    <label for="toctree-checkbox-32">
      <i class="fas fa-chevron-down">
      </i>
     </label>
@@ -614,8 +593,8 @@
     <a class="reference internal" href="Mesh3DLayout.html">
      Mesh 3D Layout
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-34" name="toctree-checkbox-34" type="checkbox"/>
-    <label for="toctree-checkbox-34">
+    <input class="toctree-checkbox" id="toctree-checkbox-33" name="toctree-checkbox-33" type="checkbox"/>
+    <label for="toctree-checkbox-33">
      <i class="fas fa-chevron-down">
      </i>
     </label>
@@ -626,20 +605,20 @@
  </li>
  <li class="toctree-l1 has-children">
   <a class="reference internal" href="MaterialManagement.html">
-   Material and Stackup
+   Material &amp; Stackup
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-35" name="toctree-checkbox-35" type="checkbox"/>
-  <label for="toctree-checkbox-35">
+  <input class="toctree-checkbox" id="toctree-checkbox-34" name="toctree-checkbox-34" type="checkbox"/>
+  <label for="toctree-checkbox-34">
    <i class="fas fa-chevron-down">
    </i>
   </label>
   <ul>
    <li class="toctree-l2 has-children">
     <a class="reference internal" href="MaterialLib.html">
-     Material Library
+     Materia Library
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-36" name="toctree-checkbox-36" type="checkbox"/>
-    <label for="toctree-checkbox-36">
+    <input class="toctree-checkbox" id="toctree-checkbox-35" name="toctree-checkbox-35" type="checkbox"/>
+    <label for="toctree-checkbox-35">
      <i class="fas fa-chevron-down">
      </i>
     </label>
@@ -650,8 +629,8 @@
     <a class="reference internal" href="Material.html">
      Material
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-37" name="toctree-checkbox-37" type="checkbox"/>
-    <label for="toctree-checkbox-37">
+    <input class="toctree-checkbox" id="toctree-checkbox-36" name="toctree-checkbox-36" type="checkbox"/>
+    <label for="toctree-checkbox-36">
      <i class="fas fa-chevron-down">
      </i>
     </label>
@@ -662,8 +641,8 @@
     <a class="reference internal" href="LayersStackup.html">
      Layer Stackup
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-38" name="toctree-checkbox-38" type="checkbox"/>
-    <label for="toctree-checkbox-38">
+    <input class="toctree-checkbox" id="toctree-checkbox-37" name="toctree-checkbox-37" type="checkbox"/>
+    <label for="toctree-checkbox-37">
      <i class="fas fa-chevron-down">
      </i>
     </label>
@@ -676,8 +655,8 @@
   <a class="reference internal" href="Setup.html">
    Setup
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-39" name="toctree-checkbox-39" type="checkbox"/>
-  <label for="toctree-checkbox-39">
+  <input class="toctree-checkbox" id="toctree-checkbox-38" name="toctree-checkbox-38" type="checkbox"/>
+  <label for="toctree-checkbox-38">
    <i class="fas fa-chevron-down">
    </i>
   </label>
@@ -686,8 +665,8 @@
     <a class="reference internal" href="Setup3D.html">
      Setup for 3D Tools
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-40" name="toctree-checkbox-40" type="checkbox"/>
-    <label for="toctree-checkbox-40">
+    <input class="toctree-checkbox" id="toctree-checkbox-39" name="toctree-checkbox-39" type="checkbox"/>
+    <label for="toctree-checkbox-39">
      <i class="fas fa-chevron-down">
      </i>
     </label>
@@ -698,8 +677,8 @@
     <a class="reference internal" href="Setup3DLayout.html">
      3D Layout Setup
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-41" name="toctree-checkbox-41" type="checkbox"/>
-    <label for="toctree-checkbox-41">
+    <input class="toctree-checkbox" id="toctree-checkbox-40" name="toctree-checkbox-40" type="checkbox"/>
+    <label for="toctree-checkbox-40">
      <i class="fas fa-chevron-down">
      </i>
     </label>
@@ -715,20 +694,20 @@
  </li>
  <li class="toctree-l1 has-children">
   <a class="reference internal" href="Post.html">
-   Postprocessing
+   PostProcessing
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-42" name="toctree-checkbox-42" type="checkbox"/>
-  <label for="toctree-checkbox-42">
+  <input class="toctree-checkbox" id="toctree-checkbox-41" name="toctree-checkbox-41" type="checkbox"/>
+  <label for="toctree-checkbox-41">
    <i class="fas fa-chevron-down">
    </i>
   </label>
   <ul>
    <li class="toctree-l2 has-children">
     <a class="reference internal" href="PostProcessor.html">
-     PostProcessor
+     PostProcessing
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-43" name="toctree-checkbox-43" type="checkbox"/>
-    <label for="toctree-checkbox-43">
+    <input class="toctree-checkbox" id="toctree-checkbox-42" name="toctree-checkbox-42" type="checkbox"/>
+    <label for="toctree-checkbox-42">
      <i class="fas fa-chevron-down">
      </i>
     </label>
@@ -737,10 +716,10 @@
    </li>
    <li class="toctree-l2 has-children">
     <a class="reference internal" href="AdvancedPostProcessing.html">
-     Advanced Postprocessing (only Python 3.x)
+     Advanced Post Processing (only Python 3.x)
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-44" name="toctree-checkbox-44" type="checkbox"/>
-    <label for="toctree-checkbox-44">
+    <input class="toctree-checkbox" id="toctree-checkbox-43" name="toctree-checkbox-43" type="checkbox"/>
+    <label for="toctree-checkbox-43">
      <i class="fas fa-chevron-down">
      </i>
     </label>
@@ -763,19 +742,9 @@
               
               <div class="toc-item">
                 
-<div class="tocsection onthispage pt-5 pb-3">
-    <i class="fas fa-list"></i> On this page
-</div>
 
 <nav id="bd-toc-nav">
-    <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#introduction">
-   Introduction
-  </a>
- </li>
-</ul>
-
+    
 </nav>
               </div>
               
@@ -795,278 +764,8 @@
               
               <div>
                 
-  <div class="section" id="module-pyaedt.hfss3dlayout">
-<span id="hfss-3d-layout"></span><h1>HFSS 3D Layout<a class="headerlink" href="#module-pyaedt.hfss3dlayout" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="introduction">
-<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
-<p>This class contains all HFSS 3D Layout functionalities. It inherits
-all objects that belong to HFSS 3D Layout, including EDB API queries.</p>
-<p class="rubric">Examples</p>
-<p>Create an <code class="docutils literal notranslate"><span class="pre">Hfss3dLayout</span></code> object and connect to an existing HFSS design or create a new HFSS design if one does not exist.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">aedtapp</span> <span class="o">=</span> <span class="n">Hfss3dLayout</span><span class="p">()</span>
-</pre></div>
-</div>
-<p>Create an <code class="docutils literal notranslate"><span class="pre">Hfss3dLayout</span></code> object and link to a project named <code class="docutils literal notranslate"><span class="pre">projectname</span></code>. If this project does not exist, create one with this name.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">aedtapp</span> <span class="o">=</span> <span class="n">Hfss3dLayout</span><span class="p">(</span><span class="n">projectname</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Create an <code class="docutils literal notranslate"><span class="pre">Hfss3dLayout</span></code> object and link to a design named <code class="docutils literal notranslate"><span class="pre">designname</span></code> in a project named <code class="docutils literal notranslate"><span class="pre">projectname</span></code>.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">aedtapp</span> <span class="o">=</span> <span class="n">Hfss3dLayout</span><span class="p">(</span><span class="n">projectname</span><span class="p">,</span><span class="n">designame</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Create an <code class="docutils literal notranslate"><span class="pre">Hfss3dLayout</span></code> object and open the specified project.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">aedtapp</span> <span class="o">=</span> <span class="n">Hfss3dLayout</span><span class="p">(</span><span class="s2">&quot;myfile.aedt&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Create a <code class="docutils literal notranslate"><span class="pre">Desktop</span> <span class="pre">on</span> <span class="pre">2021R1</span></code> object and then creates an <code class="docutils literal notranslate"><span class="pre">Hfss3dLayout</span></code> object and open the specified project.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">aedtapp</span> <span class="o">=</span> <span class="n">Hfss3dLayout</span><span class="p">(</span><span class="n">specified_version</span><span class="o">=</span><span class="s2">&quot;2021.1&quot;</span><span class="p">,</span> <span class="n">projectname</span><span class="o">=</span><span class="s2">&quot;myfile.aedt&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-<dl class="py class">
-<dt class="sig sig-object py" id="pyaedt.hfss3dlayout.Hfss3dLayout">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pyaedt.hfss3dlayout.</span></span><span class="sig-name descname"><span class="pre">Hfss3dLayout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">projectname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">designname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">solution_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">setup_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">specified_version</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">NG</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">AlwaysNew</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">release_on_exit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/hfss3dlayout.html#Hfss3dLayout"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.hfss3dlayout.Hfss3dLayout" title="Permalink to this definition">¶</a></dt>
-<dd><p>HFSS 3D Layout Object</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>projectname</strong> (<em>str</em>) -- Name of the project to select or the full path to the project or AEDTZ archive to open.
-If <code class="docutils literal notranslate"><span class="pre">None</span></code>, try to get the active project and, if none exists, create an empty project.</p></li>
-<li><p><strong>designname</strong> (<em>str</em>) -- Name of the design to select. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, try to get the active design and, if none exists, create an empty design.</p></li>
-<li><p><strong>solution_type</strong> (<em>str</em>) -- Solution type to apply to the design. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, use the default.</p></li>
-<li><p><strong>setup_name</strong> -- Name of the setup to use as the nominal. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, the active setup is used or nothing is used.</p></li>
-</ul>
-</dd>
-</dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="pyaedt.hfss3dlayout.Hfss3dLayout.create_coax_port">
-<span class="sig-name descname"><span class="pre">create_coax_port</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vianame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xstart</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xend</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ystart</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yend</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">archeight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arcrad</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">isexternal</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/hfss3dlayout.html#Hfss3dLayout.create_coax_port"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.hfss3dlayout.Hfss3dLayout.create_coax_port" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a new coax port.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>vianame</strong> (<em>str</em>) -- Name of the via on which to create the port.</p></li>
-<li><p><strong>layer</strong> (<em>str</em>) -- Name of the layer.</p></li>
-<li><p><strong>xstart</strong> -- X-axis position of the pin.</p></li>
-<li><p><strong>ystart</strong> -- Y-axis position of the pin.</p></li>
-<li><p><strong>xend</strong> -- X-axis position of the pin.</p></li>
-<li><p><strong>yend</strong> -- Y-axis end position of the pin.</p></li>
-<li><p><strong>archeight</strong> -- Arc height. The default is <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p></li>
-<li><p><strong>arcrad</strong> -- Rotation of the pin in rad. The default is <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p></li>
-<li><p><strong>isexternal</strong> (<em>bool</em>) -- Indicates if the pin is external. If ''True,`` the pin is external. If ''False,`` the pin is internal. The default is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Name of the port | False error</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>type</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyaedt.hfss3dlayout.Hfss3dLayout.create_edge_port">
-<span class="sig-name descname"><span class="pre">create_edge_port</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">primivitivename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edgenumber</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iscircuit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/hfss3dlayout.html#Hfss3dLayout.create_edge_port"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.hfss3dlayout.Hfss3dLayout.create_edge_port" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a new edge port.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>primivitivename</strong> (<em>str</em>) -- Name of the primitive.</p></li>
-<li><p><strong>edgenumber</strong> -- Edge number on which to create the port.</p></li>
-<li><p><strong>iscircuit</strong> (<em>bool</em>) -- Indicates if it is a circuit port. The default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Port name</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>type</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyaedt.hfss3dlayout.Hfss3dLayout.create_frequency_sweep">
-<span class="sig-name descname"><span class="pre">create_frequency_sweep</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">setupname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freqstart</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freqstop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_of_freq_points</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sweepname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sweeptype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'interpolating'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interpolation_tol_percent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interpolation_max_solutions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">250</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_fields</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_rad_fields_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_q3d_for_dc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/hfss3dlayout.html#Hfss3dLayout.create_frequency_sweep"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.hfss3dlayout.Hfss3dLayout.create_frequency_sweep" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a frequency sweep.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>setupname</strong> (<em>str</em>) -- Name of the setup that is attached to the sweep.</p></li>
-<li><p><strong>unit</strong> -- Units such as <code class="docutils literal notranslate"><span class="pre">&quot;MHz&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;GHz&quot;</span></code>, and so on.</p></li>
-<li><p><strong>freqstart</strong> -- Starting frequency of the sweep.</p></li>
-<li><p><strong>freqstop</strong> -- Stopping frequency of the sweep.</p></li>
-<li><p><strong>sweepname</strong> (<em>str</em>) -- Name of the sweep. The default is <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
-<li><p><strong>num_of_freq_points</strong> -- Number of frequency points in the range.</p></li>
-<li><p><strong>sweeptype</strong> (<em>discrete</em>) -- Type of sweep. Choices are <code class="docutils literal notranslate"><span class="pre">&quot;Fast&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;Interpolating&quot;</span></code>, and <code class="docutils literal notranslate"><span class="pre">&quot;Discrete&quot;</span></code>. The default is <code class="docutils literal notranslate"><span class="pre">&quot;Interpolating</span></code>.</p></li>
-<li><p><strong>interpolation_max_solutions</strong> -- Maximum number of solutions evaluated for the interpolation process. The default is <code class="docutils literal notranslate"><span class="pre">250</span></code>.</p></li>
-<li><p><strong>interpolation_tol_percent</strong> -- Error tolerance threshold for the interpolation process. The default is <code class="docutils literal notranslate"><span class="pre">0.5</span></code>.</p></li>
-<li><p><strong>save_fields</strong> (<em>bool</em>) -- Save the fields for a discrete sweep only. The default is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
-<li><p><strong>save_rad_fields_only</strong> (<em>bool</em>) -- Save only the radiated fields if <code class="docutils literal notranslate"><span class="pre">save_fields</span> <span class="pre">=</span> <span class="pre">True</span></code>. The default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
-<li><p><strong>use_q3d_for_dc</strong> (<em>bool</em>) -- Use Q3D to solve the DC point. The default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Setup name if operation succeeded</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>type</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyaedt.hfss3dlayout.Hfss3dLayout.create_pin_port">
-<span class="sig-name descname"><span class="pre">create_pin_port</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xpos</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ypos</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rotation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top_layer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bot_layer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/hfss3dlayout.html#Hfss3dLayout.create_pin_port"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.hfss3dlayout.Hfss3dLayout.create_pin_port" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a new pin port.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<em>str</em>) -- Name of the pin port.</p></li>
-<li><p><strong>xpos</strong> -- X-axis position of the pin. The default is <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p></li>
-<li><p><strong>ypos</strong> -- Y-axis position of the pin. The default is <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p></li>
-<li><p><strong>rotation</strong> -- Rotation of the pin in degrees. The default is <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p></li>
-<li><p><strong>top_layer</strong> (<em>str</em>) -- Top layer of the pin. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, it is automatically assigned to the top. The default is <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
-<li><p><strong>bot_layer</strong> (<em>str</em>) -- Bottom layer of the pin. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, it is automatically assigned to the bottom. The default is <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>True</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>type</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyaedt.hfss3dlayout.Hfss3dLayout.create_scattering">
-<span class="sig-name descname"><span class="pre">create_scattering</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plot_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'S</span> <span class="pre">Parameter</span> <span class="pre">Plot</span> <span class="pre">Nominal'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sweep_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port_excited</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/hfss3dlayout.html#Hfss3dLayout.create_scattering"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.hfss3dlayout.Hfss3dLayout.create_scattering" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create scattering Report</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>PlotName</strong> -- The name of the plot. The default is <code class="docutils literal notranslate"><span class="pre">&quot;S</span> <span class="pre">Parameter</span> <span class="pre">Plot</span> <span class="pre">Nominal&quot;</span></code></p></li>
-<li><p><strong>sweep_name</strong> (<em>str</em>) -- The default is <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
-<li><p><strong>PortNames</strong> (<em>str</em>) -- The names of the port. The default is <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
-<li><p><strong>PortExcited</strong> (<em>str</em>) -- The default is <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
-<li><p><strong>variations</strong> -- The default is <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyaedt.hfss3dlayout.Hfss3dLayout.delete_port">
-<span class="sig-name descname"><span class="pre">delete_port</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">portname</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/hfss3dlayout.html#Hfss3dLayout.delete_port"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.hfss3dlayout.Hfss3dLayout.delete_port" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>portname</strong> (<em>str</em>) -- </p></li>
-<li><p><strong>name of the port.</strong> (<em>The</em>) -- </p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyaedt.hfss3dlayout.Hfss3dLayout.export_touchstone">
-<span class="sig-name descname"><span class="pre">export_touchstone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solutionname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sweepname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variations_value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/hfss3dlayout.html#Hfss3dLayout.export_touchstone"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.hfss3dlayout.Hfss3dLayout.export_touchstone" title="Permalink to this definition">¶</a></dt>
-<dd><p>Export the Touchstone file.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>solutionname</strong> (<em>str</em>) -- Name of the solution that has been solved.</p></li>
-<li><p><strong>sweepname</strong> (<em>str</em>) -- Name of the sweep that has been solved.</p></li>
-<li><p><strong>filename</strong> (<em>str</em>) -- Full path of the output file.</p></li>
-<li><p><strong>variation</strong> (<em>list</em>) -- List of all parameter variations, such  as <code class="docutils literal notranslate"><span class="pre">[&quot;$AmbientTemp&quot;,</span> <span class="pre">&quot;$PowerIn&quot;]</span></code>.</p></li>
-<li><p><strong>variations_value</strong> (<em>list</em>) -- List of all parameter variation values, such as <code class="docutils literal notranslate"><span class="pre">[&quot;22cel&quot;,</span> <span class="pre">&quot;100&quot;]</span></code>.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyaedt.hfss3dlayout.Hfss3dLayout.import_edb">
-<span class="sig-name descname"><span class="pre">import_edb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edb_full_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/hfss3dlayout.html#Hfss3dLayout.import_edb"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.hfss3dlayout.Hfss3dLayout.import_edb" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>edb_full_path</strong> (<em>str</em>) -- </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyaedt.hfss3dlayout.Hfss3dLayout.set_export_touchstone">
-<span class="sig-name descname"><span class="pre">set_export_touchstone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">activate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">export_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/hfss3dlayout.html#Hfss3dLayout.set_export_touchstone"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.hfss3dlayout.Hfss3dLayout.set_export_touchstone" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set automatic export of the Touchstone file after the simulation is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>activate</strong> (<em>bool</em>) -- Export after the simulation.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>True if operation succeeded</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>type</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyaedt.hfss3dlayout.Hfss3dLayout.validate_full_design">
-<span class="sig-name descname"><span class="pre">validate_full_design</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outputdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ports</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/hfss3dlayout.html#Hfss3dLayout.validate_full_design"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.hfss3dlayout.Hfss3dLayout.validate_full_design" title="Permalink to this definition">¶</a></dt>
-<dd><p>Validate the design based on the expected value and save the information in the log file.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<em>str</em>) -- Name of the design to validate. The default is <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
-<li><p><strong>outputdir</strong> (<em>str</em>) -- Output directory in which to save the log file. The default is <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
-<li><p><strong>ports</strong> (<em>str</em>) -- Number of excitations expected. The default is <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>All the info in a list for later use</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>type</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="pyaedt.hfss3dlayout.SweepString">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pyaedt.hfss3dlayout.</span></span><span class="sig-name descname"><span class="pre">SweepString</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'GHz'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/hfss3dlayout.html#SweepString"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.hfss3dlayout.SweepString" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generate a sweep string like this example: <code class="docutils literal notranslate"><span class="pre">&quot;LIN</span> <span class="pre">10GHz</span> <span class="pre">20GHz</span> <span class="pre">0.05GHz</span> <span class="pre">LINC</span> <span class="pre">20GHz</span> <span class="pre">30GHz</span> <span class="pre">10</span> <span class="pre">DEC</span> <span class="pre">30GHz</span> <span class="pre">40GHz</span> <span class="pre">10</span> <span class="pre">40GHz</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="pyaedt.hfss3dlayout.SweepString.add_sweep">
-<span class="sig-name descname"><span class="pre">add_sweep</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sweep</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/hfss3dlayout.html#SweepString.add_sweep"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.hfss3dlayout.SweepString.add_sweep" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add a sweep line to the string.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>sweep</strong> (<em>list</em>) -- List of frequencies,
-if linear_step [start, stop, step]
-if linear_count [start, stop, number of steps]
-if log_scale [start, stop, samples]
-if single [f1, f2,... fn]</p></li>
-<li><p><strong>line_type</strong> -- linear_step&quot;, &quot;linear_count&quot;, &quot;log_scale&quot;, &quot;single&quot;</p></li>
-<li><p><strong>unit</strong> (<em>str</em>) -- Units such as <code class="docutils literal notranslate"><span class="pre">&quot;MHz&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;GHz&quot;</span></code>, and so on. The default is <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyaedt.hfss3dlayout.SweepString.get_string">
-<span class="sig-name descname"><span class="pre">get_string</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyaedt/hfss3dlayout.html#SweepString.get_string"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyaedt.hfss3dlayout.SweepString.get_string" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-</div>
+  <div class="section" id="hfss3dlayout-objects">
+<h1>HFSS3DLayout Objects<a class="headerlink" href="#hfss3dlayout-objects" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
 </div>
 </div>
@@ -1077,7 +776,7 @@ if single [f1, f2,... fn]</p></li>
               
               <div class='prev-next-bottom'>
                 
-    <a class='left-prev' id="prev-link" href="EDBData.html" title="previous page">EDB Data Classes</a>
+    <a class='left-prev' id="prev-link" href="EDBStackup.html" title="previous page">EDB Stackup</a>
     <a class='right-next' id="next-link" href="Mechanical.html" title="next page">AEDT Mechanical</a>
 
               </div>
@@ -1095,7 +794,7 @@ if single [f1, f2,... fn]</p></li>
     
     <div class="footer-item">
       <p class="copyright">
-    &copy; Copyright (c) 2021 ANSYS, Inc. All rights reserved.<br/>
+    &copy; Copyright Copyright(c) 1986-2021, ANSYS Inc. unauthorised use, distribution or duplication is prohibited..<br/>
 </p>
     </div>
     

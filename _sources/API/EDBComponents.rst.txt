@@ -4,11 +4,10 @@
    contain the root `toctree` directive.
 
 EDB Components
-==============
-
+===================================
 **Diagram**
 
-.. automodule:: pyaedt.edb_core.components
+.. automodule:: pyaedt.edb.components
     :members:
 
 .. toctree::

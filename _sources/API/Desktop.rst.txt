@@ -4,9 +4,9 @@
    contain the root `toctree` directive.
 
 Desktop
-=======
+===================================
 
-.. automodule:: pyaedt.desktop
+.. automodule:: pyaedt.Desktop
     :members:
 
 

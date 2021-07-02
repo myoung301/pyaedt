@@ -4,9 +4,9 @@
    contain the root `toctree` directive.
 
 Nexxim
-======
+===================================
 
-.. automodule:: pyaedt.circuit
+.. automodule:: pyaedt.Circuit
     :members:
 
 
