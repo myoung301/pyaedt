@@ -1895,12 +1895,12 @@ class GeometryModeler(Modeler, object):
         szSelections = self.convert_to_selections(theList)
 
         delList = theList[1::]
-        self.cleanup_objects()
 
         vArg1 = ['NAME:Selections', 'Selections:=', szSelections]
         vArg2 = ['NAME:UniteParameters', 'KeepOriginals:=', False]
 
         self.oeditor.Unite(vArg1, vArg2)
+        self.primitives.cleanup_objects()
         return True
 
     @aedt_exception_handler
@@ -2713,12 +2713,12 @@ class GeometryModeler(Modeler, object):
         for edge in connected:
             edge_object = self.primitives.create_object_from_edge(edge)
             new_edges.append(edge_object)
-
+        new_name=new_edges[0].name
         self.unite(new_edges)
-        self.generate_object_history(new_edges[0].id)
-        self.primitives.convert_segments_to_line(new_edges[0].id)
+        self.generate_object_history(new_name)
+        self.primitives.convert_segments_to_line(new_name)
 
-        edges = self.primitives.get_object_edges(new_edges[0].id)
+        edges = self.primitives.get_object_edges(new_name)
         i = 0
         edge_to_delete = []
         first_vert = None
@@ -2741,7 +2741,7 @@ class GeometryModeler(Modeler, object):
                 rad = dist
                 move_vector = GeometryOperators.v_sub(fc, first_vert)
 
-        P = self.primitives.get_existing_polyline(object=new_edges[0])
+        P = self.primitives.get_existing_polyline(object=self[new_name])
 
         if edge_to_delete:
             P.remove_edges(edge_to_delete)

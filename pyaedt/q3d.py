@@ -308,15 +308,15 @@ class Q3d(QExtractor, object):
                         self.messenger.add_warning_message("Sweep {} is already present. Rename and retry.".format(sweepname))
                         return False
                 sweepdata = setupdata.add_sweep(sweepname, "Discrete")
-                sweepdata.props["RangeStart"] = freqstart
+                sweepdata.props["RangeStart"] = str(freqstart)+unit
                 if not freqstop:
                     freqstop = freqstart
                 if not freqstep:
-                    freq_step = (freqstop-freqstart)/11
-                    if freq_step == 0:
+                    freqstep = (freqstop-freqstart)/11
+                    if freqstep == 0:
                         freqstep = freqstart
-                sweepdata.props["RangeEnd"] = freqstop
-                sweepdata.props["RangeStep"] = freqstep
+                sweepdata.props["RangeEnd"] = str(freqstop)+unit
+                sweepdata.props["RangeStep"] = str(freqstep)+unit
                 sweepdata.props["SaveFields"] = False
                 sweepdata.props["SaveRadFields"] = False
                 sweepdata.props["Type"] = "Interpolating"
@@ -364,15 +364,15 @@ class Q3d(QExtractor, object):
                         self.messenger.add_warning_message("Sweep {} already present. Please rename and retry".format(sweepname))
                         return False
                 sweepdata = setupdata.add_sweep(sweepname, "Discrete")
-                sweepdata.props["RangeStart"] = freqstart
+                sweepdata.props["RangeStart"] = str(freqstart)+units
                 if not freqstop:
                     freqstop = freqstart
                 if not freqstep:
                     freqstep = (freqstop - freqstart) / 11
                     if freqstep == 0:
                         freqstep = freqstart
-                sweepdata.props["RangeEnd"] = freqstop
-                sweepdata.props["RangeStep"] = freqstep
+                sweepdata.props["RangeEnd"] = str(freqstop)+units
+                sweepdata.props["RangeStep"] = str(freqstep)+units
                 sweepdata.props["SaveFields"] = savefields
                 sweepdata.props["SaveRadFields"] = False
                 sweepdata.props["Type"] = "Discrete"

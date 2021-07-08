@@ -44,12 +44,12 @@ class TestQ3D:
         mysetup = self.aedtapp.create_setup()
         mysetup.props["SaveFields"] = True
         assert mysetup.update()
-        sweep = self.aedtapp.create_discrete_sweep(mysetup.name, sweepname="mysweep", freqstart=1)
+        sweep = self.aedtapp.create_discrete_sweep(mysetup.name, sweepname="mysweep", freqstart=1, units="GHz")
         assert sweep
-        assert sweep.props["RangeStart"] == 1
+        assert sweep.props["RangeStart"] == "1GHz"
         sweep2 = self.aedtapp.create_frequency_sweep(mysetup.name, sweepname="mysweep2",unit="GHz",freqstart=1, freqstop=4)
         assert sweep2
-        assert sweep2.props["RangeEnd"] == 4
+        assert sweep2.props["RangeEnd"] == "4GHz"
 
         pass
 

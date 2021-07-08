@@ -1518,6 +1518,7 @@ class Primitives(object):
     def cleanup_objects(self):
         new_object_dict = {}
         new_object_id_dict = {}
+        self._refresh_object_types()
         for obj_name in self.object_id_dict:
             if obj_name in self._all_object_names:
                 id = self.object_id_dict[obj_name]
