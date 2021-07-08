@@ -1276,8 +1276,8 @@ class Primitives(object):
             objtosplit = [objtosplit]
         objnames = []
         for el in objtosplit:
-            if isinstance(el, int) and el in list(self.primitives.objects.keys()):
-                objnames.append(self.primitives.get_obj_name(el))
+            if isinstance(el, int) and el in list(self.objects.keys()):
+                objnames.append(self.get_obj_name(el))
             elif isinstance(el, Object3d):
                 objnames.append(el.name)
             elif isinstance(el, str):
@@ -1513,7 +1513,7 @@ class Primitives(object):
 
     def _create_object(self, name):
         self._refresh_object_types()
-        assert name in self._all_object_names
+        # assert name in self._all_object_names
         o = Object3d(self, name)
         self.objects[o.id] = o
         self.object_id_dict[o.name] = o.id
@@ -1616,50 +1616,51 @@ class Primitives(object):
         n = 10
         name = o.name
         all_prop = retry_ntimes(n, self.oeditor.GetProperties, "Geometry3DAttributeTab", name)
-        if 'Solve Inside' in all_prop:
-            solveinside = retry_ntimes(n, self.oeditor.GetPropertyValue, "Geometry3DAttributeTab", name, 'Solve Inside')
-            if solveinside == 'false' or solveinside == 'False':
-                o._solve_inside = False
-        if 'Material' in all_prop:
-            mat = retry_ntimes(n, self.oeditor.GetPropertyValue, "Geometry3DAttributeTab", name, 'Material')
-            if mat:
-                o._material_name = mat[1:-1].lower()
-            else:
-                o._material_name = ''
-        if 'Orientation' in all_prop:
-            o._part_coordinate_system = retry_ntimes(n, self.oeditor.GetPropertyValue,
-                                                    "Geometry3DAttributeTab", name, 'Orientation')
-        if 'Model' in all_prop:
-            mod = retry_ntimes(n, self.oeditor.GetPropertyValue, "Geometry3DAttributeTab", name, 'Model')
-            if mod == 'false' or mod == 'False':
-                o._model = False
-            else:
-                o._model = True
-        if 'Group' in all_prop:
-            o._m_groupName = retry_ntimes(n, self.oeditor.GetPropertyValue, "Geometry3DAttributeTab", name, 'Group')
-        if 'Display Wireframe' in all_prop:
-            wireframe = retry_ntimes(n, self.oeditor.GetPropertyValue,
-                                     "Geometry3DAttributeTab", name, 'Display Wireframe')
-            if wireframe == 'true' or wireframe == 'True':
-                o._wireframe = True
-        if 'Transparent' in all_prop:
-            transp = retry_ntimes(n, self.oeditor.GetPropertyValue, "Geometry3DAttributeTab", name, 'Transparent')
-            try:
-                o._transparency = float(transp)
-            except:
-                o._transparency = 0.3
-        if 'Color' in all_prop:
-            color = int(retry_ntimes(n, self.oeditor.GetPropertyValue, "Geometry3DAttributeTab", name, 'Color'))
-            if color:
-                r = (color >> 16) & 255
-                g = (color >> 8) & 255
-                b = color & 255
-                o._color = (r, g, b)
-            else:
-                o._color = (0, 195, 255)
-        if 'Surface Material' in all_prop:
-            o._surface_material = retry_ntimes(n, self.oeditor.GetPropertyValue,
-                                               "Geometry3DAttributeTab", name, 'Surface Material')
+        if all_prop:
+            if 'Solve Inside' in all_prop:
+                solveinside = retry_ntimes(n, self.oeditor.GetPropertyValue, "Geometry3DAttributeTab", name, 'Solve Inside')
+                if solveinside == 'false' or solveinside == 'False':
+                    o._solve_inside = False
+            if 'Material' in all_prop:
+                mat = retry_ntimes(n, self.oeditor.GetPropertyValue, "Geometry3DAttributeTab", name, 'Material')
+                if mat:
+                    o._material_name = mat[1:-1].lower()
+                else:
+                    o._material_name = ''
+            if 'Orientation' in all_prop:
+                o._part_coordinate_system = retry_ntimes(n, self.oeditor.GetPropertyValue,
+                                                        "Geometry3DAttributeTab", name, 'Orientation')
+            if 'Model' in all_prop:
+                mod = retry_ntimes(n, self.oeditor.GetPropertyValue, "Geometry3DAttributeTab", name, 'Model')
+                if mod == 'false' or mod == 'False':
+                    o._model = False
+                else:
+                    o._model = True
+            if 'Group' in all_prop:
+                o._m_groupName = retry_ntimes(n, self.oeditor.GetPropertyValue, "Geometry3DAttributeTab", name, 'Group')
+            if 'Display Wireframe' in all_prop:
+                wireframe = retry_ntimes(n, self.oeditor.GetPropertyValue,
+                                         "Geometry3DAttributeTab", name, 'Display Wireframe')
+                if wireframe == 'true' or wireframe == 'True':
+                    o._wireframe = True
+            if 'Transparent' in all_prop:
+                transp = retry_ntimes(n, self.oeditor.GetPropertyValue, "Geometry3DAttributeTab", name, 'Transparent')
+                try:
+                    o._transparency = float(transp)
+                except:
+                    o._transparency = 0.3
+            if 'Color' in all_prop:
+                color = int(retry_ntimes(n, self.oeditor.GetPropertyValue, "Geometry3DAttributeTab", name, 'Color'))
+                if color:
+                    r = (color >> 16) & 255
+                    g = (color >> 8) & 255
+                    b = color & 255
+                    o._color = (r, g, b)
+                else:
+                    o._color = (0, 195, 255)
+            if 'Surface Material' in all_prop:
+                o._surface_material = retry_ntimes(n, self.oeditor.GetPropertyValue,
+                                                   "Geometry3DAttributeTab", name, 'Surface Material')
         return o
 
     @aedt_exception_handler

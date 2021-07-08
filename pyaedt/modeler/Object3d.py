@@ -587,7 +587,6 @@ class Object3d(object):
         self._material_name = self._parent.defaultmaterial
         self._surface_material = None
         self._solve_inside = None
-        self._material_name = None
         self._transparency = None
         self._update()
 
@@ -745,7 +744,7 @@ class Object3d(object):
 
     @material_name.setter
     def material_name(self, mat):
-        if self._parent.materials.checkifmaterialexists(mat):
+        if self._parent.materials.checkifmaterialexists(mat.lower()):
             self._material_name = mat
             vMaterial = ["NAME:Material", "Value:=", chr(34)+mat+chr(34)]
             self._change_property(vMaterial)
@@ -1016,56 +1015,56 @@ class Object3d(object):
 
         n = 10
         all_prop = retry_ntimes(n, self.m_Editor.GetProperties, "Geometry3DAttributeTab", self._m_name)
+        if  all_prop:
+            self._solve_inside = False
+            if 'Solve Inside' in all_prop:
+                solveinside = retry_ntimes(n, self.m_Editor.GetPropertyValue, "Geometry3DAttributeTab", self._m_name, 'Solve Inside')
+                if solveinside == 'false' or solveinside == 'False':
+                    self._solve_inside = False
+                else:
+                    self._solve_inside = True
 
-        self._solve_inside = False
-        if 'Solve Inside' in all_prop:
-            solveinside = retry_ntimes(n, self.m_Editor.GetPropertyValue, "Geometry3DAttributeTab", self._m_name, 'Solve Inside')
-            if solveinside == 'false' or solveinside == 'False':
-                self._solve_inside = False
-            else:
-                self._solve_inside = True
-
-        if 'Material' in all_prop:
-            mat = retry_ntimes(n, self.m_Editor.GetPropertyValue, "Geometry3DAttributeTab", self._m_name, 'Material')
-            if mat:
-                self._material_name = mat[1:-1].lower()
-            else:
-                self._material_name = ''
-        if 'Orientation' in all_prop:
-            self.part_coordinate_system = retry_ntimes(n, self.m_Editor.GetPropertyValue,
-                                                    "Geometry3DAttributeTab", self._m_name, 'Orientation')
-        if 'Model' in all_prop:
-            mod = retry_ntimes(n, self.m_Editor.GetPropertyValue, "Geometry3DAttributeTab", self._m_name, 'Model')
-            if mod == 'false' or mod == 'False':
-                self._model = False
-            else:
-                self._model = True
-        if 'Group' in all_prop:
-            self.m_groupName = retry_ntimes(n, self.m_Editor.GetPropertyValue, "Geometry3DAttributeTab", self._m_name, 'Group')
-        if 'Display Wireframe' in all_prop:
-            wireframe = retry_ntimes(n, self.m_Editor.GetPropertyValue,
-                                     "Geometry3DAttributeTab", self._m_name, 'Display Wireframe')
-            if wireframe == 'true' or wireframe == 'True':
-                self._wireframe = True
-            else:
-                self._wireframe = False
-        if 'Transparent' in all_prop:
-            transp = retry_ntimes(n, self.m_Editor.GetPropertyValue, "Geometry3DAttributeTab", self._m_name, 'Transparent')
-            try:
-                self._transparency = float(transp)
-            except:
-                self._transparency = 0.3
-        if 'Color' in all_prop:
-            color = int(retry_ntimes(n, self.m_Editor.GetPropertyValue, "Geometry3DAttributeTab", self._m_name, 'Color'))
-            if color:
-                b = (color >> 16) & 255
-                g = (color >> 8) & 255
-                r = color & 255
-                self._color = (r, g, b)
-            else:
-                self._color = (0, 195, 255)
-        if 'Surface Material' in all_prop:
-            self._surface_material = retry_ntimes(n, self.m_Editor.GetPropertyValue,
+            if 'Material' in all_prop:
+                mat = retry_ntimes(n, self.m_Editor.GetPropertyValue, "Geometry3DAttributeTab", self._m_name, 'Material')
+                if mat:
+                    self._material_name = mat[1:-1].lower()
+                else:
+                    self._material_name = ''
+            if 'Orientation' in all_prop:
+                self.part_coordinate_system = retry_ntimes(n, self.m_Editor.GetPropertyValue,
+                                                        "Geometry3DAttributeTab", self._m_name, 'Orientation')
+            if 'Model' in all_prop:
+                mod = retry_ntimes(n, self.m_Editor.GetPropertyValue, "Geometry3DAttributeTab", self._m_name, 'Model')
+                if mod == 'false' or mod == 'False':
+                    self._model = False
+                else:
+                    self._model = True
+            if 'Group' in all_prop:
+                self.m_groupName = retry_ntimes(n, self.m_Editor.GetPropertyValue, "Geometry3DAttributeTab", self._m_name, 'Group')
+            if 'Display Wireframe' in all_prop:
+                wireframe = retry_ntimes(n, self.m_Editor.GetPropertyValue,
+                                         "Geometry3DAttributeTab", self._m_name, 'Display Wireframe')
+                if wireframe == 'true' or wireframe == 'True':
+                    self._wireframe = True
+                else:
+                    self._wireframe = False
+            if 'Transparent' in all_prop:
+                transp = retry_ntimes(n, self.m_Editor.GetPropertyValue, "Geometry3DAttributeTab", self._m_name, 'Transparent')
+                try:
+                    self._transparency = float(transp)
+                except:
+                    self._transparency = 0.3
+            if 'Color' in all_prop:
+                color = int(retry_ntimes(n, self.m_Editor.GetPropertyValue, "Geometry3DAttributeTab", self._m_name, 'Color'))
+                if color:
+                    b = (color >> 16) & 255
+                    g = (color >> 8) & 255
+                    r = color & 255
+                    self._color = (r, g, b)
+                else:
+                    self._color = (0, 195, 255)
+            if 'Surface Material' in all_prop:
+                self._surface_material = retry_ntimes(n, self.m_Editor.GetPropertyValue,
                                                "Geometry3DAttributeTab", self._m_name, 'Surface Material')
 
 class Padstack(object):

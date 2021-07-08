@@ -506,7 +506,7 @@ class Maxwell(object):
                 bound = BoundaryObject(self, name, props2, "CoilTerminal")
 
             else:
-                self.messenger.add_warning_error("Face Selection is not allowed in Maxwell 2D. Provide a 2D object.")
+                self.messenger.add_error_message("Face Selection is not allowed in Maxwell 2D. Provide a 2D object.")
                 return False
         if bound.create():
             self.boundaries.append(bound)

@@ -126,7 +126,6 @@ class TestHFSS:
     def test_06z_validate_setup(self):
         list, ok = self.aedtapp.validate_full_design(ports=5)
         assert ok
-        pass
 
     def test_07_set_power(self):
         id1 = self.aedtapp.modeler.primitives.get_obj_id("inner")
@@ -216,7 +215,7 @@ class TestHFSS:
 
     def test_15_create_perfects_on_sheets(self):
         rect = self.aedtapp.modeler.primitives.create_rectangle(self.aedtapp.CoordinateSystemPlane.XYPlane, [0, 0, 0],
-                                                                [10, 2], "RectBound", "Copper")
+                                                                [10, 2], name="RectBound", matname="Copper")
         pe = self.aedtapp.assign_perfecte_to_sheets("RectBound")
         assert pe.name in self.aedtapp.modeler.get_boundaries_name()
         ph = self.aedtapp.assign_perfecth_to_sheets("RectBound")
@@ -231,15 +230,15 @@ class TestHFSS:
 
     def test_17_create_lumpedrlc_on_sheets(self):
         rect = self.aedtapp.modeler.primitives.create_rectangle(self.aedtapp.CoordinateSystemPlane.XYPlane, [0, 0, 0],
-                                                                [10, 2], "rlcBound", "Copper")
+                                                                [10, 2], name="rlcBound", matname="Copper")
         imp = self.aedtapp.assign_lumped_rlc_to_sheet("rlcBound", self.aedtapp.AxisDir.XPos,Rvalue=50,Lvalue=1e-9)
         names = self.aedtapp.modeler.get_boundaries_name()
         assert imp.name in self.aedtapp.modeler.get_boundaries_name()
 
     def test_17B_update_assignment(self):
-        bound = self.aedtapp.assign_perfecth_to_sheets(self.aedtapp.modeler.primitives["My_Box"].faces[0].id)
+        bound = self.aedtapp.assign_perfecth_to_sheets(self.aedtapp.modeler.primitives["BoxCircuit1"].faces[0].id)
         assert bound
-        bound.props["Faces"].append(self.aedtapp.modeler.primitives["My_Box"].faces[1])
+        bound.props["Faces"].append(self.aedtapp.modeler.primitives["BoxCircuit1"].faces[1])
         assert bound.update_assignment()
 
     def test_18_create_sources_on_objects(self):
@@ -252,14 +251,14 @@ class TestHFSS:
 
     def test_19_create_lumped_on_sheet(self):
         rect = self.aedtapp.modeler.primitives.create_rectangle(self.aedtapp.CoordinateSystemPlane.XYPlane, [0, 0, 0],
-                                                                [10, 2], "lump_port", "Copper")
+                                                                [10, 2], name="lump_port", matname="Copper")
         port = self.aedtapp.create_lumped_port_to_sheet("lump_port", self.aedtapp.AxisDir.XNeg, 50,
                                                             "Lump_sheet", True, False)
         assert port+":1" in self.aedtapp.modeler.get_excitations_name()
 
     def test_20_create_voltage_on_sheet(self):
         rect = self.aedtapp.modeler.primitives.create_rectangle(self.aedtapp.CoordinateSystemPlane.XYPlane, [0, 0, 0],
-                                                                [10, 2], "lump_volt", "Copper")
+                                                                [10, 2], name="lump_volt", matname="Copper")
         port = self.aedtapp.assig_voltage_source_to_sheet("lump_volt", self.aedtapp.AxisDir.XNeg,  "LumpVolt1")
         assert port in self.aedtapp.modeler.get_excitations_name()
         assert self.aedtapp.get_property_value("BoundarySetup:LumpVolt1", "VoltageMag", "Excitation") == "1V"
@@ -349,7 +348,7 @@ class TestHFSS:
         design_name = "HfssCopiedBodies"
         new_design = Hfss(projectname=project_name, designname=design_name)
         assert new_design.copy_solid_bodies_from(self.aedtapp)
-        assert len(new_design.modeler.solid_bodies) == 42
+        assert len(new_design.modeler.solid_bodies) == 41
         new_design.delete_design(design_name)
         new_design.close_project(project_name)
 
@@ -380,5 +379,5 @@ class TestHFSS:
     def test_40_assign_current_source_to_sheet(self):
         sheet_name = "RectangleForSource"
         self.aedtapp.modeler.primitives.create_rectangle(self.aedtapp.CoordinateSystemPlane.XYPlane, [0, 0, 0],
-                                                         [5, 1], sheet_name, "Copper")
+                                                         [5, 1], name=sheet_name, matname="Copper")
         assert self.aedtapp.assign_current_source_to_sheet(sheet_name)
