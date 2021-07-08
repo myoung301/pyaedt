@@ -1,12 +1,5 @@
 """
-Post Processing Library Class
---------------------------------------------------------------------------------
-
-
-Description
-============================================================
-
-This class contains all the functionalities to create and edit plots in all the 3D Tools.
+This module contains these classes: `FieldPlot`, `PostProcessor`, and `SolutionData`.
 
 NOTE: Some functionalities are available only in graphical mode
 
@@ -42,9 +35,10 @@ report_type = {"DrivenModal": "Modal Solution Data", "DrivenTerminal": "Terminal
 
 
 class SolutionData(object):
-    """Data Class containing information from GetSolutionfromVariation call"""
-
-
+    """SolutionData class.
+    
+    This data class contains information from the `GetSolutionfromVariation` AEDT call.
+    """
     @property
     def sweeps(self):
         """ """
@@ -290,9 +284,9 @@ class SolutionData(object):
         Parameters
         ----------
         datalist :
-            
+
         dataunits :
-            
+
         units :
             
 
@@ -409,8 +403,21 @@ class SolutionData(object):
 
 
 class FieldPlot:
-    """ """
-
+    """FieldPlot class.
+    
+    Parameters
+    ----------
+    oField :
+    
+    objlist : list
+        List of objects.
+    solutionName : str
+        Name of the solution.
+    quantityName : str
+        Name of the plot or the name of the object.
+    intrinsicList: dict, optional
+        Name of the intrinsic dictionary. The default is ``{}``.
+    """
     def __init__(self, oField, objlist, solutionName, quantityName, intrinsincList={}):
         self.oField = oField
         self.faceIndexes = objlist
@@ -492,7 +499,6 @@ class FieldPlot:
 
         Returns
         -------
-
         """
         var = ""
         if type(self.intrinsincList) is list:
@@ -571,16 +577,18 @@ class FieldPlot:
 
 
 class PostProcessor(object):
-    """Manage Main AEDT PostProcess Functions
-    AEDTConfig Class Inherited contains all the _desktop Hierarchical calls needed to the class
-    init data: _desktop and Design Type  "HFSS","Icepak", "HFSS3DLayout"
+    """PostProcessor class.
+    
+    This class contains all functionalities for managing main AEDT postprocess functions.
+    The inherited `AEDTConfig` class contains all `_desktop` hierarchical calls
+    needed for the class inititialization data `_desktop` and the design types ``"HFSS"``,
+    ``"Icepak"``, and ``"HFSS3DLayout"``.
 
     Parameters
     ----------
-
-    Returns
-    -------
-
+    parent: 
+        Parent object, such as the AEDT application. The parent object must
+        provide the members `_modeler`, `_desktop`, `_odesign`, and `_messenger`.
     """
 
     def __init__(self, parent):
@@ -672,7 +680,7 @@ class PostProcessor(object):
         Parameters
         ----------
         report_type :
-            
+
 
         Returns
         -------
@@ -711,11 +719,11 @@ class PostProcessor(object):
         Parameters
         ----------
         plotname :
-            
+
         propertyname :
-            
+
         propertyval :
-            
+            Value for the property.
 
         Returns
         -------
@@ -748,37 +756,39 @@ class PostProcessor(object):
 
         Parameters
         ----------
-        quantity_name :
-            name of quantity to export (eg. Temp)
-        solution :
-            name of solution : sweep (Default value = None)
-        variations_dict :
-            list of all variations variables with values
-        filename :
-            output full path filename (Default value = None)
-        gridtype :
-            type of grid to export. Default Cartesian
-        grid_center :
-            Center of the grid. Disabled for Cartesian (Default value = [0)
-        grid_start :
-            Start of the grid. Float list of 3 elements (Default value = [0)
-        grid_stop :
-            Stop of the grid. Float list of 3 elements (Default value = [0)
-        grid_step :
-            Step of the grid. Float list of 3 elements (Default value = [0)
-        intrinsics :
-            str mandatory for Frequency domain field calculation (Default value = None)
-        phase :
-            str field phase (Default value = None)
-        variation_dict :
-             (Default value = None)
-        0 :
-            
-        0] :
-            
-        isvector :
-             (Default value = False)
-
+        quantity_name : str
+            Name of the quantity to export. For example, ``"Temp"``.
+        solution : str, optional
+            Name of the solution in the format ``"solution : sweep"``. The default is ``None``.
+        variations_dict : dict, optional
+            Dictionary of all variation variables with their values.
+            The default is ``None``.
+        filename : str, optional
+            Full path and file name to which to save the file.
+            The default is ``None``.
+        gridtype : str, optional
+            Type of the grid to export. The default is ``"Cartesian"``.
+        grid_center : list, optional
+            Center of the grid. This parameter is disabled if ``gridtype=
+            "Cartesian"``. The default is a list of three
+            float values, ``[0, 0, 0]``.
+        grid_start : list, optional
+            Starting point of the grid. The default is a list of three
+            float values, ``[0, 0, 0]``.
+        grid_stop : list, optional
+            Stopping point of the grid. The default is a list of three
+            float values, ``[0, 0, 0]``.
+        grid_step : list, optional
+            Size of the step for the grid. The default is a list of three
+            float values, ``[0, 0, 0]``.
+        isvector : bool, optional
+            Whether the quantity is a vector. The  default is ``False``.
+        intrinsics : str, optional
+            This parameter is mandatory for a frequency field 
+            calculation. The default is ``None``.
+        phase : str, optional
+            Field phase. The default is ``None``.
+   
         Returns
         -------
         type
@@ -858,27 +868,33 @@ class PostProcessor(object):
         Parameters
         ----------
         quantity_name :
-            name of quantity to export (eg. Temp)
-        solution :
-            name of solution : sweep (Default value = None)
-        variation_dict :
-            list of all variations variables with values (Default value = None)
-        filename :
-            output full path filename (Default value = None)
-        obj_list :
-            list of objects to export. Default "AllObjects
-        obj_type :
-            type of objects to export. Default "Vol" (Volume). Can be "Surf"
-        intrinsics :
-            str mandatory for Frequency or Transient field calculation (Default value = None)
-        phase :
-            str field phase (Default value = None)
-        sample_points_file :
-             (Default value = None)
-        sample_points_lists :
-             (Default value = None)
-         export_with_sample_points : bool
-
+            Name of the quantity to export. For example, ``"Temp"``.
+        solution : str, optional
+            Name of the solution in the format ``"solution: sweep"``.
+            The default is ``None``.
+        variation_dict : dict, optional
+            Dictionary of all variation variables with their values,
+            The default is ``None``.
+        filename : str, optional
+            Full path and file name to save the file to.
+            The default is ``None``.
+        obj_list : str, optional
+            List of objects to export. The default is ``"AllObjects"``.
+        obj_type : str, optional
+            Type of objects to export. Options are ``"Vol"`` for volume and
+            ``"Surf"`` for surface. The default is ``"Vol"``.
+        intrinsics : str, optional
+            This parameter is mandatory for a frequency or transient field
+            calculation. The default is ``None``.
+        phase : str, optional
+            Field phase. The default is ``None``.
+        sample_points_file : str, optional
+            Name of a file with sample points. The default is ``None``.
+        sample_points_lists : list, optional
+            List of sample  points. The default is ``None``.
+        export_with_sample_points : bool, optional
+            Whether to include sample points in the file to export.
+            The default is ``True``.
 
         Returns
         -------
@@ -952,7 +968,8 @@ class PostProcessor(object):
         ----------
         plotname :
             
-        filepath :
+        filepath : str
+            Path to save the file to.
             
         filename :
              (Default value = "")
@@ -974,11 +991,11 @@ class PostProcessor(object):
         Parameters
         ----------
         objlist :
-            
+
         quantityName :
-            
+
         setup_name :
-            
+
         intrinsincList :
             
         objtype :
@@ -1014,14 +1031,16 @@ class PostProcessor(object):
 
         Parameters
         ----------
-        objlist :
-            list of surfaces to be included in the plot
-        quantityName :
-            Quantity to be plotted
-        setup_name :
-            Name of the setup in the format "setupName : sweepName" (Default value = None)
-        intrinsincDict :
-            Dictionary containing all intrinsic  variables (Default value = {})
+        objlist : list
+            List of surfaces to plot.
+        quantityName : str
+            Name of the quantity to plot.
+        setup_name : str, optional
+            Name of the setup in the format ``"setupName : sweepName"``. The default 
+            is ``None``.
+        intrinsincDict : dict, optional
+            Dictionary containing all intrinsic variables. The default 
+            is ``{}``.
 
         Returns
         -------
@@ -1038,14 +1057,17 @@ class PostProcessor(object):
 
         Parameters
         ----------
-        objlist :
-            list of cut planes to be included in the plot
-        quantityName :
-            Quantity to be plotted
-        setup_name :
-            Name of the setup in the format "setupName : sweepName". If none, nominal, lastadaptive will be Applied (Default value = None)
-        intrinsincDict :
-            Dictionary containing all intrinsic  variables (Default value = {})
+        objlist : list
+            List of cut planes to plot.
+        quantityName : str
+            Name of the quantity to plot.
+        setup_name : str, optional
+            Name of the setup in the format
+            ``"setupName : sweepName"``. The default is ``None``,
+            in which case ``"nominal, lastadaptive"`` is used.
+        intrinsincDict : dict, optional
+            Dictionary containing all intrinsic variables.
+            The default is ``{}``.
 
         Returns
         -------
@@ -1062,15 +1084,18 @@ class PostProcessor(object):
 
         Parameters
         ----------
-        objlist :
-            list of objects to be included in the plot
+        objlist : list
+            List of volumes to plot.
         quantityName :
-            Quantity to be plotted
-        setup_name :
-            Name of the setup in the format "setupName : sweepName". If none, nominal, lastadaptive will be Applied (Default value = None)
-        intrinsincDict :
-            Dictionary containing all intrinsic  variables (Default value = {})
-
+            Name of the quantity to plot.
+        setup_name : str, optional
+            Name of the setup in the format
+            ``"setupName : sweepName"``. The default is ``None``,
+            in which case ``"nominal, lastadaptive"`` is used.
+        intrinsincDict : dict, optional
+            Dictionary containing all intrinsic variables. The default 
+            is ``{}``.
+        
         Returns
         -------
         type
@@ -1106,18 +1131,23 @@ class PostProcessor(object):
 
     @aedt_exception_handler
     def export_field_image_with_View(self, plotName, exportFilePath, view="iso", wireframe=True):
-        """NOTE: on AEDT 2019.3 it works only on ISO view due to a bug in API. It woks fine from 2021R1
+        """Export a field plot image with a view.
+        
+        .. note::
+           For AEDT 2019 R3, this function works only on the ISO view due to a bug in the API.
+           This function works properly in 2021 R1.
 
         Parameters
         ----------
         plotName :
             name of the plot to be exported
         exportFilePath :
-            file path
-        view :
-            string "iso", "XZ", "XY", "YZ" (Default value = "iso")
-        wireframe :
-            Boolean if objects has to be put in wireframe mode (Default value = True)
+            Path to export the image file to.
+        view : str, optional
+            View to export. Options are ``"iso"``, ``"XZ"``, ``"XY"``, and ``"YZ"``.
+            The default is ``"iso"``.
+        wireframe : bool, optional
+            Whether objects are to be put in the wireframe mode. The default is ``True``.
 
         Returns
         -------
@@ -1149,8 +1179,8 @@ class PostProcessor(object):
 
         Parameters
         ----------
-        name :
-            Field Plot to delete
+        name : str
+            Name of the field plot.
 
         Returns
         -------
@@ -1173,12 +1203,12 @@ class PostProcessor(object):
         Parameters
         ----------
         dir : str
-            Path to export the JPG file.
+            Path to export the JPG file to.
         name : str
             Name of the project, which is used to compose the directory path.
         picturename : str, optional
             Name of the JPG file. The default is ``"Model"``. The extension
-            ``".jpg"`` is automatically added.
+            ``".jpg"`` is added automatically.
         show_axis : bool, optional
             Whether to show the axes. The default is ``True``.
         show_grid : bool, optional
@@ -1192,7 +1222,6 @@ class PostProcessor(object):
             Filename of the exported image
 
         """
-
         # Setup arguments list for createReport function
         if isinstance(name, str):
             project_dir = os.path.join(dir, name)
@@ -1228,7 +1257,6 @@ class PostProcessor(object):
         -------
         type
             True (executed)
-
         """
         self.oreportsetup.CopyReportsData([PlotName])
         self.oreportsetup.PasteReports()
@@ -1249,20 +1277,19 @@ class PostProcessor(object):
             True (executed) | False
 
         """
-
         self.oreportsetup.DeleteReports([PlotName])
         return True
 
     @aedt_exception_handler
     def rename_report(self, PlotName, newname):
-        """Delete Report Data
+        """Rename a report.
 
         Parameters
         ----------
         PlotName :
             Name of the Report
         newname :
-            
+
 
         Returns
         -------
@@ -1270,7 +1297,6 @@ class PostProcessor(object):
             True (executed)
 
         """
-
         self.oreportsetup.RenameReport(PlotName, newname)
         return True
 
@@ -1311,7 +1337,7 @@ class PostProcessor(object):
         ProjectDir :
             Project Dir
         PlotName :
-            
+
 
         Returns
         -------
@@ -1327,24 +1353,27 @@ class PostProcessor(object):
 
     @aedt_exception_handler
     def get_far_field_data(self, expression="GainTotal", setup_sweep_name='', domain="Infinite Sphere1", families_dict=None):
-        """Generate Far Field Data using GetSolutionDataPerVariation function. it returns the Data, solData, ThetaVals, PhiVals, ScanPhiVals, ScanThetaVals, FreqVals
+        """Generate far field data using the `GetSolutionDataPerVariation` function.
+        
+        This function returns the data ``solData``, ``ThetaVals``, ``PhiVals``, ``ScanPhiVals,`` 
+        ``ScanThetaVals,`` and ``FreqVals``.
 
         Parameters
         ----------
-        setup_sweep_name :
-            Name of setup to compute report. if None, nominal sweep will be applied (Default value = '')
-        domain :
-            Context Type (Sweep or Time) (Default value = "Infinite Sphere1")
-        families_dict :
-            Dictionary of variables and values. Default {"Freq": ["All"]}
-        expression :
-            string or list of traces to include (Default value = "GainTotal")
-
+        expression : str or list, optional
+            One or more formulas to add to the report. The default is ``"GainTotal"``.
+        setup_sweep_name : str, optional
+            Name of the setup to use to compute the report. The default is ``""``, 
+            in which case the nominal sweep is used.
+        domain : str, optional
+            Context type (sweep or time). The default is ``"Infinite Sphere1"``.
+        families_dict : dict, optional
+            Dictionary of variables and values. The default is ``{"Freq": ["All"]}``
+        
         Returns
         -------
         type
             SolutionData object if successful
-
         """
         if type(expression) is not list:
             expression = [expression]
@@ -1360,40 +1389,35 @@ class PostProcessor(object):
 
     @aedt_exception_handler
     def get_report_data(self, expression="dB(S(1,1))", setup_sweep_name='', domain='Sweep', families_dict=None, report_input_type=None):
-        """Generate Report Data using GetSolutionDataPerVariation function. it returns the data object, the solDataArray
-        and the FreqVals Array.
-        
+        """Generate report data using the `GetSolutionDataPerVariation` function.
         
         :Example:
             hfss Sparameters
             hfss = HFSS()
             hfss.post.get_report_data("S(1,1)")   # it will take default sweep and default variation
-        
-        
+
+
             m3d = Maxwell3D()
             m3d.post.get_report_data("SurfaceLoss")   #Eddy Current examples
             m3d.post.get_report_data("Wind(LoadA,LaodA)")    #TransientAnalsysis
 
         Parameters
         ----------
-        setup_sweep_name : str
-            Name of setup to compute report. if None, nominal sweep will be applied (Default value = '')
-        domain : str, list
-            Context Type (Sweep or Time) (Default value = 'Sweep')
-        families_dict : dict
-            Dictionary of variables and values. Default {"Freq": ["All"]}
-        expression : str, list
-            string or list of traces to include (Default value = "dB(S(1)
-        1))" :
-        report_input_type : str, optional
-            string or list of traces to include (Default value = "dB(S(1)
-        1))" :
-
+        expression : str or list
+            One or more formulas to add to the report. The default is ``"dB(S(1,1))"``.
+        setup_sweep_name : str, optional
+            Name of the setup to use to compute the report. The default is ``""``,
+            in which case the nominal sweep is used.
+        domain : str or list, optional
+            Context type. The options are ``"Sweep"`` or ``"Time"``. The default is ``"Sweep".``
+        families_dict : dict, optional
+            Dictionary of all families including the primary sweep. The default is ``{"Freq": ["All"]}``.
+        report_input_type :  str
+             Type of input data for the report.
         Returns
         -------
         SolutionData
-            SolutionData object if successful
-
+            SolutionData object if successful.
         """
         if self.post_solution_type == "3DLayout" or self.post_solution_type == "NexximLNA" or self.post_solution_type == "NexximTransient":
             if domain == "Sweep":
@@ -1447,7 +1471,7 @@ class PostProcessor(object):
         plotname :
             str optional (Default value = None)
         1))" :
-            
+
 
         Returns
         -------
@@ -1516,22 +1540,25 @@ class PostProcessor(object):
 
         Parameters
         ----------
-        soltype :
-            string: Solution Type. eg. "Far Fields" "Modal Solution Data"... (Default value = 'Far Fields')
-        setup_sweep_name :
-            Name of setup to compute report. if None, nominal adaptive will be applied (Default value = '')
-        ctxt :
-            List of Context variable (Default value = None)
-        sweeps :
-            Dictionary of variables and values. Default {'Theta': 'All', 'Phi': 'All', 'Freq': 'All'}
-        expression :
-            string or list of traces to include (Default value = '')
+        soltype : str, optional
+            Type of the solution. For example, ``"Far Fields"`` or ``"Modal Solution Data"``. The default
+            is ``"Far Fields"``.
+        setup_sweep_name : str, optional
+            Name of the setup to use to compute the report. The default is ``''``,
+            in which case ``"nominal adaptive"`` is used.
+        ctxt : list, optional
+            List of context variables. The default is ``None``.
+        sweeps : dict, optional
+            Dictionary of variables and values. The default is ``None``,
+            in which case this list is used:
+            ``{'Theta': 'All', 'Phi': 'All', 'Freq': 'All'}``
+        expression : str or list, optional
+            One or more traces to include. The default is ``''``.
 
         Returns
         -------
         type
             solution data
-
         """
         if sweeps is None:
             sweeps = {'Theta': 'All', 'Phi': 'All', 'Freq': 'All'}
@@ -1559,12 +1586,10 @@ class PostProcessor(object):
         """It can be used to remove the selection to an object
         that would prevent the correct image export
 
-        Parameters
-        ----------
-
         Returns
         -------
-
+        bool
+            ``True`` when successful, ``False`` when failed.
         """
         self.desktop.RestoreWindow()
         param = ["NAME:SphereParameters", "XCenter:=", "0mm", "YCenter:=", "0mm", "ZCenter:=", "0mm", "Radius:=", "1mm"]

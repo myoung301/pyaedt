@@ -1,19 +1,6 @@
-# -*- coding: utf-8 -*-
-"""
-This module contains all EDB functionalities in the ``Edb`` class. It inherits all objects that belong to EDB.
+"""This module contains the ``Edb`` class.
 
 This module is implicitily loaded in HFSS 3D Layout when launched.
-
-
-Examples
---------
-Create an ``Edb`` object and a new EDB cell.
-
->>> app = Edb()     
-
-Create an ``Edb`` object and open the specified project.
-
->>> app = Edb("myfile.aedb")
 
 """
 
@@ -49,11 +36,15 @@ except ImportError:
 from .application.MessageManager import EDBMessageManager
 from .edb_core import *
 
-from .generic.general_methods import get_filename_without_extension, generate_unique_name, aedt_exception_handler, env_path, env_value
-
+from .generic.general_methods import get_filename_without_extension, generate_unique_name, aedt_exception_handler, \
+    env_path, env_value, env_path_student, env_value_student
+from .generic.process import SiwaveSolve
 
 class Edb(object):
-    """EDB object
+    """EDB instance interface.
+
+    This module contains all functionalities in EDB. It inherits all
+    objects that belong to EDB.
 
     Parameters
     ----------
@@ -62,16 +53,75 @@ class Edb(object):
     cellname : str
         Name of the cell to select.
     isreadonly : bool, optional
-        Whether to open ``edb_core`` in read-only mode when it is owned by HFSS 3D Layout. The default is ``False``.
+        Whether to open ``edb_core`` in read-only mode when it is
+        owned by HFSS 3D Layout. The default is ``False``.
     edbversion : str, optional
         Version of ``edb_core`` to use. The default is ``"2021.1"``.
     isaedtowned : bool, optional
-        Whether to launch ``edb_core`` from HFSS 3D Layout. The default is ``False``.
+        Whether to launch ``edb_core`` from HFSS 3D Layout. The
+        default is ``False``.
 
-    Returns
-    -------
+    Examples
+    --------
+    Create an ``Edb`` object and a new EDB cell.
+
+    >>> from pyaedt import Edb
+    >>> app = Edb()     
+
+    Create an ``Edb`` object and open the specified project.
+
+    >>> app = Edb("myfile.aedb")
 
     """
+
+    def __init__(self, edbpath=None, cellname=None, isreadonly=False, edbversion="2021.1", isaedtowned=False, oproject=None, student_version=False):
+        if edb_initialized:
+            self.oproject = oproject
+            if isaedtowned:
+                self._main = sys.modules['__main__']
+                self._messenger = self._main.oMessenger
+            else:
+                if not edbpath or not os.path.exists(edbpath):
+                    self._messenger = EDBMessageManager()
+                elif os.path.exists(edbpath):
+                    self._messenger = EDBMessageManager(edbpath)
+
+            self.student_version = student_version
+            self._messenger.add_info_message("Messenger Initialized in EDB")
+            self.edbversion = edbversion
+            self.isaedtowned = isaedtowned
+
+
+            self._init_dlls()
+            self._db = None
+            # self._edb.Database.SetRunAsStandAlone(not isaedtowned)
+            self.isreadonly = isreadonly
+            self.cellname = cellname
+            self.edbpath = edbpath
+            if not os.path.exists(self.edbpath):
+                self.create_edb()
+            elif ".aedb" in edbpath:
+                self.edbpath = edbpath
+                if isaedtowned and "isoutsideDesktop" in dir(self._main) and not self._main.isoutsideDesktop:
+                    self.open_edb_inside_aedt()
+                else:
+                    self.open_edb()
+            elif edbpath[-3:] in ["brd", "gds", "xml", "dxf"]:
+                self.edbpath = edbpath[-3:] + ".aedb"
+                working_dir = os.path.dirname(edbpath)
+                self.import_layout_pcb(edbpath, working_dir)
+            self._components = None
+            self._core_primitives = None
+            self._stackup = None
+            self._padstack = None
+            self._siwave = None
+            self._hfss = None
+            self._nets = None
+        else:
+            self._db = None
+            self._edb = None
+            pass
+
     @aedt_exception_handler
     def _init_dlls(self):
         """ """
@@ -91,7 +141,10 @@ class Edb(object):
             clr.AddReferenceToFile('EdbLib.dll')
             clr.AddReferenceToFileAndPath(os.path.join(self.base_path, 'Ansys.Ansoft.SimSetupData.dll'))
         else:
-            self.base_path = env_path( self.edbversion)
+            if self.student_version:
+                self.base_path = env_path_student(self.edbversion)
+            else:
+                self.base_path = env_path( self.edbversion)
             sys.path.append(self.base_path)
             clr.AddReference('Ansys.Ansoft.Edb')
             clr.AddReference('Ansys.Ansoft.EdbBuilderUtils')
@@ -127,32 +180,21 @@ class Edb(object):
         """
         if init_dlls:
             self._init_dlls()
-
-        if not self.isreadonly:
-            print(self.edbpath)
-            print(self.edbversion)
-            print(_ironpython)
-            print(dir())
-
-            if _ironpython and  inside_desktop:
-                print("opening from DB")
-                self._db = self.edb.Database.Open(self.edbpath, self.isreadonly)
-                self._active_cell =  list(self._db.TopCircuitCells)[0]
-                self.builder = self.layout_methods.GetBuilder(self._db, self._active_cell)
-            else:
-                print("opening from EDBLib")
-                self.builder = self.layout_methods.OpenEdbStandAlone(self.edbpath, self.edbversion)
-                self._db = self.builder.EdbHandler.dB
-                self._active_cell = self.builder.EdbHandler.cell
+        self.messenger.add_warning_message("EDB Path {}".format(self.edbpath))
+        self.messenger.add_warning_message("EDB Version {}".format(self.edbversion))
+        self.edb.Database.SetRunAsStandAlone(True)
+        self._db = self.edb.Database.Open(self.edbpath, self.isreadonly)
+        self._active_cell = None
+        if self.cellname:
+            for cell in list(self._db.TopCircuitCells):
+                if cell.GetName() == self.cellname:
+                    self._active_cell = cell
         else:
-            if _ironpython and  inside_desktop:
-                self._db = self.edb.Database.Open(self.edbpath, self.isreadonly)
-                self._active_cell =  list(self._db.TopCircuitCells)[0]
-                self.builder = self.layout_methods.GetBuilder(self._db, self._active_cell)
-            else:
-                self.builder = self.layout_methods.OpenEdbInAedt(self.edbpath, self.edbversion)
-                self._db = self.builder.EdbHandler.dB
-                self._active_cell = self.builder.EdbHandler.cell
+            self._active_cell = list(self._db.TopCircuitCells)[0]
+        if self._active_cell:
+            self.builder = self.layout_methods.GetBuilder(self._db, self._active_cell)
+        else:
+            self.builder = None
         return self.builder
 
     @aedt_exception_handler
@@ -203,7 +245,6 @@ class Edb(object):
             self.cellname = generate_unique_name("Cell")
 
         self._active_cell = self.edb.Cell.Cell.Create(self._db,  self.edb.Cell.CellType.CircuitCell, self.cellname)
-
         self.builder = self.layout_methods.GetBuilder(self.db, self._active_cell)
         print("active cell set")
         return self.builder
@@ -236,55 +277,6 @@ class Edb(object):
         self._db = self.builder.EdbHandler.dB
         self._active_cell = self.builder.EdbHandler.cell
         return self.builder
-
-
-    def __init__(self, edbpath=None, cellname=None, isreadonly=False, edbversion="2021.1", isaedtowned=False, oproject=None):
-        if edb_initialized:
-            self.oproject = oproject
-            if isaedtowned:
-                self._main = sys.modules['__main__']
-                self._messenger = self._main.oMessenger
-            else:
-                if not edbpath or not os.path.exists(edbpath):
-                    self._messenger = EDBMessageManager(r'C:\Temp')
-                elif os.path.exists(edbpath):
-                    self._messenger = EDBMessageManager(edbpath)
-
-
-            self._messenger.add_info_message("Messenger Initialized in EDB")
-            self.edbversion = edbversion
-            self.isaedtowned = isaedtowned
-
-
-            self._init_dlls()
-            self._db = None
-            # self._edb.Database.SetRunAsStandAlone(not isaedtowned)
-            self.isreadonly = isreadonly
-            self.cellname = cellname
-            self.edbpath = edbpath
-            if not os.path.exists(self.edbpath):
-                self.create_edb()
-            elif ".aedb" in edbpath:
-                self.edbpath = edbpath
-                if isaedtowned and "isoutsideDesktop" in dir(self._main) and not self._main.isoutsideDesktop:
-                    self.open_edb_inside_aedt()
-                else:
-                    self.open_edb()
-            elif edbpath[-3:] in ["brd", "gds", "xml", "dxf"]:
-                self.edbpath = edbpath[-3:] + ".aedb"
-                working_dir = os.path.dirname(edbpath)
-                self.import_layout_pcb(edbpath, working_dir)
-            self._components = None
-            self._core_primitives = None
-            self._stackup = None
-            self._padstack = None
-            self._siwave = None
-            self._hfss = None
-            self._nets = None
-        else:
-            self._db = None
-            self._edb = None
-            pass
 
     def __enter__(self):
         return self
@@ -398,7 +390,7 @@ class Edb(object):
     def core_siwave(self):
         """ """
         if not self._siwave:
-            self._siwave = EdBSiwave(self)
+            self._siwave = EdbSiwave(self)
         return self._siwave
 
     @property
@@ -635,3 +627,92 @@ class Edb(object):
             self._active_cell = _cutout
         return True
 
+    @aedt_exception_handler
+    def write_export3d_option_config_file(self, path_to_output, config_dictionaries=None):
+        option_config = {
+            "UNITE_NETS": 1,
+            "ASSIGN_SOLDER_BALLS_AS_SOURCES": 0,
+            "Q3D_MERGE_SOURCES": 0,
+            "Q3D_MERGE_SINKS": 0,
+            "CREATE_PORTS_FOR_PWR_GND_NETS": 0,
+            "PORTS_FOR_PWR_GND_NETS": 0,
+            "GENERATE_TERMINALS": 0,
+            "SOLVE_CAPACITANCE": 0,
+            "SOLVE_DC_RESISTANCE": 0,
+            "SOLVE_DC_INDUCTANCE_RESISTANCE": 1,
+            "SOLVE_AC_INDUCTANCE_RESISTANCE": 0,
+            "CreateSources": 0, "CreateSinks": 0,
+            "LAUNCH_Q3D": 0, "LAUNCH_HFSS": 0}
+        if config_dictionaries:
+            for el, val in config_dictionaries.items():
+                option_config[el]=val
+        with open(os.path.join(path_to_output, "options.config"), "w") as f:
+            for el, val in option_config.items():
+                f.write(el+" "+str(val)+"\n")
+        return os.path.join(path_to_output, "options.config")
+
+    @aedt_exception_handler
+    def export_hfss(self, path_to_output, net_list=None):
+        """
+        Export Edb to HFSS
+
+        Parameters
+        ----------
+        path_to_output : str
+            full path to where aedt will be saved
+        net_list : list, optional
+            if provided, only nets in list will be exported
+
+
+        Returns
+        -------
+        str
+            path to .aedt file
+
+        Examples
+        --------
+
+        >>> from pyaedt import Edb
+
+        >>> edb = Edb(edbpath=r"C:\temp\myproject.aedb", edbversion="2021.1")
+
+        >>> options_config = {'UNITE_NETS' : 1, 'LAUNCH_Q3D' : 0}
+        >>> edb.write_export3d_option_config_file(r"C:\temp", options_config)
+        >>> edb.export_hfss(r"C:\temp")
+        "C:\\temp\\hfss_siwave.aedt"
+        """
+        siwave_s = SiwaveSolve(self.edbpath, aedt_installer_path=self.base_path)
+        return siwave_s.export_3d_cad("HFSS", path_to_output,net_list)
+
+    @aedt_exception_handler
+    def export_q3d(self, path_to_output, net_list=None):
+        """
+        Export Edb to HFSS
+
+        Parameters
+        ----------
+        path_to_output : str
+            full path to where aedt will be saved
+        net_list : list, optional
+            if provided, only nets in list will be exported
+
+        Returns
+        -------
+        str
+            path to .aedt file
+
+        Examples
+        --------
+
+        >>> from pyaedt import Edb
+
+        >>> edb = Edb(edbpath=r"C:\temp\myproject.aedb", edbversion="2021.1")
+
+        >>> options_config = {'UNITE_NETS' : 1, 'LAUNCH_Q3D' : 0}
+        >>> edb.write_export3d_option_config_file(r"C:\temp", options_config)
+        >>> edb.export_q3d(r"C:\temp")
+        "C:\\temp\\q3d_siwave.aedt"
+        """
+
+        siwave_s = SiwaveSolve(self.edbpath, aedt_installer_path=self.base_path)
+        return siwave_s.export_3d_cad("Q3D", path_to_output, net_list)
