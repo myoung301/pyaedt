@@ -52,10 +52,6 @@ class TestModeler:
         box1 = self.aedtapp.modeler.primitives.create_box([-10, -10, -10], [20, 20, 20], "box_to_split")
         assert self.aedtapp.modeler.split("box_to_split", 1)
 
-    def test_delete_all_objects(self):
-        box1 = self.aedtapp.modeler.primitives.create_box([-10, -10, -10], [20, 20, 20], "box_to_split")
-        self.aedtapp.modeler.delete_all_objects()
-
     def test_06_duplicate_and_mirror(self):
         udp = self.aedtapp.modeler.Position(20, 20, 20)
         udp2 = self.aedtapp.modeler.Position(30, 40, 40)
@@ -126,7 +122,7 @@ class TestModeler:
     def test_19_clone(self):
         status, cloned = self.aedtapp.modeler.clone("Poly1")
         assert status
-        assert type(cloned) is str
+        assert type(cloned) is list
 
     def test_20_intersect(self):
         udp = self.aedtapp.modeler.Position(0, 0, 0)
@@ -170,8 +166,8 @@ class TestModeler:
     def test_26_create_airbox(self):
         id = self.aedtapp.modeler.create_airbox(10)
         id2 = self.aedtapp.modeler.create_airbox(50, "Relative", "Second_airbox")
-        assert type(id) is int
-        assert type(id2) is int
+        assert type(id.id) is int
+        assert type(id2.id) is int
 
     def test_27_create_region(self):
         assert self.aedtapp.modeler.create_air_region(*[20, 20, 30, 50, 50, 100])
@@ -194,9 +190,10 @@ class TestModeler:
         position = self.aedtapp.modeler.Position(0, 0, 0)
         wg9 = self.aedtapp.modeler.create_waveguide(position, self.aedtapp.CoordinateSystemAxis.ZAxis, wgmodel="WG9",
                                                     wg_length=1500, parametrize_h=True, create_sheets_on_openings=True)
-        assert wg9[0] > 0
-        assert wg9[1] > 0
-        assert wg9[2] > 0
+        assert wg9[0].id > 0
+        assert wg9[1].id > 0
+        assert wg9[2].id > 0
+
         wgfail = self.aedtapp.modeler.create_waveguide(position, self.aedtapp.CoordinateSystemAxis.ZAxis,
                                                        wgmodel="MYMODEL",
                                                        wg_length=2000, parametrize_h=True)
@@ -245,9 +242,9 @@ class TestModeler:
 
     def test_36_create_coaxial(self):
         coax = self.aedtapp.modeler.create_coaxial([0, 0, 0], self.aedtapp.CoordinateSystemAxis.XAxis)
-        assert isinstance(coax[0], int)
-        assert isinstance(coax[1], int)
-        assert isinstance(coax[2], int)
+        assert isinstance(coax[0].id, int)
+        assert isinstance(coax[1].id, int)
+        assert isinstance(coax[2].id, int)
 
     def test_37_create_coordinate(self):
         cs = self.aedtapp.modeler.create_coordinate_system()
@@ -255,7 +252,8 @@ class TestModeler:
         assert cs.update()
         assert cs.change_cs_mode(1)
         assert cs.change_cs_mode(2)
-        assert not cs.change_cs_mode(3)
+        with pytest.raises(Exception):
+            cs.change_cs_mode(3)
         assert cs.change_cs_mode(0)
         assert cs.delete()
 
@@ -299,3 +297,6 @@ class TestModeler:
         self.aedtapp.modeler.set_working_coordinate_system("Global")
         self.aedtapp.modeler.set_working_coordinate_system("new1")
 
+
+    def test_delete_all_objects(self):
+        self.aedtapp.modeler.delete_all_objects()

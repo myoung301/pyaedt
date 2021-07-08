@@ -1826,14 +1826,13 @@ class GeometryModeler(Modeler, object):
         if not keepOriginals:
             if not isinstance(tool_list, list):
                 tool_list = [tool_list]
-            self.cleanup_objects()
 
 
         vArg1 = ['NAME:Selections', 'Blank Parts:=', szList, 'Tool Parts:=', szList1]
         vArg2 = ['NAME:SubtractParameters', 'KeepOriginals:=', keepOriginals]
 
         self.oeditor.Subtract(vArg1, vArg2)
-        self.primitives.refresh_all_ids()
+        self.primitives.cleanup_objects()
 
         return True
 
@@ -2076,9 +2075,7 @@ class GeometryModeler(Modeler, object):
             self.odesign.Undo()
             self.messenger.add_error_message("Error in intersection. Reverting Operation")
             return False
-        if not keeporiginal:
-            for el in theList[1:]:
-                self.primitives.self.cleanup_objects()
+        self.primitives.cleanup_objects()
         self.messenger.add_info_message("Intersection Succeeded")
         #self.primitives.refresh_all_ids()
         return True
@@ -2242,6 +2239,8 @@ class GeometryModeler(Modeler, object):
 
         if type(obj) is int:
             obj = self.primitives.get_obj_name(obj)
+        elif type(obj) is Object3d:
+            obj = obj.name
         plane = None
         found = False
         i = 0
@@ -2741,7 +2740,7 @@ class GeometryModeler(Modeler, object):
                 rad = dist
                 move_vector = GeometryOperators.v_sub(fc, first_vert)
 
-        P = self.primitives.get_existing_polyline(object=self[new_name])
+        P = self.primitives.get_existing_polyline(object=self.primitives[new_name])
 
         if edge_to_delete:
             P.remove_edges(edge_to_delete)
@@ -2751,7 +2750,7 @@ class GeometryModeler(Modeler, object):
         status = P.set_crosssection_properties(type="Circle", num_seg=numberofsegments,
                                                width=(rad*(2-math.sin(angle))) * 2)
         if status:
-            self.translate(new_edges[0], move_vector)
+            self.translate(new_name, move_vector)
             self.set_object_model_state(bondname, False)
             return new_edges[0]
         else:

@@ -574,7 +574,7 @@ class Object3d(object):
     * object_units
 
     """
-    def __init__(self, parent, name=None, id=None):
+    def __init__(self, parent, name=None):
         if name:
             self._m_name = name
         else:
@@ -596,11 +596,10 @@ class Object3d(object):
         self.update_properties()
 
     def __str__(self):
-        self.update_properties()
+        # self.update_properties()
         return """
          {}
          name: {}    id: {}    object_type: {}
-         bounding_box: {}
          --- read/write properties  ----
          solve_inside: {} 
          model: {}
@@ -609,7 +608,7 @@ class Object3d(object):
          transparency: {}
          display_wireframe {}
          part_coordinate_system: {}
-         """.format(type(self), self._m_name, self.id, self.object_type, self.bounding_box, self._solve_inside, self._model, self._material_name,
+         """.format(type(self), self._m_name, self.id, self.object_type, self._solve_inside, self._model, self._material_name,
                     self.color, self.transparency, self.display_wireframe, self.part_coordinate_system)
 
     @property

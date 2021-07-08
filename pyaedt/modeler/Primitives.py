@@ -1044,8 +1044,8 @@ class Primitives(object):
             Object3d
         """
         if isinstance(face, FacePrimitive):
-            face_id = face.id
-        obj = self._find_object_from_face_id(face_id)
+            face = face.id
+        obj = self._find_object_from_face_id(face)
         if obj is not None:
 
             varg1 = ['NAME:Selections']
@@ -1053,7 +1053,7 @@ class Primitives(object):
             varg1.append('NewPartsModelFlag:='), varg1.append('Model')
 
             varg2 = ['NAME:BodyFromFaceToParameters']
-            varg2.append('FacesToDetach:='), varg2.append([face_id])
+            varg2.append('FacesToDetach:='), varg2.append([face])
             new_object_name = self.oeditor.CreateObjectFromFaces(varg1, ['NAME:Parameters', varg2])[0]
             return self._create_object(new_object_name)
 
@@ -1259,31 +1259,31 @@ class Primitives(object):
 
     @aedt_exception_handler
     def convert_to_selections(self, objtosplit, return_list=False):
-        """Convert a list of objects to a selection.
+        """
 
         Parameters
         ----------
-        objtosplit : str, int, or list of mixed types
-            Objects to convert to a selection.
-        return_list : bool, optional
-            How to return the objects in the selection. The default is ''False``.
-            When ``False``, the objects in the selection are returned as a string.
-            When ``True``, the objects in the selection are returned as a list.
+        objtosplit : list
+            list of objects to convert to selection. it can be a string, int or list of mixed.
+        return_list : bool
+            if ``False`` it returns a string of the selections. if ``True` `it return the list (Default value = False)
 
         Returns
         -------
-        type
-            Object name in the form of a list of string.
 
         """
         if type(objtosplit) is not list:
             objtosplit = [objtosplit]
         objnames = []
         for el in objtosplit:
-            if type(el) is int:
-                objnames.append(self.get_obj_name(el))
-            else:
+            if isinstance(el, int) and el in list(self.primitives.objects.keys()):
+                objnames.append(self.primitives.get_obj_name(el))
+            elif isinstance(el, Object3d):
+                objnames.append(el.name)
+            elif isinstance(el, str):
                 objnames.append(el)
+            else:
+                return False
         if return_list:
             return objnames
         else:
@@ -2359,19 +2359,17 @@ class Primitives(object):
         return None
 
     def _find_object_from_face_id(self, lval):
-        if self.oeditor is not None:
-            objList = []
-            objListSheets = self.sheets
-            if len(objListSheets) > 0:
-                objList.extend(objListSheets)
-            objListSolids = self.solids
-            if len(objListSolids) > 0:
-                objList.extend(objListSolids)
-            for obj in objList:
-                face_ids = list(self.oeditor.GetFaceIDs(obj))
-                if str(lval) in face_ids:
-                    return obj
-
+        objList = []
+        objListSheets = self.sheets
+        if len(objListSheets) > 0:
+            objList.extend(objListSheets)
+        objListSolids = self.solids
+        if len(objListSolids) > 0:
+            objList.extend(objListSolids)
+        for obj in objList:
+            face_ids = list(self.oeditor.GetFaceIDs(obj))
+            if str(lval) in face_ids:
+                return obj
         return None
 
     @aedt_exception_handler

@@ -161,9 +161,9 @@ class TestVariable:
         v2 = Variable(3)
         v3 = Variable("3mA")
         v4 = Variable("10A")
-
-        assert not (v1 + v2)
-        assert not (v2 + v1)
+        with pytest.raises(Exception):
+            (v1 + v2)
+            (v2 + v1)
         result_1 = v2 + v2
         result_2 = v3 + v4
         result_3 = v3 + v3
@@ -185,9 +185,9 @@ class TestVariable:
         v2 = Variable(3)
         v3 = Variable("3mA")
         v4 = Variable("10A")
-
-        assert not (v1 - v2)
-        assert not (v2 - v1)
+        with pytest.raises(Exception):
+            (v1 - v2)
+            (v2 - v1)
         result_1 = v2 - v2
         result_2 = v3 - v4
         result_3 = v3 - v3

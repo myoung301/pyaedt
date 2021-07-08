@@ -5,7 +5,7 @@ import gc
 # Import required modules
 from pyaedt import Hfss, Maxwell3d
 from pyaedt.generic.filesystem import Scratch
-
+import pytest
 test_project_name = "coax_HFSS"
 
 
@@ -29,9 +29,9 @@ class TestMesh:
                                                          0, "inner")
         self.aedtapp.mesh.assign_model_resolution(id1, 1e-4,"ModelRes1")
         assert "ModelRes1" in [i.name for i in self.aedtapp.mesh.meshoperations]
-        mr2 = self.aedtapp.mesh.assign_model_resolution(self.aedtapp.modeler.primitives["inner"].faces[0].id, 1e-4,"ModelRes2")
+        with pytest.raises(Exception):
+            self.aedtapp.mesh.assign_model_resolution(self.aedtapp.modeler.primitives["inner"].faces[0].id, 1e-4,"ModelRes2")
 
-        assert not mr2
 
 
     def test_assign_surface_mesh(self):
