@@ -5,6 +5,9 @@ PyAEDT consolidates and extends all existing capital around scripting for Ansys 
 
 This tool has been tested on HFSS, Icepak, and Maxwell 3D. It also provides basic support for EDB and Circuit (Nexxim).
 
+.. todo::
+   Add how to install from the AEDT installer like as in https://mapdldocs.pyansys.com/getting_started/running_mapdl.html
+
 Requirements
 ~~~~~~~~~~~~
 In addition to the runtime dependencies listed in the installation information, EDB Utilities requires ANSYS EM Suite 2021 R1 or later.
