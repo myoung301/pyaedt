@@ -8,6 +8,7 @@ from ..edb import Edb
 from .Modeler import Modeler
 from .PrimitivesSimplorer import SimplorerComponents
 from .PrimitivesNexxim import NexximComponents
+from .PrimitivesEmit import EmitComponents
 from .Primitives3DLayout import Primitives3DLayout
 from ..modules.LayerStackup import Layers
 
@@ -264,3 +265,4 @@ class ModelerEmit(ModelerCircuit):
     def __init__(self, parent):
         self._parent = parent
         ModelerCircuit.__init__(self, parent)
+        self.components = EmitComponents(parent, self)
