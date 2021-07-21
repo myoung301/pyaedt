@@ -91,3 +91,43 @@ Object oriented programming is used to create and manage objects in 3D/2D Modele
 .. image:: ./aedt_box.png
   :width: 800
   :alt: Modeler Object
+
+
+Setup
+~~~~~
+Project Setups are stored in setups propertis. When creating a new setup this will automatically contains all default from templates
+Templates are available in API Documentation.
+
+.. code:: python
+
+    from pyaedt.hfss import Hfss
+    hfss= Hfss()
+    len(hfss.setups) # it will return 0
+    setup = hfss.create_setup("MySetup")
+    setup.props["Frequency"] = "1GHz"
+    setup.props["BasisOrder"] = 2
+    setup.props["MaximumPasses"] = 1
+    setup.update()
+    len(hfss.setups) # it will return 1. the new created setup will be hfss.setups[0]
+
+.. image:: ./aedt_setup.png
+  :width: 800
+  :alt: Produced Setup
+
+
+Edb
+~~~~~
+Edb Class uses a different API that is natively written to support read and write operations in aedb files. Below example shows how to open and interact with
+an aedb project. Aedb file can be open in readonly mode or in write mode. When AEDB is opened within AEDT (through HFSS3D Layout) it will be always opened in
+readonly mode.
+
+.. code:: python
+
+    from pyaedt import Edb
+    targetfile = "/tmp/galielo.aedb"
+    edb = Edb(edbpath=targetfile)
+    print("Nets {}".format(len(edb.core_nets.nets.keys())))
+    print("Components {}".format(len(edb.core_components.components.keys())))
+    pins = edb.core_components.get_pin_from_component("U2")
+    edb.core_components.delete_component("C3B17")
+

@@ -468,6 +468,9 @@ class CircuitComponents(object):
     def create_symbol(self, symbol_name, pin_lists):
         """Create a symbol.
 
+        .. note::
+            This method works only in Graphical Mode
+
         Parameters
         ----------
         symbol_name : str
@@ -496,7 +499,11 @@ class CircuitComponents(object):
              "Project", "HighestLevel:=", 1, "Normalize:=", True, "InitialLevels:=", [0, 1], ["NAME:Graphics"]])
         arg = ["NAME:" + symbol_name, "ModTime:=", 1591858265, "Library:=", "", "ModSinceLib:=", False, "LibLocation:=",
                "Project", "HighestLevel:=", 1, "Normalize:=", False, "InitialLevels:=", [0, 1]]
-        oDefinitionEditor = self._parent._oproject.SetActiveDefinitionEditor("SymbolEditor", symbol_name)
+        try:
+            oDefinitionEditor = self._parent._oproject.SetActiveDefinitionEditor("SymbolEditor", symbol_name)
+        except:
+            self._messenger.add_error_message("Symbols can be creaded only in Graphical Mode")
+            return False
         id = 2
         oDefinitionEditor.CreateRectangle(["NAME:RectData", "X1:=", x1, "Y1:=", y1, "X2:=", x2, "Y2:=", y2,
                                            "LineWidth:=", 0, "BorderColor:=", 0, "Fill:=", 0, "Color:=", 0, "Id:=", id],
