@@ -207,7 +207,7 @@ class Edb(object):
     @aedt_exception_handler
     def _init_dlls(self):
         """Initialize DLLs."""
-        sys.path.append(os.path.join(os.path.dirname(__file__), "dlls", "EDBLib"))
+        sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), "dlls", "EDBLib"))
         if os.name == 'posix':
             if env_value(self.edbversion) in os.environ:
                 self.base_path = env_path(self.edbversion)

@@ -32,6 +32,7 @@ else:
     config = {
         "run_examples": True
     }
+sys.path.append(os.path.join(root_path, "pyaedt", "dlls", "EDBLib"))
 
 # read in version from file
 with open(os.path.join(root_path, "pyaedt", "version.txt"), "r") as f:
