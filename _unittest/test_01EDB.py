@@ -232,7 +232,7 @@ class TestEDB:
         assert self.edbapp.core_siwave.create_voltage_source("U2A5","V1P5_S3","U2A5","GND",3.3,0)
 
     def test_create_siwave_current_source(self):
-        assert self.edbapp.core_siwave.create_current_source("U2A5","V1P5_S3","U2A5","GND",0.1,0)
+        assert self.edbapp.core_siwave.create_current_source("U2A5","V1P5_S0","U2A5","GND",0.1,0)
 
     def test_create_siwave_ac_analsyis(self):
         assert self.edbapp.core_siwave.add_siwave_ac_analysis()
