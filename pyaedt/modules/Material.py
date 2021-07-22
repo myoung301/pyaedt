@@ -20,11 +20,10 @@ from ..generic.general_methods import aedt_exception_handler, generate_unique_na
 from ..application.DataHandlers import dict2arg, arg2dict
 
 class MatProperties(object):
-    """MatProperties class.
+    """Provides a list of constant names for all possible materials with 
+    mappings to their internal XML names.
     
-    This class contains a list of constant names for all possible materials with 
-    mappings to their internal XML names. Internal names are used in scripts, and 
-    XML names are used in the XML syntax.
+    Internal names are used in scripts, and XML names are used in the XML syntax.
     
     """
     aedtname =     ['permittivity', 'permeability', 'conductivity', 'dielectric_loss_tangent', 'magnetic_loss_tangent', 'thermal_conductivity', 'mass_density', 'specific_heat', 'thermal_expansion_coefficient', 'youngs_modulus',   'poissons_ratio',   'diffusivity', 'molecular_mass', 'viscosity', 'core_loss_kh', 'core_loss_kc', 'core_loss_ke']
@@ -35,12 +34,12 @@ class MatProperties(object):
 
     @classmethod
     def get_defaultunit(cls, aedtname=None):
-        """Retrieve the default unit for a full name or a category name.
+        """Retrieve the default unit for a full name or a category name in AEDT.
 
         Parameters
         ----------
         aedtname : str, optional
-            AEDT full name or category name. The default is ``None``.
+            Full name or category name in AEDT. The default is ``None``.
 
         Returns
         -------
@@ -51,17 +50,17 @@ class MatProperties(object):
         if aedtname:
             return cls.defaultunit[cls.aedtname.index(aedtname)]
         else:
-            raise TypeError("get_defaultunit: either fullname or catname MUST be defined")
+            raise TypeError("get_defaultunit: Either the full name or category name must be defined.")
 
 
     @classmethod
     def get_defaultvalue(cls, aedtname):
-        """Retrieve the default value for a full name or a category name.
+        """Retrieve the default value for a full name or a category name in AEDT.
 
         Parameters
         ----------
         aedtname : str
-             AEDT full name or category name. The default is ``None``.
+             Full name or category name in AEDT. The default is ``None``.
 
         Returns
         -------
@@ -75,11 +74,10 @@ class MatProperties(object):
             raise TypeError("get_defaultunit: Either the full name or category name must be defined.")
 
 class SurfMatProperties(object):
-    """SurfMatProperties class.
+    """Contains a list of constant names for all possible materials with 
+    mappings to their internal XML names. 
     
-    The class contains a list of constant names for all possible materials with 
-    mappings to their internal XML names. Internal names are used in scripts, and 
-    XML names are used in the XML syntax.
+    Internal names are used in scripts, and XML names are used in the XML syntax.
  
     """
     aedtname =     ['surface_emissivity', 'surface_roughness', 'surface_diffuse_absorptance', 'surface_incident_absorptance']
@@ -88,12 +86,12 @@ class SurfMatProperties(object):
 
     @classmethod
     def get_defaultunit(cls, aedtname=None):
-        """Retrieve the default unit for a full name or a category name.
+        """Retrieve the default unit for a full name or a category name in AEDT.
 
         Parameters
         ----------
         aedtname : str, optional
-            AEDT full name or category name. The default is ``None``.
+            Full name or category name in AEDT. The default is ``None``.
 
         Returns
         -------
@@ -109,12 +107,12 @@ class SurfMatProperties(object):
 
     @classmethod
     def get_defaultvalue(cls, aedtname=None):
-        """Get the default value for a full name or a category name.
+        """Retrieve the default value for a full name or a category name in AEDT.
 
         Parameters
         ----------
         aedtname : str, optional
-            AEDT full name or category name. The default is ``None``.
+            Full name or category name in AEDT. The default is ``None``.
 
         Returns
         -------
@@ -129,9 +127,7 @@ class SurfMatProperties(object):
 
 
 class ClosedFormTM(object):
-    """ClosedFormTM class.
-    
-    This class provides all functionalities for manging closed-form thermal modifiers."""
+    """Manages closed-form thermal modifiers."""
     Tref = '22cel'
     C1 = 0
     C2 = 0
@@ -142,10 +138,7 @@ class ClosedFormTM(object):
     TMU = 1000
 
 class Dataset(object):
-    """Dataset class.
-    
-    This class provides all functionalities for managing datasets.
-    """
+    """Manages datasets."""
     ds = []
     unitx = ""
     unity = ""
@@ -168,14 +161,12 @@ class BasicValue(object):
 
 
 class MatProperty(object):
-    """MatProperty class.
-    
-    This class provides all functionalities for managing simple, anisotropic, 
-    tensor, and non-linear properties.
+    """Manages simple, anisotropic, tensor, and non-linear properties.
     
     Parameters
     ----------
     parent :
+        Inherited parent object.
     
     name :
     
@@ -183,6 +174,7 @@ class MatProperty(object):
         The default is ``None``.
     thermalmodifier
         The default is ``None``.
+    
     """
 
     @property
@@ -218,20 +210,16 @@ class MatProperty(object):
 
     @property
     def type(self):
-        """Material property type."""
+        """Material property type.
+        
+        Options are ``simple"``, ``"anisotropic",`` ``"tensor"``, 
+        and ``"nonlinear".``
+        
+        """
         return self._type
 
     @type.setter
     def type(self, type):
-        """Set the material property type.
-
-        Parameters
-        ----------
-        type : str
-            Type of properties. Options are ``simple"``, 
-            ``"anisotropic",`` ``"tensor"``, and ``"nonlinear",`` 
-            
-        """
         self._type = type
         if self._type == "simple":
             self._property_value = [self._property_value[0]]
@@ -290,7 +278,6 @@ class MatProperty(object):
 
     @thermalmodifier.setter
     def thermalmodifier(self, thermal_value):
-        """Thermal modifier."""
         if isinstance(thermal_value, str):
             self._add_thermal_modifier(thermal_value, 0)
         else:
@@ -379,6 +366,7 @@ class MatProperty(object):
         >>> hfss = Hfss(specified_version="2021.1")
         >>> mat1 = hfss.materials.add_material("new_copper2")
         >>> mat1.aadd_thermal_modifier_free_form("if(Temp > 1000cel, 1, if(Temp < -273.15cel, 1, 1))")
+        
         """
         self._property_value[index].thermalmodifier = formula
         return self._add_thermal_modifier(formula, index)
@@ -643,14 +631,12 @@ class CommonMaterial(object):
 
 
 class Material(CommonMaterial, object):
-    """Material class.
-    
-    This class provides all functionalities for material properties.
+    """Manages common material properties.
     
     Parameters
     ----------
     parent : 
-    
+        Inherited parent object.
     name :
     
     props  :
@@ -707,7 +693,6 @@ class Material(CommonMaterial, object):
 
     @permittivity.setter
     def permittivity(self, value):
-
         self._permittivity.value = value
         self._update_props("permittivity", value)
 
@@ -724,7 +709,6 @@ class Material(CommonMaterial, object):
 
     @permeability.setter
     def permeability(self, value):
-
         self._permeability.value = value
         self._update_props("permeability", value)
 
@@ -746,7 +730,7 @@ class Material(CommonMaterial, object):
 
     @property
     def dielectric_loss_tangent(self):
-        """ Dielectric loss tangent.
+        """Dielectric loss tangent.
 
         Returns
         -------
@@ -774,9 +758,9 @@ class Material(CommonMaterial, object):
 
     @magnetic_loss_tangent.setter
     def magnetic_loss_tangent(self, value):
-
         self._magnetic_loss_tangent.value = value
         self._update_props("magnetic_loss_tangent", value)
+
     @property
     def thermal_conductivity(self):
         """Thermal conductivity.
@@ -791,7 +775,6 @@ class Material(CommonMaterial, object):
 
     @thermal_conductivity.setter
     def thermal_conductivity(self, value):
-
         self._thermal_conductivity.value = value
         self.physics_type = ['Electromagnetic', 'Thermal', 'Structural']
         self._props["PhysicsTypes"] = OrderedDict({"set": ['Electromagnetic', 'Thermal', 'Structural']})
@@ -811,7 +794,6 @@ class Material(CommonMaterial, object):
 
     @mass_density.setter
     def mass_density(self, value):
-
         self._mass_density.value = value
         self._update_props("mass_density", value)
 
@@ -829,7 +811,6 @@ class Material(CommonMaterial, object):
 
     @specific_heat.setter
     def specific_heat(self, value):
-
         self._specific_heat.value = value
         self._update_props("specific_heat", value)
 
@@ -847,7 +828,6 @@ class Material(CommonMaterial, object):
 
     @thermal_expansion_coefficient.setter
     def thermal_expansion_coefficient(self, value):
-
         self._thermal_expansion_coefficient.value = value
         self._update_props("thermal_expansion_coefficient", value)
 
@@ -984,7 +964,7 @@ class Material(CommonMaterial, object):
         self._update_props("core_loss_ke", value)
 
     def is_conductor(self, threshold=100000):
-        """Check if material is a conductor.
+        """Check if the material is a conductor.
 
         Parameters
         ----------
@@ -1058,13 +1038,12 @@ class Material(CommonMaterial, object):
 
 
 class SurfaceMaterial(CommonMaterial, object):
-    """SurfaceMaterial class.
-    
-    The class provides all functionalities for surface material properties.
+    """Manages surface material properties.
     
     Parameters
     ----------
-    parent :
+    parent : 
+        Inherited parent object.
     name :
     props :
         The default is ``None``.
