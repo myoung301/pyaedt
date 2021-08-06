@@ -2561,15 +2561,29 @@ class Hfss(FieldAnalysis3D, object):
         -------
         bool
             ``True`` when successful, ``False`` when failed.
-        
+
+        Examples
+        --------
+
+        Create a scattering named ``"S Parameter Plot Nominal"`` using
+        the default parameters.
+
+        >>> temp_report_folder = hfss.working_directory
+        >>> import pdb
+        >>> pdb.set_trace()
+        >>> hfss.create_qfactor_report(temp_report_folder, ["EigenQ"], "DiscreteSweepSetup", "Plot", Xaxis="X")
+        True
+
         """
+        # To be discussed with Massimo.
+        # This variable based on the parameter 'project-dir' is not used.
         npath = os.path.normpath(project_dir)
 
         # Setup arguments list for createReport function
         args = [Xaxis + ":=", ["All"]]
         args2 = ["X Component:=", Xaxis, "Y Component:=", outputlist]
 
-        self.post.post_oreport_setup.CreateReport(plotname, "Eigenmode Parameters", "Rectangular Plot",
+        self.post.oreportsetup.CreateReport(plotname, "Eigenmode Parameters", "Rectangular Plot",
                                                   setupname + " : LastAdaptive", [], args, args2, [])
         return True
 
