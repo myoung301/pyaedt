@@ -1,9 +1,10 @@
 # Setup paths for module imports
-from pyaedt.modeler.PrimitivesEmit import EmitComponent
+from pyaedt.modeler.PrimitivesEmit import EmitComponent, EmitComponents
 from .conftest import local_path, scratch_path
 
 # Import required modules
 from pyaedt import Emit
+from pyaedt import Desktop
 from pyaedt.generic.filesystem import Scratch
 import gc
 import os
@@ -12,8 +13,8 @@ import os
 class TestEmit:
 
     def setup_class(self):
-        project_name = "SimplorerProject"
-        design_name = "SimplorerDesign1"
+        project_name = "EmitProject"
+        design_name = "EmitDesign1"
         # set a scratch directory and the environment / test data
         with Scratch(scratch_path) as self.local_scratch:
             self.aedtapp = Emit()
@@ -27,15 +28,31 @@ class TestEmit:
         assert self.aedtapp.solution_type
         assert isinstance(self.aedtapp.existing_analysis_setups, list)
         assert isinstance(self.aedtapp.setup_names, list)
+        assert isinstance(self.aedtapp.modeler.components, EmitComponents)
         assert self.aedtapp.modeler
         assert self.aedtapp.oanalysis is None
 
     def test_create_components(self):
-        radio_name = self.aedtapp.modeler.components.create_component("New Radio", "TestRadio")
-        assert radio_name == "TestRadio"
-        radio = self.aedtapp.modeler.components[radio_name]
+        radio = self.aedtapp.modeler.components.create_component("New Radio", "TestRadio")
+        assert radio.name == "TestRadio"
         assert isinstance(radio, EmitComponent)
-        antenna_name = self.aedtapp.modeler.components.create_component("Antenna", "TestAntenna")
-        assert antenna_name == "TestAntenna"
-        antenna = self.aedtapp.modeler.components[antenna_name]
+        antenna = self.aedtapp.modeler.components.create_component("Antenna", "TestAntenna")
+        assert antenna.name == "TestAntenna"
         assert isinstance(antenna, EmitComponent)
+
+    def test_connect_components(self):
+        radio = self.aedtapp.modeler.components.create_component("New Radio")
+        antenna = self.aedtapp.modeler.components.create_component("Antenna")
+        antenna.move_and_connect_to(radio)
+        antenna_port = antenna.port_names()[0] # antennas have 1 port
+        radio_port = radio.port_names()[0] # radios have 1 port
+        connected_comp, connected_port = antenna.port_connection(antenna_port)
+        assert connected_comp == radio.name
+        assert connected_port == radio_port
+        # Verify None,None is returned for an unconnected port
+        radio2 = self.aedtapp.modeler.components.create_component("New Radio")
+        radio2_port = radio2.port_names()[0]
+        connected_comp, connected_port = radio2.port_connection(radio2_port)
+        assert connected_comp == None
+        assert connected_port == None
+
