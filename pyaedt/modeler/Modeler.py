@@ -2349,8 +2349,8 @@ class GeometryModeler(Modeler, object):
         ----------
         startingposition : list
             List of ``[x, y, z]`` coordinates for the starting position.
-        axis :
-            Coordinate system axis or the Application.CoordinateSystemAxis object.
+        axis : integer
+            Coordinate system axis or the Application.CoordinateSystemAxis object.  0: XAxis, 1: YAxis, 2: ZAxis
         innerradius : float, optional
             Inner coax radius. The default is ``1``.
         outerradius : float, optional
@@ -2396,8 +2396,8 @@ class GeometryModeler(Modeler, object):
         ----------
         origin : list
             List of ``[x, y, z]`` coordinates for the original position.
-        wg_direction_axis :
-            Waveguide axis direction.
+        wg_direction_axis : integer
+            Waveguide axis direction. 0: XAxis, 1: YAxis, 2: ZAxis
         wgmodel : str, optional
             Waveguide model. The default is ``"WG0"``.
         wg_length : float, optional
