@@ -2291,17 +2291,19 @@ class Design(object):
         return design_data
 
     @aedt_exception_handler
-    def save_project(self, project_file=None, overwrite=True, refresh_obj_ids_after_save=False):
+    def save_project(self, project_path=None, project_name=None, overwrite=True, refresh_obj_ids_after_save=False):
         """Save the AEDT project and add a message.
 
         Parameters
         ----------
-        project_file : str, optional
-            Full path and project file name. The default is ````None``.
+        project_path : str, optional
+            Full path. The default is ````None``.
+        project_name : str, optional
+            Project Name. The default is ````None``.
         overwrite : bool, optional
             Whether to overwrite the existing project. The default is ``True``.
         refresh_obj_ids_after_save : bool, optional
-            Whether to refresh object IDs after saving the project.  
+            Whether to refresh object IDs after saving the project.
             The default is ``False``.
 
         Returns
@@ -2310,12 +2312,18 @@ class Design(object):
             ``True`` when successful, ``False`` when failed.
 
         """
-        msg_text = "Saving {0} Project".format(self.project_name)
-        self._messenger.add_info_message(msg_text, level='Global')
-        if project_file:
+        if project_path:
+            if not project_name:
+                project_name = self.project_name
+            project_file = os.path.join(project_path, project_name + '.aedt')
+            self.oproject.SaveAs(project_file, overwrite)
+        elif project_name:
+            project_file = os.path.join(self.oproject.GetPath(), project_name + '.aedt')
             self.oproject.SaveAs(project_file, overwrite)
         else:
             self.oproject.Save()
+        msg_text = "Saving {0} Project".format(self.project_name)
+        self._messenger.add_info_message(msg_text, level='Global')
         if refresh_obj_ids_after_save:
             self.modeler.primitives._refresh_all_ids_from_aedt_file()
         return True
