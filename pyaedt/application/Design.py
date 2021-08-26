@@ -2294,9 +2294,11 @@ class Design(object):
     def save_project(self, project_path=None, project_name=None, overwrite=True, refresh_obj_ids_after_save=False):
         """Save the AEDT project and add a message.
 
-        This method save the AEDT project in a specific path with a specific project_name. If path is not
-        defined, AEDT Folder will be selected and if project name is not defined, initial project name will be used.
-        If the path contains the extension .aedt, it will be used as project Name.
+        This method save the AEDT project in a specific path with a specific project_name.
+        If path is not defined, AEDT Folder will be selected
+        If project name is not defined, initial project name will be used.
+        If path contains the extension .aedt, project_path will be used as the full project path and project_name
+        will not be considered.
 
         Parameters
         ----------
