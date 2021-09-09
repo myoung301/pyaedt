@@ -1,8 +1,8 @@
 """
 SBR+ Example
 ------------
-This example shows how you can use PyAEDT to create a Busbar project in
-in Q3D and run a simulation.
+This example shows how to set up and run a simple SBR+ project
+with a linked antenna.
 """
 ###############################################################################
 # Import Packages

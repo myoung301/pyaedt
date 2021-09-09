@@ -15,7 +15,7 @@ import sys
 from pyaedt import examples, generate_unique_name, Hfss
 
 # Start Electronics Desktop
-aedt_version = '2021.1'
+aedt_version = '2021.2'
 projectname = 'MicroDoppler_with_ADP'
 designname = 'doppler'
 library_path = examples.download_multiparts()
@@ -76,12 +76,12 @@ prim = app.modeler.primitives
 # ~~~~~~~~~~~~~~~~~~~~~
 # Put Actors in environment. This example has persons, birds, bikes and cars.
 
-person1 = app.modeler.primitives.add_person(person_folder, 1.0,[25, 1.5, 0], 180)
-person2 = app.modeler.primitives.add_person(person_folder, 1.0,[25, 2.5, 0], 180)
-car1 = app.modeler.primitives.add_vehicle(car_folder, 8.7,[3, -2.5, 0])
-bike1 = app.modeler.primitives.add_vehicle(bike_folder, 2.1, [24, 3.6, 0], 180)
-bird1 = app.modeler.primitives.add_bird(bird_folder, 1.0, [19, 4, 3], 120,-5, flapping_rate=30)
-bird2 = app.modeler.primitives.add_bird(bird_folder, 1.0,[6, 2, 3], -60,10)
+person1 = app.modeler.primitives.add_person(person_folder, speed=1.0, global_offset=[25, 1.5, 0], yaw=180)
+# person2 = app.modeler.primitives.add_person(person_folder, speed=1.0, global_offset=[25, 2.5, 0], yaw=180)
+car1 = app.modeler.primitives.add_vehicle(car_folder, speed=8.7, global_offset=[3, -2.5, 0])
+bike1 = app.modeler.primitives.add_vehicle(bike_folder, speed=2.1, global_offset=[24, 3.6, 0], yaw=180)
+bird1 = app.modeler.primitives.add_bird(bird_folder, speed=1.0, global_offset=[19, 4, 3], yaw=120, pitch=-5, flapping_rate=30)
+bird2 = app.modeler.primitives.add_bird(bird_folder, speed=1.0, global_offset=[6, 2, 3], yaw=-60, pitch=10)
 
 ###############################################################################
 # Radar
@@ -108,4 +108,4 @@ app.validate_simple()
 
 #app.analyze_setup(sweep.name)
 app.save_project()
-app.release_desktop(True, True)
+app.release_desktop(close_projects=False, close_desktop=False)
