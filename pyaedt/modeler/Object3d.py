@@ -1184,12 +1184,8 @@ class Object3d(object):
             new_names = []
             count = 0
             for o in added_objects:
-                this_object = self._parent.modeler.primitives.get_object_from_name(o)
-                new_name = name if count == 0 else name + "_" + str(count-1)
-                new_names.append(new_name)
-                this_object.name = new_name
+                o.name = name if count == 0 else name + "_" + str(count-1)
                 count += 1
-            added_objects = new_names
         return added_objects
 
     @aedt_exception_handler

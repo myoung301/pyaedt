@@ -1683,7 +1683,12 @@ class GeometryModeler(Modeler, object):
             if added_3d_comps:
                 self._messenger.add_info_message("Found 3D Components Duplication")
                 return True, added_3d_comps
-        return True, list(added_objs)
+        else:  # Return the duplicated objects.
+            # return True, list(added_objs)
+            obj_list = []
+            for n in added_objs:
+                obj_list.append(self._parent.modeler.primitives.get_object_from_name(n))
+            return True, obj_list
         #return self._duplicate_added_objects_tuple()
 
     @aedt_exception_handler
