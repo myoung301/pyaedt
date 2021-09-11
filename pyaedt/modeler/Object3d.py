@@ -1157,7 +1157,7 @@ class Object3d(object):
         return added_objects
 
     @aedt_exception_handler
-    def duplicate_along_line(self, vector, nclones=2, attachObject=False):
+    def duplicate_along_line(self, vector, nclones=2, attachObject=False, name=None):
         """Duplicate the object along a line.
 
         Parameters
@@ -1168,6 +1168,9 @@ class Object3d(object):
             Whether to attach the object. The default is ``False``.
         nclones : int, optional
             Number of clones. The default is ``2``.
+        name : str, optional
+            The base name to be used for the new objects.
+            Default is ``None``.
 
         Returns
         -------
@@ -1176,6 +1179,16 @@ class Object3d(object):
 
        """
         ret, added_objects = self._parent.modeler.duplicate_along_line(self, vector, nclones, attachObject)
+        if name and not attachObject:
+            new_names = []
+            count = 0
+            for o in added_objects:
+                this_object = self._parent.modeler.primitives.get_object_from_name(o)
+                new_name = name if count == 0 else name + "_" + str(count-1)
+                new_names.append(new_name)
+                this_object.name = new_name
+                count += 1
+            added_objects = new_names
         return added_objects
 
     @aedt_exception_handler
