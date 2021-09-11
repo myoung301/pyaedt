@@ -1189,6 +1189,39 @@ class Object3d(object):
         return added_objects
 
     @aedt_exception_handler
+    def duplicate_and_mirror(self, anchor_point, normal_vector, name=None):
+        """Duplicate the object by mirroring about a plane.
+
+        Parameters
+        ----------
+        anchor_point : list, required
+            List of the ``[x, y, z]`` coordinates or
+            Application.Position defining the anchor point in the mirror plane.
+        normal_vector : list, required
+            List of the ``[x1, y1, z1]`` vector defining
+            the normal to the mirror plane.
+
+        Returns
+        -------
+        Object3d
+            The new component after mirror/duplicate
+
+        """
+        success, new_obj_names = self._parent.modeler.duplicate_and_mirror(self.id, anchor_point, normal_vector)
+        new_obj = []
+        for n in new_obj_names:
+            new_obj.append(self._parent.modeler.primitives.get_object_from_name(n))
+        count = 0
+        if name:
+            for o in new_obj:
+                new_obj.name = name if count==0 else name + '_' + str(count)
+                count += 1
+        if len(new_obj) > 1:
+            return new_obj
+        else:
+            return new_obj[0]
+
+    @aedt_exception_handler
     def translate(self, vector):
         """Translate the object and return the 3D object.
 

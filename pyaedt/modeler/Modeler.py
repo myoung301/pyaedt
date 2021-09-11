@@ -1528,6 +1528,7 @@ class GeometryModeler(Modeler, object):
             List of objects created or an empty list.
 
         """
+        # TODO: Can this method ever return more than one object? If not, it should not return a list.
         selections = self.convert_to_selections(objid)
         Xpos, Ypos, Zpos = self.primitives._pos_with_arg(position)
         Xnorm, Ynorm, Znorm = self.primitives._pos_with_arg(vector)
@@ -1684,7 +1685,6 @@ class GeometryModeler(Modeler, object):
                 self._messenger.add_info_message("Found 3D Components Duplication")
                 return True, added_3d_comps
         else:  # Return the duplicated objects.
-            # return True, list(added_objs)
             obj_list = []
             for n in added_objs:
                 obj_list.append(self._parent.modeler.primitives.get_object_from_name(n))
