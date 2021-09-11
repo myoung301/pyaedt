@@ -1138,7 +1138,7 @@ class Primitives(object):
         Parameters
         ----------
         position_list : list
-            Array of positions of each point of the polyline.  A
+            Array of position coordinates of each point of the polyline.  A
             position is a list of 2D or 3D coordinates. Position
             coordinate values can be numbers or valid AEDT string
             expressions. For example, ``[0, 1, 2]``, ``["0mm", "5mm",

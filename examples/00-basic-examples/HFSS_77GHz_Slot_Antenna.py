@@ -4,6 +4,8 @@ from pyaedt import Hfss
 project_path = r'C:\Users\dcrawfor\OneDrive - ANSYS, Inc\Documents\Jupyter\AEDT Examples\project'
 design_name = "design1"
 
+# TODO: create_rectangle() and create_cylinder() have inconsistent call signatures.
+
 if not os.path.exists(project_path):
     os.makedirs(project_path)
 
@@ -50,7 +52,7 @@ with Hfss(projectname=os.path.join(project_path, proj_name),
     via2 = via1.duplicate_and_mirror([0,0,0], [1,0,0], name="via2")
     via3 = via2.duplicate_and_mirror([0,0,0], [0,1,0], name="via3")
     via4 = via1.duplicate_and_mirror([0,0,0], [0,1,0], name="via4")
-    trace =
+    trace = hfss.modeler.primitives.create_polyline()
     #top_plane = hfss.modeler.primitives.create_rectangle(position=plane_origin, [x_size, y_size],
     #                                                        name="top_plane", mat_name="copper")
 
