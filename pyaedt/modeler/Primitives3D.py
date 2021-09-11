@@ -405,7 +405,7 @@ class Primitives3D(Primitives, object):
         ----------
         cs_plane : int, required
             Coordinate system plane for orienting the rectangle.
-            Allowed values: 0 = "XY", 1 = "YZ",  2 = "XZ"
+            Allowed values: ``0`` = "XY", ``1`` = "YZ",  ``2`` = "XZ"
         position : list or Position
             List of ``[x, y, z]`` coordinates for the center point of the rectangle or
             the positionApplicationName.modeler.Position(x,y,z) object.

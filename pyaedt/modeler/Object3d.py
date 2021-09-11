@@ -1108,6 +1108,7 @@ class Object3d(object):
         self._parent.modeler.unite(unite_list)
         return self
 
+    @aedt_exception_handler
     def duplicate_around_axis(self, cs_axis, angle=90, nclones=2, create_new_objects=True):
         """Duplicate the object around the axis.
 
