@@ -1109,6 +1109,30 @@ class Object3d(object):
         return self
 
     @aedt_exception_handler
+    def thicken_sheet(self, thickness, bBothSides=False):
+        """Assign thickness to 2D sheet object.  This operation
+        only succeeds if self.object_type == "Sheet"
+
+        Parameters
+        ----------
+        thickness : str or numeric, required
+            Thickness of the new object
+        bBothSides : Bool, optional
+            Set to ``True`` if the thickness should be applied to both sides.
+
+        Returns
+        -------
+        pyaedt.modeler.Object3d.Object3d
+           Return the object after the thicken_sheet operation.
+
+        """
+        if self.object_type == "Sheet":
+            self._parent.modeler.thicken_sheet(self.id, thickness, bBothSides=bBothSides)
+        else:
+            raise Warning("thicken_sheet() method only applies to objects of type Sheet.")
+        return self
+
+    @aedt_exception_handler
     def duplicate_around_axis(self, cs_axis, angle=90, nclones=2, create_new_objects=True):
         """Duplicate the object around the axis.
 
