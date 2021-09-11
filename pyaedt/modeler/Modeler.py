@@ -2043,7 +2043,7 @@ class GeometryModeler(Modeler, object):
         Parameters
         ----------
         theList : list
-            List of object names or object IDs.
+            List of object, object names or object IDs.
 
         Returns
         -------
@@ -2057,7 +2057,7 @@ class GeometryModeler(Modeler, object):
         vArg2 = ['NAME:UniteParameters', 'KeepOriginals:=', False]
         self.oeditor.Unite(vArg1, vArg2)
         self.primitives.cleanup_objects()
-        return True
+        return theList[0]  # The new 3d object is the first object in the list.
 
     @aedt_exception_handler
     def clone(self, objid):
