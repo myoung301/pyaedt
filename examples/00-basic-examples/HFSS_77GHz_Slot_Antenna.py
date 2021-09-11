@@ -20,10 +20,11 @@ with Hfss(projectname=os.path.join(project_path, proj_name),
     # Set parameters to microns:
     units = "um"
     hfss.modeler.model_units = units
-    params = {"slot_length": 980, "slot_width": 100, "feed_length": 1000,
+    params = {"slot_length": 980, "slot_width": 100, "feed_length": 600,
               "x_size": 2000, "y_size": 2000, "t_oxide": 10, "w_trace": 10,
-              "feed_offset": 0, "feed_inset": 200, "t_metal": 2,
+              "feed_offset": 0, "feed_extend": 200, "t_metal": 2,
               "via_offset": 20}
+    via_radius = "4um"  # This is not parameterized in HFSS.
     for k, v in params.items():
         hfss[k] = str(v) + units
     plane_origin = ["-x_size/2", "-y_size/2", 0]
@@ -46,15 +47,27 @@ with Hfss(projectname=os.path.join(project_path, proj_name),
     via_base_position = ["slot_length/2 + via_offset", "slot_width/2 + via_offset", "-t_oxide/2"]
     via1 = hfss.modeler.primitives.create_cylinder(cs_axis="Z",
                                                   position=via_base_position,
-                                                  radius="4um", height="t_oxide",
+                                                  radius=via_radius, height="t_oxide",
                                                   name="via1", matname="copper")
     via1.color = "Orange"
     via2 = via1.duplicate_and_mirror([0,0,0], [1,0,0], name="via2")
     via3 = via2.duplicate_and_mirror([0,0,0], [0,1,0], name="via3")
     via4 = via1.duplicate_and_mirror([0,0,0], [0,1,0], name="via4")
-    trace = hfss.modeler.primitives.create_polyline()
-    #top_plane = hfss.modeler.primitives.create_rectangle(position=plane_origin, [x_size, y_size],
-    #                                                        name="top_plane", mat_name="copper")
-
-
-pass
+    feed_start_pos = ["feed_offset", "-feed_length", 0]
+    feed_end_pos = ["feed_offset", "slot_width/2 + feed_extend + 8um", 0]
+    trace = hfss.modeler.primitives.create_polyline([feed_start_pos, feed_end_pos],
+                                                    name="trace",
+                                                    matname="copper",
+                                                    xsection_type='Rectangle',
+                                                    xsection_width="w_trace",
+                                                    xsection_height="t_metal")
+    feed_short_pos = ["feed_offset", "slot_width/2 + feed_extend", "-t_oxide/2"]
+    feed_short_pos = ["feed_offset", "slot_width/2 + feed_extend", "-t_oxide/2"]
+    feed_short = hfss.modeler.primitives.create_cylinder(cs_axis="Z",
+                                                         position=feed_short_pos,
+                                                         radius=via_radius,
+                                                         height="t_oxide",
+                                                         name="feed_short",
+                                                         matname="copper")
+    trace = hfss.modeler.unite([trace, feed_short])
+    pass

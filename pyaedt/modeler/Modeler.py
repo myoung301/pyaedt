@@ -2043,7 +2043,7 @@ class GeometryModeler(Modeler, object):
         Parameters
         ----------
         theList : list
-            List of objects.
+            List of object names or object IDs.
 
         Returns
         -------
