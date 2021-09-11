@@ -398,13 +398,14 @@ class Primitives3D(Primitives, object):
         return self._create_object(new_object_name)
 
     @aedt_exception_handler
-    def create_rectangle(self, csPlane, position, dimension_list,  name=None, matname=None, is_covered=True):
+    def create_rectangle(self, cs_plane="Global:XY", position, dimension_list,  name=None, matname=None, is_covered=True):
         """Create a rectangle.
 
         Parameters
         ----------
-        cs_plane :
+        cs_plane : str, required
             Coordinate system plane for orienting the rectangle.
+            For example, "Global:XY" (Default)
         position : list or Position
             List of ``[x, y, z]`` coordinates for the center point of the rectangle or
             the positionApplicationName.modeler.Position(x,y,z) object.
@@ -425,7 +426,7 @@ class Primitives3D(Primitives, object):
             3D object.
 
         """
-        szAxis = GeometryOperators.cs_plane_str(csPlane)
+        szAxis = GeometryOperators.cs_plane_str(cs_plane)
         XStart, YStart, ZStart = self._pos_with_arg(position)
 
         Width = self._arg_with_dim(dimension_list[0])
