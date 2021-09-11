@@ -30,6 +30,7 @@ rgb_color_codes = {
     "Lime": (0, 255, 0),
     "Blue": (0, 0, 255),
     "Yellow": (255, 255, 0),
+    "Orange": (255, 128, 64),
     "Cyan": (0, 255, 255),
     "Magenta": (255, 0, 255),
     "Silver": (192, 192, 192),
@@ -1336,6 +1337,14 @@ class Object3d(object):
 
         """
         self._parent.modeler.subtract(self.name, tool_list, keep_originals)
+        return self
+
+    @aedt_exception_handler
+    def __sub__(self, tool):
+        if type(tool) is Object3d:
+            self.subtract([tool], False)  # tool object will be discarded when using the dunder method.
+        else:
+            raise ValueError('Expected type Object3d.')
         return self
 
     @aedt_exception_handler
