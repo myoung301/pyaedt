@@ -1214,7 +1214,7 @@ class Object3d(object):
         count = 0
         if name:
             for o in new_obj:
-                new_obj.name = name if count==0 else name + '_' + str(count)
+                o.name = name if count == 0 else name + '_' + str(count)
                 count += 1
         if len(new_obj) > 1:
             return new_obj
