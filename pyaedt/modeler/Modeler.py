@@ -1167,13 +1167,14 @@ class GeometryModeler(Modeler, object):
             ID of the sheet created.
 
         """
+        # TODO: This method needs to be documented!!!
         if axisdir>2:
             obj_cent=[-1e6,-1e6,-1e6]
         else:
             obj_cent=[1e6,1e6,1e6]
         face_ob=None
         for face in self.primitives[objectname].faces:
-            center = face.center
+            center = face.center  # @massimo Is this looking for planar surfaces?
             if not center:
                 continue
             if axisdir > 2 and center[axisdir-3] > obj_cent[axisdir-3]:

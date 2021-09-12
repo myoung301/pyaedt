@@ -1018,9 +1018,9 @@ class Hfss(FieldAnalysis3D, object):
         Parameters
         ----------
         startobj :
-            First (starting) object for the integration line.
+            Name of first (starting) object for the integration line.
         endobject :
-            Second (ending) object for the integration line.
+            Name of second (ending) object for the integration line.
         axisdir : int or :class:`pyaedt.application.Analysis.Analysis.AxisDir`, optional
             Position of the port. It should be one of the values for ``Application.AxisDir``,
             which are: ``XNeg``, ``YNeg``, ``ZNeg``, ``XPos``, ``YPos``, and ``ZPos``.

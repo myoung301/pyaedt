@@ -35,7 +35,7 @@ with Hfss(projectname=os.path.join(project_path, proj_name),
                                                             matname="copper")
     bottom_plane.translate([0, 0, "-t_oxide/2"])
     bottom_plane.color = "Orange"
-    bottom_plane.transparency = 0.25
+    bottom_plane.transparency = 0.35
     bottom_plane.thicken_sheet("-t_metal")
 
     top_plane = bottom_plane.duplicate_along_line([0, 0, "t_oxide + t_metal"], name="top_plane")[0]
@@ -44,6 +44,7 @@ with Hfss(projectname=os.path.join(project_path, proj_name),
                                               ["slot_length", "slot_width", "t_metal"],
                                               name="slot")
     top_plane = top_plane - slot  # Boolean subtract
+    top_plane.transparency = 0.8
     via_base_position = ["slot_length/2 + via_offset", "slot_width/2 + via_offset", "-t_oxide/2"]
     via1 = hfss.modeler.primitives.create_cylinder(cs_axis="Z",
                                                   position=via_base_position,
@@ -70,4 +71,7 @@ with Hfss(projectname=os.path.join(project_path, proj_name),
                                                          matname="copper")
     trace = trace + feed_short  # hfss.modeler.unite([trace, feed_short])  # TODO: Use __add__ dunder method.
     trace.color = "Orange"
+    port = hfss.create_lumped_port_between_objects(trace, bottom_plane, 2, portname="p1", renorm=False)
+    # port_face_id = hfss.modeler.primitives.get_faceid_from_position(feed_start_pos, obj_name="trace")
+    # port_sheet = hfss.modeler.create_sheet_to_ground(trace.name, groundname=bottom_plane.name, axisdir=5)
     pass
