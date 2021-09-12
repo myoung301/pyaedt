@@ -1110,6 +1110,24 @@ class Object3d(object):
         return self
 
     @aedt_exception_handler
+    def __add__(self, obj):
+        """Unite two objects of type Object3d.  self + (obj)
+
+        Parameters
+        ----------
+        obj : One instance of pyaedt.modeler.Object3d.Object3d
+
+        Returns
+        -------
+        pyaedt.modeler.Object3d.Object3d
+           Object 3D object.
+
+        """
+
+        self.unite([obj])
+        return self
+
+    @aedt_exception_handler
     def thicken_sheet(self, thickness, bBothSides=False):
         """Assign thickness to 2D sheet object.  This operation
         only succeeds if self.object_type == "Sheet"

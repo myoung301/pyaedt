@@ -3,13 +3,13 @@ from pyaedt import Hfss
 
 project_path = r'C:\Users\dcrawfor\OneDrive - ANSYS, Inc\Documents\Jupyter\AEDT Examples\project'
 design_name = "design1"
+proj_name = "slot_ant.aedt"
 
 # TODO: create_rectangle() and create_cylinder() have inconsistent call signatures.
 
 if not os.path.exists(project_path):
     os.makedirs(project_path)
 
-proj_name = "slot_ant.aedt"
 with Hfss(projectname=os.path.join(project_path, proj_name),
           designname=design_name,
           release_on_exit=True,
@@ -50,9 +50,9 @@ with Hfss(projectname=os.path.join(project_path, proj_name),
                                                   radius=via_radius, height="t_oxide",
                                                   name="via1", matname="copper")
     via1.color = "Orange"
-    via2 = via1.duplicate_and_mirror([0,0,0], [1,0,0], name="via2")
-    via3 = via2.duplicate_and_mirror([0,0,0], [0,1,0], name="via3")
-    via4 = via1.duplicate_and_mirror([0,0,0], [0,1,0], name="via4")
+    via2 = via1.duplicate_and_mirror([0, 0, 0], [1, 0, 0], name="via2")
+    via3 = via2.duplicate_and_mirror([0, 0, 0], [0, 1, 0], name="via3")
+    via4 = via1.duplicate_and_mirror([0, 0, 0], [0, 1, 0], name="via4")
     feed_start_pos = ["feed_offset", "-feed_length", 0]
     feed_end_pos = ["feed_offset", "slot_width/2 + feed_extend + 8um", 0]
     trace = hfss.modeler.primitives.create_polyline([feed_start_pos, feed_end_pos],
@@ -62,12 +62,12 @@ with Hfss(projectname=os.path.join(project_path, proj_name),
                                                     xsection_width="w_trace",
                                                     xsection_height="t_metal")
     feed_short_pos = ["feed_offset", "slot_width/2 + feed_extend", "-t_oxide/2"]
-    feed_short_pos = ["feed_offset", "slot_width/2 + feed_extend", "-t_oxide/2"]
     feed_short = hfss.modeler.primitives.create_cylinder(cs_axis="Z",
                                                          position=feed_short_pos,
                                                          radius=via_radius,
                                                          height="t_oxide",
                                                          name="feed_short",
                                                          matname="copper")
-    trace = hfss.modeler.unite([trace, feed_short])
+    trace = trace + feed_short  # hfss.modeler.unite([trace, feed_short])  # TODO: Use __add__ dunder method.
+    trace.color = "Orange"
     pass
