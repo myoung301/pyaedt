@@ -1837,8 +1837,20 @@ class Hfss(FieldAnalysis3D, object):
         deemb : float, optional
             Deembedding value distance in model units. The default is ``0``.
         axisdir : int or :class:`pyaedt.application.Analysis.Analysis.AxisDir`, optional
-            Position of the port. It should be one of the values for ``Application.AxisDir``,
-            which are: ``XNeg``, ``YNeg``, ``ZNeg``, ``XPos``, ``YPos``, and ``ZPos``.
+            axisdir defines the normal to the port surface. Pass one of the
+            following properties of``Application.AxisDir``,
+            ``XNeg`` : Port normal is in the x-direction.  The port will be placed
+                       at the negative-x extremity of the trace.
+            ``XPos`` : Port normal is in the y-direction.  The method will try to place the port
+                       at the +y extremity of the trace.
+            ``YNeg`` : Port normal is in the y-direction.  The port will be placed
+                       at the negative-y extremity of the trace.
+            ``YPos`` : Port normal is in the y-direction.  The method will try to place the port
+                       at the +y extremity of the trace.
+            ``ZNeg`` : Port normal is in the z-direction.  The port will be placed
+                       at the negative-z extremity of the trace.
+            ``ZPos`` : Port normal is in the z-direction.  The method will try to place the port
+                       at the +z extremity of the trace.
             The default is ``Application.AxisDir.XNeg``.
         impedance : float, optional
             Port impedance. The default is ``50``.
@@ -1909,8 +1921,20 @@ class Hfss(FieldAnalysis3D, object):
         sheet_name : str
             Name of the sheet.
         axisdir : int or :class:`pyaedt.application.Analysis.Analysis.AxisDir`, optional
-            Position of the port. It should be one of the values for ``Application.AxisDir``,
-            which are: ``XNeg``, ``YNeg``, ``ZNeg``, ``XPos``, ``YPos``, and ``ZPos``.
+            axisdir defines the normal to the port surface. Pass one of the
+            following properties of``Application.AxisDir``,
+            ``XNeg`` : Port normal is in the x-direction.  The port will be placed
+                       at the negative-x extremity of the trace.
+            ``XPos`` : Port normal is in the y-direction.  The method will try to place the port
+                       at the +y extremity of the trace.
+            ``YNeg`` : Port normal is in the y-direction.  The port will be placed
+                       at the negative-y extremity of the trace.
+            ``YPos`` : Port normal is in the y-direction.  The method will try to place the port
+                       at the +y extremity of the trace.
+            ``ZNeg`` : Port normal is in the z-direction.  The port will be placed
+                       at the negative-z extremity of the trace.
+            ``ZPos`` : Port normal is in the z-direction.  The method will try to place the port
+                       at the +z extremity of the trace.
             The default is ``Application.AxisDir.XNeg``.
         impedance : float, optional
             Port impedance. The default is ``50``.

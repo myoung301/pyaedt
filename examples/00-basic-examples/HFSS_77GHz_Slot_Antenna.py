@@ -71,7 +71,8 @@ with Hfss(projectname=os.path.join(project_path, proj_name),
                                                          matname="copper")
     trace = trace + feed_short  # hfss.modeler.unite([trace, feed_short])  # TODO: Use __add__ dunder method.
     trace.color = "Orange"
-    port = hfss.create_lumped_port_between_objects(trace, bottom_plane, 2, portname="p1", renorm=False)
+    hfss.create_wave_port_from_sheet()
+    port = hfss.create_lumped_port_between_objects(trace.name, bottom_plane.name, hfss.AxisDir.YNeg, portname="p1", renorm=False)
     # port_face_id = hfss.modeler.primitives.get_faceid_from_position(feed_start_pos, obj_name="trace")
     # port_sheet = hfss.modeler.create_sheet_to_ground(trace.name, groundname=bottom_plane.name, axisdir=5)
     pass
