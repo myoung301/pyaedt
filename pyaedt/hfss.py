@@ -2165,8 +2165,8 @@ class Hfss(FieldAnalysis3D, object):
 
     @aedt_exception_handler
     def create_wave_port_from_sheet(
-        self, sheet, deemb=0, axisdir=0, impedance=50, nummodes=1, portname=None, renorm=True
-    ):
+        self, sheet, deemb=0, axisdir=0, impedance=50, nummodes=1, portname=None,
+            renorm=True):
         """Create a waveport on sheet objects created starting from sheets.
 
         Parameters
