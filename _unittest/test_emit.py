@@ -1,15 +1,14 @@
 # Setup paths for module imports
-from _unittest.conftest import local_path, scratch_path
+import gc
 
 # Import required modules
 from pyaedt import Emit
 from pyaedt.generic.filesystem import Scratch
-import gc
-import os
+
+from _unittest.conftest import scratch_path
 
 
 class TestClass:
-
     def setup_class(self):
         # set a scratch directory and the environment / test data
         with Scratch(scratch_path) as self.local_scratch:
