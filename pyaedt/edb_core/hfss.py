@@ -2,9 +2,8 @@
 This module contains the `Edb3DLayout` class.
 """
 from pyaedt import is_ironpython
-
-from ..generic.general_methods import generate_unique_name
-from .general import *
+from pyaedt.edb_core.general import convert_netdict_to_pydict
+from pyaedt.generic.general_methods import aedt_exception_handler, generate_unique_name
 
 
 class Edb3DLayout(object):
@@ -74,13 +73,13 @@ class Edb3DLayout(object):
 
         Parameters
         ----------
-        pos_pin: Object
+        pos_pin : Object
             Edb Pin
-        neg_pin: Object
+        neg_pin : Object
             Edb Pin
-        impedance: float
+        impedance : float
             Port Impedance
-        port_name: str, Optional
+        port_name : str, optional
             Port Name
 
         >>> from pyaedt import Edb
@@ -142,7 +141,7 @@ class Edb3DLayout(object):
             Negative Pin.
         current_value : float, optional
             Value for the current. The default is ``0.1``.
-        phase_value: optional
+        phase_value : optional
             Value for the phase. The default is ``0``.
         source_name : str, optional
             Name of the source. The default is ``""``.
@@ -221,7 +220,7 @@ class Edb3DLayout(object):
             Name of the negative net name. The default is ``"GND"``.
         impedance_value : float, optional
             Port impedance value. The default is ``50``.
-        port_name: str, optional
+        port_name : str, optional
             Name of the port. The default is ``""``.
 
         Returns
@@ -323,7 +322,7 @@ class Edb3DLayout(object):
             Name of the negative net. The default is ``"GND"``.
         current_value : float, optional
             Value for the current. The default is ``0.1``.
-        phase_value: optional
+        phase_value : optional
             Value for the phase. The default is ``0``.
         source_name : str, optional
             Name of the source. The default is ``""``.

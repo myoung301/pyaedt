@@ -644,9 +644,12 @@ class Object3d(object):
         :class:`pyaedt.modeler.Object3d.FacePrimitive`
 
         """
-        result = [(float(face.center[2]), face) for face in self.faces]
-        result = sorted(result, key=lambda tup: tup[0])
-        return result[-1][1]
+        try:
+            result = [(float(face.center[2]), face) for face in self.faces]
+            result = sorted(result, key=lambda tup: tup[0])
+            return result[-1][1]
+        except:
+            return None
 
     @property
     def bottom_face_z(self):
@@ -657,9 +660,12 @@ class Object3d(object):
         :class:`pyaedt.modeler.Object3d.FacePrimitive`
 
         """
-        result = [(float(face.center[2]), face) for face in self.faces]
-        result = sorted(result, key=lambda tup: tup[0])
-        return result[0][1]
+        try:
+            result = [(float(face.center[2]), face) for face in self.faces]
+            result = sorted(result, key=lambda tup: tup[0])
+            return result[0][1]
+        except:
+            return None
 
     @property
     def top_face_x(self):
@@ -670,9 +676,12 @@ class Object3d(object):
         :class:`pyaedt.modeler.Object3d.FacePrimitive`
 
         """
-        result = [(float(face.center[0]), face) for face in self.faces]
-        result = sorted(result, key=lambda tup: tup[0])
-        return result[-1][1]
+        try:
+            result = [(float(face.center[0]), face) for face in self.faces]
+            result = sorted(result, key=lambda tup: tup[0])
+            return result[-1][1]
+        except:
+            return None
 
     @property
     def bottom_face_x(self):
@@ -683,9 +692,12 @@ class Object3d(object):
         :class:`pyaedt.modeler.Object3d.FacePrimitive`
 
         """
-        result = [(float(face.center[0]), face) for face in self.faces]
-        result = sorted(result, key=lambda tup: tup[0])
-        return result[0][1]
+        try:
+            result = [(float(face.center[0]), face) for face in self.faces]
+            result = sorted(result, key=lambda tup: tup[0])
+            return result[0][1]
+        except:
+            return None
 
     @property
     def top_face_y(self):
@@ -696,9 +708,12 @@ class Object3d(object):
         :class:`pyaedt.modeler.Object3d.FacePrimitive`
 
         """
-        result = [(float(face.center[1]), face) for face in self.faces]
-        result = sorted(result, key=lambda tup: tup[0])
-        return result[-1][1]
+        try:
+            result = [(float(face.center[1]), face) for face in self.faces]
+            result = sorted(result, key=lambda tup: tup[0])
+            return result[-1][1]
+        except:
+            return None
 
     @property
     def bottom_face_y(self):
@@ -709,9 +724,12 @@ class Object3d(object):
         :class:`pyaedt.modeler.Object3d.FacePrimitive`
 
         """
-        result = [(float(face.center[1]), face) for face in self.faces]
-        result = sorted(result, key=lambda tup: tup[0])
-        return result[0][1]
+        try:
+            result = [(float(face.center[1]), face) for face in self.faces]
+            result = sorted(result, key=lambda tup: tup[0])
+            return result[0][1]
+        except:
+            return None
 
     @property
     def edges(self):
@@ -1334,9 +1352,9 @@ class Object3d(object):
         draft_type : str
             Type of the draft. Options are ``"Extended"``, ``"Round"``,
             and ``"Natural"``. The default is ``"Round``.
-        is_check_face_intersection: bool, optional
+        is_check_face_intersection : bool, optional
            The default is ``False``.
-        twist_angle: float, optional
+        twist_angle : float, optional
             Angle at which to twist or rotate in degrees. The default is ``0``.
 
         Returns
@@ -1488,11 +1506,11 @@ class Padstack(object):
 
     Parameters
     ----------
-    name: str, optional
+    name : str, optional
         Name of the padstack. The default is ``"Padstack"``.
     padstackmanager : optional
         The default is ``None``.
-    units: str, optional
+    units : str, optional
         The default is ``mm``.
 
     """
@@ -1519,7 +1537,7 @@ class Padstack(object):
 
         Parameters
         ----------
-        holetype: str, optional
+        holetype : str, optional
             Type of the hole. The default is ``Circular``.
         sizes : str, optional
             Diameter of the hole with units. The default is ``"1mm"``.
@@ -1603,7 +1621,7 @@ class Padstack(object):
 
             Parameters
             ----------
-            holetype: str, optional
+            holetype : str, optional
                 Type of the hole. The default is ``Circular``.
             sizes : str, optional
                 Diameter of the hole with units. The default is ``"1mm"``.

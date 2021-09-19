@@ -433,7 +433,7 @@ class FieldPlot:
         Name of the solution.
     quantityName : str
         Name of the plot or the name of the object.
-    intrinsicList: dict, optional
+    intrinsicList : dict, optional
         Name of the intrinsic dictionary. The default is ``{}``.
 
     """
@@ -660,10 +660,8 @@ class FieldPlot:
 class PostProcessorCommon(object):
     """Manages the main AEDT postprocessing functions.
 
-    The inherited `AEDTConfig` class contains all `_desktop`
-    hierarchical calls needed for the class inititialization data
-    `_desktop` and the design types ``"HFSS"``, ``"Icepak"``, and
-    ``"HFSS3DLayout"``.
+    This class is inherited in the caller application and is accessible through the post variable( eg. ``hfss.post`` or
+    ``q3d.post``).
 
     .. note::
        Some functionalities are available only when AEDT is running in
@@ -675,6 +673,11 @@ class PostProcessorCommon(object):
         Inherited parent object. The parent object must provide the members
         ``_modeler``, ``_desktop``, ``_odesign``, and ``_messenger``.
 
+    Examples
+    --------
+    >>> from pyaedt import Q3d
+    >>> q3d = Q3d()
+    >>> q3d = q.post.get_report_data(expression="C(Bar1,Bar1)", domain=["Context:=", "Original"])
     """
 
     def __init__(self, parent):
@@ -877,7 +880,8 @@ class PostProcessorCommon(object):
         primary_sweep_variable="Freq",
         context=None,
         plotname=None,
-        plottype=None,
+        report_category=None,
+        plot_type="Rectangular Plot",
     ):
         """Create a 2D rectangular plot in AEDT.
 
@@ -895,7 +899,10 @@ class PostProcessorCommon(object):
             The default is ``None``.
         plotname : str, optional
             Name of the plot. The default is ``None``.
-
+        report_category : str, optional
+            Type of the Report to be created. If `None` default data Report will be used
+        plot_type : str, optional
+            The format of Data Visualization. Default is ``Rectangular Plot``
         Returns
         -------
         bool
@@ -927,10 +934,10 @@ class PostProcessorCommon(object):
         if self.post_solution_type not in report_type:
             print("Solution not supported")
             return False
-        if not plottype:
+        if not report_category:
             modal_data = report_type[self.post_solution_type]
         else:
-            modal_data = plottype
+            modal_data = report_category
         if not plotname:
             plotname = generate_unique_name("Plot")
         families_input = []
@@ -953,7 +960,7 @@ class PostProcessorCommon(object):
         self.oreportsetup.CreateReport(
             plotname,
             modal_data,
-            "Rectangular Plot",
+            plot_type,
             setup_sweep_name,
             ctxt,
             families_input,
@@ -1027,15 +1034,15 @@ class PostProcessorCommon(object):
 
     @aedt_exception_handler
     def export_report_to_csv(self, project_dir, plot_name):
-        """Export the SParameter plot data to a CSV file.
+        """Export the 2D Plot data to a CSV file.
 
         This method leaves the data in the plot (as data) as a reference
-        for the Sparameters plot after the loops.
+        for the Plot after the loops.
 
         Parameters
         ----------
         project_dir : str
-            Path to the project directory.
+            Path to the project directory. The csv file will be plot_name.csv.
         plot_name : str
             Name of the plot to export.
 
@@ -1635,7 +1642,6 @@ class PostProcessor(PostProcessorCommon, object):
             ``True`` when successful, ``False`` when failed.
         """
         time.sleep(2)
-
         self.ofieldsreporter.ExportPlotImageToFile(fileName, "", plotName, coordinateSystemName)
         return True
 
@@ -1854,22 +1860,22 @@ class CircuitPostProcessor(PostProcessorCommon, object):
 
         Parameters
         ----------
-        setupname: str
+        setupname : str
             Name of the setup
-        ami_name: str
+        ami_name : str
             AMI Probe name to use
-        variation_list_w_value: list
+        variation_list_w_value : list
             list of variations with relative values
-        plot_type: str, Default ``"Rectangular Plot"``
+        plot_type : str, Default ``"Rectangular Plot"``
             String containing the report type. Default is ``"Rectangular Plot"``. It can be ``"Data Table"``,
             ``"Rectangular Stacked Plot"``or any of the other valid AEDT Report types.
-        plot_initial_response: bool, optional
+        plot_initial_response : bool, optional
             Set either to plot the initial input response.  Default is ``True``.
-        plot_intermediate_response: bool, optional
+        plot_intermediate_response : bool, optional
             Set whether to plot the intermediate input response.  Default is ``False``.
-        plot_final_response: bool, optional
+        plot_final_response : bool, optional
             Set whether to plot the final input response.  Default is ``False``.
-        plotname: str, optional
+        plotname : str, optional
             The plot name.  Default is a unique name.
 
         Returns
@@ -1964,7 +1970,7 @@ class CircuitPostProcessor(PostProcessorCommon, object):
         ami_plot_type : str, optional
             String containing the report AMI type. Default is ``"InitialEye"``. It can be ``"EyeAfterSource"``,
             ``"EyeAfterChannel"`` or ``"EyeAfterProbe"``.
-        plotname: str, optional
+        plotname : str, optional
             The name of the plot.  Defaults to a unique name starting with ``"Plot"``.
 
         Returns
@@ -2056,13 +2062,13 @@ class CircuitPostProcessor(PostProcessorCommon, object):
 
         Parameters
         ----------
-        setupname: str
+        setupname : str
             Name of the setup
-        probe_names: str or list
+        probe_names : str or list
             Name of the probe to plot in the EYE diagram.
         variation_list_w_value : list
             List of variations with relative values.
-        plotname: str, optional
+        plotname : str, optional
             The name of the plot.
 
         Returns

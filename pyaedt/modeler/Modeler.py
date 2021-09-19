@@ -28,7 +28,7 @@ class CoordinateSystem(object):
         Inherited parent object.
     props : dict, optional
         Dictionary of properties. The default is ``None``.
-    name: optional
+    name : optional
         The default is ``None``.
 
     """
@@ -308,7 +308,7 @@ class CoordinateSystem(object):
             Name of the reference coordinate system. The default is ``"Global"``.
         name : str
             Name of the coordinate system. The default is ``None``.
-        mode: str, optional
+        mode : str, optional
             Definition mode. Options are ``"view"``, ``"axis"``, ``"zxz"``, ``"zyz"``,
             and ``"axisrotation"``. The default is ``"axis"``.
 
@@ -551,6 +551,9 @@ class CoordinateSystem(object):
 class Modeler(object):
     """Provides the `Modeler` application class that other `Modeler` classes inherit.
 
+    This class is inherited in the caller application and is accessible through the modeler variable
+    object( eg. ``hfss.modeler``).
+
     Parameters
     ----------
     parent :
@@ -695,24 +698,36 @@ class GeometryModeler(Modeler, object):
                 try:
                     cs.ref_cs = id2name[name2refid[cs.name]]
                     if cs.props["Mode"] == "Axis/Position":
-                        x1 = GeometryOperators.parse_dim_arg(cs.props["XAxisXvec"])
-                        x2 = GeometryOperators.parse_dim_arg(cs.props["XAxisYvec"])
-                        x3 = GeometryOperators.parse_dim_arg(cs.props["XAxisZvec"])
-                        y1 = GeometryOperators.parse_dim_arg(cs.props["YAxisXvec"])
-                        y2 = GeometryOperators.parse_dim_arg(cs.props["YAxisYvec"])
-                        y3 = GeometryOperators.parse_dim_arg(cs.props["YAxisZvec"])
+                        x1 = GeometryOperators.parse_dim_arg(cs.props["XAxisXvec"],
+                                                             variable_manager=self._parent.variable_manager)
+                        x2 = GeometryOperators.parse_dim_arg(cs.props["XAxisYvec"],
+                                                             variable_manager=self._parent.variable_manager)
+                        x3 = GeometryOperators.parse_dim_arg(cs.props["XAxisZvec"],
+                                                             variable_manager=self._parent.variable_manager)
+                        y1 = GeometryOperators.parse_dim_arg(cs.props["YAxisXvec"],
+                                                             variable_manager=self._parent.variable_manager)
+                        y2 = GeometryOperators.parse_dim_arg(cs.props["YAxisYvec"],
+                                                             variable_manager=self._parent.variable_manager)
+                        y3 = GeometryOperators.parse_dim_arg(cs.props["YAxisZvec"],
+                                                             variable_manager=self._parent.variable_manager)
                         x, y, z = GeometryOperators.pointing_to_axis([x1, x2, x3], [y1, y2, y3])
                         a, b, g = GeometryOperators.axis_to_euler_zyz(x, y, z)
                         cs.quaternion = GeometryOperators.euler_zyz_to_quaternion(a, b, g)
                     elif cs.props["Mode"] == "Euler Angle ZXZ":
-                        a = GeometryOperators.parse_dim_arg(cs.props["Phi"])
-                        b = GeometryOperators.parse_dim_arg(cs.props["Theta"])
-                        g = GeometryOperators.parse_dim_arg(cs.props["Psi"])
+                        a = GeometryOperators.parse_dim_arg(cs.props["Phi"],
+                                                            variable_manager=self._parent.variable_manager)
+                        b = GeometryOperators.parse_dim_arg(cs.props["Theta"],
+                                                            variable_manager=self._parent.variable_manager)
+                        g = GeometryOperators.parse_dim_arg(cs.props["Psi"],
+                                                            variable_manager=self._parent.variable_manager)
                         cs.quaternion = GeometryOperators.euler_zxz_to_quaternion(a, b, g)
                     elif cs.props["Mode"] == "Euler Angle ZYZ":
-                        a = GeometryOperators.parse_dim_arg(cs.props["Phi"])
-                        b = GeometryOperators.parse_dim_arg(cs.props["Theta"])
-                        g = GeometryOperators.parse_dim_arg(cs.props["Psi"])
+                        a = GeometryOperators.parse_dim_arg(cs.props["Phi"],
+                                                            variable_manager=self._parent.variable_manager)
+                        b = GeometryOperators.parse_dim_arg(cs.props["Theta"],
+                                                            variable_manager=self._parent.variable_manager)
+                        g = GeometryOperators.parse_dim_arg(cs.props["Psi"],
+                                                            variable_manager=self._parent.variable_manager)
                         cs.quaternion = GeometryOperators.euler_zyz_to_quaternion(a, b, g)
                 except:
                     pass
@@ -852,7 +867,7 @@ class GeometryModeler(Modeler, object):
             ``"Global"``.
         name : str
             Name of the coordinate system. The default is ``None``.
-        mode: str, optional
+        mode : str, optional
             Definition mode. Options are ``"view"``, ``"axis"``,
             ``"zxz"``, ``"zyz"``, and ``"axisrotation"``. The default
             is ``"axis"``.
@@ -960,9 +975,12 @@ class GeometryModeler(Modeler, object):
         def get_total_transformation(p, cs):
             idx = cs_names.index(cs)
             q = self.coordinate_systems[idx].quaternion
-            ox = GeometryOperators.parse_dim_arg(self.coordinate_systems[idx].props["OriginX"], self.model_units)
-            oy = GeometryOperators.parse_dim_arg(self.coordinate_systems[idx].props["OriginY"], self.model_units)
-            oz = GeometryOperators.parse_dim_arg(self.coordinate_systems[idx].props["OriginZ"], self.model_units)
+            ox = GeometryOperators.parse_dim_arg(self.coordinate_systems[idx].props["OriginX"], self.model_units,
+                                                 variable_manager=self._parent.variable_manager)
+            oy = GeometryOperators.parse_dim_arg(self.coordinate_systems[idx].props["OriginY"], self.model_units,
+                                                 variable_manager=self._parent.variable_manager)
+            oz = GeometryOperators.parse_dim_arg(self.coordinate_systems[idx].props["OriginZ"], self.model_units,
+                                                 variable_manager=self._parent.variable_manager)
             o = [ox, oy, oz]
             refcs = self.coordinate_systems[idx].ref_cs
             if refcs == "Global":
@@ -1042,14 +1060,14 @@ class GeometryModeler(Modeler, object):
             ``True`` when successful, ``False`` when failed.
 
         """
-        self._messenger.add_debug_message("Enabling deformation feedback")
+        self._messenger.add_info_message("Enabling deformation feedback")
         try:
             self.odesign.SetObjectDeformation(["EnabledObjects:=", objects])
         except:
             self._messenger.add_error_message("Failed to enable the deformation dependence")
             return False
         else:
-            self._messenger.add_debug_message("Successfully enabled deformation feedback")
+            self._messenger.add_info_message("Successfully enabled deformation feedback")
             return True
 
     @aedt_exception_handler
@@ -1074,7 +1092,7 @@ class GeometryModeler(Modeler, object):
             ``True`` when successful, ``False`` when failed.
 
         """
-        self._messenger.add_debug_message("Set model temperature and enabling Thermal Feedback")
+        self._messenger.add_info_message("Set model temperature and enabling Thermal Feedback")
         if create_project_var:
             self._parent.variable_manager["$AmbientTemp"] = str(ambient_temp) + "cel"
             var = "$AmbientTemp"
@@ -1105,7 +1123,7 @@ class GeometryModeler(Modeler, object):
             self._messenger.add_error_message("Failed to enable the temperature dependence")
             return False
         else:
-            self._messenger.add_debug_message("Assigned Objects Temperature")
+            self._messenger.add_info_message("Assigned Objects Temperature")
             return True
 
     @aedt_exception_handler
@@ -1383,11 +1401,12 @@ class GeometryModeler(Modeler, object):
             excitation for each mode.
 
         """
-        list_names = []
-        if "GetExcitations" in dir(self._parent.oboundary):
+        try:
             list_names = list(self._parent.oboundary.GetExcitations())
             del list_names[1::2]
-        return list_names
+            return list_names
+        except:
+            return []
 
     @aedt_exception_handler
     def get_boundaries_name(self):
@@ -1874,18 +1893,18 @@ class GeometryModeler(Modeler, object):
 
         Parameters
         ----------
-        objid: str, int
+        objid : str, int
             Name or ID of the object.
-        sweep_object: str, int
+        sweep_object : str, int
             Name or ID of the sweep.
         draft_angle : float, optional
             Draft angle in degrees. The default is ``0``.
         draft_type : str
             Type of the draft. Options are ``"Round"``, ``"Natural"``,
             and ``"Extended"``. The default is ``"Round"``.
-        is_check_face_intersection: bool, optional
+        is_check_face_intersection : bool, optional
             The default is ``False``.
-        twist_angle: float, optional
+        twist_angle : float, optional
            Twist angle in degrees. The default is ``0``.
 
         Returns
@@ -2029,12 +2048,11 @@ class GeometryModeler(Modeler, object):
         ----------
         objid : int
              ID of the object.
-        cs_axis:
+        cs_axis
             Coordinate system axis or the Application.CoordinateSystemAxis object.
         angle : float
             Angle of rotation. The units, defined by ``unit``, can be either
             degrees or radians. The default is ``90.0``.
-
         unit : text, optional
              Units for the angle. Options are ``"deg"`` or ``"rad"``.
              The default is ``"deg"``.
@@ -2817,9 +2835,9 @@ class GeometryModeler(Modeler, object):
 
         Parameters
         ----------
-        fl: list
+        fl : list
             List of object names.
-        name: str
+        name : str
             Name of the new object list.
 
         Returns
@@ -3712,7 +3730,7 @@ class GeometryModeler(Modeler, object):
 
         Parameters
         ----------
-        args: list or int
+        args : list or int
             Position of the item as either a list of the ``[x, y, z]`` coordinates
             or three separate values. If no or insufficient arguments
             are specified, ``0`` is applied.

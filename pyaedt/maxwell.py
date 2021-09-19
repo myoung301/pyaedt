@@ -6,7 +6,6 @@ import json
 import io
 from .application.Analysis2D import FieldAnalysis2D
 from .application.Analysis3D import FieldAnalysis3D
-from .desktop import exception_to_desktop
 from .generic.DataHandlers import float_units
 from .generic.general_methods import generate_unique_name, aedt_exception_handler
 from .modules.Boundary import BoundaryObject
@@ -34,7 +33,7 @@ class Maxwell(object):
         Name of the setup to use as the nominal. The default is
         ``None``, in which case the active setup is used or
         nothing is used.
-    specified_version: str, optional
+    specified_version : str, optional
         Version of AEDT to use. The default is ``None``, in which case
         the active version or latest installed version is used. This
         parameter is ignored when Script is launched within AEDT.
@@ -43,12 +42,12 @@ class Maxwell(object):
         is ``False``, in which case AEDT is launched in the graphical
         mode. This parameter is ignored when Script is launched within
         AEDT.
-    AlwaysNew : bool, optional
+    new_desktop_session : bool, optional
         Whether to launch an instance of AEDT in a new thread, even if
         another instance of the ``specified_version`` is active on the
         machine. The default is ``True``. This parameter is ignored
         when Script is launched within AEDT.
-    release_on_exit : bool, optional
+    close_on_exit : bool, optional
         Whether to release AEDT on exit. The default is ``False``.
     student_version : bool, optional
         Whether to open the AEDT student version. The default is
@@ -69,11 +68,6 @@ class Maxwell(object):
     def omaterial_manager(self):
         """Material manager."""
         return self.odefinition_manager.GetManager("Material")
-
-    # @property
-    # def oeditor(self):
-    #     """Editor."""
-    #     return self.odesign.SetActiveEditor("3D Modeler")
 
     @property
     def symmetry_multiplier(self):
@@ -693,11 +687,6 @@ class Maxwell(object):
     def __enter__(self):
         return self
 
-    def __exit__(self, ex_type, ex_value, ex_traceback):
-        """Push exit up to parent object Design."""
-        if ex_type:
-            exception_to_desktop(self, ex_value, ex_traceback)
-
 
 class Maxwell3d(Maxwell, FieldAnalysis3D, object):
     """Provides the Maxwell 3D application interface.
@@ -723,7 +712,7 @@ class Maxwell3d(Maxwell, FieldAnalysis3D, object):
         Name of the setup to use as the nominal. The default is
         ``None``, in which case the active setup is used or
         nothing is used.
-    specified_version: str, optional
+    specified_version : str, optional
         Version of AEDT to use. The default is ``None``, in which case
         the active version or latest installed version is used. This
         parameter is ignored when Script is launched within AEDT.
@@ -732,12 +721,12 @@ class Maxwell3d(Maxwell, FieldAnalysis3D, object):
         is ``False``, in which case AEDT is launched in the graphical
         mode. This parameter is ignored when Script is launched within
         AEDT.
-    AlwaysNew : bool, optional
+    new_desktop_session : bool, optional
         Whether to launch an instance of AEDT in a new thread, even if
         another instance of the ``specified_version`` is active on the
         machine. The default is ``True``. This parameter is ignored
         when Script is launched within AEDT.
-    release_on_exit : bool, optional
+    close_on_exit : bool, optional
         Whether to release AEDT on exit. The default is ``False``.
     student_version : bool, optional
         Whether to open the AEDT student version. The default is
@@ -773,9 +762,9 @@ class Maxwell3d(Maxwell, FieldAnalysis3D, object):
         solution_type=None,
         setup_name=None,
         specified_version=None,
-        NG=False,
-        AlwaysNew=False,
-        release_on_exit=False,
+        non_graphical=False,
+        new_desktop_session=False,
+        close_on_exit=False,
         student_version=False,
     ):
         """
@@ -790,9 +779,9 @@ class Maxwell3d(Maxwell, FieldAnalysis3D, object):
             solution_type,
             setup_name,
             specified_version,
-            NG,
-            AlwaysNew,
-            release_on_exit,
+            non_graphical,
+            new_desktop_session,
+            close_on_exit,
             student_version,
         )
         Maxwell.__init__(self)
@@ -822,7 +811,7 @@ class Maxwell2d(Maxwell, FieldAnalysis2D, object):
         Name of the setup to use as the nominal. The default is
         ``None``, in which case the active setup is used or
         nothing is used.
-    specified_version: str, optional
+    specified_version : str, optional
         Version of AEDT to use. The default is ``None``, in which case
         the active version or latest installed version is used.
         This parameter is ignored when Script is launched within AEDT.
@@ -830,11 +819,11 @@ class Maxwell2d(Maxwell, FieldAnalysis2D, object):
         Whether to launch AEDT in the non-graphical mode. The default
         is ``False``, in which case AEDT is launched in the graphical mode.
         This parameter is ignored when Script is launched within AEDT.
-    AlwaysNew : bool, optional
+    new_desktop_session : bool, optional
         Whether to launch an instance of AEDT in a new thread, even if
         another instance of the ``specified_version`` is active on the
         machine. The default is ``True``. This parameter is ignored when Script is launched within AEDT.
-    release_on_exit : bool, optional
+    close_on_exit : bool, optional
         Whether to release AEDT on exit. The default is ``False``.
     student_version : bool, optional
         Whether to open the AEDT student version. The default is ``False``.
@@ -879,9 +868,9 @@ class Maxwell2d(Maxwell, FieldAnalysis2D, object):
         solution_type=None,
         setup_name=None,
         specified_version=None,
-        NG=False,
-        AlwaysNew=False,
-        release_on_exit=False,
+        non_graphical=False,
+        new_desktop_session=False,
+        close_on_exit=False,
         student_version=False,
     ):
         self.is3d = False
@@ -893,9 +882,9 @@ class Maxwell2d(Maxwell, FieldAnalysis2D, object):
             solution_type,
             setup_name,
             specified_version,
-            NG,
-            AlwaysNew,
-            release_on_exit,
+            non_graphical,
+            new_desktop_session,
+            close_on_exit,
             student_version,
         )
         Maxwell.__init__(self)
@@ -988,9 +977,9 @@ class Maxwell2d(Maxwell, FieldAnalysis2D, object):
 
         Parameters
         ----------
-        edge_list: list
+        edge_list : list
             List of edges.
-        bound_name: str, optional
+        bound_name : str, optional
             Name of the boundary. The default is ``None``.
 
         Returns
@@ -1045,3 +1034,52 @@ class Maxwell2d(Maxwell, FieldAnalysis2D, object):
             self.boundaries.append(bound)
             return bound
         return False
+
+    @aedt_exception_handler
+    def assign_master_slave(self, master_edge, slave_edge, reverse_master=False, reverse_slave=False,
+                            same_as_master=True, bound_name=None):
+        """Assign master and slave boundary conditions to two edges of the same object.
+
+        Parameters
+        ----------
+        master_edge : int
+            ID of the master edge.
+        slave_edge : int
+            ID of the slave edge.
+        reverse_master : bool, optional
+            Whether to reverse the master edge to the V direction. The default is ``False``.
+        reverse_slave : bool, optional
+            Whether to reverse the master edge to the U direction. The default is ``False``.
+        same_as_master : bool, optional
+            Whether the B-Field of the slave edge and master edge are the same. The default is ``True``.
+        bound_name : str, optional
+            Name of the master boundary. The name of the slave boundary will have a ``_dep`` suffix.
+
+        Returns
+        -------
+        :class:`pyaedt.modules.Boundary.BoundaryObject`, :class:`pyaedt.modules.Boundary.BoundaryObject`
+            Master and slave objects.
+
+        """
+        master_edge = self.modeler._convert_list_to_ids(master_edge)
+        slave_edge = self.modeler._convert_list_to_ids(slave_edge)
+        if not bound_name:
+            bound_name_m = generate_unique_name("Independent")
+            bound_name_s = generate_unique_name("Dependent")
+        else:
+            bound_name_m = bound_name
+            bound_name_s = bound_name + "_dep"
+        props2 = OrderedDict({"Edges": master_edge, "ReverseV": reverse_master})
+        bound = BoundaryObject(self, bound_name_m, props2, "Independent")
+        if bound.create():
+            self.boundaries.append(bound)
+
+            props2 = OrderedDict({"Edges": slave_edge, "ReverseU": reverse_slave, "Independent": bound_name_m,
+                                  "SameAsMaster": same_as_master})
+            bound2 = BoundaryObject(self, bound_name_s, props2, "Independent")
+            if bound2.create():
+                self.boundaries.append(bound2)
+                return bound, bound2
+            else:
+                return bound, False
+        return False, False

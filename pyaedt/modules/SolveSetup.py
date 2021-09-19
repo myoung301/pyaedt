@@ -21,13 +21,13 @@ class Setup(object):
 
     Parameters
     ----------
-    parent: str
+    parent : str
         Inherited parent object.
-    solutiontype:
+    solutiontype : int, str
         Type of the setup.
-    setupname: str, optional
+    setupname : str, optional
         Name of the setup. The default is ``"MySetupAuto"``.
-    isnewsetup: bool, optional
+    isnewsetup : bool, optional
         Whether to create the setup from a template. The default is ``True``.
         If ``False``, access is to the existing setup.
 
@@ -435,13 +435,13 @@ class SetupCircuit(object):
 
     Parameters
     ----------
-    parent: str
+    parent : str
         Inherited parent object.
-    solutiontype:
+    solutiontype : str, int
         Type of the setup.
-    setupname: str, optional
+    setupname : str, optional
         Name of the setup. The default is ``"MySetupAuto"``.
-    isnewsetup: bool, optional
+    isnewsetup : bool, optional
       Whether to create the setup from a template. The default is ``True.``
       If ``False``, access is to the existing setup.
 
@@ -477,13 +477,13 @@ class SetupCircuit(object):
 
         Parameters
         ----------
-        parent: str
+        parent : str
             Inherited parent object.
-        solutiontype:
+        solutiontype : str, int
             Type of the setup.
-        setupname: str, optional
+        setupname : str, optional
             Name of the setup. The default is ``"MySetupAuto"``.
-        isnewsetup: bool, optional
+        isnewsetup : bool, optional
           Whether to create the setup from a template. The default is ``True.``
           If ``False``, access is to the existing setup.
 
@@ -842,13 +842,13 @@ class Setup3DLayout(object):
 
     Parameters
     ----------
-    parent: str
+    parent : str
         Inherited parent object.
-    solutiontype:
+    solutiontype : int or str
         Type of the setup.
-    setupname: str, optional
+    setupname : str, optional
         Name of the setup. The default is ``"MySetupAuto"``.
-    isnewsetup: bool, optional
+    isnewsetup : bool, optional
         Whether to create the setup from a template. The default is ``True.``
         If ``False``, access is to the existing setup.
 
@@ -1019,8 +1019,8 @@ class Setup3DLayout(object):
         sweepname : str, optional
             Name of the sweep. The default is ``None``.
         sweeptype : str, optional
-            Type of the sweep. Options are ``"Fast"``, ``"Interpolating"``, and
-            ``"Discrete"``. The default is ``"Interpolating"``.
+            Type of the sweep. Options are ``"Interpolating"`` and ``"Discrete"``.
+            The default is ``"Interpolating"``.
 
         Returns
         -------

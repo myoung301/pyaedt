@@ -86,7 +86,7 @@ class TestClass:
                 assert len(pinlocation) == 2
 
     def test_06_add_3dlayout_component(self):
-        myedb, myname = self.aedtapp.modeler.components.create_3dlayout_subcircuit("Galileo_G87173_204")
+        myedb, myname = self.aedtapp.modeler.components.add_subcircuit_3dlayout("Galileo_G87173_204")
         assert type(myedb) is int
 
     def test_07_add_hfss_component(self):
@@ -201,6 +201,7 @@ class TestClass:
         ]
         assert LNA_setup.update()
 
+    @pytest.mark.skipif(os.name == "posix", reason="To be investigated on linux.")
     def test_18_export_touchstone(self):
         assert self.aedtapp.analyze_nominal()
         assert self.aedtapp.export_touchstone("Dom_LNA", "Dom_LNA", os.path.join(self.local_scratch.path, "new.s2p"))

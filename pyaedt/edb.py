@@ -12,7 +12,8 @@ import warnings
 
 from pyaedt import inside_desktop, is_ironpython
 from pyaedt.application.MessageManager import EDBMessageManager
-from pyaedt.edb_core import *
+from pyaedt.edb_core import Components, EdbNets, EdbPadstacks, EdbLayout, Edb3DLayout, EdbSiwave, EdbStackup
+from pyaedt import retry_ntimes
 from pyaedt.generic.general_methods import (
     aedt_exception_handler,
     env_path,
@@ -111,7 +112,6 @@ class Edb(object):
             self._messenger.add_info_message("Messenger Initialized in EDB")
             self.edbversion = edbversion
             self.isaedtowned = isaedtowned
-
             self._init_dlls()
             self._db = None
             # self._edb.Database.SetRunAsStandAlone(not isaedtowned)
@@ -137,7 +137,6 @@ class Edb(object):
                 self._messenger.add_info_message(
                     "Edb {} Created Correctly from {} file".format(self.edbpath, edbpath[-2:])
                 )
-
             elif not os.path.exists(os.path.join(self.edbpath, "edb.def")):
                 self.create_edb()
                 self._messenger.add_info_message("Edb {} Created Correctly".format(self.edbpath))
@@ -177,6 +176,7 @@ class Edb(object):
 
     @aedt_exception_handler
     def _init_objects(self):
+        time.sleep(2)
         self._components = Components(self)
         self._stackup = EdbStackup(self)
         self._padstack = EdbPadstacks(self)
@@ -328,7 +328,11 @@ class Edb(object):
         self._messenger.add_info_message("EDB Version {}".format(self.edbversion))
         self.edb.Database.SetRunAsStandAlone(self.standalone)
         self._messenger.add_info_message("EDB Standalone {}".format(self.standalone))
-        db = self.edb.Database.Open(self.edbpath, self.isreadonly)
+        try:
+            db = self.edb.Database.Open(self.edbpath, self.isreadonly)
+        except Exception as e:
+            db = None
+            self._messenger.add_error_message("Builder is not Initialized.")
         if not db:
             self._messenger.add_warning_message("Error Opening db")
             self._db = None
@@ -349,16 +353,21 @@ class Edb(object):
         self._messenger.add_info_message("Cell {} Opened".format(self._active_cell.GetName()))
 
         if self._db and self._active_cell:
-            time.sleep(1)
             dllpath = os.path.join(os.path.abspath(os.path.dirname(__file__)), "dlls", "EDBLib", "DataModel.dll")
             self._messenger.add_info_message(dllpath)
             self.layout_methods.LoadDataModel(dllpath)
-            self.builder = self.layout_methods.GetBuilder(
-                self._db, self._active_cell, self.edbpath, self.edbversion, self.standalone
+            time.sleep(2)
+            self.builder = retry_ntimes(
+                10,
+                self.layout_methods.GetBuilder,
+                self._db,
+                self._active_cell,
+                self.edbpath,
+                self.edbversion,
+                self.standalone,
             )
             self._init_objects()
             self._messenger.add_info_message("Builder Initialized")
-
         else:
             self.builder = None
             self._messenger.add_error_message("Builder Not Initialized")
@@ -400,6 +409,8 @@ class Edb(object):
             dllpath = os.path.join(os.path.abspath(os.path.dirname(__file__)), "dlls", "EDBLib", "DataModel.dll")
             if self._db and self._active_cell:
                 self.layout_methods.LoadDataModel(dllpath)
+                if not os.path.exists(self.edbpath):
+                    os.makedirs(self.edbpath)
                 self.builder = self.layout_methods.GetBuilder(
                     self._db, self._active_cell, self.edbpath, self.edbversion, self.standalone, True
                 )
@@ -747,7 +758,7 @@ class Edb(object):
         WorkDir : str
             Directory in which to create the ``aedb`` folder. The AEDB file name will be
             the same as the BRD file name. The default value is ``None``.
-        anstranslator_full_path: str, Optional
+        anstranslator_full_path : str, optional
             Optional AnsTranslator full path.
         use_ppe : bool
             Whether to use or not PPE License. The default is ``False``.
@@ -775,7 +786,7 @@ class Edb(object):
         WorkDir : str
             Directory in which to create the ``aedb`` folder. The AEDB file name will be
             the same as the GDS file name. The default value is ``None``.
-        anstranslator_full_path: str, Optional
+        anstranslator_full_path : str, optional
             Optional AnsTranslator full path.
         use_ppe : bool
             Whether to use or not PPE License. The default is ``False``.
@@ -929,7 +940,7 @@ class Edb(object):
         return os.path.join(path_to_output, "options.config")
 
     @aedt_exception_handler
-    def export_hfss(self, path_to_output, net_list=None):
+    def export_hfss(self, path_to_output, net_list=None, num_cores=None):
         """Export EDB to HFSS.
 
         Parameters
@@ -939,6 +950,8 @@ class Edb(object):
         net_list : list, optional
             List of nets to export if only certain ones are to be
             included.
+        num_cores : int, optional
+            Define number of cores to use during export
 
         Returns
         -------
@@ -959,10 +972,10 @@ class Edb(object):
 
         """
         siwave_s = SiwaveSolve(self.edbpath, aedt_installer_path=self.base_path)
-        return siwave_s.export_3d_cad("HFSS", path_to_output, net_list)
+        return siwave_s.export_3d_cad("HFSS", path_to_output, net_list, num_cores)
 
     @aedt_exception_handler
-    def export_q3d(self, path_to_output, net_list=None):
+    def export_q3d(self, path_to_output, net_list=None, num_cores=None):
         """Export EDB to Q3D.
 
         Parameters
@@ -972,6 +985,8 @@ class Edb(object):
         net_list : list, optional
             List of nets only if certain ones are to be
             exported.
+        num_cores : int, optional
+            Define number of cores to use during export
 
         Returns
         -------
@@ -993,10 +1008,10 @@ class Edb(object):
         """
 
         siwave_s = SiwaveSolve(self.edbpath, aedt_installer_path=self.base_path)
-        return siwave_s.export_3d_cad("Q3D", path_to_output, net_list)
+        return siwave_s.export_3d_cad("Q3D", path_to_output, net_list, num_cores=num_cores)
 
     @aedt_exception_handler
-    def export_maxwell(self, path_to_output, net_list=None):
+    def export_maxwell(self, path_to_output, net_list=None, num_cores=None):
         """Export EDB to Maxwell 3D.
 
         Parameters
@@ -1006,6 +1021,8 @@ class Edb(object):
         net_list : list, optional
             List of nets only if certain ones are to be
             exported.
+        num_cores : int, optional
+            Define number of cores to use during export
 
         Returns
         -------
@@ -1026,4 +1043,46 @@ class Edb(object):
 
         """
         siwave_s = SiwaveSolve(self.edbpath, aedt_installer_path=self.base_path)
-        return siwave_s.export_3d_cad("Maxwell", path_to_output, net_list)
+        return siwave_s.export_3d_cad("Maxwell", path_to_output, net_list, num_cores=num_cores)
+
+    @aedt_exception_handler
+    def solve_siwave(self):
+        """Close Edb and Solves it with Siwave.
+
+        Returns
+        -------
+        bool
+        """
+        process = SiwaveSolve(self.edbpath, aedt_version=self.edbversion)
+        try:
+            self._db.Close()
+        except:
+            pass
+        process.solve()
+        return True
+
+    @aedt_exception_handler
+    def add_design_variable(self, variable_name, variable_value):
+        """Add a Design Variable.
+
+        Parameters
+        ----------
+        variable_name : str
+            Name of the variable
+        variable_value : str, float
+            Value of the variable with units.
+
+        Returns
+        -------
+        tuple
+            tuple containing AddVariable Result and variableserver.
+        """
+        var_server = self.active_cell.GetVariableServer()
+        variables = var_server.GetAllVariableNames()
+        if variable_name in list(variables):
+            self._messenger.add_warning_message("Parameter {} exists. Using it.".format(variable_name))
+            return False, var_server
+        else:
+            self._messenger.add_info_message("Creating Parameter {}.".format(variable_name))
+            var_server.AddVariable(variable_name, self.edb_value(variable_value), True)
+            return True, var_server

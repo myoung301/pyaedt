@@ -3,7 +3,6 @@ import os
 # Setup paths for module imports
 from _unittest.conftest import local_path, scratch_path
 import gc
-import time
 
 # Import required modules
 from pyaedt import Hfss3dLayout
@@ -15,27 +14,22 @@ test_project_name = "Galileo"
 class TestClass:
     def setup_class(self):
         with Scratch(scratch_path) as self.local_scratch:
-            try:
-                pass
-                example_project = os.path.join(local_path, "example_models", test_project_name + ".aedt")
+            example_project = os.path.join(local_path, "example_models", test_project_name + ".aedt")
 
-                self.test_project = self.local_scratch.copyfile(example_project)
+            self.test_project = self.local_scratch.copyfile(example_project)
 
-                self.local_scratch.copyfolder(
-                    os.path.join(local_path, "example_models", test_project_name + ".aedb"),
-                    os.path.join(self.local_scratch.path, test_project_name + ".aedb"),
-                )
-                self.aedtapp = Hfss3dLayout(self.test_project)
-            except:
-                pass
+            self.local_scratch.copyfolder(
+                os.path.join(local_path, "example_models", test_project_name + ".aedb"),
+                os.path.join(self.local_scratch.path, test_project_name + ".aedb"),
+            )
+            self.aedtapp = Hfss3dLayout(self.test_project)
 
     def teardown_class(self):
-        assert self.aedtapp.close_project(self.aedtapp.project_name, saveproject=False)
+        assert self.aedtapp.close_project(self.aedtapp.project_name)
         self.local_scratch.remove()
         gc.collect()
 
     def test_get_components(self):
-        time.sleep(3)
         comp = self.aedtapp.modeler.primitives.components
         assert len(comp) > 0
         assert comp["L3A1"].object_units == "mm"

@@ -39,6 +39,9 @@ else:
 class Analysis(Design, object):
     """Contains all common analysis functions.
 
+    This class is inherited in the caller application and is accessible through it ( eg. ``hfss.method_name``).
+
+
     It is automatically initialized by a call from an application, such as HFSS or Q3D.
     See the application function for its parameter descriptions.
 
@@ -55,15 +58,15 @@ class Analysis(Design, object):
         Solution type to apply to the design.
     setup_name : str
         Name of the setup to use as the nominal.
-    specified_version: str
+    specified_version : str
         Version of AEDT  to use.
     NG : bool
         Whether to run AEDT in the non-graphical mode.
-    AlwaysNew : bool
+    new_desktop_session : bool
         Whether to launch an instance of AEDT in a new thread, even if
         another instance of the ``specified_version`` is active on the
         machine.
-    release_on_exit : bool
+    close_on_exit : bool
         Whether to release  AEDT on exit.
     student_version : bool
         Whether to enable the student version of AEDT.
@@ -78,9 +81,9 @@ class Analysis(Design, object):
         solution_type,
         setup_name,
         specified_version,
-        NG,
-        AlwaysNew,
-        release_on_exit,
+        non_graphical,
+        new_desktop_session,
+        close_on_exit,
         student_version,
     ):
         self.setups = []
@@ -91,9 +94,9 @@ class Analysis(Design, object):
             designname,
             solution_type,
             specified_version,
-            NG,
-            AlwaysNew,
-            release_on_exit,
+            non_graphical,
+            new_desktop_session,
+            close_on_exit,
             student_version,
         )
         self.logger.info("Design Loaded")
@@ -940,7 +943,7 @@ class Analysis(Design, object):
         else:
             options = " -ng -distribute -machinelist list=" + machine + " -Batchsolve "
 
-        print("Batch Solve Options: " + options)
+        self.add_info_message("Batch Solve Options: " + options)
         if os.name == "posix":
             batch_run = os.path.join(
                 self.desktop_install_dir + "/ansysedt" + chr(34) + options + chr(34) + filename + chr(34)
@@ -955,8 +958,8 @@ class Analysis(Design, object):
         dont have old .asol files etc
         """
 
-        print("Solving model in batch mode on " + machine)
-        print("Batch Job command:" + batch_run)
+        self.add_info_message("Solving model in batch mode on " + machine)
+        self.add_info_message("Batch Job command:" + batch_run)
         if run_in_thread:
 
             def thread_run():
@@ -967,7 +970,7 @@ class Analysis(Design, object):
             x.start()
         else:
             os.system(batch_run)
-        print("Batch Job finished")
+        self.add_info_message("Batch job finished.")
         return True
 
     @aedt_exception_handler

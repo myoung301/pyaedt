@@ -36,7 +36,7 @@ class PolylineSegment:
     type : str
         Type of the object. Choices are ``"Line"``, ``"Arc"``, ``"Spline"``,
         and ``"AngularArc"``.
-    num_seg: int, optional
+    num_seg : int, optional
         Number of segments for the types ``"Arc"``, ``"Spline"``, and
         ``"AngularArc"``.  The default is ``0``. For the type
         ``Line``, this parameter is ignored.
@@ -698,7 +698,7 @@ class Polyline(Object3d):
             List of positions of the points that define the segment to insert.
             Either the starting point or ending point of the segment list must
             match one of the vertices of the existing polyline.
-        segment: str or :class:`pyaedt.modeler.Primitives.PolylineSegment`
+        segment : str or :class:`pyaedt.modeler.Primitives.PolylineSegment`
             Definition of the segment to insert. For the types ``"Line"`` and ``"Arc"``,
             use their string values ``"Line"`` and ``"Arc"``. For the types ``"AngularArc"``
             and ``"Spline"``, use the :class:`pyaedt.modeler.Primitives.PolylineSegment`
@@ -1125,7 +1125,7 @@ class Primitives(object):
 
         Parameters
         ----------
-        edge: int or :class:`pyaedt.modeler.Object3d.EdgePrimitive`
+        edge : int or :class:`pyaedt.modeler.Object3d.EdgePrimitive`
             Edge ID or :class:`pyaedt.modeler.Object3d.EdgePrimitive` object.
 
         Returns
@@ -1233,9 +1233,9 @@ class Primitives(object):
         close_surface : bool, optional
             The default is ``False``, which automatically joins the
             starting and ending points.
-        name: str, optional
+        name : str, optional
             Name of the polyline. The default is ``None``.
-        matname: str, optional
+        matname : str, optional
             Name of the material. The default is ``None``, in which case the
             default material is assigned.
         xsection_type : str, optional
@@ -1276,7 +1276,7 @@ class Primitives(object):
         >>> from pyaedt.desktop import Desktop
         >>> from pyaedt.Maxwell import Maxwell3d
         >>> from pyaedt.modeler.Primitives import PolylineSegment
-        >>> desktop=Desktop(specified_version="2021.1", AlwaysNew=False)
+        >>> desktop=Desktop(specified_version="2021.1", new_desktop_session=False)
         >>> aedtapp = Maxwell3D()
         >>> aedtapp.modeler.model_units = "mm"
         >>> primitives = aedtapp.modeler.primitives
@@ -1697,9 +1697,42 @@ class Primitives(object):
         """
         start_obj = self._resolve_object(start_obj)
         end_obj = self._resolve_object(end_obj)
-
-        edge_start_list = start_obj.edges
-        edge_stop_list = end_obj.edges
+        edge_start_list = None
+        edge_stop_list = None
+        if port_direction == 0:
+            if start_obj.bottom_face_x:
+                edge_start_list =  start_obj.bottom_face_x.edges
+            if end_obj.bottom_face_x:
+                edge_stop_list = end_obj.bottom_face_x.edges
+        elif port_direction == 3:
+            if start_obj.top_face_x:
+                edge_start_list =  start_obj.top_face_x.edges
+            if end_obj.top_face_x:
+                edge_stop_list = end_obj.top_face_x.edges
+        elif port_direction == 1:
+            if start_obj.bottom_face_y:
+                edge_start_list =  start_obj.bottom_face_y.edges
+            if end_obj.bottom_face_y:
+                edge_stop_list = end_obj.bottom_face_y.edges
+        elif port_direction == 4:
+            if start_obj.top_face_y:
+                edge_start_list =  start_obj.top_face_y.edges
+            if end_obj.top_face_y:
+                edge_stop_list = end_obj.top_face_y.edges
+        elif port_direction == 2:
+            if start_obj.bottom_face_z:
+                edge_start_list =  start_obj.bottom_face_z.edges
+            if end_obj.bottom_face_z:
+                edge_stop_list = end_obj.bottom_face_z.edges
+        elif port_direction == 5:
+            if start_obj.top_face_z:
+                edge_start_list = start_obj.top_face_z.edges
+            if end_obj.top_face_z:
+                edge_stop_list = end_obj.top_face_z.edges
+        if not edge_start_list:
+            edge_start_list = start_obj.edges
+        if not edge_stop_list:
+            edge_stop_list = end_obj.edges
         mindist = 1e6
         tol = 1e-12
         pos_tol = 1e-6

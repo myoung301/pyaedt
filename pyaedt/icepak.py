@@ -8,7 +8,6 @@ import re
 from collections import OrderedDict
 
 from .application.AnalysisIcepak import FieldAnalysisIcepak
-from .desktop import exception_to_desktop
 from .generic.general_methods import generate_unique_name, aedt_exception_handler, retry_ntimes
 from .generic.DataHandlers import arg2dict
 from .modules.Boundary import BoundaryObject, NativeComponentObject
@@ -38,7 +37,7 @@ class Icepak(FieldAnalysisIcepak):
         Name of the setup to use as the nominal. The default is
         ``None``, in which case the active setup is used or
         nothing is used.
-    specified_version: str, optional
+    specified_version : str, optional
         Version of AEDT to use. The default is ``None``, in which case
         the active version or latest installed version is  used.
         This parameter is ignored when Script is launched within AEDT.
@@ -46,11 +45,11 @@ class Icepak(FieldAnalysisIcepak):
         Whether to launch AEDT in the non-graphical mode. The default
         is ``False``, in which case AEDT is launched in the graphical mode.
         This parameter is ignored when Script is launched within AEDT.
-    AlwaysNew : bool, optional
+    new_desktop_session : bool, optional
         Whether to launch an instance of AEDT in a new thread, even if
         another instance of the ``specified_version`` is active on the
         machine.  The default is ``True``. This parameter is ignored when Script is launched within AEDT.
-    release_on_exit : bool, optional
+    close_on_exit : bool, optional
         Whether to release AEDT on exit.
     student_version : bool, optional
         Whether to open the AEDT student version. The default is ``False``.
@@ -64,12 +63,15 @@ class Icepak(FieldAnalysisIcepak):
 
     >>> from pyaedt import Icepak
     >>> icepak = Icepak()
+    pyaedt Info: No project is defined. Project ...
+    pyaedt Info: Active design is set to ...
 
     Create an instance of Icepak and link to a project named
     ``IcepakProject``. If this project does not exist, create one with
     this name.
 
     >>> icepak = Icepak("IcepakProject")
+    pyaedt Info: Project ...
     pyaedt Info: Added design ...
 
     Create an instance of Icepak and link to a design named
@@ -82,13 +84,17 @@ class Icepak(FieldAnalysisIcepak):
     which is ``myipk.aedt``.
 
     >>> icepak = Icepak("myipk.aedt")
+    pyaedt Info: Project myipk has been created.
+    pyaedt Info: No design is present. Inserting a new design.
     pyaedt Info: Added design ...
 
     Create an instance of Icepak using the 2021 R1 release and
     open the specified project, which is ``myipk2.aedt``.
 
     >>> icepak = Icepak(specified_version="2021.1", projectname="myipk2.aedt")
-    pyaedt Info: Added design ...
+    pyaedt Info: Project...
+    pyaedt Info: No design is present. Inserting a new design.
+    pyaedt Info: Added design...
     """
 
     def __init__(
@@ -98,9 +104,9 @@ class Icepak(FieldAnalysisIcepak):
         solution_type=None,
         setup_name=None,
         specified_version=None,
-        NG=False,
-        AlwaysNew=False,
-        release_on_exit=False,
+        non_graphical=False,
+        new_desktop_session=False,
+        close_on_exit=False,
         student_version=False,
     ):
         FieldAnalysisIcepak.__init__(
@@ -111,19 +117,14 @@ class Icepak(FieldAnalysisIcepak):
             solution_type,
             setup_name,
             specified_version,
-            NG,
-            AlwaysNew,
-            release_on_exit,
+            non_graphical,
+            new_desktop_session,
+            close_on_exit,
             student_version,
         )
 
     def __enter__(self):
         return self
-
-    def __exit__(self, ex_type, ex_value, ex_traceback):
-        """Push exit up to parent object Design."""
-        if ex_type:
-            exception_to_desktop(self, ex_value, ex_traceback)
 
     @property
     def existing_analysis_sweeps(self):
@@ -332,6 +333,7 @@ class Icepak(FieldAnalysisIcepak):
         >>> box1 = icepak.modeler.primitives.create_box([1, 1, 1], [3, 3, 3], "BlockBox1", "copper")
         >>> box2 = icepak.modeler.primitives.create_box([2, 2, 2], [4, 4, 4], "BlockBox2", "copper")
         >>> blocks = icepak.create_source_blocks_from_list([["BlockBox1", 2], ["BlockBox2", 4]])
+        pyaedt Info: Block on ...
         >>> blocks[1].props
         {'Objects': ['BlockBox1'], 'Block Type': 'Solid', 'Use External Conditions': False, 'Total Power': '2W'}
         >>> blocks[3].props
@@ -387,6 +389,7 @@ class Icepak(FieldAnalysisIcepak):
 
         >>> box = icepak.modeler.primitives.create_box([5, 5, 5], [1, 2, 3], "BlockBox3", "copper")
         >>> block = icepak.create_source_block("BlockBox3", "1W", False)
+        pyaedt Info: Block on ...
         >>> block.props
         {'Objects': ['BlockBox3'], 'Block Type': 'Solid', 'Use External Conditions': False, 'Total Power': '1W'}
 
@@ -804,7 +807,7 @@ class Icepak(FieldAnalysisIcepak):
 
         Parameters
         ----------
-        component_prefix: str, optional
+        component_prefix : str, optional
             Component prefix to search for. The default is ``"COMP_"``.
 
         Returns
@@ -896,15 +899,15 @@ class Icepak(FieldAnalysisIcepak):
         ----------
         hs_height : int, optional
             Height of the heat sink. The default is ``100``.
-        hs_width: int, optional
+        hs_width : int, optional
             Width of the heat sink. The default is ``100``.
         hs_basethick : int, optional
             Thickness of the heat sink base. The default is ``10``.
-        pitch: optional
+        pitch : optional
             Pitch of the heat sink. The default is ``10``.
         thick : optional
             Thickness of the heat sink. The default is ``10``.
-        length: optional
+        length : optional
             The default is ``40``.
         height : optional
             The default is ``40``.
@@ -916,11 +919,11 @@ class Icepak(FieldAnalysisIcepak):
             The default is ``5``.
         symmetric : bool, optional
             Whether the heat sink is symmetric.  The default is ``True``.
-        symmetric_separation: optional
+        symmetric_separation : optional
             The default is ``20``.
         numcolumn_perside : int, optional
             Number of columns per side. The default is ``2``.
-        vertical_separation: optional
+        vertical_separation : optional
             The default is ``10``.
         matname : str, optional
             Name of the material. The default is ``Al-Extruded``.
@@ -1886,13 +1889,13 @@ class Icepak(FieldAnalysisIcepak):
             The default is ``"1"``.
         noOgrids : bool, optional
             The default is ``False``.
-        MLM_en: bool, optional
+        MLM_en : bool, optional
             The default is ``True``.
-        MLM_Type: str, optional
+        MLM_Type : str, optional
             The default is ``"3D"``.
         stairStep_en : bool, optional
             The default is ``False``.
-        edge_min_elements: str, optional
+        edge_min_elements : str, optional
             The default is ``"1"``.
         object : str, optional
             The default is ``"Region"``.

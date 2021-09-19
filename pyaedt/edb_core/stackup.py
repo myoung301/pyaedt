@@ -9,7 +9,7 @@ import warnings
 from pyaedt import is_ironpython
 
 from .EDB_Data import EDBLayers
-from .general import *
+from pyaedt.generic.general_methods import aedt_exception_handler
 
 try:
     from System import Double
@@ -148,7 +148,7 @@ class EdbStackup(object):
 
         Parameters
         ----------
-        name: str
+        name : str
             Name of the conductor.
         conductivity : float, optional
             Conductivity of the conductor. The default is ``1e6``.
@@ -197,7 +197,7 @@ class EdbStackup(object):
             for ``higher_frequency``.
         lower_freqency : float
             Value for the lower frequency.
-        higher_frequency: float
+        higher_frequency : float
             Value for the higher frequency.
 
         Returns
