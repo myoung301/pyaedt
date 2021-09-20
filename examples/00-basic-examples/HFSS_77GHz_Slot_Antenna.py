@@ -80,7 +80,8 @@ with Hfss(projectname=os.path.join(project_path, proj_name),
     port_face = hfss.modeler.primitives.create_rectangle(2, port_rectangle_base, port_rectangle_size)
     port_face.name = "ant_port"
     hfss.create_wave_port_from_sheet(port_face, axisdir=hfss.AxisDir.YNeg)
-    hfss.
+    hfss.create_setup(setupname="AdaptMesh", Frequency="77GHz",  )
+    hfss.create_open_region(Frequency="77GHz")
     #for f in trace.faces:
     #    if f.center:  # Face is planar
     #        if f.centroid == [params["feed_offset"], -params["feed_length"], 0.0]:

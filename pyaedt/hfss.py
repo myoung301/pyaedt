@@ -1897,6 +1897,7 @@ class Hfss(FieldAnalysis3D, object):
             Frequency with units. The  default is ``"1GHz"``.
         Boundary : str, optional
             Type of the boundary. The default is ``"Radition"``.
+            Allowed values: ``Radiation``, ``PML``, ``FEBI``
         ApplyInfiniteGP : bool, optional
             Whether to apply an infinite ground plane. The default is ``False``.
         GPAXis : str, optional
