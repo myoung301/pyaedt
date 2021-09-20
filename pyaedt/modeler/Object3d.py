@@ -411,6 +411,18 @@ class FacePrimitive(object):
         area = self._parent.m_Editor.GetFaceArea(self.id)
         return area
 
+# TODO: This method should belong to FacePrimitive.
+    #@aedt_exception_handler
+    #def object_from_face(self):
+    #    """ Create new face object from face.
+
+    #    Returns
+    #    -------
+    #    Create a new instance of Object3D from the face.
+    #    """
+    #    return self._parent.modeler.primitives.create_object_from_face(self)
+
+
     @aedt_exception_handler
     def move_with_offset(self, offset=1.0):
         """Move the face along the normal.

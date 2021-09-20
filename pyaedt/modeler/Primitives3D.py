@@ -410,10 +410,17 @@ class Primitives3D(Primitives, object):
 
         Parameters
         ----------
-        cs_plane :
+        csPlane :
             Coordinate system plane for orienting the rectangle.
+            csPlane =
+                0: Rectangle will be drawn in the x,y plane
+                   dimension_list = [x_size, y_size]
+                1: Rectangle will be drawn in the y,z plane
+                   dimension_list = [y_size, z_size]
+                2: Rectangle will be drawn in the y,z plane
+                   dimension_list = [z_size, x_size]
         position : list or Position
-            List of ``[x, y, z]`` coordinates for the center point of the rectangle or
+            List of ``[x, y, z]`` coordinates for the anchor point of the rectangle or
             the positionApplicationName.modeler.Position(x,y,z) object.
         dimension_list : list
             List of ``[width, height]`` dimensions.

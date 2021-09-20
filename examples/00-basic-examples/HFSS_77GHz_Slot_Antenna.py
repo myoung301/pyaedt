@@ -12,7 +12,6 @@ if not os.path.exists(project_path):
 
 with Hfss(projectname=os.path.join(project_path, proj_name),
           designname=design_name,
-          release_on_exit=True,
           student_version=True) as hfss:
     ###############################################################################
     # Define parameters
@@ -27,13 +26,13 @@ with Hfss(projectname=os.path.join(project_path, proj_name),
     via_radius = "4um"  # This is not parameterized in HFSS.
     for k, v in params.items():
         hfss[k] = str(v) + units
-    plane_origin = ["-x_size/2", "-y_size/2", 0]
+    plane_origin = ["-x_size/2", "-y_size/2", "-t_oxide/2"]
     plane_xy = ["x_size", "y_size"]
     bottom_plane = hfss.modeler.primitives.create_rectangle(0, plane_origin,
                                                             plane_xy,
                                                             name="bottom_plane",
                                                             matname="copper")
-    bottom_plane.translate([0, 0, "-t_oxide/2"])
+    #bottom_plane.translate([0, 0, "-t_oxide/2"])
     bottom_plane.color = "Orange"
     bottom_plane.transparency = 0.35
     bottom_plane.thicken_sheet("-t_metal")
@@ -70,8 +69,34 @@ with Hfss(projectname=os.path.join(project_path, proj_name),
                                                          name="feed_short",
                                                          matname="copper")
     trace = trace + feed_short  # hfss.modeler.unite([trace, feed_short])  # TODO: Use __add__ dunder method.
+
+
     trace.color = "Orange"
-    hfss.create_wave_port_from_sheet()
+
+    # Place the port.
+    port_rectangle_base = ["feed_offset-w_trace-3*t_oxide", "-feed_length", "-t_oxide/2"]
+    port_rectangle_size = [ "t_oxide", "w_trace + 6*t_oxide"]
+
+    port_face = hfss.modeler.primitives.create_rectangle(2, port_rectangle_base, port_rectangle_size)
+    port_face.name = "ant_port"
+    hfss.create_wave_port_from_sheet(port_face, axisdir=hfss.AxisDir.YNeg)
+    hfss.
+    #for f in trace.faces:
+    #    if f.center:  # Face is planar
+    #        if f.centroid == [params["feed_offset"], -params["feed_length"], 0.0]:
+    #            port_face = hfss.modeler.primitives.create_rectangle(1, port_rectangle_base, port_rectangle_size)
+                #port_face = hfss.modeler.primitives.create_object_from_face(f)
+                #face_center = f.centroid
+
+ #   for e in port_face.edges:
+ #       if e.midpoint[0] == face_center[0] and e.midpoint[1] == face_center[1]:
+ #           hfss.modeler.move_edge_along_normal(e)
+
+    # ant_port = hfss.create_wave_port_from_sheet(port_face)
+
+
+
+    # hfss.create_wave_port_from_sheet()
    #  port = hfss.create_lumped_port_between_objects(trace.name, bottom_plane.name, hfss.AxisDir.YNeg, portname="p1", renorm=False)
     # port_face_id = hfss.modeler.primitives.get_faceid_from_position(feed_start_pos, obj_name="trace")
     # port_sheet = hfss.modeler.create_sheet_to_ground(trace.name, groundname=bottom_plane.name, axisdir=5)
