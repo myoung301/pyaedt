@@ -21,11 +21,11 @@ class Part(object):
         * 'rotation_axis': str, Rotation axis (``"X"``, ``"Y"``, or ``"Z"``).
         * 'duplicate_number': str or int, Number of instances for linear duplication.
         * 'duplicate_vector': list, Vector for duplication relative to the parent coordinate system.
-     parent :  str
-         The default is ``None``.
-     name : str, optional
-            Name of the A3DCOMP file without the extension. The default is ``None``.
-     """
+    parent :  str
+        The default is ``None``.
+    name : str, optional
+        Name of the A3DCOMP file without the extension. The default is ``None``.
+    """
 
     # List of known keys for a Part and default values:
     allowed_keys = {'comp_name': None,  # *.a3dcomp file name
