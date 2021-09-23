@@ -60,7 +60,7 @@ class Setup(object):
             self.setuptype = SetupKeys.defaultSetups[setuptype]
 
         self.name = setupname
-        props = {} # self.SetupProps(self)
+        props = {}  # self.SetupProps(self)
         self.sweeps = []
         if isnewsetup:
             setup_template = SetupKeys.SetupTemplates[self.setuptype]
