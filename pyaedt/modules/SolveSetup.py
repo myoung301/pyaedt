@@ -50,22 +50,23 @@ class Setup(object):
     def __repr__(self):
         return "SetupName " + self.name + " with " + str(len(self.sweeps)) + " Sweeps"
 
-    def __init__(self, parent, solutiontype, setupname="MySetupAuto", isnewsetup=True):
+    def __init__(self, parent, setuptype, setupname="MySetupAuto", isnewsetup=True):
 
         self._parent = None
         self.parent = parent
-        if isinstance(solutiontype, int):
-            self.setuptype = solutiontype
+        if isinstance(setuptype, int):
+            self.setuptype = setuptype
         else:
-            self.setuptype = SetupKeys.defaultSetups[solutiontype]
+            self.setuptype = SetupKeys.defaultSetups[setuptype]
 
         self.name = setupname
-        self.props = {}
+        props = {} # self.SetupProps(self)
         self.sweeps = []
         if isnewsetup:
             setup_template = SetupKeys.SetupTemplates[self.setuptype]
             for t in setup_template:
-                tuple2dict(t, self.props)
+                tuple2dict(t, props)
+            self.props = props
         else:
             try:
                 setups_data = self.parent.design_properties["AnalysisSetup"]["SolveSetups"]
@@ -90,9 +91,48 @@ class Setup(object):
                                 if type(app[el]) is OrderedDict:
                                     self.sweeps.append(SweepQ3D(self.omodule, setupname, el, props=app[el]))
                         setup_data.pop("Sweeps", None)
-                    self.props = OrderedDict(setup_data)
+                  #  self.props = OrderedDict(setup_data)
+                    self.props = props
+                    for kw in setup_data:
+                        self.props[kw] = setup_data[kw]
             except:
-                self.props = OrderedDict()
+                self.props = props
+
+    @property
+    def props(self):
+        return self._props
+
+    @props.setter
+    def props(self, p=None):
+        if p is None:
+            p = {}  # Make sure correct type is passed.
+        self._props = self.SetupProps(self, p)
+
+    class SetupProps:
+
+        def __init__(self, parent, p=None):
+            """
+
+            Parameters
+            ----------
+            parent : Parent setup
+            p : Dict or OrderedDicts with all parameters for this setup.
+            """
+            self._props = OrderedDict(p)
+            self._parent = parent
+
+        def __getitem__(self, item):
+            return self._props[item]
+
+        def __setitem__(self, key, value):
+            self._props[key] = value
+            self._parent.update()
+
+        def __repr__(self):
+            return self._props.__repr__()
+
+        def items(self):
+            return self._props.items()
 
     @aedt_exception_handler
     def create(self):
@@ -437,7 +477,7 @@ class SetupCircuit(object):
     ----------
     parent : str
         Inherited parent object.
-    solutiontype : str, int
+    setuptype : str, int
         Type of the setup.
     setupname : str, optional
         Name of the setup. The default is ``"MySetupAuto"``.
@@ -479,7 +519,7 @@ class SetupCircuit(object):
         ----------
         parent : str
             Inherited parent object.
-        solutiontype : str, int
+        setuptype : str, int
             Type of the setup.
         setupname : str, optional
             Name of the setup. The default is ``"MySetupAuto"``.
@@ -495,13 +535,13 @@ class SetupCircuit(object):
         """
         return self._parent.oanalysis
 
-    def __init__(self, parent, solutiontype, setupname="MySetupAuto", isnewsetup=True):
+    def __init__(self, parent, setuptype, setupname="MySetupAuto", isnewsetup=True):
         self._parent = None
         self.parent = parent
-        if isinstance(solutiontype, int):
-            self.setuptype = solutiontype
+        if isinstance(setuptype, int):
+            self.setuptype = setuptype
         else:
-            self.setuptype = SetupKeys.defaultSetups[solutiontype]
+            self.setuptype = SetupKeys.defaultSetups[setuptype]
         self._Name = "LinearFrequency"
         self.props = {}
         if isnewsetup:
@@ -844,7 +884,7 @@ class Setup3DLayout(object):
     ----------
     parent : str
         Inherited parent object.
-    solutiontype : int or str
+    setuptype : int or str
         Type of the setup.
     setupname : str, optional
         Name of the setup. The default is ``"MySetupAuto"``.
@@ -866,17 +906,17 @@ class Setup3DLayout(object):
         """
         return self.parent.oanalysis
 
-    def __init__(self, parent, solutiontype, setupname="MySetupAuto", isnewsetup=True):
+    def __init__(self, parent, setuptype, setupname="MySetupAuto", isnewsetup=True):
         self.parent = parent
-        if isinstance(solutiontype, int):
-            self._solutiontype = solutiontype
+        if isinstance(setuptype, int):
+            self._setuptype = setuptype
         else:
-            self._solutiontype = SetupKeys.defaultSetups[self._solutiontype]
+            self._setuptype = SetupKeys.defaultSetups[self._setuptype]
         self.name = setupname
         self.props = OrderedDict()
         self.sweeps = []
         if isnewsetup:
-            setup_template = SetupKeys.SetupTemplates[self._solutiontype]
+            setup_template = SetupKeys.SetupTemplates[self._setuptype]
             for t in setup_template:
                 tuple2dict(t, self.props)
         else:

@@ -700,10 +700,15 @@ class Analysis(Design, object):
             Name of the setup. The default is ``"MySetupAuto"``.
         setuptype : optional
             Type of the setup. The default is ``None``, in which case
-            the default type is applied.
+            the default type is applied.  Allowed values are defined
+             by SetupTemplates.SetupKeys
         props : dict, optional
             Dictionary of analysis properties appropriate for the design and analysis.
-            If no values are passed, default values will be used.
+            If no values are passed, default values will be used.  Allowed keys
+            for the setup
+            properties are specified in the SetupTemplates.py and depend on the value
+            of the ``solution_type`` property.  See the examples below for further
+            information.
 
         Returns
         -------
@@ -730,7 +735,25 @@ class Analysis(Design, object):
         >>> setup1.update()
         ...
         pyaedt Info: Sweep was created correctly.
+
+        Create a setup for an HFSS Driven modal solution using automatic
+        sweep settings.
+
+        >>> import pyaedt
+        >>> hfss = pyaedt.Hfss(solution_type='DrivenModal')
+        >>> setup1 = hfss.create_setup(setupname='Setup1')
+        >>> setup1.props["AutoSolverSetting"] = "Balanced"
+        >>> setup1["Sweeps"] = [("RangeType", "LinearStep"),
+                                ("RangeStart", "75GHz"),
+                                ("RangeEnd", "79GHz"),
+                                ("RangeStep", "0.05GHz")]
+        >>> setup1.props["Type"] = "Interpolating"
+        >>> setup1.update()
+        ...
+        pyaedt Info: Sweep was created correctly.
+
         """
+
         if setuptype is None:
             if self.design_type == "Icepak" and self.solution_type == "Transient":
                 setuptype = SetupKeys.defaultSetups["TransientTemperatureAndFlow"]
