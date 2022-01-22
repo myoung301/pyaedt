@@ -129,16 +129,26 @@ class ResultSession():
                 # Wait until the window is fully loaded.
                 #TODO: need a better way to know when the window is loaded. If we proceed here too soon, the
                 # next ShowResultWindow call will kill and re-start the process.
-                time.sleep(15)
+                print('Wait for the result window to show...')
+                time.sleep(10)
                 # Now, send the ShowResultWindow a second time with the script. This should
                 # start the rpyc server script and return from ShowResultWindow (non-blocking).
                 script_dir = os.path.dirname(__file__)
                 iemit_rpyc_server_script = os.path.join(script_dir, "iemit_rpyc_server.py")
-                emit_results._odesign.ShowResultWindow(result_set_name, iemit_rpyc_server_script)
+                print('Running {}'.format(iemit_rpyc_server_script))
                 # Establish the connection with the result process (iemit.exe). It will be disconnected when
                 # self._rpyc_connection goes out of scope (when InnerResultSession goes out of scope).
-                time.sleep(10)
-                self._rpyc_connection = rpyc.connect('localhost', 18861)
+                success = False
+                while not success:
+                    try:
+                        emit_results._odesign.ShowResultWindow(result_set_name, iemit_rpyc_server_script)
+                        print('Wait for the script to start...')
+                        time.sleep(5)
+                        self._rpyc_connection = rpyc.connect('localhost', 18861)
+                        success = True
+                    except:
+                        print('Wait and try again...')
+                        time.sleep(1)
                 app = self._rpyc_connection.root.application
                 print('Connected to ' + app.app_name_plus_version())
 
