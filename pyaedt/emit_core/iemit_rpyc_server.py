@@ -28,12 +28,14 @@ class EmitService(rpyc.Service):
 
 # Start a OneShotServer that will serve one client and then exit.
 # TODO: Timeout if no connection is made for a few seconds.
-t = OneShotServer(EmitService, port=port, protocol_config={
-        'allow_public_attrs': True,
-    })
-print("Starting server on port {}".format(port))
-t.start()
-print("Server ended")
+
+while True:
+    t = OneShotServer(EmitService, port=port, protocol_config={
+            'allow_public_attrs': True,
+        })
+    print("Starting server on port {}".format(port))
+    t.start()
+    print("Server ended")
 
 # Exit the result window
 #emitgui.serverModeEditDialogClickOk()

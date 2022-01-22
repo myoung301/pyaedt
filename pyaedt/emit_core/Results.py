@@ -86,10 +86,10 @@ class ResultsEmit(object):
     def add_result(self, new_result_set_name):
         self._odesign.AddResult(new_result_set_name)
 
-    def result_session(self, result_set_name):
+    def result_session(self, result_set_name, use_existing_server=False):
         if result_set_name not in self.result_sets:
             raise RuntimeError('Result set "{}" does not exist'.format(result_set_name))
-        return ResultSession(self, result_set_name)
+        return ResultSession(self, result_set_name, use_existing_server)
 
 
 # Wrap the inner session with a no-__init__ class so that it
@@ -114,31 +114,44 @@ class ResultSession():
     >>> with app.results.get_result_session('Revision 1') as session:
     >>>    print(session.worst_case_result())
     """
-    def __init__(self, emit_results, result_set_name):
+    def __init__(self, emit_results, result_set_name, existing_server=False):
         self.result_set_name = result_set_name
         self.emit_results = emit_results
+        self.existing_server = existing_server
 
     def __enter__(self):
         class InnerResultSession:
-            def __init__(self, emit_results, result_set_name):
+            def __init__(self, emit_results, result_set_name, existing_server):
                 """Establish a connection with a result set. In graphical mode, the Analysis & Result window is 
                 shown."""
-                script_dir = os.path.dirname(__file__)
-                # First, show the window and let it load.
-                emit_results._odesign.ShowResultWindow(result_set_name)
-                # Wait until the window is fully loaded.
-                #TODO: need a better way to know when the window is loaded. If we proceed here too soon, the
-                # next ShowResultWindow call will kill and re-start the process.
-                time.sleep(15)
-                # Now, send the ShowResultWindow a second time with the script. This should
-                # start the rpyc server script and return from ShowResultWindow (non-blocking).
-                script_dir = os.path.dirname(__file__)
-                iemit_rpyc_server_script = os.path.join(script_dir, "iemit_rpyc_server.py")
-                emit_results._odesign.ShowResultWindow(result_set_name, iemit_rpyc_server_script)
-                # Establish the connection with the result process (iemit.exe). It will be disconnected when
-                # self._rpyc_connection goes out of scope (when InnerResultSession goes out of scope).
-                time.sleep(10)
-                self._rpyc_connection = rpyc.connect('localhost', 18861)
+                if not existing_server:
+                    script_dir = os.path.dirname(__file__)
+                    # First, show the window and let it load.
+                    emit_results._odesign.ShowResultWindow(result_set_name)
+                    # Wait until the window is fully loaded.
+                    #TODO: need a better way to know when the window is loaded. If we proceed here too soon, the
+                    # next ShowResultWindow call will kill and re-start the process.
+                    print('Wait for the result window to show...')
+                    time.sleep(10)
+                    # Now, send the ShowResultWindow a second time with the script. This should
+                    # start the rpyc server script and return from ShowResultWindow (non-blocking).
+                    script_dir = os.path.dirname(__file__)
+                    iemit_rpyc_server_script = os.path.join(script_dir, "iemit_rpyc_server.py")
+                    print('Running {}'.format(iemit_rpyc_server_script))
+                    # Establish the connection with the result process (iemit.exe). It will be disconnected when
+                    # self._rpyc_connection goes out of scope (when InnerResultSession goes out of scope).
+                success = False
+                while not success:
+                    try:
+                        if not existing_server:
+                            emit_results._odesign.ShowResultWindow(result_set_name, iemit_rpyc_server_script)
+                            print('Wait for the script to start...')
+                            time.sleep(5)
+                        self._rpyc_connection = rpyc.connect('localhost', 18861)
+                        success = True
+                    except:
+                        print('Wait and try again...')
+                        time.sleep(1)
                 app = self._rpyc_connection.root.application
                 print('Connected to ' + app.app_name_plus_version())
 
@@ -153,14 +166,22 @@ class ResultSession():
             def run_1_to_1(self, tx, rx):
                 project = self._rpyc_connection.root.project
                 project.run_1_to_1(tx, rx)
+                
+            def worst_case_result(self):
+                project = self._rpyc_connection.root.project
+                return project.worst_case_result()
 
+            def project(self):
+                project = self._rpyc_connection.root.project
+                return project
+            
             def ui_update(self):
                 self._rpyc_connection.root.processEvents()
 
             def _cleanup(self):
                 self._rpyc_connection.close()
                 pass
-        self.inner = InnerResultSession(self.emit_results, self.result_set_name)
+        self.inner = InnerResultSession(self.emit_results, self.result_set_name, self.existing_server)
         return self.inner
 
     def __exit__(self, exc_type, exc_value, traceback):
