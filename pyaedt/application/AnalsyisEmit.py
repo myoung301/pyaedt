@@ -1,4 +1,5 @@
 from pyaedt.modeler.Circuit import ModelerEmit
+from pyaedt.emit_core.Results import ResultsEmit
 from pyaedt.application.Design import Design
 
 
@@ -50,6 +51,7 @@ class FieldAnalysisEmit(Design):
         self.solution_type = solution_type
         self.oanalysis = None
         self._modeler = ModelerEmit(self)
+        self._results = ResultsEmit(self)
 
     @property
     def modeler(self):
@@ -61,3 +63,14 @@ class FieldAnalysisEmit(Design):
             Design oModeler
         """
         return self._modeler
+
+    @property
+    def results(self):
+        """Emit Results.
+
+        Returns
+        -------
+        pyaedt.emit_core.Results.ResultEmit
+            Results within the EMIT Design
+        """
+        return self._results

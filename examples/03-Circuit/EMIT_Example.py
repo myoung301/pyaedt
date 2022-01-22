@@ -16,7 +16,7 @@ from pyaedt import Desktop
 # available. This example will use AEDT 2021.2
 NonGraphical = False
 NewThread = False
-desktop_version = "2021.2"
+desktop_version = "2022.1"
 
 
 ###############################################################################
@@ -34,7 +34,7 @@ aedtapp = Emit()
 # Create and Connect EMIT Components
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Create 3 radios and connect an antenna to each.
-rad1 = aedtapp.modeler.components.create_component("UE - Handheld")
+rad1 = aedtapp.modeler.components.create_component("New Radio")
 ant1 = aedtapp.modeler.components.create_component("Antenna")
 if rad1 and ant1:
     ant1.move_and_connect_to(rad1)
@@ -48,6 +48,26 @@ rad3 = aedtapp.modeler.components.create_component("Bluetooth")
 ant3 = aedtapp.modeler.components.create_component("Antenna")
 if rad3 and ant3:
     ant3.move_and_connect_to(rad3)
+
+results = aedtapp.results
+
+results.add_result('Results')
+
+with aedtapp.results.result_session('Results') as result_set:
+    result_set.run_1_to_1('Radio', 'Bluetooth')
+    result_set.ui_update()
+    result_set.run_all()
+    result_set.ui_update()
+
+with aedtapp.results.result_session('Results') as result_set:
+    result_set.run_1_to_1('Radio', 'Bluetooth')
+    result_set.ui_update()
+    result_set.purge_all()
+    result_set.ui_update()
+    result_set.run_1_to_1('Radio', 'GPS Receiver')
+    result_set.ui_update()
+    result_set.purge_all()
+    result_set.ui_update()
 
 
 ###############################################################################
