@@ -140,17 +140,19 @@ class ResultSession():
                     print('Running {}'.format(iemit_rpyc_server_script))
                     # Establish the connection with the result process (iemit.exe). It will be disconnected when
                     # self._rpyc_connection goes out of scope (when InnerResultSession goes out of scope).
-                success = False
-                while not success:
-                    try:
-                        emit_results._odesign.ShowResultWindow(result_set_name, iemit_rpyc_server_script)
-                        print('Wait for the script to start...')
-                        time.sleep(5)
-                        self._rpyc_connection = rpyc.connect('localhost', 18861)
-                        success = True
-                    except:
-                        print('Wait and try again...')
-                        time.sleep(1)
+                    success = False
+                    while not success:
+                        try:
+                            emit_results._odesign.ShowResultWindow(result_set_name, iemit_rpyc_server_script)
+                            print('Wait for the script to start...')
+                            time.sleep(5)
+                            self._rpyc_connection = rpyc.connect('localhost', 18861)
+                            success = True
+                        except:
+                            print('Wait and try again...')
+                            time.sleep(1)
+                else:
+                    self._rpyc_connection = rpyc.connect('localhost', 18861)
                 app = self._rpyc_connection.root.application
                 print('Connected to ' + app.app_name_plus_version())
 
