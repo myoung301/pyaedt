@@ -143,10 +143,9 @@ class ResultSession():
                 success = False
                 while not success:
                     try:
-                        if not existing_server:
-                            emit_results._odesign.ShowResultWindow(result_set_name, iemit_rpyc_server_script)
-                            print('Wait for the script to start...')
-                            time.sleep(5)
+                        emit_results._odesign.ShowResultWindow(result_set_name, iemit_rpyc_server_script)
+                        print('Wait for the script to start...')
+                        time.sleep(5)
                         self._rpyc_connection = rpyc.connect('localhost', 18861)
                         success = True
                     except:
