@@ -1,6 +1,8 @@
 import os
+import string
 import warnings
 import time
+import win32gui
 
 try:
     import rpyc
@@ -124,37 +126,66 @@ class ResultSession():
             def __init__(self, emit_results, result_set_name, existing_server):
                 """Establish a connection with a result set. In graphical mode, the Analysis & Result window is 
                 shown."""
+                start_time = time.time()
                 if not existing_server:
-                    script_dir = os.path.dirname(__file__)
-                    # First, show the window and let it load.
+                    # ShowResultWindow without a script and will ensure the result window is loaded.
+                    # Then the next time we call ShowResultWindow with the start_server script the
+                    # call will be non-blocking. (The ShowResultWindow call with a script when the
+                    # window is _not_ showing blocks until the script completes).
                     emit_results._odesign.ShowResultWindow(result_set_name)
-                    # Wait until the window is fully loaded.
-                    #TODO: need a better way to know when the window is loaded. If we proceed here too soon, the
-                    # next ShowResultWindow call will kill and re-start the process.
-                    print('Wait for the result window to show...')
-                    time.sleep(10)
-                    # Now, send the ShowResultWindow a second time with the script. This should
-                    # start the rpyc server script and return from ShowResultWindow (non-blocking).
-                    script_dir = os.path.dirname(__file__)
-                    iemit_rpyc_server_script = os.path.join(script_dir, "iemit_rpyc_server.py")
-                    print('Running {}'.format(iemit_rpyc_server_script))
+                    design_name = emit_results._odesign.GetName()
+                    title_substring = " - {} - {} (Created: ".format(design_name, result_set_name)
+                    # Make sure the window is showing before proceeding.
+                    self.wait_for_window(string_in_title=title_substring, timeout_seconds=30)
                     # Establish the connection with the result process (iemit.exe). It will be disconnected when
                     # self._rpyc_connection goes out of scope (when InnerResultSession goes out of scope).
                     success = False
                     while not success:
                         try:
-                            emit_results._odesign.ShowResultWindow(result_set_name, iemit_rpyc_server_script)
-                            print('Wait for the script to start...')
-                            time.sleep(5)
+                            script_dir = os.path.dirname(__file__)
+                            start_server_script = os.path.join(script_dir, "iemit_rpyc_start_server.py")
+                            print('Running {}'.format(start_server_script))
+                            # It would be nice to call this once, before the loop, but the first call
+                            # is being missed. Maybe because the window is up but not connected yet?
+                            emit_results._odesign.ShowResultWindow(result_set_name, start_server_script)
+                            print('Attempt to connect to server...')
                             self._rpyc_connection = rpyc.connect('localhost', 18861)
                             success = True
-                        except:
-                            print('Wait and try again...')
-                            time.sleep(1)
+                        except Exception as e:
+                            print('Wait and try again... (message: {})'.format(e))
+                            time.sleep(0.05)
                 else:
                     self._rpyc_connection = rpyc.connect('localhost', 18861)
                 app = self._rpyc_connection.root.application
-                print('Connected to ' + app.app_name_plus_version())
+                print('Connected to {} ({} seconds to establish connection)'.format(app.app_name_plus_version(), time.time()-start_time))
+
+            def wait_for_window(self, string_in_title, timeout_seconds):
+                """Wait for a window to open that contains the specified string
+                   in its title.
+                   Parameters:
+                   string_in_title -  A string that must all be in the title of
+                       the window for the search to end and return True.
+                   timeout_seconds - The number of seconds to attempt to find the
+                       window. If the timeout expires, False is returned.
+                """
+                window_titles = []
+                def enumWindowsHandler(hwnd, ctx):
+                    if win32gui.IsWindowVisible(hwnd):
+                        title = win32gui.GetWindowText(hwnd)
+                        window_titles.append(title)
+                def window_exists():
+                    window_titles.clear()
+                    win32gui.EnumWindows(enumWindowsHandler, None)
+                    for title in window_titles:
+                        if string_in_title in title:
+                            return True
+                    return False
+                start_time = time.time()
+                time_expired = lambda : time.time() - start_time > timeout_seconds
+                while not window_exists() and not time_expired():
+                    time.sleep(0.05)
+                    continue
+                
 
             def run_all(self):
                 project = self._rpyc_connection.root.project

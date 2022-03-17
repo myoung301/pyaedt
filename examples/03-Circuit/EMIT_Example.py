@@ -14,9 +14,9 @@ from pyaedt import Desktop
 # Change NonGraphical Boolean to False to open AEDT in graphical mode
 # With NewThread = False, an existing instance of AEDT will be used, if
 # available. This example will use AEDT 2021.2
-NonGraphical = False
-NewThread = False
-desktop_version = "2022.1"
+non_graphical = False
+new_thread = False
+desktop_version = "2022.2"
 
 
 ###############################################################################
@@ -26,7 +26,7 @@ desktop_version = "2022.1"
 # specified graphical mode. NewThread Boolean variable defines if a user wants
 # to create a new instance of AEDT or try to connect to existing instance of
 # it.
-d = Desktop(desktop_version, NonGraphical, NewThread)
+d = Desktop(desktop_version, non_graphical, new_thread)
 aedtapp = Emit()
 
 
@@ -89,4 +89,5 @@ with aedtapp.results.result_session('Results') as result_set:
 # (using release_desktop method). All methods give possibility to save projects
 # before exit.
 aedtapp.save_project()
-aedtapp.release_desktop(close_projects=True, close_desktop=True)
+aedtapp.close_project()
+#aedtapp.release_desktop(close_projects=True, close_desktop=True)
