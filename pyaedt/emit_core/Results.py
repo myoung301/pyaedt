@@ -79,7 +79,7 @@ class ResultsEmit(object):
         # Now, send the ShowResultWindow a second time with the script. This should
         # run the script non-blocking.
         script_dir = os.path.dirname(__file__)
-        iemit_rpyc_server_script = os.path.join(script_dir, "iemit_rpyc_server.py")
+        iemit_rpyc_server_script = os.path.join(script_dir, "iemit_rpyc_start_server.py")
         self._odesign.ShowResultWindow(result_set_name, iemit_rpyc_server_script)
         self._rpyc_connection = rpyc.connect('localhost', 18861)
         app = self._rpyc_connection.application
@@ -206,6 +206,19 @@ class ResultSession():
             def project(self):
                 project = self._rpyc_connection.root.project
                 return project
+
+            def set_marker_background_color(self, color):
+                project = self._rpyc_connection.root.project
+                project.select_result()
+                self.ui_update
+                dlx = self._rpyc_connection.root.dlx
+                marker = "NODE-*-Windows-*-Result Plot-*-Result Marker"
+                mn = project.get_node(marker)
+                params = {}
+                params['LabelBackgroundColor'] = color
+                dlx.startAction('Set Color')
+                dlx.sendCommand('SETPROPERTIES', params, marker)
+                dlx.endAction()
             
             def ui_update(self):
                 self._rpyc_connection.root.processEvents()

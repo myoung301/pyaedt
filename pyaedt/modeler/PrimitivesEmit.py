@@ -461,6 +461,37 @@ class EmitRadioComponent(EmitComponent):
         nodes = self.get_prop_nodes({"Type": "RxSusceptibilityProfNode", "Enabled": "true"})
         return len(nodes) > 0
 
+@EmitComponent.register_subclass("Filter")
+class EmitFilterComponent(EmitComponent):
+    """A Filter component in the EMIT schematic."""
+
+    def __init__(self, components, component_name):
+        super(EmitFilterComponent, self).__init__(components, component_name)
+
+    @property
+    def props(self):
+        prop_list = self.odesign.GetComponentNodeProperties(self.parent_component.name, self.node_name)
+        props = dict(p.split("=") for p in prop_list)
+        return props
+
+    @pyaedt_function_handler()
+    def _set_prop_value(self, fullname, props={}):
+        comp_name = self.name
+        prop_list = ["NAME:properties"]
+        for prop_name, value in props.items():
+            prop_list.append("{}:=".format(prop_name))
+            if type(value) is not str:
+                raise TypeError("Value for key {} is not a string.".format(prop_name))
+            prop_list.append(value)
+        properties_to_set = [
+            ["NAME:node", "fullname:=", fullname, prop_list],
+            [],  # Property does not get set without this empty list
+        ]
+        nodes_to_delete = []  # No nodes to delete
+        self.odesign.EditComponentNodes(comp_name, properties_to_set, nodes_to_delete)
+
+    def set_filter_prop(self, fullname, key, value):
+        self._set_prop_value(fullname, {key: value})
 
 class EmitComponentPropNode(object):
     def __init__(self, editor, design, parent_component, node_name):
