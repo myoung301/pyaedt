@@ -1,46 +1,60 @@
+import math
 import os
+import time
 
-# Setup paths for module imports
-import gc
-
-# Import required modules
 from pyaedt import Edb
 from pyaedt.edb_core.components import resistor_value_parser
-from pyaedt.generic.filesystem import Scratch
+from pyaedt.generic.constants import SourceType
+
+# Setup paths for module imports
+# Import required modules
 
 test_project_name = "Galileo_edb"
 bom_example = "bom_example.csv"
-from _unittest.conftest import config, desktop_version, local_path, scratch_path, is_ironpython
+from _unittest.conftest import config, desktop_version, local_path, scratch_path, is_ironpython, settings, BasisTest
 
 try:
     import pytest
-except ImportError:
+    import unittest.mock
+except ImportError:  # pragma: no cover
     import _unittest_ironpython.conf_unittest as pytest
 
 
-class TestClass:
+class TestClass(BasisTest, object):
     def setup_class(self):
-
-        with Scratch(scratch_path) as self.local_scratch:
-            # example_project = os.path.join(local_path, 'example_models', test_project_name + '.aedt')
-            # self.test_project = self.local_scratch.copyfile(example_project)
-            aedbproject = os.path.join(self.local_scratch.path, test_project_name + ".aedb")
-            self.local_scratch.copyfolder(
-                os.path.join(local_path, "example_models", test_project_name + ".aedb"),
-                os.path.join(self.local_scratch.path, test_project_name + ".aedb"),
-            )
-            self.edbapp = Edb(aedbproject, "Galileo_G87173_204", edbversion=desktop_version, isreadonly=False)
+        BasisTest.my_setup(self)
+        self.edbapp = BasisTest.add_edb(self, test_project_name)
+        example_project = os.path.join(local_path, "example_models", "Package.aedb")
+        self.target_path = os.path.join(self.local_scratch.path, "Package_test_00.aedb")
+        self.local_scratch.copyfolder(example_project, self.target_path)
+        example_project2 = os.path.join(local_path, "example_models", "simple.aedb")
+        self.target_path2 = os.path.join(self.local_scratch.path, "simple_00.aedb")
+        self.local_scratch.copyfolder(example_project2, self.target_path2)
 
     def teardown_class(self):
         self.edbapp.close_edb()
-        self.edbapp = None
         self.local_scratch.remove()
-        gc.collect()
+        del self.edbapp
 
     def test_00_export_ipc2581(self):
         ipc_path = os.path.join(self.local_scratch.path, "test.xml")
         self.edbapp.export_to_ipc2581(ipc_path)
         assert os.path.exists(ipc_path)
+
+        # Export should be made with units set to default -millimeter-.
+        self.edbapp.export_to_ipc2581(ipc_path, "mm")
+        assert os.path.exists(ipc_path)
+
+        if not is_ironpython:
+            # Test the export_to_ipc2581 method when IPC8521.ExportIPC2581FromLayout raises an exception internally.
+            with unittest.mock.patch("pyaedt.Edb.edblib", new_callable=unittest.mock.PropertyMock) as edblib_mock:
+                Edb.edblib.IPC8521 = unittest.mock.Mock()
+                Edb.edblib.IPC8521.IPCExporter = unittest.mock.Mock()
+                Edb.edblib.IPC8521.IPCExporter.ExportIPC2581FromLayout = unittest.mock.Mock(
+                    side_effect=Exception("Exception for testing raised in ExportIPC2581FromLayout.")
+                )
+
+                assert not self.edbapp.export_to_ipc2581(os.path.exists(ipc_path))
 
     def test_01_find_by_name(self):
         comp = self.edbapp.core_components.get_component_by_name("J1")
@@ -52,6 +66,27 @@ class TestClass:
         )
         assert isinstance(parameters[1], list)
         assert isinstance(parameters[0], int)
+
+    def test_01A_create_ports(self):
+        pins = self.edbapp.core_components.get_pin_from_component("J1")
+        nets = self.edbapp.core_components.get_nets_from_pin_list(pins)
+        assert len(nets) == 6
+        assert "IO13_ICSP_R" in nets
+        assert "V5_ALW_ON" in nets
+        assert "GND" in nets
+        assert "IO11_ICSP_R" in nets
+        assert "RESET_N_SHLD" in nets
+        assert "IO12_ICSP_R" in nets
+
+        assert self.edbapp.core_components.create_port_on_component(
+            component="J1", net_list=nets[:2], port_type=SourceType.CoaxPort, do_pingroup=True, reference_net="GND"
+        )
+        assert self.edbapp.core_components.create_port_on_component(
+            component="J1", net_list=nets[3], port_type=SourceType.CoaxPort, do_pingroup=False, reference_net="GND"
+        )
+        assert self.edbapp.core_components.create_port_on_component(
+            component="J1", net_list=nets[-2:], port_type=SourceType.CircPort, do_pingroup=False, reference_net="GND"
+        )
 
     def test_01B_get_vias_from_nets(self):
         assert self.edbapp.core_padstack.get_via_instance_from_net("GND")
@@ -65,6 +100,7 @@ class TestClass:
         assert len(self.edbapp.core_components.ICs) > 0
         assert len(self.edbapp.core_components.IOs) > 0
         assert len(self.edbapp.core_components.Others) > 0
+        assert len(self.edbapp.get_bounding_box()) == 2
 
     def test_03_get_primitives(self):
         assert len(self.edbapp.core_primitives.polygons) > 0
@@ -149,6 +185,7 @@ class TestClass:
     def test_10_add_layer(self):
         layers = self.edbapp.core_stackup.stackup_layers
         assert layers.add_layer("NewLayer", "TOP", "copper", "air", "10um", 0)
+        assert layers.add_layer("NewLayer2", None, "pec", "air", "0um", 0)
 
     def test_11_add_dielectric(self):
         diel = self.edbapp.core_stackup.create_dielectric("MyDiel", 3.3, 0.02)
@@ -166,11 +203,19 @@ class TestClass:
         diel = self.edbapp.core_stackup.create_debye_material("My_Debye", 3, 2.5, 0.02, 0.04, 1e6, 1e9)
         assert diel
 
+    def test_14b_add_multipole_debye(self):
+        freq = [0, 2, 3, 4, 5, 6]
+        rel_perm = [1e9, 1.1e9, 1.2e9, 1.3e9, 1.5e9, 1.6e9]
+        loss_tan = [0.025, 0.026, 0.027, 0.028, 0.029, 0.030]
+        diel = self.edbapp.core_stackup.create_multipole_debye_material("My_MP_Debye", freq, rel_perm, loss_tan)
+        assert diel
+
     def test_15_update_layer(self):
+        tol = 1e-12
         assert "LYR_1" in self.edbapp.core_stackup.stackup_layers.layers.keys()
-        self.edbapp.core_stackup.stackup_layers["LYR_1"].name
+        assert self.edbapp.core_stackup.stackup_layers["LYR_1"].name
         self.edbapp.core_stackup.stackup_layers["LYR_1"].thickness_value = "100um"
-        assert self.edbapp.core_stackup.stackup_layers["LYR_1"].thickness_value == "100um"
+        assert abs(self.edbapp.core_stackup.stackup_layers["LYR_1"].thickness_value - 10e-5) < tol
         self.edbapp.core_stackup.stackup_layers["LYR_2"].material_name = "MyCond"
         assert self.edbapp.core_stackup.stackup_layers["LYR_2"].material_name == "MyCond"
         assert self.edbapp.core_stackup.stackup_layers["LYR_1"].filling_material_name is not None or False
@@ -187,8 +232,8 @@ class TestClass:
         assert "R1" in list(self.edbapp.core_components.components.keys())
         assert self.edbapp.core_components.components["R1"].res_value
         assert self.edbapp.core_components.components["R1"].placement_layer
-        assert self.edbapp.core_components.components["R1"].lower_elevation
-        assert self.edbapp.core_components.components["R1"].upper_elevation
+        assert isinstance(self.edbapp.core_components.components["R1"].lower_elevation, float)
+        assert isinstance(self.edbapp.core_components.components["R1"].upper_elevation, float)
         assert self.edbapp.core_components.components["R1"].top_bottom_association == 0
         assert self.edbapp.core_components.components["R1"].pinlist
         pinname = self.edbapp.core_components.components["R1"].pinlist[0].GetName()
@@ -322,12 +367,12 @@ class TestClass:
         assert self.edbapp.core_siwave.add_siwave_ac_analysis()
 
     def test_41_create_siwave_dc_analsyis(self):
-        settings = self.edbapp.core_siwave.get_siwave_dc_setup_template()
-        settings.accuracy_level = 0
-        settings.use_dc_custom_settings = True
-        settings.name = "myDCIR_3"
-        settings.pos_term_to_ground = "I1"
-        assert self.edbapp.core_siwave.add_siwave_dc_analysis(settings)
+        settings_dc = self.edbapp.core_siwave.get_siwave_dc_setup_template()
+        settings_dc.accuracy_level = 0
+        settings_dc.use_dc_custom_settings = True
+        settings_dc.name = "myDCIR_3"
+        settings_dc.pos_term_to_ground = "I1"
+        assert self.edbapp.core_siwave.add_siwave_dc_analysis(settings_dc)
 
     def test_42_get_nets_from_pin_list(self):
         cmp_pinlist = self.edbapp.core_padstack.get_pinlist_from_component_and_net("U2A5", "GND")
@@ -371,7 +416,7 @@ class TestClass:
 
     def test_47_get_polygons_bbylayerandnets(self):
         nets = ["GND", "IO2"]
-        polys = self.edbapp.core_primitives.get_polygons_by_layer("TOP", nets)
+        polys = self.edbapp.core_primitives.get_polygons_by_layer("BOTTOM", nets)
         assert polys
 
     def test_48_get_polygons_points(self):
@@ -396,9 +441,13 @@ class TestClass:
             assert pad.hole_offset_y is not None or False
             assert pad.hole_type is not None or False
             assert pad.pad_by_layer[pad.via_stop_layer].parameters is not None or False
+            assert pad.pad_by_layer[pad.via_stop_layer].parameters_values is not None or False
             assert pad.pad_by_layer[pad.via_stop_layer].offset_x is not None or False
             assert pad.pad_by_layer[pad.via_stop_layer].offset_y is not None or False
             assert isinstance(pad.pad_by_layer[pad.via_stop_layer].geometry_type, int)
+            polygon = pad.pad_by_layer[pad.via_stop_layer].polygon_data
+            if polygon:
+                assert polygon.GetBBox()
 
     def test_50_set_padstack(self):
         pad = self.edbapp.core_padstack.padstacks["C10N116"]
@@ -450,11 +499,27 @@ class TestClass:
 
     def test_54_create_component_from_pins(self):
         pins = self.edbapp.core_components.get_pin_from_component("R13")
-        assert self.edbapp.core_components.create_component_from_pins(pins, "newcomp")
+        component = self.edbapp.core_components.create_component_from_pins(pins, "newcomp")
+        assert component[0]
+        assert component[1].GetName() == "newcomp"
 
     def test_55b_create_cutout(self):
         output = os.path.join(self.local_scratch.path, "cutout.aedb")
-        assert self.edbapp.create_cutout(["A0_N", "A0_P"], ["GND"], output_aedb_path=output)
+        assert self.edbapp.create_cutout(["A0_N", "A0_P"], ["GND"], output_aedb_path=output, open_cutout_at_end=False)
+        assert os.path.exists(os.path.join(output, "edb.def"))
+        bounding = self.edbapp.get_bounding_box()
+        cutout_line_x = 41
+        cutout_line_y = 30
+        points = [[bounding[0][0], bounding[0][1]]]
+        points.append([cutout_line_x, bounding[0][1]])
+        points.append([cutout_line_x, cutout_line_y])
+        points.append([bounding[0][0], cutout_line_y])
+        points.append([bounding[0][0], bounding[0][1]])
+        output = os.path.join(self.local_scratch.path, "cutout2.aedb")
+
+        assert self.edbapp.create_cutout_on_point_list(
+            points, nets_to_include=["GND", "V3P3_S0"], output_aedb_path=output, open_cutout_at_end=False
+        )
         assert os.path.exists(os.path.join(output, "edb.def"))
 
     def test_56_rvalue(self):
@@ -464,7 +529,7 @@ class TestClass:
         assert self.edbapp.core_stackup.stackup_limits()
 
     def test_58_create_polygon(self):
-        os.environ["PYAEDT_ERROR_HANDLER"] = "True"
+        settings.enable_error_handler = True
         points = [[-0.025, -0.02], [0.025, -0.02], [0.025, 0.02], [-0.025, 0.02], [-0.025, -0.02]]
         plane = self.edbapp.core_primitives.Shape("polygon", points=points)
         points = [
@@ -490,7 +555,7 @@ class TestClass:
         points = [[0.001, -0.001, "ccn", 0.0, -0.0012]]
         plane = self.edbapp.core_primitives.Shape("polygon", points=points)
         assert not self.edbapp.core_primitives.create_polygon(plane, "TOP")
-        os.environ["PYAEDT_ERROR_HANDLER"] = "False"
+        settings.enable_error_handler = False
 
     def test_59_create_path(self):
         points = [
@@ -542,7 +607,7 @@ class TestClass:
         edb.close_edb()
 
     def test_65_flatten_planes(self):
-        assert self.edbapp.core_primitives.unite_polygons_on_layer()
+        assert self.edbapp.core_primitives.unite_polygons_on_layer("TOP")
 
     def test_66_create_solder_ball_on_component(self):
         assert self.edbapp.core_components.set_solder_ball("U1A1")
@@ -555,13 +620,10 @@ class TestClass:
         void = self.edbapp.core_primitives.create_path(path, layer_name="TOP", width="0.1mm")
         assert self.edbapp.core_primitives.add_void(plane, void)
 
-    def test_68_flip_layer_stackup(self):
-        assert self.edbapp.core_stackup.flip_stackup_and_apply_transform()
-
     def test_69_create_solder_balls_on_component(self):
         assert self.edbapp.core_components.set_solder_ball("U2A5")
 
-    @pytest.mark.skipif(is_ironpython, reason="This Test uses Ironpython")
+    @pytest.mark.skipif(is_ironpython, reason="This Test uses Matplotlib that is not supported by Ironpython")
     def test_70_plot_on_matplotlib(self):
         local_png = os.path.join(self.local_scratch.path, "test.png")
         self.edbapp.core_nets.plot(None, None, save_plot=local_png)
@@ -587,3 +649,298 @@ class TestClass:
             padstack_name="VIA_18-10-28_SMB", layer_name="new", pad_shape="Circle", pad_params="800um"
         )
         assert self.edbapp.core_padstack.padstacks["VIA_18-10-28_SMB"].pad_by_layer["new"]
+
+    def test_75_primitives_area(self):
+        i = 0
+        while i < 10:
+            assert self.edbapp.core_primitives.primitives[i].area(False) > 0
+            assert self.edbapp.core_primitives.primitives[i].area(True) > 0
+            i += 1
+
+    def test_76_short_component(self):
+        assert self.edbapp.core_components.short_component_pins("EU1", width=0.2e-3)
+        assert self.edbapp.core_components.short_component_pins("U10", ["2", "5"])
+
+    def test_77_flip_layer_stackup(self):
+        edb1 = Edb(self.target_path2, edbversion=desktop_version)
+
+        edb2 = Edb(self.target_path, edbversion=desktop_version)
+        assert edb2.core_stackup.place_in_layout_3d_placement(
+            edb1,
+            angle=0.0,
+            offset_x="41.783mm",
+            offset_y="35.179mm",
+            flipped_stackup=False,
+            place_on_top=False,
+            solder_height=0.0,
+        )
+        edb2.close_edb()
+        edb2 = Edb(self.target_path, edbversion=desktop_version)
+        assert edb2.core_stackup.place_in_layout_3d_placement(
+            edb1,
+            angle=0.0,
+            offset_x="41.783mm",
+            offset_y="35.179mm",
+            flipped_stackup=True,
+            place_on_top=False,
+            solder_height=0.0,
+        )
+        edb2.close_edb()
+        edb2 = Edb(self.target_path, edbversion=desktop_version)
+        assert edb2.core_stackup.place_in_layout_3d_placement(
+            edb1,
+            angle=0.0,
+            offset_x="41.783mm",
+            offset_y="35.179mm",
+            flipped_stackup=False,
+            place_on_top=True,
+            solder_height=0.0,
+        )
+        edb2.close_edb()
+        edb2 = Edb(self.target_path, edbversion=desktop_version)
+        assert edb2.core_stackup.place_in_layout_3d_placement(
+            edb1,
+            angle=0.0,
+            offset_x="41.783mm",
+            offset_y="35.179mm",
+            flipped_stackup=True,
+            place_on_top=True,
+            solder_height=0.0,
+        )
+        edb2.close_edb()
+        edb1.close_edb()
+
+    def test_78_flip_layer_stackup_2(self):
+        edb2 = Edb(self.target_path, edbversion=desktop_version)
+        assert edb2.core_stackup.place_in_layout(
+            self.edbapp,
+            angle=0.0,
+            offset_x="41.783mm",
+            offset_y="35.179mm",
+            flipped_stackup=True,
+            place_on_top=True,
+        )
+        edb2.close_edb()
+
+    def test_79_get_placement_vector(self):
+        edb2 = Edb(self.target_path, edbversion=desktop_version)
+        for cmpname, cmp in edb2.core_components.components.items():
+            assert isinstance(cmp.solder_ball_placement, int)
+        mounted_cmp = edb2.core_components.get_component_by_name("BGA")
+        hosting_cmp = self.edbapp.core_components.get_component_by_name("U2A5")
+        result, vector, rotation, solder_ball_height = self.edbapp.core_components.get_component_placement_vector(
+            mounted_component=mounted_cmp,
+            hosting_component=hosting_cmp,
+            mounted_component_pin1="A10",
+            mounted_component_pin2="A12",
+            hosting_component_pin1="A2",
+            hosting_component_pin2="A4",
+        )
+        assert result
+        assert abs(abs(rotation) - math.pi / 2) < 1e-9
+        assert solder_ball_height == 0.00033
+        assert len(vector) == 2
+        result, vector, rotation, solder_ball_height = self.edbapp.core_components.get_component_placement_vector(
+            mounted_component=mounted_cmp,
+            hosting_component=hosting_cmp,
+            mounted_component_pin1="A10",
+            mounted_component_pin2="A12",
+            hosting_component_pin1="A2",
+            hosting_component_pin2="A4",
+            flipped=True,
+        )
+        assert result
+        assert abs(rotation + math.pi / 2) < 1e-9
+        assert solder_ball_height == 0.00033
+        assert len(vector) == 2
+        edb2.close_edb()
+        del edb2
+
+    def test_80_edb_without_path(self):
+        edbapp_without_path = Edb(edbversion=desktop_version, isreadonly=False)
+        time.sleep(2)
+        edbapp_without_path.close_edb()
+        edbapp_without_path = None
+        del edbapp_without_path
+
+    def test_80_create_rectangle_in_pad(self):
+        example_model = os.path.join(local_path, "example_models", "padstacks.aedb")
+        self.local_scratch.copyfolder(
+            example_model,
+            os.path.join(self.local_scratch.path, "padstacks2.aedb"),
+        )
+        edb_padstacks = Edb(
+            edbpath=os.path.join(self.local_scratch.path, "padstacks2.aedb"),
+            edbversion=desktop_version,
+            isreadonly=True,
+        )
+        for i in range(7):
+            padstack_instance = list(edb_padstacks.core_padstack.padstack_instances.values())[i]
+            result = padstack_instance.create_rectangle_in_pad("s")
+            assert result
+        edb_padstacks.close_edb()
+
+    def test_81_edb_with_dxf(self):
+        src = os.path.join(local_path, "example_models", "edb_test_82.dxf")
+        dxf_path = self.local_scratch.copyfile(src)
+        edb3 = Edb(dxf_path, edbversion=desktop_version)
+        edb3.close_edb()
+        del edb3
+
+    def test_82_place_on_lam_with_mold(self):
+        laminateEdb = Edb(os.path.join(local_path, "example_models", "lam_with_mold.aedb"), edbversion=desktop_version)
+        chipEdb = Edb(os.path.join(local_path, "example_models", "chip.aedb"), edbversion=desktop_version)
+        try:
+            layout = laminateEdb.active_layout
+            cellInstances = list(layout.CellInstances)
+            assert len(cellInstances) == 0
+            assert chipEdb.core_stackup.place_in_layout_3d_placement(
+                laminateEdb, angle=0.0, offset_x=0.0, offset_y=0.0, flipped_stackup=False, place_on_top=True
+            )
+            merged_cell = chipEdb.edb.Cell.Cell.FindByName(
+                chipEdb.db, chipEdb.edb.Cell.CellType.CircuitCell, "lam_with_mold"
+            )
+            assert not merged_cell.IsNull()
+            layout = merged_cell.GetLayout()
+            cellInstances = list(layout.CellInstances)
+            assert len(cellInstances) == 1
+            cellInstance = cellInstances[0]
+            assert cellInstance.Is3DPlacement()
+            if is_ironpython:
+                res, localOrigin, rotAxisFrom, rotAxisTo, angle, loc = cellInstance.Get3DTransformation()
+            else:
+                res, localOrigin, rotAxisFrom, rotAxisTo, angle, loc = cellInstance.Get3DTransformation(
+                    None, None, None, None, None
+                )
+            assert res
+            zeroValue = chipEdb.edb_value(0)
+            oneValue = chipEdb.edb_value(1)
+            originPoint = chipEdb.edb.Geometry.Point3DData(zeroValue, zeroValue, zeroValue)
+            xAxisPoint = chipEdb.edb.Geometry.Point3DData(oneValue, zeroValue, zeroValue)
+            assert localOrigin.IsEqual(originPoint)
+            assert rotAxisFrom.IsEqual(xAxisPoint)
+            assert rotAxisTo.IsEqual(xAxisPoint)
+            assert angle.IsEqual(zeroValue)
+            assert loc.IsEqual(chipEdb.edb.Geometry.Point3DData(zeroValue, zeroValue, chipEdb.edb_value(170e-6)))
+        finally:
+            chipEdb.close_edb()
+            laminateEdb.close_edb()
+
+    def test_82b_place_on_bottom_of_lam_with_mold(self):
+        laminateEdb = Edb(os.path.join(local_path, "example_models", "lam_with_mold.aedb"), edbversion=desktop_version)
+        chipEdb = Edb(
+            os.path.join(local_path, "example_models", "chip_flipped_stackup.aedb"), edbversion=desktop_version
+        )
+        try:
+            layout = laminateEdb.active_layout
+            cellInstances = list(layout.CellInstances)
+            assert len(cellInstances) == 0
+            assert chipEdb.core_stackup.place_in_layout_3d_placement(
+                laminateEdb, angle=0.0, offset_x=0.0, offset_y=0.0, flipped_stackup=False, place_on_top=False
+            )
+            merged_cell = chipEdb.edb.Cell.Cell.FindByName(
+                chipEdb.db, chipEdb.edb.Cell.CellType.CircuitCell, "lam_with_mold"
+            )
+            assert not merged_cell.IsNull()
+            layout = merged_cell.GetLayout()
+            cellInstances = list(layout.CellInstances)
+            assert len(cellInstances) == 1
+            cellInstance = cellInstances[0]
+            assert cellInstance.Is3DPlacement()
+            if is_ironpython:
+                res, localOrigin, rotAxisFrom, rotAxisTo, angle, loc = cellInstance.Get3DTransformation()
+            else:
+                res, localOrigin, rotAxisFrom, rotAxisTo, angle, loc = cellInstance.Get3DTransformation(
+                    None, None, None, None, None
+                )
+            assert res
+            zeroValue = chipEdb.edb_value(0)
+            oneValue = chipEdb.edb_value(1)
+            originPoint = chipEdb.edb.Geometry.Point3DData(zeroValue, zeroValue, zeroValue)
+            xAxisPoint = chipEdb.edb.Geometry.Point3DData(oneValue, zeroValue, zeroValue)
+            assert localOrigin.IsEqual(originPoint)
+            assert rotAxisFrom.IsEqual(xAxisPoint)
+            assert rotAxisTo.IsEqual(xAxisPoint)
+            assert angle.IsEqual(zeroValue)
+            assert loc.IsEqual(chipEdb.edb.Geometry.Point3DData(zeroValue, zeroValue, chipEdb.edb_value(-90e-6)))
+        finally:
+            chipEdb.close_edb()
+            laminateEdb.close_edb()
+
+    def test_82c_place_on_lam_with_mold_solder(self):
+        laminateEdb = Edb(os.path.join(local_path, "example_models", "lam_with_mold.aedb"), edbversion=desktop_version)
+        chipEdb = Edb(os.path.join(local_path, "example_models", "chip_solder.aedb"), edbversion=desktop_version)
+        try:
+            layout = laminateEdb.active_layout
+            cellInstances = list(layout.CellInstances)
+            assert len(cellInstances) == 0
+            assert chipEdb.core_stackup.place_in_layout_3d_placement(
+                laminateEdb, angle=0.0, offset_x=0.0, offset_y=0.0, flipped_stackup=False, place_on_top=True
+            )
+            merged_cell = chipEdb.edb.Cell.Cell.FindByName(
+                chipEdb.db, chipEdb.edb.Cell.CellType.CircuitCell, "lam_with_mold"
+            )
+            assert not merged_cell.IsNull()
+            layout = merged_cell.GetLayout()
+            cellInstances = list(layout.CellInstances)
+            assert len(cellInstances) == 1
+            cellInstance = cellInstances[0]
+            assert cellInstance.Is3DPlacement()
+            if is_ironpython:
+                res, localOrigin, rotAxisFrom, rotAxisTo, angle, loc = cellInstance.Get3DTransformation()
+            else:
+                res, localOrigin, rotAxisFrom, rotAxisTo, angle, loc = cellInstance.Get3DTransformation(
+                    None, None, None, None, None
+                )
+            assert res
+            zeroValue = chipEdb.edb_value(0)
+            oneValue = chipEdb.edb_value(1)
+            originPoint = chipEdb.edb.Geometry.Point3DData(zeroValue, zeroValue, zeroValue)
+            xAxisPoint = chipEdb.edb.Geometry.Point3DData(oneValue, zeroValue, zeroValue)
+            assert localOrigin.IsEqual(originPoint)
+            assert rotAxisFrom.IsEqual(xAxisPoint)
+            assert rotAxisTo.IsEqual(xAxisPoint)
+            assert angle.IsEqual(zeroValue)
+            assert loc.IsEqual(chipEdb.edb.Geometry.Point3DData(zeroValue, zeroValue, chipEdb.edb_value(190e-6)))
+        finally:
+            chipEdb.close_edb()
+            laminateEdb.close_edb()
+
+    def test_82c_place_on_bottom_of_lam_with_mold_solder(self):
+        laminateEdb = Edb(os.path.join(local_path, "example_models", "lam_with_mold.aedb"), edbversion=desktop_version)
+        chipEdb = Edb(os.path.join(local_path, "example_models", "chip_solder.aedb"), edbversion=desktop_version)
+        try:
+            layout = laminateEdb.active_layout
+            cellInstances = list(layout.CellInstances)
+            assert len(cellInstances) == 0
+            assert chipEdb.core_stackup.place_in_layout_3d_placement(
+                laminateEdb, angle=0.0, offset_x=0.0, offset_y=0.0, flipped_stackup=True, place_on_top=False
+            )
+            merged_cell = chipEdb.edb.Cell.Cell.FindByName(
+                chipEdb.db, chipEdb.edb.Cell.CellType.CircuitCell, "lam_with_mold"
+            )
+            assert not merged_cell.IsNull()
+            layout = merged_cell.GetLayout()
+            cellInstances = list(layout.CellInstances)
+            assert len(cellInstances) == 1
+            cellInstance = cellInstances[0]
+            assert cellInstance.Is3DPlacement()
+            if is_ironpython:
+                res, localOrigin, rotAxisFrom, rotAxisTo, angle, loc = cellInstance.Get3DTransformation()
+            else:
+                res, localOrigin, rotAxisFrom, rotAxisTo, angle, loc = cellInstance.Get3DTransformation(
+                    None, None, None, None, None
+                )
+            assert res
+            zeroValue = chipEdb.edb_value(0)
+            oneValue = chipEdb.edb_value(1)
+            originPoint = chipEdb.edb.Geometry.Point3DData(zeroValue, zeroValue, zeroValue)
+            xAxisPoint = chipEdb.edb.Geometry.Point3DData(oneValue, zeroValue, zeroValue)
+            assert localOrigin.IsEqual(originPoint)
+            assert rotAxisFrom.IsEqual(xAxisPoint)
+            assert rotAxisTo.IsEqual(xAxisPoint)
+            assert angle.IsEqual(chipEdb.edb_value(math.pi))
+            assert loc.IsEqual(chipEdb.edb.Geometry.Point3DData(zeroValue, zeroValue, chipEdb.edb_value(-20e-6)))
+        finally:
+            chipEdb.close_edb()
+            laminateEdb.close_edb()

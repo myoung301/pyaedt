@@ -13,9 +13,10 @@ This module contains these data classes for creating a material library:
 
 """
 from collections import OrderedDict
-from pyaedt.generic.general_methods import aedt_exception_handler
-from pyaedt.generic.DataHandlers import _dict2arg
+
 from pyaedt.generic.constants import CSS4_COLORS
+from pyaedt.generic.DataHandlers import _dict2arg
+from pyaedt.generic.general_methods import pyaedt_function_handler
 
 
 class MatProperties(object):
@@ -465,7 +466,7 @@ class MatProperty(object):
                     ].append(tm)
         return self._material.update()
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def add_thermal_modifier_free_form(self, formula, index=0):
         """Add a thermal modifier to a material property using a free-form formula.
 
@@ -497,7 +498,7 @@ class MatProperty(object):
         self._property_value[index].thermalmodifier = formula
         return self._add_thermal_modifier(formula, index)
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def add_thermal_modifier_dataset(self, dataset_name, index=0):
         """Add a thermal modifier to a material property using an existing dataset.
 
@@ -532,7 +533,7 @@ class MatProperty(object):
         self._property_value[index].thermalmodifier = formula
         self._add_thermal_modifier(formula, index)
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def add_thermal_modifier_closed_form(
         self, tref=22, c1=0.0001, c2=1e-6, tl=-273.15, tu=1000, units="cel", auto_calc=True, tml=1000, tmu=1000, index=0
     ):
@@ -688,7 +689,7 @@ class MatProperty(object):
                     tml.append(tm_new)
         return self._material.update()
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def set_non_linear(self, point_list, x_unit=None, y_unit=None):
         """Enable Non Linear Material.
 
@@ -762,7 +763,7 @@ class CommonMaterial(object):
         self.name = name
         self.coordinate_system = ""
         if props:
-            self._props = props
+            self._props = props.copy()
         else:
             self._props = OrderedDict()
         if "CoordinateSystemType" in self._props:
@@ -784,7 +785,7 @@ class CommonMaterial(object):
             self.mod_since_lib = self._props["ModSinceLib"]
             del self._props["ModSinceLib"]
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def _get_args(self, props=None):
         """Retrieve the arguments for a property.
 
@@ -819,6 +820,9 @@ class CommonMaterial(object):
         ):
             i = 1
             for val in provpavlue:
+                if not self._props.get(propname, None) or isinstance(self._props[propname], str):
+                    self._props[propname] = OrderedDict({"property_type": "AnisoProperty"})
+                    self._props[propname]["unit"] = ""
                 self._props[propname]["component" + str(i)] = str(val)
                 i += 1
             if update_aedt:
@@ -891,7 +895,7 @@ class Material(CommonMaterial, object):
         else:
             self.physics_type = ["Electromagnetic", "Thermal", "Structural"]
             self._props["PhysicsTypes"] = OrderedDict({"set": ["Electromagnetic", "Thermal", "Structural"]})
-        if "AttachedData" in self._props:
+        if "AttachedData" in self._props and "MatAppearanceData" in self._props["AttachedData"]:
             self._material_appearance = []
             self._material_appearance.append(self._props["AttachedData"]["MatAppearanceData"]["Red"])
             self._material_appearance.append(self._props["AttachedData"]["MatAppearanceData"]["Green"])
@@ -1131,7 +1135,12 @@ class Material(CommonMaterial, object):
         self._thermal_conductivity.value = value
         self.physics_type = ["Electromagnetic", "Thermal", "Structural"]
         self._props["PhysicsTypes"] = OrderedDict({"set": ["Electromagnetic", "Thermal", "Structural"]})
-        self._update_props("thermal_conductivity", value)
+        if isinstance(value, list):
+            self._thermal_conductivity.type = "anisotropic"
+            self._update_props("thermal_conductivity", value)
+        else:
+            self._thermal_conductivity.type = "simple"
+            self._update_props("thermal_conductivity", value)
 
     @property
     def mass_density(self):
@@ -1305,7 +1314,7 @@ class Material(CommonMaterial, object):
         self._viscosity.value = value
         self._update_props("viscosity", value)
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def set_magnetic_coercitivity(self, value=0, x=1, y=0, z=0):
         """Set Magnetic Coercitivity for material.
 
@@ -1335,7 +1344,7 @@ class Material(CommonMaterial, object):
         )
         return self.update()
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def set_electrical_steel_coreloss(self, kh=0, kc=0, ke=0, kdc=0, cut_depth=0.0001):
         """Set Electrical Steel Type Core Loss.
 
@@ -1371,7 +1380,7 @@ class Material(CommonMaterial, object):
         self._props["core_loss_equiv_cut_depth"] = "{}meter".format(cut_depth)
         return self.update()
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def set_hysteresis_coreloss(self, kdc=0, hci=0, br=0, hkc=0, cut_depth=0.0001):
         """Set Hysteresis Type Core Loss.
 
@@ -1410,7 +1419,7 @@ class Material(CommonMaterial, object):
         self._props["core_loss_equiv_cut_depth"] = "{}meter".format(cut_depth)
         return self.update()
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def set_power_ferrite_coreloss(self, cm=0, x=0, y=0, kdc=0, cut_depth=0.0001):
         """Set Power Ferrite Type Core Loss.
 
@@ -1447,7 +1456,7 @@ class Material(CommonMaterial, object):
         self._props["core_loss_equiv_cut_depth"] = "{}meter".format(cut_depth)
         return self.update()
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def set_bp_curve_coreloss(
         self, point_list, kdc=0, cut_depth=0.0001, punit="kw/m^3", bunit="tesla", frequency=60, thickness="0.5mm"
     ):
@@ -1499,7 +1508,7 @@ class Material(CommonMaterial, object):
             self._props["core_loss_curves"]["Point"].append(points)
         return self.update()
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def get_curve_coreloss_type(self):
         """Return the curve core loss type assigned to material.
 
@@ -1511,7 +1520,7 @@ class Material(CommonMaterial, object):
             return self._props["core_loss_type"].get("Choice", None)
         return None
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def get_curve_coreloss_values(self):
         """Return the curve core values type assigned to material.
 
@@ -1546,7 +1555,7 @@ class Material(CommonMaterial, object):
                 out["core_loss_equiv_cut_depth"] = self._props["core_loss_equiv_cut_depth"]
         return out
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def get_magnetic_coercitivity(self):
         """Get the magnetic coercitivity values.
 
@@ -1564,7 +1573,7 @@ class Material(CommonMaterial, object):
             )
         return False
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def is_conductor(self, threshold=100000):
         """Check if the material is a conductor.
 
@@ -1594,7 +1603,7 @@ class Material(CommonMaterial, object):
             return False
         return False
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def is_dielectric(self, threshold=100000):
         """Check if the material is dielectric.
 
@@ -1613,7 +1622,7 @@ class Material(CommonMaterial, object):
         """
         return not self.is_conductor(threshold)
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def update(self):
         """Update the material in AEDT.
 
@@ -1636,7 +1645,7 @@ class Material(CommonMaterial, object):
             self.odefinition_manager.AddMaterial(args)
         return True
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def _does_material_exists(self, material_name):
         listmatprj = [i.lower() for i in list(self.odefinition_manager.GetProjectMaterialNames())]
         if material_name.lower() in listmatprj:
@@ -1778,7 +1787,7 @@ class SurfaceMaterial(CommonMaterial, object):
         self._surface_roughness.value = value
         self._update_props("surface_roughness", value)
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def update(self):
         """Update the surface material in AEDT.
 
@@ -1801,7 +1810,7 @@ class SurfaceMaterial(CommonMaterial, object):
             self.odefinition_manager.AddSurfaceMaterial(args)
         return True
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def _does_material_exists(self, szMat):
         a = self.odefinition_manager.DoesSurfaceMaterialExist(szMat)
         if a != 0:

@@ -1,7 +1,7 @@
 """
-Maxwell 3D TEAM3 Bath Plate
----------------------------
-This example uses PyAEDT to setup the TEAM3 problem set by COMPUMAG.
+Maxwell 3D Bath Plate
+---------------------
+This example uses PyAEDT to setup the TEAM3 problem.
 This is solved using the Maxwell 3D Eddy Current solver
 """
 
@@ -30,7 +30,7 @@ M3D = Maxwell3d(
     new_desktop_session=True,
 )
 uom = M3D.modeler.model_units = "mm"
-primitives = M3D.modeler.primitives
+primitives = M3D.modeler
 
 ###############################################################################
 # Add the variable Coil Position, it will later be used to adjust position of the coil
@@ -40,7 +40,6 @@ M3D["Coil_Position"] = str(Coil_Position) + uom  # Creates a design variable in 
 ################################################################################
 # Create TEAM3 aluminium material for the ladder plate
 mat = M3D.materials.add_material("team3_aluminium")
-mat.update()
 mat.conductivity = 32780000
 
 ###############################################################################
@@ -51,9 +50,9 @@ M3D.modeler.create_air_region(x_pos=100, y_pos=100, z_pos=100, x_neg=100, y_neg=
 
 ################################################################################
 # Draw ladder plate and assign 'team3_aluminium'
-M3D.modeler.primitives.create_box([-30, -55, 0], [60, 110, -6.35], name="LadderPlate", matname="team3_aluminium")
-M3D.modeler.primitives.create_box([-20, -35, 0], [40, 30, -6.35], name="CutoutTool1")
-M3D.modeler.primitives.create_box([-20, 5, 0], [40, 30, -6.35], name="CutoutTool2")
+M3D.modeler.create_box([-30, -55, 0], [60, 110, -6.35], name="LadderPlate", matname="team3_aluminium")
+M3D.modeler.create_box([-20, -35, 0], [40, 30, -6.35], name="CutoutTool1")
+M3D.modeler.create_box([-20, 5, 0], [40, 30, -6.35], name="CutoutTool2")
 M3D.modeler.subtract("LadderPlate", ["CutoutTool1", "CutoutTool2"], keepOriginals=False)
 
 ################################################################################
@@ -63,16 +62,16 @@ M3D.mesh.assign_length_mesh("LadderPlate", maxlength=3, maxel=None, meshop_name=
 ################################################################################
 # Draw Search Coil and Assign a Stranded Current Excitation
 # The 'stranded' type forces current density to be constant in the coil
-M3D.modeler.primitives.create_cylinder(
+M3D.modeler.create_cylinder(
     cs_axis="Z", position=[0, "Coil_Position", 15], radius=40, height=20, name="SearchCoil", matname="copper"
 )
-M3D.modeler.primitives.create_cylinder(
+M3D.modeler.create_cylinder(
     cs_axis="Z", position=[0, "Coil_Position", 15], radius=20, height=20, name="Bore", matname="copper"
 )
 M3D.modeler.subtract("SearchCoil", "Bore", keepOriginals=False)
 M3D.modeler.section("SearchCoil", "YZ")
 M3D.modeler.separate_bodies("SearchCoil_Section1")
-M3D.modeler.primitives.delete("SearchCoil_Section1_Separate1")
+M3D.modeler.delete("SearchCoil_Section1_Separate1")
 M3D.assign_current(["SearchCoil_Section1"], amplitude=1260, solid=False, name="SearchCoil_Excitation")
 
 ################################################################################
@@ -98,10 +97,8 @@ M3D.plot(show=False, export_path=os.path.join(M3D.working_directory, "Image.jpg"
 Setup = M3D.create_setup(setupname="Setup1")
 Setup.props["Frequency"] = "200Hz"
 Setup.props["HasSweepSetup"] = True
-Setup.props["StartValue"] = "50Hz"
-Setup.props["StopValue"] = "200Hz"
-Setup.props["StepSize"] = "150Hz"
-Setup.update()
+Setup.add_eddy_current_sweep("LinearStep", 50, 200, 150, clear=True)
+
 
 ################################################################################
 # Adjust Eddy Effects for LadderPlate and SearchCoil
@@ -116,7 +113,6 @@ param = M3D.opti_parametric.add_parametric_setup("Coil_Position", "LIN -20mm 0mm
 param.props["ProdOptiSetupDataV2"]["SaveFields"] = True
 param.props["ProdOptiSetupDataV2"]["CopyMesh"] = False
 param.props["ProdOptiSetupDataV2"]["SolveWithCopiedMeshOnly"] = True
-param.update()
 
 # Solve the model, we solve the parametric sweep directly so results of all variations are available.
 M3D.analyze_setup(sweepname)

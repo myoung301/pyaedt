@@ -1,10 +1,10 @@
 # Setup paths for module imports
-import tempfile
-import os
 import io
 import logging
+import os
 import shutil
 import sys
+import tempfile
 
 try:
     import pytest
@@ -16,18 +16,18 @@ from pyaedt.generic.general_methods import is_ironpython
 
 # Import required modules
 from pyaedt.aedt_logger import AedtLogger
-from pyaedt import Hfss
+from pyaedt import settings
+from _unittest.conftest import BasisTest
 
 
-class TestClass:
+class TestClass(BasisTest, object):
     def setup_class(self):
-        self.aedtapp = Hfss()
-        pass
+        BasisTest.my_setup(self)
+        self.aedtapp = BasisTest.add_app(self, "Test_14")
 
     def teardown_class(self):
-        self.aedtapp.close_project(self.aedtapp.project_name, saveproject=False)
+        BasisTest.my_teardown(self)
         shutil.rmtree(os.path.join(tempfile.gettempdir(), "log_testing"))
-        pass
 
     # @pytest.mark.xfail
     # def test_01_global(self, clean_desktop_messages, clean_desktop, hfss):
@@ -107,7 +107,7 @@ class TestClass:
         if not os.path.exists(logging_dir):
             os.makedirs(logging_dir)
         path = os.path.join(logging_dir, "test02.txt")
-        logger = AedtLogger(self.aedtapp._messenger, filename=path)
+        logger = AedtLogger(filename=path)
         logger.info("Info for Global")
         logger.debug("Debug for Global")
         logger.warning("Warning for Global")
@@ -166,8 +166,9 @@ class TestClass:
     @pytest.mark.skipif(is_ironpython, reason="stdout redirection does not work in IronPython.")
     def test_03_stdout_with_app_filter(self):
         capture = CaptureStdOut()
+        settings.logger_file_path = ""
         with capture:
-            logger = AedtLogger(self.aedtapp._messenger, to_stdout=True)
+            logger = AedtLogger(to_stdout=True)
             logger.info("Info for Global")
             logger.warning("Warning for Global")
             logger.error("Error for Global")
@@ -182,8 +183,11 @@ class TestClass:
         logging_dir = os.path.join(temp_dir, "log_testing")
         if not os.path.exists(logging_dir):
             os.makedirs(logging_dir)
+
         path = os.path.join(logging_dir, "test04.txt")
-        logger = AedtLogger(self.aedtapp._messenger, filename=path)
+        if os.path.exists(path):
+            os.remove(path)
+        logger = AedtLogger(filename=path)
         logger.info("Info for Global before disabling the log file handler.")
         project_logger = logger.add_logger("Project")
         project_logger.info("Info for Project before disabling the log file handler.")
@@ -241,6 +245,7 @@ class TestClass:
                 design_logger.removeHandler(handler)
 
         os.remove(path)
+        settings.logger_file_path = ""
 
     @pytest.mark.skipif(is_ironpython, reason="stdout redirection does not work in IronPython.")
     def test_05_disable_stdout(self):
@@ -252,7 +257,7 @@ class TestClass:
             stream.write.side_effect = fp.write
             sys.stdout = stream
 
-            logger = AedtLogger(self.aedtapp._messenger, to_stdout=True)
+            logger = AedtLogger(to_stdout=True)
             logger.info("Info for Global")
             logger.disable_stdout_log()
             logger.info("Info after disabling the stdout handler.")

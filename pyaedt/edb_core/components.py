@@ -1,15 +1,21 @@
 """This module contains the `Components` class.
 
 """
+import math
+import os
 import re
 import warnings
 
-from pyaedt import generate_unique_name, _retry_ntimes
-from pyaedt.edb_core.general import convert_py_list_to_net_list
-from pyaedt.generic.general_methods import aedt_exception_handler, get_filename_without_extension, is_ironpython
-from pyaedt.generic.constants import SourceType
+from pyaedt import _retry_ntimes
+from pyaedt import generate_unique_name
 from pyaedt.edb_core.EDB_Data import EDBComponent
+from pyaedt.edb_core.general import convert_py_list_to_net_list
 from pyaedt.edb_core.padstack import EdbPadstacks
+from pyaedt.generic.constants import SourceType
+from pyaedt.generic.general_methods import get_filename_without_extension
+from pyaedt.generic.general_methods import is_ironpython
+from pyaedt.generic.general_methods import pyaedt_function_handler
+from pyaedt.modeler.GeometryOperators import GeometryOperators
 
 try:
     import clr
@@ -17,7 +23,8 @@ try:
     clr.AddReference("System")
     from System import String
 except ImportError:
-    warnings.warn("This module requires PythonNet.")
+    if os.name != "posix":
+        warnings.warn("This module requires PythonNet.")
 
 
 def resistor_value_parser(RValue):
@@ -83,7 +90,7 @@ class Components(object):
     def _edb(self):
         return self._pedb.edb
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def _init_parts(self):
         a = self.components
         a = self.resistors
@@ -98,9 +105,8 @@ class Components(object):
     def _builder(self):
         return self._pedb.builder
 
-    @property
-    def _edb_value(self):
-        return self._pedb.edb_value
+    def _get_edb_value(self, value):
+        return self._pedb.edb_value(value)
 
     @property
     def _edbutils(self):
@@ -143,7 +149,7 @@ class Components(object):
             self.refresh_components()
         return self._cmp
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def refresh_components(self):
         """Refresh the component dictionary."""
         self._cmp = {}
@@ -317,7 +323,7 @@ class Components(object):
                 self._comps_by_part[val.partname] = [val]
         return self._comps_by_part
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def get_component_list(self):
         """Retrieve conponent setup information.
 
@@ -333,7 +339,7 @@ class Components(object):
             cmp_list.append(comp)
         return cmp_list
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def get_component_by_name(self, name):
         """Retrieve a component by name.
 
@@ -354,7 +360,7 @@ class Components(object):
         else:
             pass
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def get_components_from_nets(self, netlist=None):
         """Retrieve components from a net list.
 
@@ -379,7 +385,116 @@ class Components(object):
                 cmp_list.append(refdes)
         return cmp_list
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
+    def _get_edb_pin_from_pin_name(self, cmp, pin):
+        if not isinstance(cmp, self._edb.Cell.Hierarchy.Component):
+            return False
+        if not isinstance(pin, str):
+            pin = pin.GetName()
+        pins = self.get_pin_from_component(component=cmp, pinName=pin)
+        if pins:
+            return pins[0]
+        return False
+
+    @pyaedt_function_handler()
+    def get_component_placement_vector(
+        self,
+        mounted_component,
+        hosting_component,
+        mounted_component_pin1,
+        mounted_component_pin2,
+        hosting_component_pin1,
+        hosting_component_pin2,
+        flipped=False,
+    ):
+        """Get the placement vector between 2 components.
+
+        Parameters
+        ----------
+        mounted_component : `edb.Cell.Hierarchy.Component`
+            Mounted component name.
+        hosting_component : `edb.Cell.Hierarchy.Component`
+            Hosting component name.
+        mounted_component_pin1 : str
+            Mounted component Pin 1 name.
+        mounted_component_pin2 : str
+            Mounted component Pin 2 name.
+        hosting_component_pin1 : str
+            Hosted component Pin 1 name.
+        hosting_component_pin2 : str
+            Hosted component Pin 2 name.
+        flipped : bool, optional
+            Either if the mounted component will be flipped or not.
+
+        Returns
+        -------
+        tuple
+            Tuple of Vector offset, rotation and solder height.
+
+        Examples
+        --------
+        >>> edb1 = Edb(edbpath=targetfile1,  edbversion="2021.2")
+        >>> hosting_cmp = edb1.core_components.get_component_by_name("U100")
+        >>> mounted_cmp = edb2.core_components.get_component_by_name("BGA")
+        >>> vector, rotation, solder_ball_height = edb1.core_components.get_component_placement_vector(
+        ...                                             mounted_component=mounted_cmp,
+        ...                                             hosting_component=hosting_cmp,
+        ...                                             mounted_component_pin1="A12",
+        ...                                             mounted_component_pin2="A14",
+        ...                                             hosting_component_pin1="A12",
+        ...                                             hosting_component_pin2="A14")
+        """
+        m_pin1_pos = [0.0, 0.0]
+        m_pin2_pos = [0.0, 0.0]
+        h_pin1_pos = [0.0, 0.0]
+        h_pin2_pos = [0.0, 0.0]
+        if not isinstance(mounted_component, self._edb.Cell.Hierarchy.Component):
+            return False
+        if not isinstance(hosting_component, self._edb.Cell.Hierarchy.Component):
+            return False
+
+        if mounted_component_pin1:
+            m_pin1 = self._get_edb_pin_from_pin_name(mounted_component, mounted_component_pin1)
+            m_pin1_pos = self.get_pin_position(m_pin1)
+        if mounted_component_pin2:
+            m_pin2 = self._get_edb_pin_from_pin_name(mounted_component, mounted_component_pin2)
+            m_pin2_pos = self.get_pin_position(m_pin2)
+
+        if hosting_component_pin1:
+            h_pin1 = self._get_edb_pin_from_pin_name(hosting_component, hosting_component_pin1)
+            h_pin1_pos = self.get_pin_position(h_pin1)
+
+        if hosting_component_pin2:
+            h_pin2 = self._get_edb_pin_from_pin_name(hosting_component, hosting_component_pin2)
+            h_pin2_pos = self.get_pin_position(h_pin2)
+        #
+        vector = [h_pin1_pos[0] - m_pin1_pos[0], h_pin1_pos[1] - m_pin1_pos[1]]
+        vector1 = GeometryOperators.v_points(m_pin1_pos, m_pin2_pos)
+        vector2 = GeometryOperators.v_points(h_pin1_pos, h_pin2_pos)
+        multiplier = 1
+        if flipped:
+            multiplier = -1
+        vector1[1] = multiplier * vector1[1]
+
+        rotation = GeometryOperators.v_angle_sign_2D(vector1, vector2, False)
+        if rotation != 0.0:
+            layinst = mounted_component.GetLayout().GetLayoutInstance()
+            cmpinst = layinst.GetLayoutObjInstance(mounted_component, None)
+            center = cmpinst.GetCenter()
+            center_double = [center.X.ToDouble(), center.Y.ToDouble()]
+            vector_center = GeometryOperators.v_points(center_double, m_pin1_pos)
+            x_v2 = vector_center[0] * math.cos(rotation) + multiplier * vector_center[1] * math.sin(rotation)
+            y_v2 = -1 * vector_center[0] * math.sin(rotation) + multiplier * vector_center[1] * math.cos(rotation)
+            new_vector = [x_v2 + center_double[0], y_v2 + center_double[1]]
+            vector = [h_pin1_pos[0] - new_vector[0], h_pin1_pos[1] - new_vector[1]]
+
+        if vector:
+            solder_ball_height = self.get_solder_ball_height(mounted_component)
+            return True, vector, rotation, solder_ball_height
+        self._logger.warning("Failed to compute vector.")
+        return False, [0, 0], 0, 0
+
+    @pyaedt_function_handler()
     def get_solder_ball_height(self, cmp):
         """Get component solder ball height.
 
@@ -401,7 +516,7 @@ class Components(object):
             return cmp_prop.GetSolderBallProperty().GetHeight()
         return False
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def create_port_on_component(
         self, component, net_list, port_type=SourceType.CoaxPort, do_pingroup=True, reference_net="gnd"
     ):
@@ -416,9 +531,9 @@ class Components(object):
             The list of nets where ports have to be created on the component.
             If net is not part of the component this one will be skipped.
 
-        port_type : SourceType enumerator, CoaxPort or CircuitPort
+        port_type : SourceType enumerator, CoaxPort or CircPort
             Define the type of port to be created. CoaxPort will auto generate solder balls.
-            CircuitPort will generate circuit ports on pins belonging to the net list.
+            CircPort will generate circuit ports on pins belonging to the net list.
 
         do_pingroup : bool
             True activate pingroup during port creation (only used with combination of CoaxPort),
@@ -438,8 +553,9 @@ class Components(object):
         >>> from pyaedt import Edb
         >>> edbapp = Edb("myaedbfolder")
         >>> net_list = ["M_DQ<1>", "M_DQ<2>", "M_DQ<3>", "M_DQ<4>", "M_DQ<5>"]
-        >>> edbapp.core_components.create_port_on_component(cmp="U2A5", net_list=net_list,
-        >>> port_type=SourceType.CoaxPort, do_pingroup=False, refnet="GND")
+        >>> edbapp.core_components.create_port_on_component(component="U2A5", net_list=net_list,
+        ...                                                 port_type=SourceType.CoaxPort,
+        ...                                                 do_pingroup=False, reference_net="GND")
 
         """
         if isinstance(component, self._edb.Cell.Hierarchy.Component):
@@ -463,7 +579,7 @@ class Components(object):
 
         if port_type == SourceType.CoaxPort:
             pad_params = self._padstack.get_pad_parameters(pin=cmp_pins[0], layername=pin_layers[0], pad_type=0)
-            sball_diam = min([self._edb_value(val).ToDouble() for val in pad_params[1]])
+            sball_diam = min([self._get_edb_value(val).ToDouble() for val in pad_params[1]])
             sb_height = sball_diam
             self.set_solder_ball(component, sb_height, sball_diam)
             for pin in cmp_pins:
@@ -509,7 +625,7 @@ class Components(object):
                         term.SetReferenceTerminal(ref_pin_term)
         return True
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def _create_terminal(self, pin):
         """Create terminal on component pin.
 
@@ -523,7 +639,7 @@ class Components(object):
         """
 
         res, pin_position, pin_rot = pin.GetPositionAndRotation(
-            self._edb.Geometry.PointData(self._edb_value(0.0), self._edb_value(0.0)), 0.0
+            self._edb.Geometry.PointData(self._get_edb_value(0.0), self._get_edb_value(0.0)), 0.0
         )
         if not is_ironpython:
             res, from_layer, to_layer = pin.GetLayerRange(None, None)
@@ -538,7 +654,7 @@ class Components(object):
         )
         return term
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def _get_closest_pin_from(self, pin, ref_pinlist):
         """Returns the closest pin from given pin among the list of reference pins.
 
@@ -554,13 +670,13 @@ class Components(object):
 
         """
         res, pin_position, pin_rot = pin.GetPositionAndRotation(
-            self._edb.Geometry.PointData(self._edb_value(0.0), self._edb_value(0.0)), 0.0
+            self._edb.Geometry.PointData(self._get_edb_value(0.0), self._get_edb_value(0.0)), 0.0
         )
         distance = 1e3
         closest_pin = ref_pinlist[0]
         for ref_pin in ref_pinlist:
             res, ref_pin_position, ref_pin_rot = ref_pin.GetPositionAndRotation(
-                self._edb.Geometry.PointData(self._edb_value(0.0), self._edb_value(0.0)), 0.0
+                self._edb.Geometry.PointData(self._get_edb_value(0.0), self._get_edb_value(0.0)), 0.0
             )
             temp_distance = pin_position.Distance(ref_pin_position)
             if temp_distance < distance:
@@ -568,7 +684,7 @@ class Components(object):
                 closest_pin = ref_pin
         return closest_pin
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def _create_pin_group_terminal(self, pingroup, isref=False):
         """Creates edb pin group terminal from given edb pin group.
 
@@ -592,65 +708,7 @@ class Components(object):
         )
         return pingroup_term
 
-    @aedt_exception_handler
-    def set_solder_ball(self, cmp, sball_height=100e-6, sball_diam=150e-6):
-        """Define component solder ball ready for port assignment.
-
-        Parameters
-        ----------
-        cmp : str or self._edb.Cell.Hierarchy.Component
-            Edb component or str component name..
-        sball_height : str or double
-            Solder balls height value.
-        sball_diam : str or double
-            Solder balls diameter value.
-        orientation : FlipChipOrientation
-            Gives the orientation for flip chip (only applied on IC component).
-        Returns
-        -------
-        bool
-            ``True`` when successful, ``False`` when failed.
-
-        Examples
-        --------
-
-        >>> from pyaedt import Edb
-        >>> edbapp = Edb("myaedbfolder")
-        >>> set_solder_ball = edbapp.core_components.set_solder_ball("A1")
-
-        """
-        if cmp is not None:
-            if not (isinstance(cmp, self._edb.Cell.Hierarchy.Component)):
-                cmp = self.get_component_by_name(cmp)
-            cmp_prop = cmp.GetComponentProperty().Clone()
-            cmp_type = cmp.GetComponentType()
-            if cmp_type == self._edb.Definition.ComponentType.IC:
-                die_prop = cmp_prop.GetDieProperty().Clone()
-                if self._is_top_component(cmp):
-                    die_prop.SetOrientation(self._edb.Definition.DieOrientation.ChipDown)
-                else:
-                    die_prop.SetOrientation(self._edb.Definition.DieOrientation.ChipUp)
-                if not cmp_prop.SetDieProperty(die_prop):
-                    return False
-            solder_prop = cmp_prop.GetSolderBallProperty().Clone()
-            if not solder_prop.SetDiameter(self._edb_value(sball_diam), self._edb_value(sball_diam)):
-                return False
-            if not solder_prop.SetHeight(self._edb_value(sball_height)):
-                return False
-            if not cmp_prop.SetSolderBallProperty(solder_prop):
-                return False
-
-            port_prop = cmp_prop.GetPortProperty().Clone()
-            port_prop.SetReferenceSizeAuto(True)
-            cmp_prop.SetPortProperty(port_prop)
-            if not cmp.SetComponentProperty(cmp_prop):
-                return False
-
-            return True
-        else:
-            return False
-
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def _is_top_component(self, cmp):
         """Test the component placment layer.
 
@@ -672,7 +730,7 @@ class Components(object):
         else:
             return False
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def create_component_from_pins(self, pins, component_name, placement_layer=None):
         """Create a component from pins.
 
@@ -699,30 +757,34 @@ class Components(object):
         >>> edbapp.core_components.create_component_from_pins(pins, "A1New")
 
         """
-        try:
-            new_cmp = self._edb.Cell.Hierarchy.Component.Create(self._active_layout, component_name, component_name)
-            new_group = self._edb.Cell.Hierarchy.Group.Create(self._active_layout, component_name)
-            new_cmp.SetGroup(new_group)
-            for pin in pins:
-                pin.SetIsLayoutPin(True)
-                conv_pin = self._components_methods.PinToConnectable(pin)
-                add_result = new_group.AddMember(conv_pin)
-            # new_cmp.SetGroup(new_group)
-            if not placement_layer:
-                new_cmp_layer_name = pins[0].GetPadstackDef().GetData().GetLayerNames()[0]
+        # try:
+        new_cmp = self._edb.Cell.Hierarchy.Component.Create(self._active_layout, component_name, component_name)
+        new_group = self._edb.Cell.Hierarchy.Group.Create(self._active_layout, component_name)
+        new_cmp.SetGroup(new_group)
+        for pin in pins:
+            pin.SetIsLayoutPin(True)
+            if is_ironpython:
+                test = new_group.AddMember(pin)
             else:
-                new_cmp_layer_name = placement_layer
-            new_cmp_placement_layer = self._edb.Cell.Layer.FindByName(
-                self._active_layout.GetLayerCollection(), new_cmp_layer_name
-            )
-            new_cmp.SetPlacementLayer(new_cmp_placement_layer)
-            # cmp_transform = System.Activator.CreateInstance(self._edb.Utility.)
-            # new_cmp.SetTransform(cmp_transform)
-            return (True, new_cmp)
-        except:
-            return (False, None)
+                if not self._components_methods.AddPinToGroup(new_group, pin):
+                    self._logger.error(
+                        "Failed to add pin {} to the group {}".format(pin.GetName(), new_group.GetName())
+                    )
+        if not placement_layer:
+            new_cmp_layer_name = pins[0].GetPadstackDef().GetData().GetLayerNames()[0]
+        else:
+            new_cmp_layer_name = placement_layer
+        new_cmp_placement_layer = self._edb.Cell.Layer.FindByName(
+            self._active_layout.GetLayerCollection(), new_cmp_layer_name
+        )
+        new_cmp.SetPlacementLayer(new_cmp_placement_layer)
+        # cmp_transform = System.Activator.CreateInstance(self._edb.Utility.)
+        # new_cmp.SetTransform(cmp_transform)
+        return (True, new_cmp)
+        # except:
+        #    return (False, None)
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def set_component_model(self, componentname, model_type="Spice", modelpath=None, modelname=None):
         """Assign a Spice or Touchstone model to a component.
 
@@ -813,7 +875,7 @@ class Components(object):
                 return False
         return True
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def create_pingroup_from_pins(self, pins, group_name=None):
         """Create a pin group on a component.
 
@@ -857,7 +919,7 @@ class Components(object):
             pingroup.SetNet(pins[0].GetNet())
             return (True, pingroup)
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def delete_single_pin_rlc(self):
         """Delete all RLC components with a single pin.
 
@@ -888,7 +950,7 @@ class Components(object):
             del self.components[el]
         return deleted_comps
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def delete_component(self, component_name):
         """Delete a component.
 
@@ -918,7 +980,7 @@ class Components(object):
             return True
         return False
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def disable_rlc_component(self, component_name):
         """Disable a RLC component.
 
@@ -954,13 +1016,13 @@ class Components(object):
             return True
         return False
 
-    @aedt_exception_handler
-    def set_solder_ball(self, componentname="", sball_diam="100um", sball_height="150um"):
+    @pyaedt_function_handler()
+    def set_solder_ball(self, component="", sball_diam="100um", sball_height="150um"):
         """Set cylindrical solder balls on a given component.
 
         Parameters
         ----------
-        componentname : str
+        componentname : str or EDB component
             Name of the discret component.
 
         sball_diam  : str, float
@@ -982,7 +1044,10 @@ class Components(object):
         >>> edbapp.core_components.set_solder_ball("A1")
 
         """
-        edb_cmp = self.get_component_by_name(componentname)
+        if not isinstance(component, self._edb.Cell.Hierarchy.Component):
+            edb_cmp = self.get_component_by_name(component)
+        else:
+            edb_cmp = component
         if edb_cmp:
             cmp_type = edb_cmp.GetComponentType()
             if cmp_type == self._edb.Definition.ComponentType.IC:
@@ -993,8 +1058,8 @@ class Components(object):
                 ic_cmp_property.SetDieProperty(ic_die_prop)
 
                 ic_solder_ball_prop = ic_cmp_property.GetSolderBallProperty().Clone()
-                ic_solder_ball_prop.SetDiameter(self._edb_value(sball_diam), self._edb_value(sball_diam))
-                ic_solder_ball_prop.SetHeight(self._edb_value(sball_height))
+                ic_solder_ball_prop.SetDiameter(self._get_edb_value(sball_diam), self._get_edb_value(sball_diam))
+                ic_solder_ball_prop.SetHeight(self._get_edb_value(sball_height))
                 ic_solder_ball_prop.SetShape(self._edb.Definition.SolderballShape.Cylinder)
                 ic_cmp_property.SetSolderBallProperty(ic_solder_ball_prop)
 
@@ -1007,8 +1072,8 @@ class Components(object):
             elif cmp_type == self._edb.Definition.ComponentType.IO:
                 io_cmp_prop = edb_cmp.GetComponentProperty().Clone()
                 io_solder_ball_prop = io_cmp_prop.GetSolderBallProperty().Clone()
-                io_solder_ball_prop.SetDiameter(self._edb_value(sball_diam), self._edb_value(sball_diam))
-                io_solder_ball_prop.SetHeight(self._edb_value(sball_height))
+                io_solder_ball_prop.SetDiameter(self._get_edb_value(sball_diam), self._get_edb_value(sball_diam))
+                io_solder_ball_prop.SetHeight(self._get_edb_value(sball_height))
                 io_solder_ball_prop.SetShape(self._edb.Definition.SolderballShape.Cylinder)
                 io_cmp_prop.SetSolderBallProperty(io_solder_ball_prop)
                 io_port_prop = io_cmp_prop.GetPortProperty().Clone()
@@ -1016,12 +1081,23 @@ class Components(object):
                 io_cmp_prop.SetPortProperty(io_port_prop)
                 edb_cmp.SetComponentProperty(io_cmp_prop)
                 return True
+            elif cmp_type == self._edb.Definition.ComponentType.Other:
+                other_cmp_prop = edb_cmp.GetComponentProperty().Clone()
+                other_solder_ball_prop = other_cmp_prop.GetSolderBallProperty().Clone()
+                other_solder_ball_prop.SetDiameter(self._get_edb_value(sball_diam), self._get_edb_value(sball_diam))
+                other_solder_ball_prop.SetHeight(self._get_edb_value(sball_height))
+                other_solder_ball_prop.SetShape(self._edb.Definition.SolderballShape.Cylinder)
+                other_cmp_prop.SetSolderBallProperty(other_solder_ball_prop)
+                other_port_prop = other_cmp_prop.GetPortProperty().Clone()
+                other_port_prop.SetReferenceSizeAuto(True)
+                other_cmp_prop.SetPortProperty(other_port_prop)
+                edb_cmp.SetComponentProperty(other_port_prop)
             else:
                 return False
         else:
             return False
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def set_component_rlc(self, componentname, res_value=None, ind_value=None, cap_value=None, isparallel=False):
         """Update values for an RLC component.
 
@@ -1067,13 +1143,13 @@ class Components(object):
             rlc.IsParallel = isparallel
             if res_value is not None:
                 rlc.REnabled = True
-                rlc.R = self._edb_value(res_value)
+                rlc.R = self._get_edb_value(res_value)
             if ind_value is not None:
                 rlc.LEnabled = True
-                rlc.L = self._edb_value(ind_value)
+                rlc.L = self._get_edb_value(ind_value)
             if cap_value is not None:
                 rlc.CEnabled = True
-                rlc.C = self._edb_value(cap_value)
+                rlc.C = self._get_edb_value(cap_value)
             pinPair = self._edb.Utility.PinPair(fromPin.GetName(), toPin.GetName())
             rlcModel = self._edb.Cell.Hierarchy.PinPairModel()
             rlcModel.SetPinPairRlc(pinPair, rlc)
@@ -1092,7 +1168,7 @@ class Components(object):
         self._logger.warning("RLC properties for Component %s has been assigned.", componentname)
         return True
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def update_rlc_from_bom(
         self, bom_file, delimiter=";", valuefield="Func des", comptype="Prod name", refdes="Pos / Place"
     ):
@@ -1151,14 +1227,14 @@ class Components(object):
                         self.set_component_rlc(new_refdes, ind_value=new_value)
         return found
 
-    @aedt_exception_handler
-    def get_pin_from_component(self, cmpName, netName=None, pinName=None):
+    @pyaedt_function_handler()
+    def get_pin_from_component(self, component, netName=None, pinName=None):
         """Retrieve the pins of a component.
 
         Parameters
         ----------
-        cmpName : str
-            Name of the component.
+        component : str or EDB component
+            Name of the component or the EDB component object.
         netName : str, optional
             Filter on the net name as an alternative to
             ``pinName``. The default is ``None``.
@@ -1179,8 +1255,8 @@ class Components(object):
         >>> edbapp.core_components.get_pin_from_component("R1", refdes)
 
         """
-
-        cmp = self._edb.Cell.Hierarchy.Component.FindByName(self._active_layout, cmpName)
+        if not isinstance(component, self._edb.Cell.Hierarchy.Component):
+            component = self._edb.Cell.Hierarchy.Component.FindByName(self._active_layout, component)
         if netName:
             if not isinstance(netName, list):
                 netName = [netName]
@@ -1194,7 +1270,7 @@ class Components(object):
             #                pins.append(p)
             pins = [
                 p
-                for p in list(cmp.LayoutObjs)
+                for p in list(component.LayoutObjs)
                 if int(p.GetObjType()) == 1 and p.IsLayoutPin() and p.GetNet().GetName() in netName
             ]
         elif pinName:
@@ -1202,16 +1278,16 @@ class Components(object):
                 pinName = [pinName]
             pins = [
                 p
-                for p in list(cmp.LayoutObjs)
+                for p in list(component.LayoutObjs)
                 if int(p.GetObjType()) == 1
                 and p.IsLayoutPin()
-                and (self.get_aedt_pin_name(p) == str(pinName) or p.GetName() in str(pinName))
+                and (self.get_aedt_pin_name(p) in pinName or p.GetName() in pinName)
             ]
         else:
-            pins = [p for p in list(cmp.LayoutObjs) if int(p.GetObjType()) == 1 and p.IsLayoutPin()]
+            pins = [p for p in list(component.LayoutObjs) if int(p.GetObjType()) == 1 and p.IsLayoutPin()]
         return pins
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def get_aedt_pin_name(self, pin):
         """Retrieve the pin name that is shown in AEDT.
 
@@ -1245,7 +1321,7 @@ class Components(object):
         name = str(name).strip("'")
         return name
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def get_pin_position(self, pin):
         """Retrieve the pin position in meters.
 
@@ -1271,18 +1347,19 @@ class Components(object):
             res, pt_pos, rot_pos = pin.GetPositionAndRotation()
         else:
             res, pt_pos, rot_pos = pin.GetPositionAndRotation(
-                self._edb.Geometry.PointData(self._edb_value(0.0), self._edb_value(0.0)), 0.0
+                self._edb.Geometry.PointData(self._get_edb_value(0.0), self._get_edb_value(0.0)), 0.0
             )
         if pin.GetComponent().IsNull():
             transformed_pt_pos = pt_pos
         else:
             transformed_pt_pos = pin.GetComponent().GetTransform().TransformPoint(pt_pos)
         pin_xy = self._edb.Geometry.PointData(
-            self._edb_value(str(transformed_pt_pos.X.ToDouble())), self._edb_value(str(transformed_pt_pos.Y.ToDouble()))
+            self._get_edb_value(str(transformed_pt_pos.X.ToDouble())),
+            self._get_edb_value(str(transformed_pt_pos.Y.ToDouble())),
         )
         return [pin_xy.X.ToDouble(), pin_xy.Y.ToDouble()]
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def get_pins_name_from_net(self, pin_list, net_name):
         """Retrieve pins belonging to a net.
 
@@ -1312,7 +1389,7 @@ class Components(object):
                 pinlist.append(pin.GetName())
         return pinlist
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def get_nets_from_pin_list(self, PinList):
         """Retrieve nets with one or more pins.
 
@@ -1339,7 +1416,7 @@ class Components(object):
             netlist.append(pin.GetNet().GetName())
         return list(set(netlist))
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def get_component_net_connection_info(self, refdes):
         """Retrieve net connection information.
 
@@ -1430,3 +1507,127 @@ class Components(object):
                     through_comp_list.append(refdes)
 
         return through_comp_list
+
+    @pyaedt_function_handler()
+    def short_component_pins(self, component_name, pins_to_short=None, width=1e-3):
+        """Short pins of component with a trace.
+
+        Parameters
+        ----------
+        component_name : str
+            Name of the component.
+        pins_to_short : list, optional
+            List of pins to short. If `None`, all pins will be shorted.
+        width : float, optional
+            Short Trace width. It will be used in trace computation algorithm
+
+        Returns
+        -------
+        bool
+            ``True`` when successful, ``False`` when failed.
+
+        Examples
+        --------
+
+        >>> from pyaedt import Edb
+        >>> edbapp = Edb("myaedbfolder")
+        >>> edbapp.core_components.short_component_pins("J4A2", ["G4", "9", "3"])
+
+        """
+        component = self.components[component_name]
+        pins = component.pins
+        pins_list = []
+
+        component.center
+        for pin_name, pin in pins.items():
+            if pins_to_short:
+                if pin_name in pins_to_short:
+                    pins_list.append(pin)
+            else:
+                pins_list.append(pin)
+        positions_to_short = []
+        center = component.center
+        c = [center[0], center[1], 0]
+        delta_pins = []
+        w = width
+        for pin in pins_list:
+            placement_layer = pin.placement_layer
+            positions_to_short.append(pin.position)
+            if placement_layer in self._pedb.core_padstack.padstacks[pin.pin.GetPadstackDef().GetName()].pad_by_layer:
+                pad = self._pedb.core_padstack.padstacks[pin.pin.GetPadstackDef().GetName()].pad_by_layer[
+                    placement_layer
+                ]
+            else:
+                layer = list(
+                    self._pedb.core_padstack.padstacks[pin.pin.GetPadstackDef().GetName()].pad_by_layer.keys()
+                )[0]
+                pad = self._pedb.core_padstack.padstacks[pin.pin.GetPadstackDef().GetName()].pad_by_layer[layer]
+            pars = pad.parameters_values
+            geom = pad.geometry_type
+            if geom < 6 and pars:
+                delta_pins.append(max(pars) + min(pars) / 2)
+                w = min(min(pars), w)
+            elif pars:
+                delta_pins.append(1.5 * pars[0])
+                w = min(pars[0], w)
+            elif pad.polygon_data:
+                bbox = pad.polygon_data.GetBBox()
+                lower = [bbox.Item1.X.ToDouble(), bbox.Item1.Y.ToDouble()]
+                upper = [bbox.Item2.X.ToDouble(), bbox.Item2.Y.ToDouble()]
+                pars = [abs(lower[0] - upper[0]), abs(lower[1] - upper[1])]
+                delta_pins.append(max(pars) + min(pars) / 2)
+                w = min(min(pars), w)
+            else:
+                delta_pins.append(1.5 * width)
+        i = 0
+
+        while i < len(positions_to_short) - 1:
+            p0 = []
+            p0.append([positions_to_short[i][0] - delta_pins[i], positions_to_short[i][1], 0])
+            p0.append([positions_to_short[i][0] + delta_pins[i], positions_to_short[i][1], 0])
+            p0.append([positions_to_short[i][0], positions_to_short[i][1] - delta_pins[i], 0])
+            p0.append([positions_to_short[i][0], positions_to_short[i][1] + delta_pins[i], 0])
+            p0.append([positions_to_short[i][0], positions_to_short[i][1], 0])
+            l0 = [
+                GeometryOperators.points_distance(p0[0], c),
+                GeometryOperators.points_distance(p0[1], c),
+                GeometryOperators.points_distance(p0[2], c),
+                GeometryOperators.points_distance(p0[3], c),
+                GeometryOperators.points_distance(p0[4], c),
+            ]
+            l0_min = l0.index(min(l0))
+            p1 = []
+            p1.append([positions_to_short[i + 1][0] - delta_pins[i + 1], positions_to_short[i + 1][1], 0])
+            p1.append([positions_to_short[i + 1][0] + delta_pins[i + 1], positions_to_short[i + 1][1], 0])
+            p1.append([positions_to_short[i + 1][0], positions_to_short[i + 1][1] - delta_pins[i + 1], 0])
+            p1.append([positions_to_short[i + 1][0], positions_to_short[i + 1][1] + delta_pins[i + 1], 0])
+            p1.append([positions_to_short[i + 1][0], positions_to_short[i + 1][1], 0])
+
+            l1 = [
+                GeometryOperators.points_distance(p1[0], c),
+                GeometryOperators.points_distance(p1[1], c),
+                GeometryOperators.points_distance(p1[2], c),
+                GeometryOperators.points_distance(p1[3], c),
+                GeometryOperators.points_distance(p1[4], c),
+            ]
+            l1_min = l1.index(min(l1))
+
+            trace_points = [positions_to_short[i]]
+
+            trace_points.append(p0[l0_min][:2])
+            trace_points.append(c[:2])
+            trace_points.append(p1[l1_min][:2])
+
+            trace_points.append(positions_to_short[i + 1])
+
+            path = self._pedb.core_primitives.Shape("polygon", points=trace_points)
+            self._pedb.core_primitives.create_path(
+                path,
+                layer_name=placement_layer,
+                net_name="short",
+                width=w,
+                start_cap_style="Flat",
+                end_cap_style="Flat",
+            )
+            i += 1
+        return True

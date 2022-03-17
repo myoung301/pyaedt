@@ -1,13 +1,11 @@
 # standard imports
-import gc
 import os
 
-# Import required modules
-from pyaedt import Hfss, Desktop
-from pyaedt.generic.filesystem import Scratch
-
-# Setup paths for module imports
-from _unittest.conftest import desktop_version, local_path, scratch_path
+from _unittest.conftest import BasisTest
+from _unittest.conftest import desktop_version
+from _unittest.conftest import local_path
+from pyaedt import Desktop
+from pyaedt import get_pyaedt_app
 
 try:
     import pytest  # noqa: F401
@@ -20,22 +18,13 @@ test_project_name = "Coax_HFSS"
 example_project = os.path.join(local_path, "example_models", test_project_name + ".aedt")
 
 
-class TestClass:
+class TestClass(BasisTest, object):
     def setup_class(self):
-        with Scratch(scratch_path) as self.local_scratch:
-            self.test_project = self.local_scratch.copyfile(example_project)
-            self.aedtapp = Hfss(
-                projectname=self.test_project,
-                specified_version=desktop_version,
-            )
-            # self.aedtapp.save_project()
-            # self.cache = DesignCache(self.aedtapp)
+        BasisTest.my_setup(self)
+        self.aedtapp = BasisTest.add_app(self, test_project_name)
 
     def teardown_class(self):
-        self.aedtapp._desktop.ClearMessages("", "", 3)
-        assert self.aedtapp.close_project(self.aedtapp.project_name, False)
-        self.local_scratch.remove()
-        gc.collect()
+        BasisTest.my_teardown(self)
 
     def test_app(self):
         assert self.aedtapp
@@ -114,7 +103,7 @@ class TestClass:
 
     def test_09_set_objects_temperature(self):
         ambient_temp = 22
-        objects = [o for o in self.aedtapp.modeler.primitives.solid_names if self.aedtapp.modeler.primitives[o].model]
+        objects = [o for o in self.aedtapp.modeler.solid_names if self.aedtapp.modeler[o].model]
         assert self.aedtapp.modeler.set_objects_temperature(objects, ambient_temp=ambient_temp, create_project_var=True)
 
     def test_10_change_material_override(self):
@@ -239,6 +228,16 @@ class TestClass:
 
     def test_27_odesktop(self):
         if is_ironpython:
-            assert str(type(self.aedtapp.odesktop)) == "<type 'ADesktopWrapper'>"
+            assert str(type(self.aedtapp.odesktop)) in ["<type 'ADesktopWrapper'>", "<type 'ADispatchWrapper'>"]
         else:
             assert str(type(self.aedtapp.odesktop)) == "<class 'win32com.client.CDispatch'>"
+
+    def test_28_get_pyaedt_app(self):
+        app = get_pyaedt_app(self.aedtapp.project_name, self.aedtapp.design_name)
+        assert app.design_type == "HFSS"
+
+    def test_29_change_registry_key(self):
+        desktop = Desktop(desktop_version, new_desktop_session=False)
+        assert not desktop.change_registry_key("test_key_string", "test_string")
+        assert not desktop.change_registry_key("test_key_int", 2)
+        assert not desktop.change_registry_key("test_key", 2.0)

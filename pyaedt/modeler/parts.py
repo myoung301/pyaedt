@@ -1,6 +1,6 @@
 import os
 
-from pyaedt import aedt_exception_handler
+from pyaedt import pyaedt_function_handler
 from pyaedt.modeler.GeometryOperators import GeometryOperators
 
 
@@ -127,7 +127,7 @@ class Part(object):
                 self._compdef[key] = [str(i) if not i is str else i for i in cs]
         return self._compdef[key]
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def zero_offset(self, kw):  # Returns True if cs at kw is at [0, 0, 0]
         """Check if the coordinate system defined by kw is [0, 0, 0].
 
@@ -320,7 +320,7 @@ class Part(object):
         """
         return self._multiparts.name + "_" + self._name
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def set_relative_cs(self, app):
         """Create a parametric coordinate system.
 
@@ -359,7 +359,7 @@ class Part(object):
         """
         return self.name + "_rot_cs"
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def do_rotate(self, app, aedt_object):
         """Set the rotation coordinate system relative to the parent coordinate system.
 
@@ -396,7 +396,7 @@ class Part(object):
 
         return True
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def insert(self, app):
         """Insert 3D component in AEDT.
 
@@ -413,11 +413,9 @@ class Part(object):
         # TODO: Why the inconsistent syntax for cs commands?
         if self._do_offset:
             self.set_relative_cs(app)  # Create coordinate system, if needed.
-            aedt_objects.append(app.modeler.primitives.insert_3d_component(self.file_name, targetCS=self.cs_name))
+            aedt_objects.append(app.modeler.insert_3d_component(self.file_name, targetCS=self.cs_name))
         else:
-            aedt_objects.append(
-                app.modeler.primitives.insert_3d_component(self.file_name, targetCS=self._multiparts.cs_name)
-            )
+            aedt_objects.append(app.modeler.insert_3d_component(self.file_name, targetCS=self._multiparts.cs_name))
         if self._do_rotate:
             self.do_rotate(app, aedt_objects[0])
 
@@ -477,7 +475,7 @@ class Antenna(Part, object):
             p["Polarization"] = self._compdef["polarization"]
         return p
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def _insert(self, app, target_cs=None, units=None):
         if not target_cs:
             target_cs = self._multiparts.cs_name
@@ -501,7 +499,7 @@ class Antenna(Part, object):
             )
         return a
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def insert(self, app, units=None):
         """Insert antenna in HFSS SBR+.
 
@@ -518,7 +516,7 @@ class Antenna(Part, object):
         """
         if self._do_offset:
             self.set_relative_cs(app)
-            antenna_object = self._insert(app, units=units)  # Create coordinate system, if needed.
+            antenna_object = self._insert(app, target_cs=self.cs_name, units=units)
         else:
             antenna_object = self._insert(app, target_cs=self._multiparts.cs_name, units=units)
         if self._do_rotate and antenna_object:

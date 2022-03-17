@@ -2,27 +2,22 @@ import logging
 import sys
 
 from pyaedt import log_handler
-
-ENABLE_LOGGER = True
-# if LOGGER_FILE is defined, it will be taken as output log file
-LOGGER_FILE = None
-
-FORMATTER = logging.Formatter(
-    "%(asctime)s:%(destination)s:%(extra)s%(levelname)-8s:%(message)s", datefmt="%Y/%m/%d %H.%M.%S"
-)
+from pyaedt import settings
+from pyaedt.application.MessageManager import AEDTMessageManager
 
 
 class AppFilter(logging.Filter):
-    """This filter will be used to specify the destination of the log
-    Global, project and design.
+    """Specifies the destination of the logger.
+
+    AEDT exposes three different loggers, which are the global, project, and design loggers.
 
     Parameters
     ----------
     destination : str, optional
-        Desktop exposes 3 different destinations: Global, project and design.
-        The default is ``Global``.
+        Logger to write to. Options are ``"Global"`, ``"Project"``, and ``"Design"``.
+        The default is ``"Global"``.
     extra : str, optional
-        Name of the design or project. The default is an empty string.
+        Name of the design or project. The default is ``""``.
     """
 
     def __init__(self, destination="Global", extra=""):
@@ -30,7 +25,8 @@ class AppFilter(logging.Filter):
         self._extra = extra
 
     def filter(self, record):
-        """Modify the record sent to the stream.
+        """
+        Modify the record sent to the logger.
 
         Parameters
         ----------
@@ -48,9 +44,11 @@ class AppFilter(logging.Filter):
 
 
 class AedtLogger(object):
-    """Logger used for each Aedt logger.
+    """
+    Specifies the logger to use for each AEDT logger.
 
-    This class allows you to add handler to a file or standard output.
+    This class allows you to add a handler to write messages to a file and to indicate
+    whether to write mnessages to the standard output (stdout).
 
     Parameters
     ----------
@@ -58,23 +56,25 @@ class AedtLogger(object):
         Logging level to filter the message severity allowed in the logger.
         The default is ``logging.DEBUG``.
     filename : str, optional
-        Name of the file where log messages can be written to.
-        The default is ``None``.
+        Name of the file to write messages to. The default is ``None``.
     to_stdout : bool, optional
-        Write log message into the standard output. The default is ``False``.
+        Whether to write log messages to stdout. The default is ``False``.
     """
 
-    def __init__(self, messenger, level=logging.DEBUG, filename=None, to_stdout=False):
+    def __init__(self, level=logging.DEBUG, filename=None, to_stdout=False):
         main = sys.modules["__main__"]
 
         self.level = level
-        self.filename = filename
-        self._messenger = messenger
+        self.filename = filename or settings.logger_file_path
+        settings.logger_file_path = self.filename
+
+        self._messenger = AEDTMessageManager()
         self._global = logging.getLogger("Global")
         self._file_handler = None
         self._std_out_handler = None
+        self.formatter = logging.Formatter(settings.logger_formatter, datefmt=settings.logger_datefmt)
 
-        if not ENABLE_LOGGER:
+        if not settings.enable_logger:
             self._global.addHandler(logging.NullHandler())
             return
 
@@ -89,27 +89,34 @@ class AedtLogger(object):
             self._global.setLevel(level)
             self._global.addFilter(AppFilter())
 
-        if LOGGER_FILE or filename:
-            self._file_handler = logging.FileHandler(LOGGER_FILE or filename)
+        if self.filename:
+            self._file_handler = logging.FileHandler(self.filename)
             self._file_handler.setLevel(level)
-            self._file_handler.setFormatter(FORMATTER)
+            self._file_handler.setFormatter(self.formatter)
             self._global.addHandler(self._file_handler)
 
         if to_stdout:
             self._std_out_handler = logging.StreamHandler()
             self._std_out_handler.setLevel(level)
-            self._std_out_handler.setFormatter(FORMATTER)
+
+            self._std_out_handler.setFormatter(self.formatter)
             self._global.addHandler(self._std_out_handler)
 
+    @property
+    def messages(self):
+        """List of messages."""
+        return self._messenger.messages
+
     def add_logger(self, destination, level=logging.DEBUG):
-        """Add a logger for either an active project or an active design.
+        """
+        Add a logger for either the active project or active design.
 
         Parameters
         ----------
         destination : str
-            Either `'Project'` or `'Design'`.
-        level : int
-            Logging level enum.
+            Logger to write to. Options are ``"Project"`` and ``"Design"``.
+        level : int, optional
+            Logging level enum. The default is ``logging.DEBUG``.
         """
 
         if destination == "Project":
@@ -139,34 +146,34 @@ class AedtLogger(object):
             raise ValueError("The destination must be either 'Project' or 'Design'.")
 
     def disable_desktop_log(self):
-        """Disable log in desktop application."""
+        """Disable the log in AEDT."""
         self._messenger._log_on_desktop = False
 
     def enable_desktop_log(self):
-        """Enable log in desktop application."""
+        """Enable the log in AEDT."""
         self._messenger._log_on_desktop = True
 
     def disable_stdout_log(self):
-        """Log will not be printed into stdout."""
+        """Disable printing log messages to stdout."""
         self._messenger._log_on_screen = False
         self._global.removeHandler(self._std_out_handler)
 
     def enable_stdout_log(self):
-        """Log will be printed into stdout."""
+        """Enable printing log messages to stdout."""
         self._messenger._log_on_screen = True
 
     def disable_log_on_file(self):
-        """Log will be written into an output file."""
+        """Disable writing log messages to an output file."""
         self._messenger._log_on_file = False
         self._file_handler.close()
         self._global.removeHandler(self._file_handler)
 
     def enable_log_on_file(self):
-        """Log will not be written into an output file."""
+        """Enable writing log messages to an output file."""
         self._messenger._log_on_file = True
         self._file_handler = logging.FileHandler(self.filename)
         self._file_handler.setLevel(self.level)
-        self._file_handler.setFormatter(FORMATTER)
+        self._file_handler.setFormatter(self.formatter)
         self._global.addHandler(self._file_handler)
 
     def get_messages(self):
@@ -174,23 +181,36 @@ class AedtLogger(object):
         return self._messenger.get_messages(self._messenger._project_name, self._messenger._design_name)
 
     def clear_messages(self, project_name=None, design_name=None, level=2):
-        """Clear messages for a design and/or a project and/or global."""
+        """
+        Clear messages in the design, project, or global logger or in any or all of these loggers.
+
+        Parameters
+        ----------
+        project_name : str, optional
+           Name of the project. The default is ``None``, in which case the active
+           project is used.
+        design_name : str, optional
+           Name of the desigh. The default is ``None``, in which case the active
+           design is used.
+        level : int, optional
+           The default is ``2.``.
+        """
         self._messenger.clear_messages(project_name, design_name, level)
 
     def info(self, msg, *args, **kwargs):
-        """Write info message in the Global log."""
+        """Write an info message to the global logger."""
         return self._global.info(msg, *args, **kwargs)
 
     def warning(self, msg, *args, **kwargs):
-        """Write warning message in the Global log."""
+        """Write a warning message to the global logger."""
         return self._global.warning(msg, *args, **kwargs)
 
     def error(self, msg, *args, **kwargs):
-        """Write error message in the Global log."""
+        """Write an error message to the global logger."""
         return self._global.error(msg, *args, **kwargs)
 
     def debug(self, msg, *args, **kwargs):
-        """Write debug message in the Global log."""
+        """Write a debug message to the global logger."""
         return self._global.debug(msg, *args, **kwargs)
 
     @property

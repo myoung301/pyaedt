@@ -198,7 +198,6 @@ h3d = Hfss3dLayout(projectname=project, specified_version="2021.2", new_desktop_
 setup = h3d.create_setup()
 setup.props["AdaptiveSettings"]["SingleFrequencyDataList"]["AdaptiveFrequencyData"]["AdaptiveFrequency"] = "20GHz"
 setup.props["AdaptiveSettings"]["SingleFrequencyDataList"]["AdaptiveFrequencyData"]["MaxPasses"] = 4
-setup.update()
 h3d.create_linear_count_sweep(
     setupname=setup.name,
     unit="GHz",
@@ -218,6 +217,6 @@ h3d.create_linear_count_sweep(
 # Solve Setup
 #
 h3d.analyze_nominal()
-h3d.post.create_rectangular_plot(["db(S({0},{1}))".format(port_name, port_name)])
+h3d.post.create_report(["db(S({0},{1}))".format(port_name, port_name)])
 h3d.save_project()
 h3d.release_desktop()

@@ -1,12 +1,18 @@
 """
 This module contains the `Mesh` class.
 """
+from __future__ import absolute_import  # noreorder
 
-from __future__ import absolute_import
-from pyaedt.generic.general_methods import aedt_exception_handler, generate_unique_name, MethodNotSupportedError
-
-from pyaedt.generic.DataHandlers import _dict2arg
+import os
+import shutil
 from collections import OrderedDict
+
+from pyaedt.application.design_solutions import model_names
+from pyaedt.generic.DataHandlers import _dict2arg
+from pyaedt.generic.general_methods import generate_unique_name
+from pyaedt.generic.general_methods import MethodNotSupportedError
+from pyaedt.generic.general_methods import pyaedt_function_handler
+from pyaedt.generic.LoadAEDTFile import load_entire_aedt_file
 
 meshers = {
     "HFSS": "MeshSetup",
@@ -18,6 +24,32 @@ meshers = {
     "Mechanical": "MeshSetup",
     "2D Extractor": "MeshSetup",
 }
+
+
+class MeshProps(OrderedDict):
+    """AEDT Mesh Component Internal Parameters."""
+
+    def __setitem__(self, key, value):
+        OrderedDict.__setitem__(self, key, value)
+        if key in ["Edges", "Faces", "Objects"]:
+            res = self._pyaedt_mesh.update_assignment()
+        else:
+            res = self._pyaedt_mesh.update()
+        if not res:
+            self._pyaedt_mesh._app.logger.warning("Update of %s Failed. Check needed arguments", key)
+
+    def __init__(self, mesh_object, props):
+        OrderedDict.__init__(self)
+        if props:
+            for key, value in props.items():
+                if isinstance(value, (OrderedDict, OrderedDict)):
+                    OrderedDict.__setitem__(self, key, MeshProps(mesh_object, value))
+                else:
+                    OrderedDict.__setitem__(self, key, value)
+        self._pyaedt_mesh = mesh_object
+
+    def _setitem_without_update(self, key, value):
+        OrderedDict.__setitem__(self, key, value)
 
 
 class MeshOperation(object):
@@ -38,10 +70,10 @@ class MeshOperation(object):
     def __init__(self, meshicepak, name, props, meshoptype):
         self._meshicepak = meshicepak
         self.name = name
-        self.props = props
+        self.props = MeshProps(self, props)
         self.type = meshoptype
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def _get_args(self):
         """Retrieve arguments."""
         props = self.props
@@ -49,7 +81,7 @@ class MeshOperation(object):
         _dict2arg(props, arg)
         return arg
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def create(self):
         """Create a mesh.
 
@@ -83,7 +115,7 @@ class MeshOperation(object):
             return False
         return True
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def update(self):
         """Update the mesh.
 
@@ -125,11 +157,14 @@ class MeshOperation(object):
             self._meshicepak.omeshmodule.EditMeshOperation(self.name, self._get_args())
         elif self.type == "CurvatureExtraction":
             self._meshicepak.omeshmodule.EditSBRCurvatureExtractionOp(self.name, self._get_args())
+        elif self.type == "InitialMeshSettings":
+            self._meshicepak.omeshmodule.InitialMeshSettings(self._get_args())
+
         else:
             return False
         return True
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def delete(self):
         """Delete the mesh.
 
@@ -171,8 +206,26 @@ class Mesh(object):
         self._omeshmodule = self._odesign.GetModule(meshers[design_type])
         self.id = 0
         self.meshoperations = self._get_design_mesh_operations()
-        self.globalmesh = self._get_design_global_mesh()
+        self._globalmesh = None
         pass
+
+    @property
+    def initial_mesh_settings(self):
+        """Return the global mesh object.
+
+        Returns
+        -------
+        :class:`pyaedt.modules.Mesh.MeshOperation`
+            Mesh operation object.
+
+        References
+        ----------
+
+        >>> oModule.InitialMeshSettings
+        """
+        if not self._globalmesh:
+            self._globalmesh = self._get_design_global_mesh()
+        return self._globalmesh
 
     @property
     def omeshmodule(self):
@@ -185,15 +238,42 @@ class Mesh(object):
         """
         return self._omeshmodule
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def _get_design_global_mesh(self):
         """ """
+        props = None
         try:
-            return self._app.design_properties["MeshSetup"]["MeshSettings"]
+            props = self._app.design_properties["MeshSetup"]["MeshSettings"]
         except:
-            return OrderedDict()
+            temp_name = generate_unique_name("temp_prj")
+            temp_proj = os.path.join(self._app.working_directory, temp_name + ".aedt")
+            oproject_target = self._app.odesktop.NewProject(temp_name)
+            if self._app.solution_type == "Modal":
+                sol = "HFSS Modal Network"
+            elif self._app.solution_type == "Terminal":
+                sol = "HFSS Terminal Network"
+            else:
+                sol = self._app.solution_type
+            oproject_target.InsertDesign(self._app.design_type, temp_name, sol, "")
+            oproject_target.SaveAs(temp_proj, True)
+            self._app.odesktop.CloseProject(temp_name)
+            _project_dictionary = load_entire_aedt_file(temp_proj)
+            try:
+                props = _project_dictionary["AnsoftProject"][model_names[self._app.design_type]]["MeshSetup"][
+                    "MeshSettings"
+                ]
+            except:
+                pass
+            if os.path.exists(temp_proj):
+                os.remove(temp_proj)
+            if os.path.exists(temp_proj + "results"):
+                shutil.rmtree(temp_proj + "results", True)
+        if props:
+            bound = MeshOperation(self, "MeshSettings", props, "InitialMeshSettings")
+            return bound
+        return OrderedDict()
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def _get_design_mesh_operations(self):
         """ """
         meshops = []
@@ -212,7 +292,7 @@ class Mesh(object):
             pass
         return meshops
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def assign_surface_mesh(self, names, level, meshop_name=None):
         """Assign a surface mesh level to one or more objects.
 
@@ -243,7 +323,7 @@ class Mesh(object):
         else:
             meshop_name = generate_unique_name("SurfApprox")
         self.logger.info("Assigning Mesh Level " + str(level) + " to " + str(names))
-        names = self._app._modeler._convert_list_to_ids(names)
+        names = self._app._modeler.convert_to_selections(names, True)
 
         if isinstance(names[0], int):
             seltype = "Faces"
@@ -262,7 +342,7 @@ class Mesh(object):
         self.meshoperations.append(mop)
         return mop
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def assign_surface_mesh_manual(self, names, surf_dev=None, normal_dev=None, aspect_ratio=None, meshop_name=None):
         """Assign a surface mesh to a list of faces.
 
@@ -332,7 +412,7 @@ class Mesh(object):
         self.meshoperations.append(mop)
         return mop
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def assign_model_resolution(self, names, defeature_length=None, meshop_name=None):
         """Assign the model resolution.
 
@@ -385,7 +465,7 @@ class Mesh(object):
         self.meshoperations.append(mop)
         return mop
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def assign_initial_mesh_from_slider(
         self,
         level=5,
@@ -477,7 +557,7 @@ class Mesh(object):
         self.omeshmodule.InitialMeshSettings(args)
         return True
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def assign_surf_priority_for_tau(self, object_lists, surfpriority=0):
         """Assign a surface representation priority for the TAU mesh.
 
@@ -506,7 +586,7 @@ class Mesh(object):
         self.meshoperations.append(mop)
         return mop
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def generate_mesh(self, name):
         """Generate the mesh for a design.
 
@@ -527,7 +607,7 @@ class Mesh(object):
         """
         return self._odesign.GenerateMesh(name) == 0
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def delete_mesh_operations(self, mesh_type=None):
         """Remove mesh operations from a design.
 
@@ -566,7 +646,7 @@ class Mesh(object):
 
         return True
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def assign_length_mesh(self, names, isinside=True, maxlength=1, maxel=1000, meshop_name=None):
         """Assign a length for the model resolution.
 
@@ -618,7 +698,7 @@ class Mesh(object):
         if maxlength is None and maxel is None:
             self.logger.error("mesh not assigned due to incorrect settings")
             return
-        names = self._app._modeler._convert_list_to_ids(names)
+        names = self._app._modeler.convert_to_selections(names, True)
 
         if isinstance(names[0], int) and not isinside:
             seltype = "Faces"
@@ -647,7 +727,7 @@ class Mesh(object):
         self.meshoperations.append(mop)
         return mop
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def assign_skin_depth(
         self, names, skindepth, maxelements=None, triangulation_max_length="0.1mm", numlayers="2", meshop_name=None
     ):
@@ -694,7 +774,7 @@ class Mesh(object):
             maxelements = "1000"
         else:
             restrictlength = True
-        names = self._app._modeler._convert_list_to_ids(names)
+        names = self._app._modeler.convert_to_selections(names, True)
 
         if isinstance(names[0], int):
             seltype = "Faces"
@@ -724,7 +804,7 @@ class Mesh(object):
         self.meshoperations.append(mop)
         return mop
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def assign_curvilinear_elements(self, names, enable=True, meshop_name=None):
         """Assign curvilinear elements.
 
@@ -757,7 +837,7 @@ class Mesh(object):
                     meshop_name = generate_unique_name(meshop_name)
         else:
             meshop_name = generate_unique_name("CurvilinearElements")
-        names = self._app._modeler._convert_list_to_ids(names)
+        names = self._app._modeler.convert_to_selections(names, True)
 
         if isinstance(names[0], int):
             seltype = "Faces"
@@ -774,7 +854,7 @@ class Mesh(object):
         self.meshoperations.append(mop)
         return mop
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def assign_curvature_extraction(self, names, disable_for_faceted_surf=True, meshop_name=None):
         """Assign curvature extraction.
 
@@ -808,7 +888,7 @@ class Mesh(object):
                     meshop_name = generate_unique_name(meshop_name)
         else:
             meshop_name = generate_unique_name("CurvilinearElements")
-        names = self._app._modeler._convert_list_to_ids(names)
+        names = self._app._modeler.convert_to_selections(names, True)
         if isinstance(names[0], int):
             seltype = "Faces"
         elif isinstance(names[0], str):
@@ -826,7 +906,7 @@ class Mesh(object):
         self.meshoperations.append(mop)
         return mop
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def assign_rotational_layer(self, names, num_layers=3, total_thickness="1mm", meshop_name=None):
         """Assign a rotational layer mesh.
 
@@ -877,7 +957,7 @@ class Mesh(object):
         self.meshoperations.append(mop)
         return mop
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def assign_edge_cut(self, names, layer_thickness="1mm", meshop_name=None):
         """Assign an edge cut layer mesh.
 
@@ -918,7 +998,7 @@ class Mesh(object):
         self.meshoperations.append(mop)
         return mop
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def assign_density_control(self, names, refine_inside=True, maxelementlength=None, layerNum=None, meshop_name=None):
         """Assign density control.
 

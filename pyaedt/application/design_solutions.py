@@ -1,14 +1,16 @@
 import copy
-from pyaedt.generic.general_methods import aedt_exception_handler
+
+from pyaedt.generic.general_methods import pyaedt_function_handler
 
 solutions_defaults = {
     "Maxwell 2D": "Magnetostatic",
     "Maxwell 3D": "Magnetostatic",
     "Twin Builder": "TR",
     "Circuit Design": "NexximLNA",
+    "Maxwell Circuit": "",
     "2D Extractor": "Open",
     "Q3D Extractor": "Q3D Extractor",
-    "HFSS": "Modal",
+    "HFSS": "HFSS Modal Network",
     "Icepak": "SteadyState",
     "RMxprtSolution": "GRM",
     "ModelCreation": "GRM",
@@ -258,14 +260,14 @@ solutions_types = {
     },
     "HFSS": {
         "Modal": {
-            "name": "DrivenModal",
+            "name": "HFSS Modal Network",
             "options": None,
             "report_type": "Modal Solution Data",
             "default_setup": 1,
             "default_adaptive": "LastAdaptive",
         },
         "Terminal": {
-            "name": "DrivenTerminal",
+            "name": "HFSS Hybrid Terminal Network",
             "options": None,
             "report_type": "Terminal Solution Data",
             "default_setup": 1,
@@ -285,15 +287,22 @@ solutions_types = {
             "default_setup": 1,
             "default_adaptive": "LastAdaptive",
         },
-        "Transient": {
+        "Transient Network": {
             "name": "Transient Network",
             "options": None,
             "report_type": "Terminal Solution Data",
             "default_setup": 3,
             "default_adaptive": "Transient",
         },
+        "Transient": {
+            "name": "Transient",
+            "options": None,
+            "report_type": "Terminal Solution Data",
+            "default_setup": 3,
+            "default_adaptive": "Transient",
+        },
         "Eigenmode": {
-            "name": None,
+            "name": "Eigenmode",
             "options": None,
             "report_type": "EigenMode Parameters",
             "default_setup": 2,
@@ -380,28 +389,28 @@ solutions_types = {
         "HFSS3DLayout": {
             "name": None,
             "options": None,
-            "report_type": None,
+            "report_type": "Standard",
             "default_setup": 29,
             "default_adaptive": None,
         },
         "SiwaveDC3DLayout": {
             "name": None,
             "options": None,
-            "report_type": None,
+            "report_type": "Standard",
             "default_setup": 40,
             "default_adaptive": None,
         },
         "SiwaveAC3DLayout": {
             "name": None,
             "options": None,
-            "report_type": None,
+            "report_type": "Standard",
             "default_setup": 41,
             "default_adaptive": None,
         },
         "LNA3DLayout": {
             "name": None,
             "options": None,
-            "report_type": None,
+            "report_type": "Standard",
             "default_setup": 42,
             "default_adaptive": None,
         },
@@ -426,6 +435,8 @@ solutions_types = {
     "EMIT": {
         "EMIT": {"name": None, "options": None, "report_type": None, "default_setup": None, "default_adaptive": None}
     },
+    # Maxwell Circuit has no solution type
+    "Maxwell Circuit": {},
 }
 
 model_names = {
@@ -433,6 +444,7 @@ model_names = {
     "Maxwell 3D": "Maxwell3DModel",
     "Twin Builder": "SimplorerCircuit",
     "Circuit Design": "NexximCircuit",
+    "Maxwell Circuit": "MaxCirCircuit",
     "2D Extractor": "2DExtractorModel",
     "Q3D Extractor": "Q3DModel",
     "HFSS": "HFSSModel",
@@ -463,26 +475,24 @@ class DesignSolution(object):
     @property
     def solution_type(self):
         """Get/Set the Solution Type of the active Design."""
-        if self._odesign and "GetSolutionType" in dir(self._odesign):
-            self._solution_type = self._odesign.GetSolutionType()
-            if "Modal" in self._solution_type:
-                self._solution_type = "Modal"
-            elif "Terminal" in self._solution_type:
-                self._solution_type = "Terminal"
+        if self._odesign:
+            try:
+                self._solution_type = self._odesign.GetSolutionType()
+            except:
+                self._solution_type = solutions_defaults[self._design_type]
         elif self._solution_type is None:
             self._solution_type = solutions_defaults[self._design_type]
         return self._solution_type
 
     @solution_type.setter
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def solution_type(self, value):
         if value is None:
-            if self._odesign and "GetSolutionType" in dir(self._odesign):
-                self._solution_type = self._odesign.GetSolutionType()
-                if "Modal" in self._solution_type:
-                    self._solution_type = "Modal"
-                elif "Terminal" in self._solution_type:
-                    self._solution_type = "Terminal"
+            if self._odesign:
+                try:
+                    self._solution_type = self._odesign.GetSolutionType()
+                except:
+                    self._solution_type = solutions_defaults[self._design_type]
             else:
                 self._solution_type = solutions_defaults[self._design_type]
         elif value and value in self._solution_options and self._solution_options[value]["name"]:
@@ -530,16 +540,87 @@ class HFSSDesignSolution(DesignSolution, object):
         self._hybrid = None
 
     @property
-    def hybrid(self):
-        """Get/Set Hfss hybrid mode for the active solution."""
+    def solution_type(self):
+        """Get/Set the Solution Type of the active Design."""
+        if self._odesign:
+            try:
+                self._solution_type = self._odesign.GetSolutionType()
+                if "Modal" in self._solution_type:
+                    self._solution_type = "Modal"
+                elif "Terminal" in self._solution_type:
+                    self._solution_type = "Terminal"
+            except:
+                self._solution_type = solutions_defaults[self._design_type]
+        elif self._solution_type is None:
+            self._solution_type = solutions_defaults[self._design_type]
+        return self._solution_type
 
+    @solution_type.setter
+    @pyaedt_function_handler()
+    def solution_type(self, value):
+        if self._aedt_version < "2021.2":
+            if not value:
+                self._solution_type = "DrivenModal"
+                self._odesign.SetSolutionType(self._solution_type)
+            elif "Modal" in value:
+                self._solution_type = "DrivenModal"
+                self._odesign.SetSolutionType(self._solution_type)
+            elif "Terminal" in value:
+                self._solution_type = "DrivenTerminal"
+                self._odesign.SetSolutionType(self._solution_type)
+            else:
+                try:
+                    self._odesign.SetSolutionType(self._solution_options[value]["name"])
+                except:
+                    self._odesign.SetSolutionType(self._solution_options[value]["name"], "")
+        elif value is None:
+            if self._odesign:
+                try:
+                    self._solution_type = self._odesign.GetSolutionType()
+                    if "Modal" in self._solution_type:
+                        self._solution_type = "Modal"
+                    elif "Terminal" in self._solution_type:
+                        self._solution_type = "Terminal"
+                except:
+                    self._solution_type = solutions_defaults[self._design_type]
+            else:
+                self._solution_type = solutions_defaults[self._design_type]
+        elif value and value in self._solution_options and self._solution_options[value]["name"]:
+            if value == "Transient":
+                value = "Transient Network"
+                self._solution_type = "Transient Network"
+            elif value == "DrivenModal":
+                value = "Modal"
+                self._solution_type = "Modal"
+            elif value == "DrivenTerminal":
+                value = "Terminal"
+                self._solution_type = "Terminal"
+            else:
+                self._solution_type = value
+            if self._solution_options[value]["options"]:
+                self._odesign.SetSolutionType(
+                    self._solution_options[value]["name"], self._solution_options[value]["options"]
+                )
+            else:
+                try:
+                    self._odesign.SetSolutionType(self._solution_options[value]["name"])
+                except:
+                    self._odesign.SetSolutionType(self._solution_options[value]["name"], "")
+
+    @property
+    def hybrid(self):
+        """HFSS hybrid mode for the active solution."""
+        if self._aedt_version < "2021.2":
+            return False
         if self._hybrid is None and self.solution_type is not None:
             self._hybrid = "Hybrid" in self._solution_options[self.solution_type]["name"]
         return self._hybrid
 
     @hybrid.setter
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def hybrid(self, value):
+        if self._aedt_version < "2021.2":
+            return
         if value and "Hybrid" not in self._solution_options[self.solution_type]["name"]:
             self._solution_options[self.solution_type]["name"] = self._solution_options[self.solution_type][
                 "name"
@@ -553,14 +634,18 @@ class HFSSDesignSolution(DesignSolution, object):
 
     @property
     def composite(self):
-        """Get/Set Hfss composite mode for the active solution."""
+        """HFSS composite mode for the active solution."""
+        if self._aedt_version < "2021.2":
+            return False
         if self._composite is None and self.solution_type is not None:
             self._composite = "Composite" in self._solution_options[self.solution_type]["name"]
         return self._composite
 
     @composite.setter
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def composite(self, val):
+        if self._aedt_version < "2021.2":
+            return
         if val:
             self._solution_options[self.solution_type]["name"] = self._solution_options[self.solution_type][
                 "name"
@@ -572,7 +657,7 @@ class HFSSDesignSolution(DesignSolution, object):
         self._composite = val
         self.solution_type = self.solution_type
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def set_auto_open(self, enable=True, boundary_type="Radiation"):
         """Set Hfss auto open type.
 
@@ -587,6 +672,8 @@ class HFSSDesignSolution(DesignSolution, object):
         -------
         bool
         """
+        if self._aedt_version < "2021.2":
+            return False
         options = ["NAME:Options", "EnableAutoOpen:=", enable]
         if enable:
             options.append("BoundaryType:=")
@@ -607,7 +694,7 @@ class Maxwell2DDesignSolution(DesignSolution, object):
         return self._geometry_mode == "XY"
 
     @xy_plane.setter
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def xy_plane(self, value=True):
         if value:
             self._geometry_mode = "XY"
@@ -619,12 +706,15 @@ class Maxwell2DDesignSolution(DesignSolution, object):
     @property
     def solution_type(self):
         """Get/Set the Solution Type of the active Design."""
-        if self._odesign and "GetSolutionType" in dir(self._odesign):
-            self._solution_type = self._odesign.GetSolutionType()
+        if self._odesign and "GetSolutionType":
+            try:
+                self._solution_type = self._odesign.GetSolutionType()
+            except:
+                self._solution_type = solutions_defaults[self._design_type]
         return self._solution_type
 
     @solution_type.setter
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def solution_type(self, value):
         if value is None:
             if self._odesign and "GetSolutionType" in dir(self._odesign):
@@ -670,7 +760,7 @@ class IcepakDesignSolution(DesignSolution, object):
         return self._problem_type
 
     @problem_type.setter
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def problem_type(self, value="TemperatureAndFlow"):
         if value == "TemperatureAndFlow":
             self._problem_type = value
@@ -700,12 +790,15 @@ class IcepakDesignSolution(DesignSolution, object):
     @property
     def solution_type(self):
         """Get/Set the Solution Type of the active Design."""
-        if self._odesign and "GetSolutionType" in dir(self._odesign):
-            self._solution_type = self._odesign.GetSolutionType()
+        if self._odesign:
+            try:
+                self._solution_type = self._odesign.GetSolutionType()
+            except:
+                self._solution_type = solutions_defaults[self._design_type]
         return self._solution_type
 
     @solution_type.setter
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def solution_type(self, solution_type):
         if solution_type:
             if "SteadyState" in solution_type:
@@ -744,7 +837,7 @@ class RmXprtDesignSolution(DesignSolution, object):
         return self._solution_type
 
     @solution_type.setter
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def solution_type(self, solution_type):
         if solution_type:
             try:
@@ -759,7 +852,7 @@ class RmXprtDesignSolution(DesignSolution, object):
         return self._design_type
 
     @design_type.setter
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def design_type(self, value):
         if value:
             self._design_type = value

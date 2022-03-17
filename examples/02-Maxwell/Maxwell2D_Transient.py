@@ -44,16 +44,16 @@ maxwell_2d.save_project(os.path.join(project_dir, "M2d.aedt"))
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # This example creates a rectangle and then duplicates it.
 
-rect1 = maxwell_2d.modeler.primitives.create_rectangle([0, 0, 0], [10, 20], name="winding", matname="copper")
+rect1 = maxwell_2d.modeler.create_rectangle([0, 0, 0], [10, 20], name="winding", matname="copper")
 added = rect1.duplicate_along_line([14, 0, 0])
-rect2 = maxwell_2d.modeler.primitives[added[0]]
+rect2 = maxwell_2d.modeler[added[0]]
 
 ###############################################################################
 # Create an Air Region
 # ~~~~~~~~~~~~~~~~~~~~
 # This command creates an air region.
 
-region = maxwell_2d.modeler.primitives.create_region([100, 100, 100, 100, 100, 100])
+region = maxwell_2d.modeler.create_region([100, 100, 100, 100, 100, 100])
 
 ###############################################################################
 # Assign Windings to Sheets and a Balloon to the Air Region
@@ -83,15 +83,14 @@ setup.props["SaveFieldsType"] = "Every N Steps"
 setup.props["N Steps"] = "1"
 setup.props["Steps From"] = "0s"
 setup.props["Steps To"] = "0.002s"
-setup.update()
 
 ###############################################################################
 # Create a Rectangular Plot
 # ~~~~~~~~~~~~~~~~~~~~~~~~~
 # This command creates a rectangular plot.
 
-maxwell_2d.post.create_rectangular_plot(
-    "InputCurrent(PHA)", primary_sweep_variable="Time", families_dict={"Time": ["All"]}, plotname="Winding Plot 1"
+maxwell_2d.post.create_report(
+    "InputCurrent(PHA)", domain="Time", primary_sweep_variable="Time", plotname="Winding Plot 1"
 )
 
 ###############################################################################
@@ -112,7 +111,7 @@ start = time.time()
 cutlist = ["Global:XY"]
 face_lists = rect1.faces
 face_lists += rect2.faces
-timesteps = [str(i * 1e-3) + "s" for i in range(21)]
+timesteps = [str(i * 2e-4) + "s" for i in range(11)]
 id_list = [f.id for f in face_lists]
 animatedGif = maxwell_2d.post.animate_fields_from_aedtplt_2(
     "Mag_B",

@@ -1,8 +1,9 @@
 import math
 from warnings import warn
 
-from pyaedt.generic.general_methods import aedt_exception_handler
-from pyaedt.modeler.Modeler import Modeler, GeometryModeler
+from pyaedt.generic.general_methods import pyaedt_function_handler
+from pyaedt.modeler.Modeler import GeometryModeler
+from pyaedt.modeler.Modeler import Modeler
 from pyaedt.modeler.Primitives2D import Primitives2D
 
 
@@ -50,7 +51,6 @@ class Modeler2D(GeometryModeler, Primitives2D):
         GeometryModeler.__init__(self, application, is3d=False)
         Primitives2D.__init__(self)
         self._primitives = self
-        self._primitivesDes = self._app.project_name + self._app.design_name
 
     def __get__(self, instance, owner):
         self._app = instance
@@ -73,7 +73,7 @@ class Modeler2D(GeometryModeler, Primitives2D):
         warn(mess, DeprecationWarning)
         return self._primitives
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def calculate_radius_2D(self, object_name, inner=False):
         """Calculate the extremity of an object in the radial direction.
 
@@ -113,7 +113,7 @@ class Modeler2D(GeometryModeler, Primitives2D):
 
         return radius
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def radial_split_2D(self, radius, name):
         """Split the stator and rotor for mesh refinement.
 

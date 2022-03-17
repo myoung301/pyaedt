@@ -1,16 +1,18 @@
 import os
 
-from pyaedt.generic import ibis_reader
-from pyaedt import Circuit
+from _unittest.conftest import BasisTest
 from _unittest.conftest import local_path
+from pyaedt import Circuit
+from pyaedt.generic import ibis_reader
 
 
-class TestClass:
+class TestClass(BasisTest, object):
     def setup_class(self):
-        self.aedtapp = Circuit()
+        BasisTest.my_setup(self)
+        self.aedtapp = BasisTest.add_app(self, application=Circuit)
 
     def teardown_class(self):
-        self.aedtapp.close_project(self.aedtapp.project_name, saveproject=False)
+        BasisTest.my_teardown(self)
 
     def test_01_read_ibis(self):
         reader = ibis_reader.IbisReader(
@@ -42,3 +44,17 @@ class TestClass:
         assert ibis.components["MT47H64M4BP-3_25"].pins["A1_MT47H64M4BP-3_25_u26a_800_modified"].r_value == "44.3m"
         assert ibis.components["MT47H64M4BP-3_25"].pins["A1_MT47H64M4BP-3_25_u26a_800_modified"].l_value == "1.99nH"
         assert ibis.components["MT47H64M4BP-3_25"].pins["A1_MT47H64M4BP-3_25_u26a_800_modified"].c_value == "0.59pF"
+
+        # Add pin
+        ibis.components["MT47H32M8BP-3_25"].pins["A7_MT47H32M8BP-3_25_u26a_800_modified"].add()
+        pin = (
+            ibis.components["MT47H32M8BP-3_25"]
+            .pins["A7_MT47H32M8BP-3_25_u26a_800_modified"]
+            .insert(0.1016, 0.05334, 0.0)
+        )
+        assert pin.name == "CompInst@A7_MT47H32M8BP-3_25_u26a_800_modified"
+
+        # Add buffer
+        ibis.buffers["RDQS#_u26a_800_modified"].add()
+        buffer = ibis.buffers["RDQS#_u26a_800_modified"].insert(0.1016, 0.05334, 0.0)
+        assert buffer.name == "CompInst@RDQS#_u26a_800_modified"

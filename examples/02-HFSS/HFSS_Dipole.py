@@ -48,7 +48,7 @@ hfss["l_dipole"] = "13.5cm"
 compfile = hfss.components3d["Dipole_Antenna_DM"]
 geometryparams = hfss.get_components3d_vars("Dipole_Antenna_DM")
 geometryparams["dipole_length"] = "l_dipole"
-hfss.modeler.primitives.insert_3d_component(compfile, geometryparams)
+hfss.modeler.insert_3d_component(compfile, geometryparams)
 
 ###############################################################################
 # Create Boundaries
@@ -77,7 +77,6 @@ my_plot.plot(
 setup = hfss.create_setup("MySetup")
 setup.props["Frequency"] = "1GHz"
 setup.props["MaximumPasses"] = 1
-setup.update()
 hfss.create_linear_count_sweep(
     setupname=setup.name,
     unit="GHz",
@@ -109,8 +108,13 @@ variations = hfss.available_variations.nominal_w_values_dict
 variations["Freq"] = ["1GHz"]
 variations["Theta"] = ["All"]
 variations["Phi"] = ["All"]
-hfss.post.create_rectangular_plot(
-    "db(GainTotal)", hfss.nominal_adaptive, variations, "Theta", "3D", report_category="Far Fields"
+hfss.post.create_report(
+    "db(GainTotal)",
+    hfss.nominal_adaptive,
+    variations,
+    primary_sweep_variable="Theta",
+    context="3D",
+    report_category="Far Fields",
 )
 
 ###############################################################################

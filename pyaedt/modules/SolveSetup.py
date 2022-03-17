@@ -5,16 +5,21 @@ This module provides all functionalities for creating and editing setups in AEDT
 It is based on templates to allow for easy creation and modification of setup properties.
 
 """
-from __future__ import absolute_import
+from __future__ import absolute_import  # noreorder
 
+import os.path
 import warnings
 from collections import OrderedDict
-import os.path
 
-from pyaedt.generic.general_methods import aedt_exception_handler, generate_unique_name
-
-from pyaedt.modules.SetupTemplates import SweepHFSS, SweepQ3D, SetupKeys, SweepHFSS3DLayout
-from pyaedt.generic.DataHandlers import _tuple2dict, _dict2arg
+from pyaedt.generic.DataHandlers import _dict2arg
+from pyaedt.generic.DataHandlers import _tuple2dict
+from pyaedt.generic.general_methods import generate_unique_name
+from pyaedt.generic.general_methods import pyaedt_function_handler
+from pyaedt.modules.SetupTemplates import SetupKeys
+from pyaedt.modules.SetupTemplates import SweepHFSS
+from pyaedt.modules.SetupTemplates import SweepHFSS3DLayout
+from pyaedt.modules.SetupTemplates import SweepQ3D
+from pyaedt.modules.SetupTemplates import SetupProps
 
 
 class Setup(object):
@@ -52,7 +57,7 @@ class Setup(object):
         return "SetupName " + self.name + " with " + str(len(self.sweeps)) + " Sweeps"
 
     def __init__(self, app, solutiontype, setupname="MySetupAuto", isnewsetup=True):
-
+        self.auto_update = False
         self._app = None
         self.p_app = app
         if not solutiontype:
@@ -69,6 +74,7 @@ class Setup(object):
             setup_template = SetupKeys.SetupTemplates[self.setuptype]
             for t in setup_template:
                 _tuple2dict(t, self.props)
+            self.props = SetupProps(self, self.props)
         else:
             try:
                 setups_data = self.p_app.design_properties["AnalysisSetup"]["SolveSetups"]
@@ -93,11 +99,12 @@ class Setup(object):
                                 if isinstance(app[el], (OrderedDict, dict)):
                                     self.sweeps.append(SweepQ3D(self.omodule, setupname, el, props=app[el]))
                         setup_data.pop("Sweeps", None)
-                    self.props = OrderedDict(setup_data)
+                    self.props = SetupProps(self, OrderedDict(setup_data))
             except:
-                self.props = OrderedDict()
+                self.props = SetupProps(self, OrderedDict())
+        self.auto_update = True
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def create(self):
         """Add a new setup based on class settings in AEDT.
 
@@ -117,7 +124,7 @@ class Setup(object):
         self.omodule.InsertSetup(soltype, arg)
         return arg
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def update(self, update_dictionary=None):
         """Update the setup based on either the class argument or a dictionary.
 
@@ -136,16 +143,19 @@ class Setup(object):
 
         >>> oModule.EditSetup
         """
+        legacy_update = self.auto_update
+        self.auto_update = False
         if update_dictionary:
             for el in update_dictionary:
                 self.props[el] = update_dictionary[el]
+        self.auto_update = legacy_update
         arg = ["NAME:" + self.name]
         _dict2arg(self.props, arg)
 
         self.omodule.EditSetup(self.name, arg)
         return True
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def _expression_cache(
         self,
         expression_list,
@@ -262,7 +272,7 @@ class Setup(object):
 
         return list_data
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def enable_expression_cache(
         self,
         expressions,
@@ -312,7 +322,7 @@ class Setup(object):
         self.omodule.EditSetup(self.name, arg)
         return True
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def add_derivatives(self, derivative_list):
         """Add derivatives to the setup.
 
@@ -338,7 +348,7 @@ class Setup(object):
         self.omodule.EditSetup(self.name, arg)
         return True
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def enable(self, setup_name=None):
         """Enable a setup.
 
@@ -363,7 +373,7 @@ class Setup(object):
         self.omodule.EditSetup(setup_name, ["NAME:" + setup_name, "IsEnabled:=", True])
         return True
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def disable(self, setup_name=None):
         """Disable a setup.
 
@@ -388,7 +398,7 @@ class Setup(object):
         self.omodule.EditSetup(setup_name, ["NAME:" + setup_name, "IsEnabled:", False])
         return True
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def add_sweep(self, sweepname=None, sweeptype="Interpolating"):
         """Add a sweep to the project.
 
@@ -411,6 +421,9 @@ class Setup(object):
         """
         if not sweepname:
             sweepname = generate_unique_name("Sweep")
+        if self.setuptype == 7:
+            self._app.logger.warning("This method only applies to HFSS and Q3d. Use add_eddy_current_sweep method.")
+            return False
         if self.setuptype <= 4:
             sweep_n = SweepHFSS(self.omodule, self.name, sweepname, sweeptype)
         else:
@@ -419,7 +432,7 @@ class Setup(object):
         self.sweeps.append(sweep_n)
         return sweep_n
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def add_mesh_link(self, design_name, solution_name, parameters_dict, project_name="This Project*"):
         """Add a mesh link to another design.
 
@@ -469,6 +482,62 @@ class Setup(object):
         self.update()
         return True
 
+    @pyaedt_function_handler()
+    def add_eddy_current_sweep(self, range_type="LinearStep", start=0.1, end=100, count=0.1, units="Hz", clear=True):
+        """Create a Maxwell Eddy Current Sweep.
+
+        Parameters
+        ----------
+        range_type : str
+            Type of the subrange. Options are ``"LinearCount"``,
+            ``"LinearStep"``, ``"LogScale"`` and ``"SinglePoints"``.
+        start : float
+            Starting frequency.
+        end : float, optional
+            Stopping frequency. Required for ``rangetype="LinearCount"|"LinearStep"|"LogScale"``.
+        count : int or float, optional
+            Frequency count or frequency step. Required for ``rangetype="LinearCount"|"LinearStep"|"LogScale"``.
+        units : str, optional
+            Unit of the frequency. For example, ``"MHz`` or ``"GHz"``. The default is ``"Hz"``.
+
+        clear : boolean, optional
+            If set to ``True``, all other subranges will be suppressed except the current one under creation.
+            Default value is ``False``.
+
+        Returns
+        -------
+        bool
+        """
+
+        if self.setuptype != 7:
+            self._app.logger.warning("This method only applies to Maxwell Eddy Current Solution.")
+            return False
+        legacy_update = self.auto_update
+        self.auto_update = False
+        props = OrderedDict()
+        props["RangeType"] = range_type
+        props["RangeStart"] = "{}{}".format(start, units)
+        if range_type == "LinearStep":
+            props["RangeEnd"] = "{}{}".format(end, units)
+            props["RangeStep"] = "{}{}".format(count, units)
+        elif range_type == "LinearCount":
+            props["RangeEnd"] = "{}{}".format(end, units)
+            props["RangeCount"] = count
+        elif range_type == "LogScale":
+            props["RangeEnd"] = "{}{}".format(end, units)
+            props["RangeSamples"] = count
+        elif range_type == "SinglePoints":
+            props["RangeEnd"] = "{}{}".format(start, units)
+        if clear:
+            self.props["SweepRanges"]["Subrange"] = props
+        elif isinstance(self.props["SweepRanges"]["Subrange"], list):
+            self.props["SweepRanges"]["Subrange"].append(props)
+        else:
+            self.props["SweepRanges"]["Subrange"] = [self.props["SweepRanges"]["Subrange"], props]
+        self.update()
+        self.auto_update = legacy_update
+        return True
+
 
 class SetupCircuit(object):
     """Initializes, creates, and updates a circuit setup.
@@ -488,6 +557,7 @@ class SetupCircuit(object):
     """
 
     def __init__(self, app, solutiontype, setupname="MySetupAuto", isnewsetup=True):
+        self.auto_update = False
         self._app = None
         self.p_app = app
         if not solutiontype:
@@ -497,11 +567,12 @@ class SetupCircuit(object):
         else:
             self.setuptype = self.p_app.design_solutions._solution_options[solutiontype]["default_setup"]
         self._Name = "LinearFrequency"
-        self.props = {}
+        props = {}
         if isnewsetup:
             setup_template = SetupKeys.SetupTemplates[self.setuptype]
             for t in setup_template:
-                _tuple2dict(t, self.props)
+                _tuple2dict(t, props)
+            self.props = SetupProps(self, props)
         else:
             try:
                 setups_data = self.p_app.design_properties["SimSetups"]["SimSetup"]
@@ -511,10 +582,12 @@ class SetupCircuit(object):
                     if setupname == setup["Name"]:
                         setup_data = setup
                         setup_data.pop("Sweeps", None)
-                        self.props = setup_data
+                        self.props = SetupProps(self, setup_data)
             except:
-                self.props = {}
-        self.name = setupname
+                self.props = SetupProps(self, OrderedDict())
+        self._Name = setupname
+        self.props["Name"] = setupname
+        self.auto_update = True
 
     @property
     def name(self):
@@ -564,7 +637,7 @@ class SetupCircuit(object):
         """
         return self._app.oanalysis
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def create(self):
         """Add a new setup based on class settings in AEDT.
 
@@ -589,7 +662,7 @@ class SetupCircuit(object):
         self._setup(soltype, arg)
         return arg
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def _setup(self, soltype, arg, newsetup=True):
         if newsetup:
             if soltype == "NexximLNA":
@@ -624,7 +697,7 @@ class SetupCircuit(object):
                 raise NotImplementedError("Solution type '{}' is not implemented yet".format(soltype))
         return True
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def update(self, update_dictionary=None):
         """Update the setup based on the class arguments or a dictionary.
 
@@ -648,6 +721,8 @@ class SetupCircuit(object):
         >>> oModule.EditVerifEyeAnalysis
         >>> oModule.EditAMIAnalysis
         """
+        legacy_update = self.auto_update
+        self.auto_update = False
         if update_dictionary:
             for el in update_dictionary:
                 self.props[el] = update_dictionary[el]
@@ -655,9 +730,10 @@ class SetupCircuit(object):
         soltype = SetupKeys.SetupNames[self.setuptype]
         _dict2arg(self.props, arg)
         self._setup(soltype, arg, False)
+        self.auto_update = legacy_update
         return True
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def add_sweep_points(self, sweep_variable="Freq", sweep_points=1, units="GHz", override_existing_sweep=True):
         """Add a linear count sweep to existing Circuit Setup.
 
@@ -702,7 +778,7 @@ class SetupCircuit(object):
         lin_data = " ".join(sweeps)
         return self._add_sweep(sweep_variable, lin_data, override_existing_sweep)
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def add_sweep_count(
         self,
         sweep_variable="Freq",
@@ -759,7 +835,7 @@ class SetupCircuit(object):
         lin_data = "{} {} {} {}".format(lin_in, start_point, end_point, count)
         return self._add_sweep(sweep_variable, lin_data, override_existing_sweep)
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def add_sweep_step(
         self,
         sweep_variable="Freq",
@@ -810,7 +886,7 @@ class SetupCircuit(object):
         linc_data = "LIN {} {} {}".format(start_point, end_point, step_size)
         return self._add_sweep(sweep_variable, linc_data, override_existing_sweep)
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def _add_sweep(self, sweep_variable, equation, override_existing_sweep):
         if isinstance(self.props["SweepDefinition"], list):
             for sw in self.props["SweepDefinition"]:
@@ -832,7 +908,7 @@ class SetupCircuit(object):
         self.props["SweepDefinition"].append(prop)
         return self.update()
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def _expression_cache(
         self,
         expression_list,
@@ -945,7 +1021,7 @@ class SetupCircuit(object):
 
         return list_data
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def enable_expression_cache(
         self,
         expressions,
@@ -995,7 +1071,7 @@ class SetupCircuit(object):
         self.omodule.EditSetup(self.name, arg)
         return True
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def add_derivatives(self, derivative_list):
         """Add derivatives to the setup.
 
@@ -1021,7 +1097,7 @@ class SetupCircuit(object):
         self.omodule.EditSetup(self.name, arg)
         return True
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def enable(self, setup_name=None):
         """Enable a setup.
 
@@ -1045,7 +1121,7 @@ class SetupCircuit(object):
         self._odesign.EnableSolutionSetup(setup_name, True)
         return True
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def disable(self, setup_name=None):
         """Disable a setup.
 
@@ -1100,6 +1176,7 @@ class Setup3DLayout(object):
         return self._app.oanalysis
 
     def __init__(self, app, solutiontype, setupname="MySetupAuto", isnewsetup=True):
+        self.auto_update = False
         self._app = app
         if not solutiontype:
             self._solutiontype = self._app.design_solutions.default_setup
@@ -1114,6 +1191,7 @@ class Setup3DLayout(object):
             setup_template = SetupKeys.SetupTemplates[self._solutiontype]
             for t in setup_template:
                 _tuple2dict(t, self.props)
+            self.props = SetupProps(self, self.props)
         else:
             try:
                 setups_data = self._app.design_properties["Setup"]["Data"]
@@ -1125,14 +1203,10 @@ class Setup3DLayout(object):
                             if isinstance(app[el], (OrderedDict, dict)):
                                 self.sweeps.append(SweepHFSS3DLayout(self.omodule, setupname, el, props=app[el]))
 
-                    self.props = OrderedDict(setup_data)
+                    self.props = SetupProps(self, OrderedDict(setup_data))
             except:
-                self.props = OrderedDict()
-            #
-            # setup_data = self.omodule.GetSetupData(setupname)
-            # dict_data = OrderedDict()
-            # _arg2dict(setup_data, dict_data)
-            # self.props = dict_data[setupname]
+                self.props = SetupProps(self, OrderedDict())
+        self.auto_update = True
 
     @property
     def setup_type(self):
@@ -1149,7 +1223,7 @@ class Setup3DLayout(object):
         else:
             return None
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def create(self):
         """Add a new setup based on class settings in AEDT.
 
@@ -1168,8 +1242,8 @@ class Setup3DLayout(object):
         self.omodule.Add(arg)
         return True
 
-    @aedt_exception_handler
-    def update(self):
+    @pyaedt_function_handler()
+    def update(self, update_dictionary=None):
         """Update the setup based on the class arguments or a dictionary.
 
         Parameters
@@ -1187,12 +1261,15 @@ class Setup3DLayout(object):
 
         >>> oModule.Edit
         """
+        if update_dictionary:
+            for el in update_dictionary:
+                self.props._setitem_without_update(el, update_dictionary[el])
         arg = ["NAME:" + self.name]
         _dict2arg(self.props, arg)
         self.omodule.Edit(self.name, arg)
         return True
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def enable(self):
         """Enable a setup.
 
@@ -1215,7 +1292,7 @@ class Setup3DLayout(object):
         self.update()
         return True
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def disable(self):
         """Disable a setup.
 
@@ -1238,7 +1315,7 @@ class Setup3DLayout(object):
         self.update()
         return True
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def export_to_hfss(self, file_fullname):
         """Export the project to a file.
 
@@ -1265,7 +1342,7 @@ class Setup3DLayout(object):
         self.omodule.ExportToHfss(self.name, file_fullname)
         return True
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def add_sweep(self, sweepname=None, sweeptype="Interpolating"):
         """Add a frequency sweep.
 
@@ -1316,7 +1393,7 @@ class SetupHFSS(Setup, object):
     def __init__(self, app, solutiontype, setupname="MySetupAuto", isnewsetup=True):
         Setup.__init__(self, app, solutiontype, setupname, isnewsetup)
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def create_linear_count_sweep(
         self,
         unit,
@@ -1412,7 +1489,7 @@ class SetupHFSS(Setup, object):
         self.logger.info("Linear count sweep {} has been correctly created".format(sweepname))
         return sweepdata
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def create_linear_step_sweep(
         self,
         setupname,
@@ -1511,7 +1588,7 @@ class SetupHFSS(Setup, object):
                 return sweepdata
         return False
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def create_single_point_sweep(
         self,
         setupname,

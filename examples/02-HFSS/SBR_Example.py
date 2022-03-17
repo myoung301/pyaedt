@@ -68,13 +68,12 @@ source.plot(show=False, export_path=os.path.join(target.working_directory, "Imag
 # This example creates a setup and then solves it.
 
 setup1 = target.create_setup()
-setup1.props["RayDensityPerWavelength"] = 2
+setup1.props["RadiationSetup"] = "ATK_3D"
 setup1.props["ComputeFarFields"] = True
+setup1.props["RayDensityPerWavelength"] = 2
 setup1.props["MaxNumberOfBounces"] = 3
 setup1.props["Sweeps"]["Sweep"]["RangeType"] = "SinglePoints"
 setup1.props["Sweeps"]["Sweep"]["RangeStart"] = "10GHz"
-setup1.props["RadiationSetup"] = "ATK_3D"
-setup1.update()
 target.analyze_nominal()
 
 ###############################################################################
@@ -86,8 +85,13 @@ variations = target.available_variations.nominal_w_values_dict
 variations["Freq"] = ["10GHz"]
 variations["Theta"] = ["All"]
 variations["Phi"] = ["All"]
-target.post.create_rectangular_plot(
-    "db(GainTotal)", target.nominal_adaptive, variations, "Theta", "ATK_3D", report_category="Far Fields"
+target.post.create_report(
+    "db(GainTotal)",
+    target.nominal_adaptive,
+    variations=variations,
+    primary_sweep_variable="Theta",
+    context="ATK_3D",
+    report_category="Far Fields",
 )
 if os.name != "posix":
     target.release_desktop()

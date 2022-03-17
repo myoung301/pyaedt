@@ -1,9 +1,10 @@
-import socket
 import os
+import socket
 import sys
 import time
 
 from pyaedt import is_ironpython
+from pyaedt.generic.general_methods import convert_remote_object
 
 if is_ironpython:
     pyaedt_path = os.path.normpath(os.path.abspath(os.path.dirname(__file__)))
@@ -11,35 +12,56 @@ if is_ironpython:
 
 import rpyc
 from rpyc.utils.server import ThreadedServer
-from pyaedt.rpc.rpyc_services import GlobalService
+from pyaedt.rpc.rpyc_services import GlobalService, check_port
 import rpyc.core.consts
 
 # Maximum Stream message size. Set to 256MB
 rpyc.core.consts.STREAM_CHUNK = 256000000
 
+from pyaedt import is_ironpython
+
+if os.name == "posix" and is_ironpython:
+    import subprocessdotnet as subprocess
+else:
+    import subprocess
+
 
 def launch_server(port=18000, ansysem_path=None, non_graphical=False):
-    """Starts an rpyc servers an start listening on specified port. This method has to run on server machine.
+    """Starts an rpyc server and starts listening on a specified port.
+
+    This method has to run on a server machine.
 
     Parameters
     ----------
     port : int, optional
-        Port rpyc_server will listen.
+        Port that the rpyc server will listen on.
     ansysem_path : str, optional
-        Full path to the AEDT installation directory. This parameter is needed for
-        IronPython on Linux only.
+        Full path to the AEDT installation directory. The default is
+        ``None``. This parameter is needed for IronPython on Linux
+        connections only.
     non_graphical : bool, optional
-        Either to start AEDT in graphical or non-graphical mode. This
-        setting is needed for IronPython on Linux connections only.
+        Whether to start AEDT in non-graphical mode. The default is ``False``,
+        which means AEDT starts in graphical mode. This parameter is needed
+        for IronPython on Linux connections only.
+
     Examples
     --------
     >>> from pyaedt.common_rpc import launch_server
     >>> launch_server( port=18000)
 
     """
+    port1 = check_port(port)
+    if port == 0:
+        print("Error. No available ports.")
+        return False
+    if port1 != port:
+        print("Port {} is already in use. Starting the server on {}.".format(port, port1))
     if os.name == "posix":
         os.environ["PYAEDT_SERVER_AEDT_PATH"] = ansysem_path
         os.environ["PYAEDT_SERVER_AEDT_NG"] = str(non_graphical)
+        os.environ["ANS_NO_MONO_CLEANUP"] = str(1)
+        os.environ["ANS_NODEPCHECK"] = str(1)
+
     hostname = socket.gethostname()
     safe_attrs = {
         "__abs__",
@@ -134,7 +156,7 @@ def launch_server(port=18000, ansysem_path=None, non_graphical=False):
     t = ThreadedServer(
         GlobalService,
         hostname=hostname,
-        port=port,
+        port=port1,
         protocol_config={
             "sync_request_timeout": None,
             "allow_public_attrs": True,
@@ -143,19 +165,20 @@ def launch_server(port=18000, ansysem_path=None, non_graphical=False):
             "allow_delattr": True,
         },
     )
-    print("Starting Server on Port {} on {}.".format(port, hostname))
+    print("Starting the server on port {} on {}.".format(port, hostname))
     t.start()
 
 
 def connect(server_name, aedt_client_port):
-    """Connect to an existing aedt server session.
+    """
+    Connect to an existing AEDT server session.
 
     Parameters
     ----------
     server_name : str
-        name of the remote machine to connect.
+        Name of the remote machine to connect to.
     aedt_client_port : int
-        port on which rpyc_server is running inside AEDT
+        Port that the rpyc server is running on inside AEDT.
 
     Returns
     -------
@@ -173,11 +196,11 @@ def client(server_name, server_port=18000, beta_options=None):
     Parameters
     ----------
     server_name : str
-        name of the remote machine to connect.
+        Name of the remote machine to connect.
     server_port : int, optional
-        port on which rpyc_server is running.
+        Port that the rpyc server is running on.
     beta_options : list, optional
-        list of beta options to apply to new service.
+        List of beta options to apply to the new service. The default is ``None``.
 
     Returns
     -------
@@ -185,42 +208,53 @@ def client(server_name, server_port=18000, beta_options=None):
 
     Examples
     --------
-    Windows CPython Example.
+    Windows CPython Example:
 
     >>> from pyaedt.common_rpc import client
     >>> cl1 = client(server_name="server_name")
     >>> hfss = cl1.root.hfss(specified_version="2021.2")
 
-    Linux Ironpython CPython Example.
+    Linux IronPython CPython Example:
 
     >>> from pyaedt.common_rpc import client
     >>> cl1 = client(server_name="server_name", ansysem_path="path/to/aedt/executable/folder", non_graphical=True)
     >>> hfss = cl1.root.hfss()
 
-    Linux CPython Example.
+    Linux CPython Example 1:
+
     >>> from pyaedt.common_rpc import client
     >>> cl2 = client("my_server")
     >>> script_to_run = ["from pyaedt import Hfss", "hfss =Hfss()"]
     >>> cl2.root.run_script(script_to_run, ansysem_path = "/path/to/AnsysEMxxx/Linux64")
 
-    Linux CPython Example 2.
+    Linux CPython Example 2:
+
     >>> from pyaedt.common_rpc import client
     >>> cl2 = client("my_server")
     >>> script_to_run = "/path/to/script.py"
     >>> cl2.root.run_script(script_to_run, ansysem_path = "/path/to/AnsysEMxxx/Linux64")
 
     """
-    c = rpyc.connect(server_name, server_port, config={"sync_request_timeout": None})
+    t = 60
+    while t > 0:
+        try:
+            c = rpyc.connect(server_name, server_port, config={"sync_request_timeout": None})
+            if c.root:
+                t = 0
+        except:
+            t -= 1
+            time.sleep(1)
     port = c.root.start_service(server_name, beta_options)
     if not port:
-        return "Error Connecting to the Server. Check the server name and port and retry."
-    print("Connecting to new session of Electronics Desktop on port {}. Please Wait.".format(port))
+        return "Error connecting to the server. Check the server name and port and retry."
+    print("Connecting to a new session of AEDT on port {}. Wait.".format(port))
     if port:
         time.sleep(20)
-        timeout = 30
+        timeout = 80
         while timeout > 0:
             try:
                 c1 = rpyc.connect(server_name, port, config={"sync_request_timeout": None})
+                c1.convert_remote_object = convert_remote_object
                 if c1:
                     if beta_options:
                         c1._beta_options = beta_options
@@ -231,23 +265,21 @@ def client(server_name, server_port=18000, beta_options=None):
         return "Error. No connection."
     else:
         return "Error. No connection."
-    # else:
-    #    return rpyc.connect(server_name, port, config={'sync_request_timeout': None})
 
 
 def upload(localpath, remotepath, server_name, server_port=18000):
-    """Uploads a file or a directory to the given remote path.
+    """Upload a file or a directory to the given remote path.
 
     Parameters
     ----------
     localpath : str
-        The local file or directory.
+        Path to the local file or directory.
     remotepath : str
-        The remote path.
+        Remote path.
     server_name : str
-        Name of the server to which connect.
-    server_port : int
-        Port Number.
+        Name of the server to connect to.
+    server_port : int, optional
+        Port number. The default is ``18000``.
     """
     if os.path.isdir(localpath):
         _upload_dir(localpath, remotepath, server_name, server_port)
@@ -256,18 +288,18 @@ def upload(localpath, remotepath, server_name, server_port=18000):
 
 
 def download(remotepath, localpath, server_name, server_port=18000):
-    """Download a file or a directory from given remote path to local path.
+    """Download a file or a directory from a given remote path to the local path.
 
     Parameters
     ----------
     remotepath : str
-        The remote path.
+        Remote path.
     localpath : str
-        The local file or directory.
+        Path to the local file or directory.
     server_name : str
-        Name of the server to which connect.
-    server_port : int
-        Port Number.
+        Name of the server to connect to.
+    server_port : int, optional
+        Port number. The default is ``18000``.
     """
     if os.path.isdir(remotepath):
         _download_dir(remotepath, localpath, server_name, server_port)
@@ -278,7 +310,7 @@ def download(remotepath, localpath, server_name, server_port=18000):
 def _upload_file(local_file, remote_file, server_name, server_port=18000):
     c = rpyc.connect(server_name, server_port, config={"sync_request_timeout": None})
     if c.root.path_exists(remote_file):
-        return "File already existing on the server."
+        return "File already exists on the server."
     with open(local_file, "rb") as f:
         lines = f.readlines()
         new_file = c.root.create(remote_file)
@@ -290,7 +322,7 @@ def _upload_file(local_file, remote_file, server_name, server_port=18000):
 def _upload_dir(localpath, remotepath, server_name, server_port=18000):
     c = rpyc.connect(server_name, server_port, config={"sync_request_timeout": None})
     if c.root.path_exists(remotepath):
-        return "Folder already existing on the server."
+        return "Folder already exists on the server."
     c.root.makedirs(remotepath)
     for fn in os.listdir(localpath):
         lfn = os.path.join(localpath, fn)
@@ -301,7 +333,7 @@ def _upload_dir(localpath, remotepath, server_name, server_port=18000):
 def _download_file(remote_file, local_file, server_name, server_port=18000):
     c = rpyc.connect(server_name, server_port, config={"sync_request_timeout": None})
     if os.path.exists(local_file):
-        return "File already existing on the server."
+        return "File already exists on the server."
     remote = c.root.open(remote_file)
     lines = remote.readlines()
     with open(local_file, "wb") as new_file:
@@ -313,10 +345,70 @@ def _download_file(remote_file, local_file, server_name, server_port=18000):
 def _download_dir(remotepath, localpath, server_name, server_port=18000):
     c = rpyc.connect(server_name, server_port, config={"sync_request_timeout": None})
     if os.path.exists(localpath):
-        return "Folder already existing on the local machine."
+        return "Folder already exists on the local machine."
     if not os.path.isdir(localpath):
         os.makedirs(localpath)
     for fn in c.root.listdir(remotepath):
         lfn = os.path.join(localpath, fn)
         rfn = os.path.join(remotepath, fn)
         _download_file(rfn, lfn, server_name, server_port=18000)
+
+
+def launch_ironpython_server(aedt_path, non_graphical=False, port=18000, launch_client=True):
+    """Start a process in IronPython and launch the rpc server on the specified port given an AEDT path on Linux.
+
+    .. warning::
+        Remote CPython to IronPython may have some limitations.
+        Known issues are in the returned list and dictionary.
+        For these known issues, using the method `client.conver_remote_object` is recommended.
+
+    Parameters
+    ----------
+    aedt_path : str
+        AEDT path on Linux.
+    non_graphical : bool, optional
+        Whether to start AEDT in non-graphical mode. The default is ``False``, in which case
+        AEDT is started in graphical mode.
+    port : int, optional
+        Port number. The default is ``18000``.
+    launch_client : bool, optional
+        Whether to launch the client. The default is ``True.``
+
+    Returns
+    -------
+    rpyc object.
+
+    Examples
+    --------
+    >>> from pyaedt.common_rpc import launch_ironpython_server
+    >>> client = launch_ironpython_server("/path/to/AEDT/Linux64")
+    >>> hfss = client.root.hfss()
+    >>> box = hfss.modeler.create_box([0,0,0], [1,1,1])
+    >>> my_face_list = client.convert_remote_object(box.faces)
+
+    """
+    port1 = check_port(port)
+    if port1 == 0:
+        print("Error. No available ports.")
+        return False
+    if non_graphical:
+        val = 1
+    else:
+        val = 0
+    command = [
+        os.path.join(aedt_path, "common", "mono", "Linux64", "bin", "mono"),
+        os.path.join(aedt_path, "common", "IronPython", "ipy64.exe"),
+        os.path.join(os.path.dirname(__file__), "rpc", "local_server.py"),
+        aedt_path,
+        str(val),
+        str(port1),
+    ]
+    proc = subprocess.Popen(" ".join(command), shell=True)
+    print("Process {} started on {}".format(proc.pid, socket.getfqdn()))
+    print("Using port {}".format(port1))
+    print("Warning: Remote CPython to IronPython may have some limitations.")
+    print("Known issues are in the returned list and dictionary.")
+    print("For these known issues, using the method client.convert_remote_object is recommended.")
+    if proc and launch_client:
+        return client(server_name=socket.getfqdn(), server_port=port1)
+    return False

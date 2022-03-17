@@ -1,8 +1,8 @@
-from pyaedt.generic.general_methods import aedt_exception_handler
-from pyaedt.modeler.Circuit import ModelerSimplorer
-from pyaedt.modules.SolveSetup import SetupCircuit
 from pyaedt.application.Analysis import Analysis
+from pyaedt.generic.general_methods import pyaedt_function_handler
+from pyaedt.modeler.Circuit import ModelerTwinBuilder
 from pyaedt.modules.PostProcessor import CircuitPostProcessor
+from pyaedt.modules.SolveSetup import SetupCircuit
 
 
 class AnalysisTwinBuilder(Analysis):
@@ -27,7 +27,7 @@ class AnalysisTwinBuilder(Analysis):
         ----------
 
         >>> oModule.GetAllSolutionSetups"""
-        setups = self.oanalysis.GetAllSolutionSetups()
+        setups = list(self.oanalysis.GetAllSolutionSetups())
         return setups
 
     @property
@@ -68,24 +68,37 @@ class AnalysisTwinBuilder(Analysis):
             student_version,
         )
         self.solution_type = solution_type
-        self._modeler = ModelerSimplorer(self)
+        self._modeler = ModelerTwinBuilder(self)
         self._post = CircuitPostProcessor(self)
+
+    @property
+    def existing_analysis_sweeps(self):
+        """Get all existing analysis setups.
+
+        Returns
+        -------
+        list of str
+            List of all analysis setups in the design.
+
+        """
+        return self.existing_analysis_setups
 
     @property
     def modeler(self):
         """Design oModeler."""
         return self._modeler
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def create_setup(self, setupname="MySetupAuto", setuptype=None, props={}):
         """Create a new setup.
 
         Parameters
         ----------
         setupname : str, optional
-            Name of the new setup.  Default is ``"MySetupAuto"``.
+            Name of the setup. The default is ``"MySetupAuto"``.
         setuptype : str
-            Setup type. If ``None``, default type will be applied.
+            Type of the setup. The default is ``None``, in which case the default
+            type is applied.
         props : dict
             Dictionary of properties with values.
 

@@ -1,37 +1,38 @@
 """
-This module contains the `Desktop` class.
+This module contains the ``Desktop`` class.
 
-This module is used to initialize AEDT and Message Manager to manage AEDT.
+This module is used to initialize AEDT and the message manager for managing AEDT.
 
 You can initialize this module before launching an app or
 have the app automatically initialize it to the latest installed AEDT version.
 """
-from __future__ import absolute_import
 
-import os
-import sys
-import traceback
-import logging
-import pkgutil
-import getpass
-import re
-import warnings
-import gc
-import time
+from __future__ import absolute_import  # noreorder
+
 import datetime
+import gc
+import getpass
+import logging
+import os
+import pkgutil
+import re
+import sys
 import tempfile
+import time
+import traceback
+import warnings
 
-if os.name == "posix":
-    try:
-        import subprocessdotnet as subprocess
-    except:
-        warnings.warn("Pythonnet is needed to run pyaedt within Linux")
+from pyaedt import is_ironpython
+
+if os.name == "posix" and is_ironpython:
+    import subprocessdotnet as subprocess
 else:
     import subprocess
-from pyaedt.application.MessageManager import AEDTMessageManager
+
 from pyaedt.misc import list_installed_ansysem
-from pyaedt import aedt_exception_handler
+from pyaedt import pyaedt_function_handler
 from pyaedt.generic.general_methods import is_ironpython, _pythonver, inside_desktop
+from pyaedt import settings
 
 from pyaedt import aedt_logger, __version__
 
@@ -50,7 +51,7 @@ if is_ironpython:
     import clr  # IronPython C:\Program Files\AnsysEM\AnsysEM19.4\Win64\common\IronPython\ipy64.exe
 
     _com = "ironpython"
-elif IsWindows:
+elif IsWindows:  # pragma: no cover
     import pythoncom
 
     modules = [tup[1] for tup in pkgutil.iter_modules()]
@@ -64,29 +65,29 @@ elif IsWindows:
 
         _com = "pywin32"
     else:
-        raise Exception("Error. No win32com.client or Pythonnet modules found. Please install them.")
+        raise Exception("Error. No win32com.client or Pythonnet modules found. Install them and try again.")
 
 
-def exception_to_desktop(ex_value, tb_data):
-    """Writes the trace stack to the desktop when a Python error occurs.
+def exception_to_desktop(ex_value, tb_data):  # pragma: no cover
+    """Writes the trace stack to AEDT when a Python error occurs.
 
-    The message is added to the AEDT global Message Manager and to the log file (if present).
+    The message is added to the AEDT global logger and to the log file (if present).
 
     Parameters
     ----------
     ex_value : str
-        Type of exception.
+        Type of the exception.
     tb_data : str
-        Traceback information.
+        Traceback data.
 
     """
-    if "oMessenger" in dir(sys.modules["__main__"]):
-        messenger = sys.modules["__main__"].oMessenger
+    if "aedt_logger" in dir(sys.modules["__main__"]):
+        messenger = sys.modules["__main__"].aedt_logger
         tb_trace = traceback.format_tb(tb_data)
         tblist = tb_trace[0].split("\n")
-        messenger.add_error_message(str(ex_value), "Global")
+        messenger.error(str(ex_value), "Global")
         for el in tblist:
-            messenger.add_error_message(el, "Global")
+            messenger.error(el, "Global")
     else:
         tb_trace = traceback.format_tb(tb_data)
         tblist = tb_trace[0].split("\n")
@@ -101,8 +102,6 @@ def _delete_objects():
         del module.COMUtil
     if "aedt_logger" in dir(module):
         del module.aedt_logger
-    if "oMessenger" in dir(module):
-        del module.oMessenger
     if "oDesktop" in dir(module):
         del module.oDesktop
     if "pyaedt_initialized" in dir(module):
@@ -155,8 +154,8 @@ def release_desktop(close_projects=True, close_desktop=True):
                 os.kill(pid, 9)
                 _delete_objects()
                 return True
-            except:
-                warnings.warn("Something went wrong in Closing AEDT")
+            except Exception:  # pragma: no cover
+                warnings.warn("Something went wrong in closing AEDT.")
                 return False
     return True
 
@@ -168,7 +167,6 @@ def force_close_desktop():
     -------
     bool
         ``True`` when successful, ``False`` when failed.
-
     """
     Module = sys.modules["__main__"]
     pid = Module.oDesktop.GetProcessID()
@@ -178,7 +176,7 @@ def force_close_desktop():
             for project in projects:
                 Module.oDesktop.CloseProject(project)
         except:
-            logger.warning("No Projects. Closing Desktop Connection")
+            logger.warning("No projects. Closing the AEDT connection.")
         try:
             i = 0
             scopeID = 5
@@ -186,7 +184,7 @@ def force_close_desktop():
                 Module.COMUtil.ReleaseCOMObjectScope(Module.COMUtil.PInvokeProxyAPI, 0)
                 i += 1
         except:
-            logger.warning("No COM UTIL. Closing the Desktop....")
+            logger.warning("No COM UTIL. Closing AEDT....")
         try:
             del Module.pyaedt_initialized
         except:
@@ -196,7 +194,7 @@ def force_close_desktop():
             del Module.oDesktop
             successfully_closed = True
         except:
-            Module.oMessenger.add_error_message("Something went wrong in Closing AEDT.")
+            Module.aedt_logger.error("Something went wrong in closing AEDT.")
             successfully_closed = False
         finally:
             log = logging.getLogger(__name__)
@@ -208,14 +206,14 @@ def force_close_desktop():
 
 
 def run_process(command, bufsize=None):
-    """Run Process with subprocess.
+    """Run process with a subprocess.
 
     Parameters
     ----------
     command : str
-        Command to execute
-    bufsize : int
-        bufsize
+        Command to execute.
+    bufsize : int, optional
+        Buffer size. The default is ``None``.
 
     """
     if bufsize:
@@ -237,8 +235,9 @@ class Desktop:
         Version of AEDT to use. The default is ``None``, in which case the
         active setup or latest installed version is used.
     non_graphical : bool, optional
-        Whether to launch AEDT in the non-graphical mode. The default
-        is ``False``, in which case AEDT is launched in the graphical mode.
+        Whether to launch AEDT in non-graphical mode. The default
+        is ``False``, in which case AEDT is launched in graphical mode.
+        This parameter is ignored when a script is launched within AEDT.
     new_desktop_session : bool, optional
         Whether to launch an instance of AEDT in a new thread, even if
         another instance of the ``specified_version`` is active on the machine.
@@ -285,27 +284,39 @@ class Desktop:
         self.close_on_exit = close_on_exit
         self._main.pyaedt_version = pyaedtversion
         self._main.interpreter_ver = _pythonver
+        self._main.student_version = student_version
         if is_ironpython:
             self._main.isoutsideDesktop = False
         else:
             self._main.isoutsideDesktop = True
         self.release_on_exit = True
         self.logfile = None
-        if "oDesktop" in dir():
+        if "oDesktop" in dir():  # pragma: no cover
             self.release_on_exit = False
             self._main.oDesktop = oDesktop
-        elif "oDesktop" in dir(self._main) and self._main.oDesktop is not None:
+            settings.aedt_version = oDesktop.GetVersion()[0:6]
+            try:
+                settings.non_graphical = oDesktop.GetIsNonGraphical()
+            except:
+                settings.non_graphical = non_graphical
+        elif "oDesktop" in dir(self._main) and self._main.oDesktop is not None:  # pragma: no cover
             self.release_on_exit = False
+            try:
+                settings.non_graphical = self._main.oDesktop.GetIsNonGraphical()
+            except:
+                settings.non_graphical = non_graphical
         else:
+            settings.non_graphical = non_graphical
             if "oDesktop" in dir(self._main):
                 del self._main.oDesktop
-            version_student, version_key, version = self._set_version(specified_version, student_version)
-            if _com == "ironpython":
-                print("Launching PyAEDT outside Electronics Desktop with IronPython")
+            self._main.student_version, version_key, version = self._set_version(specified_version, student_version)
+            settings.aedt_version = version_key
+            if _com == "ironpython":  # pragma: no cover
+                print("Launching PyAEDT outside AEDT with IronPython.")
                 self._init_ironpython(non_graphical, new_desktop_session, version)
             elif _com == "pythonnet_v3":
-                print("Launching PyAEDT outside Electronics Desktop with CPython and Pythonnet")
-                self._init_cpython(non_graphical, new_desktop_session, version, student_version, version_key)
+                print("Launching PyAEDT outside AEDT with CPython and Pythonnet.")
+                self._init_cpython(non_graphical, new_desktop_session, version, self._main.student_version, version_key)
             else:
                 oAnsoftApp = win32com.client.Dispatch(version)
                 self._main.oDesktop = oAnsoftApp.GetAppDesktop()
@@ -373,12 +384,12 @@ class Desktop:
 
     @property
     def current_version(self):
-        """Current version of AEDT."""
+        """Current AEDT version."""
         return self.version_keys[0]
 
     @property
     def current_version_student(self):
-        """Current student version of AEDT."""
+        """Current student AEDT version."""
         for version_key in self.version_keys:
             if "SV" in version_key:
                 return version_key
@@ -387,42 +398,41 @@ class Desktop:
     def _init_desktop(self):
         self._main.AEDTVersion = self._main.oDesktop.GetVersion()[0:6]
         self._main.oDesktop.RestoreWindow()
-        self._main.oMessenger = AEDTMessageManager()
-        self._logger = aedt_logger.AedtLogger(self._main.oMessenger, filename=self.logfile, level=logging.DEBUG)
+        self._logger = aedt_logger.AedtLogger(filename=self.logfile, level=logging.DEBUG)
         self._logger.info("Logger Started on %s", self.logfile)
         self._main.aedt_logger = self._logger
         self._main.sDesktopinstallDirectory = self._main.oDesktop.GetExeDir()
         self._main.pyaedt_initialized = True
 
     def _set_version(self, specified_version, student_version):
-        version_student = False
+        student_version_flag = False
         if specified_version:
             if float(specified_version) < 2021:
                 if float(specified_version) < 2019:
                     raise ValueError("PyAEDT supports AEDT versions 2021 R1 and newers.")
                 else:
                     warnings.warn(
-                        """PyAEDT have limited capabilities when used with an AEDT version older than 2021 R1.
-                        PyAEDT officially supports AEDT versions 2021 R1 and newers."""
+                        """PyAEDT has limited capabilities when used with an AEDT version older than 2021 R1.
+                        PyAEDT officially supports AEDT versions 2021 R1 and newer."""
                     )
             if student_version:
                 specified_version += "SV"
-                version_student = True
+                student_version_flag = True
             assert specified_version in self.version_keys, "Specified version {} not known.".format(specified_version)
             version_key = specified_version
         else:
             if student_version and self.current_version_student:
                 version_key = self.current_version_student
-                version_student = True
+                student_version_flag = True
             else:
                 version_key = self.current_version
-                version_student = False
-        if student_version and version_student:
+                student_version_flag = False
+        if student_version and student_version_flag:
             version = "Ansoft.ElectronicsDesktop." + version_key[:-2]
         else:
             version = "Ansoft.ElectronicsDesktop." + version_key
         self._main.sDesktopinstallDirectory = os.getenv(self._version_ids[version_key])
-        return version_student, version_key, version
+        return student_version_flag, version_key, version
 
     def _init_ironpython(self, non_graphical, new_aedt_session, version):
         base_path = self._main.sDesktopinstallDirectory
@@ -439,7 +449,7 @@ class Desktop:
         else:
             oAnsoftApp = StandalonePyScriptWrapper.CreateObject(version)
         if non_graphical:
-            os.environ["PYAEDT_DESKTOP_LOGS"] = "False"
+            settings.enable_desktop_logs = False
         self._main.oDesktop = oAnsoftApp.GetAppDesktop()
         self._main.isoutsideDesktop = True
         sys.path.append(os.path.join(base_path, "common", "commonfiles", "IronPython", "DLLs"))
@@ -482,7 +492,7 @@ class Desktop:
         base_path = self._main.sDesktopinstallDirectory
         sys.path.append(base_path)
         sys.path.append(os.path.join(base_path, "PythonFiles", "DesktopPlugin"))
-        launch_msg = "Launching AEDT installation {}".format(base_path)
+        launch_msg = "Launching AEDT installation {}.".format(base_path)
         print(launch_msg)
         print("===================================================================================")
         clr.AddReference("Ansys.Ansoft.CoreCOMScripting")
@@ -502,7 +512,7 @@ class Desktop:
         else:
             StandalonePyScriptWrapper.CreateObject(version)
         if non_graphical:
-            os.environ["PYAEDT_DESKTOP_LOGS"] = "False"
+            settings.enable_desktop_logs = False
         processID2 = []
         if IsWindows:
             processID2 = self._get_tasks_list_windows(student_version)
@@ -528,7 +538,7 @@ class Desktop:
                     break
         else:
             warnings.warn(
-                "PyAEDT is not supported in AEDT versions older than 2021.2. Trying to launch it with PyWin32."
+                "PyAEDT is not supported in AEDT versions older than 2021.2. Trying to launch PyAEDT with PyWin32."
             )
             self._dispatch_win32(version)
 
@@ -538,25 +548,28 @@ class Desktop:
             project_dir = self._main.oDesktop.GetProjectDirectory()
         else:
             project_dir = tempfile.gettempdir()
-        self.logfile = os.path.join(
-            project_dir, "pyaedt{}.log".format(datetime.datetime.now().strftime("%Y%m%d_%H%M%S"))
-        )
+        if settings.logger_file_path:
+            self.logfile = settings.logger_file_path
+        else:
+            self.logfile = os.path.join(
+                project_dir, "pyaedt{}.log".format(datetime.datetime.now().strftime("%Y%m%d_%H%M%S"))
+            )
 
         return True
 
     @property
     def messenger(self):
-        """Messenger manager for AEDT Log."""
-        return self._main.oMessenger
+        """Messenger manager for the AEDT logger."""
+        return self._main.aedt_logger
 
     @property
     def logger(self):
-        """Logger."""
+        """AEDT logger."""
         return self._logger
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def project_list(self):
-        """Project list.
+        """Retrieve a list of projects.
 
         Returns
         -------
@@ -566,21 +579,23 @@ class Desktop:
         """
         return list(self.odesktop.GetProjectList())
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def analyze_all(self, project=None, design=None):
-        """Analyze all setup in a given project.
+        """Analyze all setups in a project.
 
         Parameters
         ----------
-        project : str
-            Project name. If None, the active project will be taken.
-        design : str
-            Design name. If None, all the design in active project will be solved.
+        project : str, optional
+            Project name. The default is ``None``, in which case the active project
+            is used.
+        design : str, optional
+            Design name. The default is ``None``, in which case all designs in
+            the project are analyzed.
 
         Returns
         -------
         bool
-            ``True`` when simulation is finished.
+            ``True`` when successful, ``False`` when failed.
         """
         if not project:
             oproject = self.odesktop.GetActiveProject()
@@ -595,33 +610,35 @@ class Desktop:
                     odesign.AnalyzeAll()
         return True
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def clear_messages(self):
-        """Clear all desktop messages.
+        """Clear all AEDT messages.
 
         Returns
         -------
         bool
-            ``True`` if succeeded.
+            ``True`` when successful, ``False`` when failed.
         """
         self._desktop.ClearMessages("", "", 3)
         return True
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def save_project(self, project_name=None, project_path=None):
-        """Save project. if Path is provided, save as is used.
+        """Save the project.
 
         Parameters
         ----------
-        project_name : str
-            Project name. If None, the active project will be taken.
-        project_path : str
-            Full path to the aedt file name
+        project_name : str, optional
+            Project name. The default is ``None``, in which case the active project
+            is used.
+        project_path : str, optional
+            Full path to the project. The default is ``None``. If a path is
+            provided, ``save as`` is used.
 
         Returns
         -------
         bool
-            ``True`` if succeeded.
+            ``True`` when successful, ``False`` when failed.
         """
         if not project_name:
             oproject = self.odesktop.GetActiveProject()
@@ -633,22 +650,24 @@ class Desktop:
             oproject.Save()
         return True
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def copy_design(self, project_name=None, design_name=None, target_project=None):
-        """Copy a design. Design can be pasted in existing project or new one.
+        """Copy a design and paste it in an existing project or new project.
 
         Parameters
         ----------
-        project_name :str
-            Project name.
-        design_name : str
-            Design name.
+        project_name :str, optional
+            Project name. The default is ``None``, in which case the active project
+            is used.
+        design_name : str, optional
+            Design name. The default is ``None``.
         target_project : str, optional
-            Target Project.
+            Target project. The default is ``None``.
 
         Returns
         -------
         bool
+            ``True`` when successful, ``False`` when failed.
         """
         if not project_name:
             oproject = self.odesktop.GetActiveProject()
@@ -672,19 +691,20 @@ class Desktop:
                         return True
         return False
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def project_path(self, project_name=None):
-        """Project path.
+        """Retrieve the path to the project.
 
         Parameters
         ----------
-        project_name : str
-            Project name. If None, the active project will be taken.
+        project_name : str, optional
+            Project name. The default is ``None``, in which case the active
+            project is used.
 
         Returns
         -------
         str
-            Path to the project file.
+            Path to the project.
 
         """
         if not project_name:
@@ -695,18 +715,19 @@ class Desktop:
             return os.path.normpath(oproject.GetPath())
         return None
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def design_list(self, project=None):
-        """Design list.
+        """Retrieve a list of the designs.
 
         Parameters
         ----------
         project : str, optional
-            Project name.
+            Project name. The default is ``None``, in which case the active
+            project is used.
 
         Returns
         -------
-        str
+        list
             List of the designs.
         """
 
@@ -722,20 +743,23 @@ class Desktop:
                 updateddeslist.append(m.group(0))
         return updateddeslist
 
-    @aedt_exception_handler
+    @pyaedt_function_handler()
     def design_type(self, project_name=None, design_name=None):
-        """Design list.
+        """Retrieve the type of a design.
 
         Parameters
         ----------
         project_name : str, optional
-            Project name.
+            Project name. The default is ``None``, in which case the active
+            project is used.
         design_name : str, optional
-            Design name.
+            Design name. The default is ``None``, in which case the active
+            design is used.
+
         Returns
         -------
         str
-            Design Type.
+            Design type.
         """
         if not project_name:
             oproject = self.odesktop.GetActiveProject()
@@ -803,7 +827,7 @@ class Desktop:
 
     @property
     def src_dir(self):
-        """Source directory for Python.
+        """Python source directory.
 
         Returns
         -------
@@ -826,7 +850,7 @@ class Desktop:
         return os.path.realpath(os.path.join(self.src_dir, ".."))
 
     def _exception(self, ex_value, tb_data):
-        """Write the trace stack to the desktop when a Python error occurs.
+        """Write the trace stack to AEDT when a Python error occurs.
 
         Parameters
         ----------
@@ -855,7 +879,7 @@ class Desktop:
         Parameters
         ----------
         close_projects : bool, optional
-            Whether to close the AEDT projects opened in the session.
+            Whether to close the AEDT projects that are open in the session.
             The default is ``True``.
         close_on_exit : bool, optional
             Whether to close the active AEDT session on exiting AEDT.
@@ -883,7 +907,7 @@ class Desktop:
         return result
 
     def force_close_desktop(self):
-        """Forcibly close all AEDT projects and shut down AEDT.
+        """Forcibly close all projects and shut down AEDT.
 
         .. deprecated:: 0.4.0
            Use :func:`desktop.close_desktop` instead.
@@ -898,7 +922,7 @@ class Desktop:
         force_close_desktop()
 
     def close_desktop(self):
-        """Close all AEDT projects and shut down AEDT.
+        """Close all projects and shut down AEDT.
 
         Returns
         -------
@@ -917,7 +941,7 @@ class Desktop:
         return self.release_desktop(close_projects=True, close_on_exit=True)
 
     def enable_autosave(self):
-        """Enable the auto save option.
+        """Enable the autosave option.
 
         Examples
         --------
@@ -931,7 +955,7 @@ class Desktop:
         self._main.oDesktop.EnableAutoSave(True)
 
     def disable_autosave(self):
-        """Disable the auto save option.
+        """Disable the autosave option.
 
         Examples
         --------
@@ -945,20 +969,22 @@ class Desktop:
         self._main.oDesktop.EnableAutoSave(False)
 
     def change_license_type(self, license_type="Pool"):
-        """Change the License Type between ``Pack`` and ``Pool``.
-
-        .. note::
-           The command returns ``True`` even if the Key is wrong due to API limitation.
+        """Change the license type.
 
         Parameters
         ----------
         license_type : str, optional
-            Set license type.  Must be either ``"Pack"`` or ``"Pool"``.
+            Type of the license. The options are ``"Pack"`` and ``"Pool"``.
+            The default is ``"Pool".
 
         Returns
         -------
         bool
-           ``True`` when successful, ``False`` when failed.
+           ``True``.
+
+            .. note::
+               Because of an API limitation, this method returns ``True`` even when the key is wrong.
+
         """
         try:
             self._main.oDesktop.SetRegistryString("Desktop/Settings/ProjectOptions/HPCLicenseType", license_type)
@@ -967,17 +993,19 @@ class Desktop:
             return False
 
     def change_registry_key(self, key_full_name, key_value):
-        """Change a specific registry key to new value.
+        """Change an AEDT registry key to a new value.
 
         Parameters
         ----------
         key_full_name : str
-            Desktop Registry Key full name.
+            Full name of the AEDT registry key.
         key_value : str, int
-            Desktop Registry Key value.
+            Value for the AEDT registry key.
+
         Returns
         -------
         bool
+            ``True`` when successful, ``False`` when failed.
         """
         if isinstance(key_value, str):
             try:
@@ -996,21 +1024,25 @@ class Desktop:
                 self.logger.warning("Error setting up Key %s.", key_full_name)
                 return False
         else:
-            self.logger.warning("Key Value must be an int or str.")
+            self.logger.warning("Key value must be an integer or string.")
             return False
 
     def change_active_dso_config_name(self, product_name="HFSS", config_name="Local"):
-        """Change a specific registry key to new value.
+        """Change a specific registry key to a new value.
 
         Parameters
         ----------
-        product_name : str
-            Name of the tool to which apply the active Configuration.
-        config_name : str
-            Name of configuration to apply.
+        product_name : str, optional
+            Name of the tool to apply the active configuration to. The default is
+            ``"HFSS"``.
+        config_name : str, optional
+            Name of the configuration to apply. The default is ``"Local"``.
+
         Returns
         -------
         bool
+            ``True`` when successful, ``False`` when failed.
+
         """
         try:
             self.change_registry_key("Desktop/ActiveDSOConfigurations/{}".format(product_name), config_name)
@@ -1021,19 +1053,21 @@ class Desktop:
             return False
 
     def change_registry_from_file(self, registry_file, make_active=True):
-        """Apply desktop Registry settings from acf file. A way to get an editable ACF file is to export a
-        configuration from Desktop UI, edit and reuse it.
+        """Apply desktop registry settings from an ACF file.
+
+        One way to get an ACF file is to export a configuration from the AEDT UI and then edit and reuse it.
 
         Parameters
         ----------
         registry_file : str
-            Full path to acf file.
+            Full path to the ACF file.
         make_active : bool, optional
-            Set imported Configuration as active.
+            Whether to set the imported configuration as active. The default is ``True``.
 
         Returns
         -------
         bool
+            ``True`` when successful, ``False`` when failed.
         """
         try:
             self._main.oDesktop.SetRegistryFromFile(registry_file)
@@ -1059,7 +1093,7 @@ def get_version_env_variable(version_id):
     Parameters
     ----------
     version_id : str
-        Full AEDT version number, such as ``"2021.2"``.
+        Full AEDT version number. For example, ``"2021.2"``.
 
     Returns
     -------
