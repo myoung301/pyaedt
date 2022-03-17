@@ -54,7 +54,7 @@ model_names = {
     "RMxprtSolution": "RMxprtDesign",
     "ModelCreation": "RMxprtDesign",
     "HFSS 3D Layout Design": "PlanarEMCircuit",
-    "EMIT Design": "EMIT Design",
+    "EMIT": "EMIT Design",
 }
 
 
