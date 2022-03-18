@@ -493,6 +493,26 @@ class EmitFilterComponent(EmitComponent):
     def set_filter_prop(self, fullname, key, value):
         self._set_prop_value(fullname, {key: value})
 
+    @property
+    def subtype(self):
+        value_map = {"Band Pass": "BandPass", "By File": "ByFile", "Low Pass":"LowPass", "High Pass":"HighPass", "Band Stop":"BandStop", "Tunable Bandpass":"TunableBandpass", "Tunable Bandstop":"TunableBandstop"}
+        filter_type = self.root_prop_node.props["SubType"]
+        return filter_type
+
+    @subtype.setter
+    def subtype(self, value):
+        value_map = {"Band Pass": "BandPass", "By File": "ByFile", "Low Pass":"LowPass", "High Pass":"HighPass", "Band Stop":"BandStop", "Tunable Bandpass":"TunableBandpass", "Tunable Bandstop":"TunableBandstop"}
+        self.root_prop_node._set_prop_value({"SubType": value_map[value]})
+
+    @property
+    def filename(self):
+        return self.root_prop_node.props["Filename"]
+
+    @subtype.setter
+    def filename(self, value):
+        self.root_prop_node._set_prop_value({"Filename": value})
+
+
 class EmitComponentPropNode(object):
     def __init__(self, editor, design, parent_component, node_name):
         self.oeditor = editor
