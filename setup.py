@@ -42,7 +42,7 @@ extra_requires = [
 
 if sys.version_info > (3, 7):
     install_requires = [
-        "cffi == 1.15.0;platform_system=='Linux'",
+        "cffi == 1.15.1;platform_system=='Linux'",
         "pywin32 >= 303;platform_system=='Windows'",
         "pythonnet == 3.0.1",
         "rpyc==5.3.0",
